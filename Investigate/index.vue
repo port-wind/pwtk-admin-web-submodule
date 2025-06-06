@@ -9,7 +9,6 @@
           <van-field :label="item1.name" :placeholder="item1.value" :value="item1.value2" readonly="readonly" />
         </van-cell-group>
       </div>
-
       <!-- 下拉框 -->
       <div v-if="item1.type == 1" class="xiala">
         <div class="titlename">{{ item1.name }}</div>
@@ -64,11 +63,11 @@ export default {
   name: 'Investigate',
   data() {
     return {
-      jsonData: []
+      jsonData: [],
     }
   },
   props: {
-    datas: Object
+    datas: Object,
   },
   created() {},
   mounted() {},
@@ -76,7 +75,7 @@ export default {
     //点击显示下拉框
     showpic(index1) {
       event.stopPropagation()
-      this.datas.jsondatas.forEach((el) => {
+      this.datas.jsondatas.forEach(el => {
         el.showPicker = false
       })
       this.datas.jsonData[index1].showPicker = !this.datas.jsonData[index1].showPicker
@@ -89,18 +88,18 @@ export default {
 
     //关闭下拉选项
     guanbi() {
-      this.datas.jsondatas.forEach((el) => {
+      this.datas.jsondatas.forEach(el => {
         el.showPicker = false
       })
     },
     leave() {
-      this.datas.jsondatas.forEach((el) => {
+      this.datas.jsondatas.forEach(el => {
         el.showPicker = false
       })
-    }
+    },
     //
   },
-  watch: {}
+  watch: {},
 }
 </script>
 
