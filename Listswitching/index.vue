@@ -53,7 +53,7 @@
         <div class="bg-pic">
           <img
             draggable="false"
-            src="@/assets/images/imgs.png"
+            src="../../../assets/images/imgs.png"
             alt=""
             :style="{ 'border-radius': data.borderRadius + 'px' }"
           />
@@ -334,7 +334,7 @@
               <div class="bg-pic">
                 <img
                   draggable="false"
-                  src="@/assets/images/imgs.png"
+                  src="../../../assets/images/imgs.png"
                   alt=""
                   :style="{ 'border-radius': data.borderRadius + 'px' }"
                 />
@@ -603,7 +603,7 @@
                 <div class="bg-pic">
                   <img
                     draggable="false"
-                    src="@/assets/images/imgs.png"
+                    src="../../../assets/images/imgs.png"
                     alt=""
                     :style="{ 'border-radius': data.borderRadius + 'px' }"
                   />

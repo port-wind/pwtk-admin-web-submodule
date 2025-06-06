@@ -58,7 +58,7 @@ const headerBarStyle = computed(() => {
     return {
       background: getBackgroundStyle(data.configParamJson),
       backgroundSize: '100% 100%',
-      color: data.configParamJson.textColor,
+      color: data?.configParamJson?.textColor,
     }
   } else {
     return {
@@ -68,10 +68,14 @@ const headerBarStyle = computed(() => {
 })
 
 function getBackgroundStyle(data: HeaderBarBox): string {
-  if (data?.bgImg) {
-    return `url(${PUBLIC_CND_URL}${data.bgImg})` // 使用背景图片
+  if (data) {
+    if (data?.bgImg) {
+      return `url(${PUBLIC_CND_URL}${data.bgImg})` // 使用背景图片
+    } else {
+      return data.bgColor || 'var(--theme-color)' // 否则使用背景颜色
+    }
   } else {
-    return data.bgColor || 'var(--theme-color)' // 否则使用背景颜色
+    return ''
   }
 }
 
