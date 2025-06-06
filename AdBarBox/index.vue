@@ -41,7 +41,6 @@ const props = withDefaults(defineProps<Props>(), {
   pageModel: 'websiteMode',
 })
 
-// 模拟推广广告数据
 const mockAds = computed(() => {
   const count = props.datas.configParamJson?.adCount || 3
   return Array.from({ length: count }, (_, index) => ({
