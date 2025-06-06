@@ -1,43 +1,30 @@
 <template>
   <div class="custom-bar-ad-box">
-    <div class="bar-ad-container" :class="`mode-${config.model}`">
-      <!-- 模式 1: 滚动文字广告 -->
-      <div v-if="config.model === 's1'" class="scrolling-ads">
-        <div class="scrolling-content" ref="scrollingRef">
-          <div
-            v-for="(item, index) in config.itemData"
-            :key="index"
-            class="scrolling-item"
-            @click="handleItemClick(item)"
-          >
-            {{ item.text }}
+    <div class="mbox">
+      <BoxTitle :data="datas" />
+      <div v-if="datas.model === 's1'" class="color-bar">
+        <template v-for="(item, index) in datas.itemData" :key="index">
+          <div class="color-bar-ad" :style="{ backgroundColor: getRandomColor() }">
+            <a :href="item.link">
+              <h3>{{ item.text }}</h3>
+            </a>
           </div>
-        </div>
+        </template>
       </div>
 
-      <!-- 模式 2: 卡片式广告 -->
-      <div v-else-if="config.model === 's2'" class="card-ads">
-        <div v-for="(item, index) in displayItems" :key="index" class="card-item" @click="handleItemClick(item)">
-          <div v-if="item.icon" class="card-icon">
-            <img :src="getFullImageUrl(item.icon)" :alt="item.text" draggable="false" />
-          </div>
-          <div class="card-text">{{ item.text }}</div>
-          <div v-if="item.highlight" class="card-highlight">{{ item.highlight }}</div>
-        </div>
+      <div v-else-if="datas.model === 's2'">
+        <template v-for="(item, index) in datas.itemData" :key="index">
+          <div v-html="item.content"></div>
+        </template>
       </div>
 
-      <!-- 模式 3: 横幅广告 -->
-      <div v-else-if="config.model === 's3'" class="banner-ads">
-        <div v-for="(item, index) in displayItems" :key="index" class="banner-item" @click="handleItemClick(item)">
-          <div class="banner-content">
-            <div class="banner-main">{{ item.text }}</div>
-            <div v-if="item.subtext" class="banner-sub">{{ item.subtext }}</div>
-          </div>
-          <div v-if="item.action" class="banner-action">
-            {{ item.action }}
-          </div>
-        </div>
-      </div>
+      <van-grid v-else class="button-bar" :column-num="2" :border="false" :gutter="10">
+        <van-grid-item v-for="(item, index) in datas.itemData" :key="index">
+          <a :href="item.link" class="button-bar-ad">
+            <h3 :style="{ color: getRandomColor() }">{{ item.text }}</h3>
+          </a>
+        </van-grid-item>
+      </van-grid>
     </div>
 
     <!-- 插槽：用于拖拽时的删除操作 -->
@@ -45,117 +32,36 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import type { CustomBarAdConfig, AdItem } from './type'
+<script setup lang="ts" name="CustomBarAdBox">
+import BoxTitle from './BoxTitle.vue'
+import { Grid as VanGrid, GridItem as VanGridItem } from 'vant'
 
-interface Props {
-  data: {
-    componentName: string
-    componentType: string
-    configParamJson: {
-      model?: string
-      itemData?: Array<{ text: string; link?: string; icon?: string }>
-    }
-  }
-  pageModel?: 'websiteMode' | 'templateMode' | 'componentMode'
+interface CustomBarType {
+  model: 's1' | 's2' | 's3'
+  title?: string
+  itemData: ColorBarType[]
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode'
-})
-
-const scrollingRef = ref<HTMLElement>()
-let scrollInterval: NodeJS.Timeout | null = null
-
-// 配置处理
-const config = computed(() => {
-  let configParamJson = {}
-
-  if (props.data?.configParamJson) {
-    try {
-      if (typeof props.data.configParamJson === 'string') {
-        configParamJson = JSON.parse(props.data.configParamJson)
-      } else {
-        configParamJson = props.data.configParamJson
-      }
-    } catch (error) {
-      console.error('CustomBarAdBox: JSON 解析错误', error)
-    }
-  }
-
-  const itemData = configParamJson.itemData || []
-
-  // 如果没有数据，生成默认数据
-  const defaultData =
-    itemData.length > 0
-      ? itemData
-      : [
-          { text: '站长推荐：藏宝阁◁六肖⑥码▷连中好料✔', link: 'www.baidu.com' },
-          { text: '站长推荐：藏宝阁◁公式七尾▷等您验证✔', link: 'www.baidu.com' },
-          { text: '站长推荐：藏宝阁◁精准三码▷必中特马✔', link: 'www.baidu.com' }
-        ]
-
-  return {
-    model: configParamJson.model || 's1',
-    itemData: defaultData
-  }
-})
-
-// 显示的项目（限制数量）
-const displayItems = computed(() => {
-  return config.value.itemData.slice(0, 6) // 最多显示6个
-})
-
-// 获取完整图片URL
-const getFullImageUrl = (path: string) => {
-  if (!path) return ''
-  if (path.startsWith('http://') || path.startsWith('https://')) {
-    return path
-  }
-  return `${import.meta.env.VITE_FILE_URL || ''}/${path}`
+interface ColorBarType {
+  link: string
+  text: string
+  content?: string
 }
 
-// 处理点击事件
-const handleItemClick = (item: AdItem) => {
-  if (item.link) {
-    if (item.link.startsWith('http://') || item.link.startsWith('https://')) {
-      window.open(item.link, '_blank')
-    } else {
-      window.location.href = item.link
-    }
+// 使用 ColorBarType 作为 props 的类型
+const props = defineProps<{
+  datas: CustomBarType
+}>()
+
+// 生成随机颜色的函数
+function getRandomColor() {
+  const letters = '0123456789ABCDEF'
+  let color = '#'
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)]
   }
+  return color
 }
-
-// 初始化滚动动画
-const initScrolling = () => {
-  if (config.value.model !== 's1' || !scrollingRef.value) return
-
-  const scrollElement = scrollingRef.value
-  let scrollAmount = 0
-  const scrollStep = 1
-  const scrollSpeed = 50 // ms
-
-  scrollInterval = setInterval(() => {
-    scrollAmount += scrollStep
-    if (scrollAmount >= scrollElement.scrollWidth / 2) {
-      scrollAmount = 0
-    }
-    scrollElement.style.transform = `translateX(-${scrollAmount}px)`
-  }, scrollSpeed)
-}
-
-onMounted(() => {
-  if (config.value.model === 's1') {
-    initScrolling()
-  }
-})
-
-onUnmounted(() => {
-  if (scrollInterval) {
-    clearInterval(scrollInterval)
-  }
-})
 </script>
 
 <style lang="scss" scoped>
