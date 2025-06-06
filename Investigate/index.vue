@@ -64,11 +64,11 @@ export default {
   name: 'Investigate',
   data() {
     return {
-      jsonData: []
+      jsonData: [],
     }
   },
   props: {
-    datas: Object
+    datas: Object,
   },
   created() {},
   mounted() {},
@@ -76,7 +76,7 @@ export default {
     //点击显示下拉框
     showpic(index1) {
       event.stopPropagation()
-      this.datas.jsonData.forEach((el) => {
+      this.datas.jsonData.forEach(el => {
         el.showPicker = false
       })
       this.datas.jsonData[index1].showPicker = !this.datas.jsonData[index1].showPicker
@@ -89,18 +89,18 @@ export default {
 
     //关闭下拉选项
     guanbi() {
-      this.datas.jsonData.forEach((el) => {
+      this.datas.jsonData.forEach(el => {
         el.showPicker = false
       })
     },
     leave() {
-      this.datas.jsonData.forEach((el) => {
+      this.datas.jsonData.forEach(el => {
         el.showPicker = false
       })
-    }
+    },
     //
   },
-  watch: {}
+  watch: {},
 }
 </script>
 
