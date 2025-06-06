@@ -58,11 +58,11 @@ const headerBarStyle = computed(() => {
     return {
       background: getBackgroundStyle(data.configParamJson),
       backgroundSize: '100% 100%',
-      color: data?.configParamJson?.textColor,
+      color: data?.configParamJson?.textColor
     }
   } else {
     return {
-      backgroundSize: '100% 100%',
+      backgroundSize: '100% 100%'
     }
   }
 })
@@ -101,12 +101,13 @@ const backToHome = () => {
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
-    behavior: 'smooth', // 平滑滚动
+    behavior: 'smooth' // 平滑滚动
   })
 }
 </script>
 <style scoped lang="less">
 .headerbarbox {
+  position: relative;
 }
 .header-bar {
   display: flex;
