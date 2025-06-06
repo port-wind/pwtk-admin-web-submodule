@@ -1,18 +1,18 @@
 <template>
   <div class="headerbarbox">
     <!-- <component
-      :is="data?.configParamJson?.Attr?.sticky ? 'van-sticky' : 'div'"
-      :offset-top="data?.configParamJson?.Attr?.offsetTop || 0"
+      :is="datas?.configParamJson?.Attr?.sticky ? 'van-sticky' : 'div'"
+      :offset-top="datas?.configParamJson?.Attr?.offsetTop || 0"
     > -->
-    <van-sticky :offset-top="data?.configParamJson?.Attr?.offsetTop || 0">
+    <van-sticky :offset-top="datas?.configParamJson?.Attr?.offsetTop || 0">
       <div class="header-bar" :style="headerBarStyle">
-        <van-image class="responsive-image" :src="PUBLIC_CND_URL + data?.configParamJson?.logoSrc" />
+        <van-image class="responsive-image" :src="PUBLIC_CND_URL + datas?.configParamJson?.logoSrc" />
         <van-image
-          v-if="data?.configParamJson?.middleSrc"
+          v-if="datas?.configParamJson?.middleSrc"
           class="middle-image"
-          :src="PUBLIC_CND_URL + data?.configParamJson?.middleSrc"
+          :src="PUBLIC_CND_URL + datas?.configParamJson?.middleSrc"
         />
-        <div v-if="data?.configParamJson?.backToHome" class="back-top" @click="scrollToTop">
+        <div v-if="datas?.configParamJson?.backToHome" class="back-top" @click="scrollToTop">
           <div class="back-top-icon">
             <van-icon name="back-top" />
           </div>
@@ -41,12 +41,12 @@ import type { HeaderBarBox } from './type'
 // import homeIcon from '../../assets/images/homeIcon.png' // 添加图片导入
 
 interface IProps {
-  data: {
+  datas: {
     configParamJson: HeaderBarBox
   }
 }
 
-const { data } = defineProps<IProps>()
+const { datas } = defineProps<IProps>()
 
 const PUBLIC_CND_URL = 'https://stt.pwtk.cc/'
 const WEBSITE_DOMAIN = 'tk02.pwtk.cc'
@@ -54,11 +54,11 @@ const WEBSITE_DOMAIN = 'tk02.pwtk.cc'
 const websitDomain = ref(WEBSITE_DOMAIN)
 
 const headerBarStyle = computed(() => {
-  if (data) {
+  if (datas) {
     return {
-      background: getBackgroundStyle(data.configParamJson),
+      background: getBackgroundStyle(datas.configParamJson),
       backgroundSize: '100% 100%',
-      color: data?.configParamJson?.textColor
+      color: datas?.configParamJson?.textColor
     }
   } else {
     return {
@@ -67,12 +67,12 @@ const headerBarStyle = computed(() => {
   }
 })
 
-function getBackgroundStyle(data: HeaderBarBox): string {
-  if (data) {
-    if (data?.bgImg) {
-      return `url(${PUBLIC_CND_URL}${data.bgImg})` // 使用背景图片
+function getBackgroundStyle(dd: HeaderBarBox): string {
+  if (dd) {
+    if (dd?.bgImg) {
+      return `url(${PUBLIC_CND_URL}${dd.bgImg})` // 使用背景图片
     } else {
-      return data.bgColor || 'var(--theme-color)' // 否则使用背景颜色
+      return dd.bgColor || 'var(--theme-color)' // 否则使用背景颜色
     }
   } else {
     return ''
@@ -80,24 +80,24 @@ function getBackgroundStyle(data: HeaderBarBox): string {
 }
 
 onMounted(() => {
-  if (data?.configParamJson?.theme) {
-    document.documentElement.style.setProperty('--theme-color', data.configParamJson.theme.primary)
+  if (datas?.configParamJson?.theme) {
+    document.documentElement.style.setProperty('--theme-color', datas.configParamJson.theme.primary)
     document.documentElement.style.setProperty(
       '--second-color',
-      data.configParamJson.theme.secondary || data.configParamJson.theme.primary
+      datas.configParamJson.theme.secondary || datas.configParamJson.theme.primary
     )
     document.documentElement.style.setProperty(
       '--gradient-direction',
-      data.configParamJson.theme?.gradient || 'to right'
+      datas.configParamJson.theme?.gradient || 'to right'
     )
   }
 })
 // console.log("WEBSITE_DOMAIN",websitDomain.value)
-// console.log("WEBSITE_DOMAIN",PUBLIC_CND_URL + data.middleSrc ?? websitDomain.value.icon)
+// console.log("WEBSITE_DOMAIN",PUBLIC_CND_URL + datas.middleSrc ?? websitDomain.value.icon)
 const backToHome = () => {
   window.location.href = '/'
 }
-//data.themeColor
+//datas.themeColor
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,

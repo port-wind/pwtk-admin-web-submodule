@@ -1,8 +1,8 @@
 <template>
   <div class="web-ad-more-box">
     <div class="ad-more-container">
-      <div v-if="data.configParamJson?.title" class="ad-title">
-        {{ data.configParamJson.title }}
+      <div v-if="datas.configParamJson?.title" class="ad-title">
+        {{ datas.configParamJson.title }}
       </div>
       <div class="ad-grid">
         <div v-for="(item, index) in mockAds" :key="index" class="ad-item">
@@ -10,7 +10,7 @@
           <div class="ad-item-title">{{ item.title }}</div>
         </div>
       </div>
-      <div v-if="data.configParamJson?.showPagination" class="pagination">
+      <div v-if="datas.configParamJson?.showPagination" class="pagination">
         <button class="page-btn">上一页</button>
         <span class="page-info">1 / 3</span>
         <button class="page-btn">下一页</button>
@@ -24,7 +24,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  data: {
+  datas: {
     componentName: string
     componentType: string
     configParamJson: {
@@ -39,14 +39,14 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode',
+  pageModel: 'websiteMode'
 })
 
 // 模拟广告数据
 const mockAds = computed(() => {
-  const size = props.data.configParamJson?.pageSize || 6
+  const size = props.datas.configParamJson?.pageSize || 6
   return Array.from({ length: size }, (_, index) => ({
-    title: `广告标题 ${index + 1}`,
+    title: `广告标题 ${index + 1}`
     // image: '@/assets/images/imgs.png',
   }))
 })

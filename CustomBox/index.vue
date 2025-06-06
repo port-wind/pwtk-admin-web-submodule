@@ -1,6 +1,12 @@
 <script>
 export default {
   name: 'CustomBox',
+  props: {
+    datas: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data() {
     return {
       jsonData: []
