@@ -6,13 +6,13 @@
     > -->
     <van-sticky :offset-top="data?.configParamJson?.Attr?.offsetTop || 0">
       <div class="header-bar" :style="headerBarStyle">
-        <van-image class="responsive-image" :src="PUBLIC_CND_URL + data?.configParamJson.logoSrc" />
+        <van-image class="responsive-image" :src="PUBLIC_CND_URL + data?.configParamJson?.logoSrc" />
         <van-image
-          v-if="data?.configParamJson.middleSrc"
+          v-if="data?.configParamJson?.middleSrc"
           class="middle-image"
-          :src="PUBLIC_CND_URL + data?.configParamJson.middleSrc"
+          :src="PUBLIC_CND_URL + data?.configParamJson?.middleSrc"
         />
-        <div v-if="data?.configParamJson.backToHome" class="back-top" @click="scrollToTop">
+        <div v-if="data?.configParamJson?.backToHome" class="back-top" @click="scrollToTop">
           <div class="back-top-icon">
             <van-icon name="back-top" />
           </div>
@@ -80,7 +80,7 @@ function getBackgroundStyle(data: HeaderBarBox): string {
 }
 
 onMounted(() => {
-  if (data.configParamJson.theme) {
+  if (data?.configParamJson?.theme) {
     document.documentElement.style.setProperty('--theme-color', data.configParamJson.theme.primary)
     document.documentElement.style.setProperty(
       '--second-color',

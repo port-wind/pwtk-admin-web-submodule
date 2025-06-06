@@ -47,7 +47,7 @@ const mockAds = computed(() => {
   const size = props.data.configParamJson?.pageSize || 6
   return Array.from({ length: size }, (_, index) => ({
     title: `广告标题 ${index + 1}`,
-    image: '@/assets/images/imgs.png',
+    // image: '@/assets/images/imgs.png',
   }))
 })
 </script>

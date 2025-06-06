@@ -59,7 +59,7 @@ const props = withDefaults(defineProps<Props>(), {
   pageModel: 'websiteMode',
 })
 
-const defaultLogo = '@/assets/images/imgs.png'
+const defaultLogo = '../../../assets/images/imgs.png'
 const defaultCopyright = '© 2024 WebVision. All rights reserved.'
 
 const footerLinks = computed(() => {

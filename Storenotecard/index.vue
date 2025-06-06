@@ -47,7 +47,7 @@
           style="position: relative; width: 100%"
           :class="[data.positions === 'top' ? 'containoptions' : '']"
         >
-          <img draggable="false" src="@/assets/images/imgs.png" alt="" />
+          <img draggable="false" src="../../../assets/images/imgs.png" alt="" />
           <!-- 标签 -->
           <p class="marks" v-if="data.noteLabels">
             <span>#</span>

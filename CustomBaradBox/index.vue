@@ -75,7 +75,7 @@ const mockAds = computed(() => {
   return Array.from({ length: count }, (_, index) => ({
     title: `通用广告 ${index + 1}`,
     description: `这是通用广告的详细描述内容 ${index + 1}，展示产品或服务的特色。`,
-    image: '@/assets/images/imgs.png',
+    image: '../../../assets/images/imgs.png',
     badge: index === 0 ? 'HOT' : index === 1 ? 'NEW' : '',
   }))
 })
