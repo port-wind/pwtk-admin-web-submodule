@@ -1,8 +1,8 @@
 <template>
   <div class="investigate" @click="guanbi">
     <!-- 内容 -->
-    <div class="title">{{ datas.title }}</div>
-    <div class="rescon" v-for="(item1, index1) in datas.jsonData" :key="index1" @mouseleave="leave()">
+    <div class="title">{{ data.title }}</div>
+    <div class="rescon" v-for="(item1, index1) in data.jsonData" :key="index1" @mouseleave="leave()">
       <!-- 输入框 -->
       <div v-if="item1.type == 0">
         <van-cell-group>
@@ -68,7 +68,7 @@ export default {
     }
   },
   props: {
-    datas: Object,
+    data: Object,
   },
   created() {},
   mounted() {},
@@ -76,25 +76,25 @@ export default {
     //点击显示下拉框
     showpic(index1) {
       event.stopPropagation()
-      this.datas.jsonData.forEach(el => {
+      this.data.jsonData.forEach(el => {
         el.showPicker = false
       })
-      this.datas.jsonData[index1].showPicker = !this.datas.jsonData[index1].showPicker
+      this.data.jsonData[index1].showPicker = !this.data.jsonData[index1].showPicker
     },
 
     // //下拉选择
     xuanze(index1) {
-      this.datas.jsonData[index1].showPicker = false
+      this.data.jsonData[index1].showPicker = false
     },
 
     //关闭下拉选项
     guanbi() {
-      this.datas.jsonData.forEach(el => {
+      this.data.jsonData.forEach(el => {
         el.showPicker = false
       })
     },
     leave() {
-      this.datas.jsonData.forEach(el => {
+      this.data.jsonData.forEach(el => {
         el.showPicker = false
       })
     },

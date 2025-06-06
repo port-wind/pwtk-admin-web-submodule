@@ -1,36 +1,36 @@
 <template>
   <div class="custom-barad-box">
-    <div class="barad-container" :class="`mode-${datas.configParamJson?.mode || 'banner'}`">
+    <div class="barad-container" :class="`mode-${data.configParamJson?.mode || 'banner'}`">
       <!-- 标题 -->
-      <div v-if="datas.configParamJson?.showTitle && datas.configParamJson?.title" class="barad-title">
-        {{ datas.configParamJson.title }}
+      <div v-if="data.configParamJson?.showTitle && data.configParamJson?.title" class="barad-title">
+        {{ data.configParamJson.title }}
       </div>
 
       <!-- 广告内容 -->
-      <div class="barad-content" :class="`layout-${datas.configParamJson?.layout || 'horizontal'}`">
+      <div class="barad-content" :class="`layout-${data.configParamJson?.layout || 'horizontal'}`">
         <div v-for="(item, index) in mockAds" :key="index" class="barad-item">
           <div class="barad-image">
             <img :src="item.image" :alt="item.title" draggable="false" />
-            <div v-if="datas.configParamJson?.showBadge && item.badge" class="barad-badge">
+            <div v-if="data.configParamJson?.showBadge && item.badge" class="barad-badge">
               {{ item.badge }}
             </div>
           </div>
 
-          <div v-if="datas.configParamJson?.showContent" class="barad-info">
+          <div v-if="data.configParamJson?.showContent" class="barad-info">
             <div class="barad-item-title">{{ item.title }}</div>
-            <div v-if="datas.configParamJson?.showDescription" class="barad-item-desc">
+            <div v-if="data.configParamJson?.showDescription" class="barad-item-desc">
               {{ item.description }}
             </div>
-            <div v-if="datas.configParamJson?.showButton" class="barad-button">
-              {{ datas.configParamJson?.buttonText || '了解详情' }}
+            <div v-if="data.configParamJson?.showButton" class="barad-button">
+              {{ data.configParamJson?.buttonText || '了解详情' }}
             </div>
           </div>
         </div>
       </div>
 
       <!-- 更多链接 -->
-      <div v-if="datas.configParamJson?.showMore" class="barad-more">
-        <span class="more-text">{{ datas.configParamJson?.moreText || '查看更多' }}</span>
+      <div v-if="data.configParamJson?.showMore" class="barad-more">
+        <span class="more-text">{{ data.configParamJson?.moreText || '查看更多' }}</span>
         <span class="more-arrow">→</span>
       </div>
     </div>
@@ -42,7 +42,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  datas: {
+  data: {
     componentName: string
     componentType: string
     configParamJson: {
@@ -66,17 +66,17 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode'
+  pageModel: 'websiteMode',
 })
 
 // 模拟广告数据
 const mockAds = computed(() => {
-  const count = props.datas.configParamJson?.adCount || 3
+  const count = props.data.configParamJson?.adCount || 3
   return Array.from({ length: count }, (_, index) => ({
     title: `通用广告 ${index + 1}`,
     description: `这是通用广告的详细描述内容 ${index + 1}，展示产品或服务的特色。`,
     image: '@/assets/images/imgs.png',
-    badge: index === 0 ? 'HOT' : index === 1 ? 'NEW' : ''
+    badge: index === 0 ? 'HOT' : index === 1 ? 'NEW' : '',
   }))
 })
 </script>

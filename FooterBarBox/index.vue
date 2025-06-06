@@ -1,29 +1,29 @@
 <template>
   <div class="footer-bar-box">
     <div class="footer-container">
-      <div v-if="datas.configParamJson?.showLogo" class="footer-logo">
-        <img :src="datas.configParamJson?.logoUrl || defaultLogo" alt="Logo" draggable="false" />
+      <div v-if="data.configParamJson?.showLogo" class="footer-logo">
+        <img :src="data.configParamJson?.logoUrl || defaultLogo" alt="Logo" draggable="false" />
       </div>
 
       <div class="footer-content">
-        <div v-if="datas.configParamJson?.showLinks" class="footer-links">
+        <div v-if="data.configParamJson?.showLinks" class="footer-links">
           <div v-for="(link, index) in footerLinks" :key="index" class="footer-link">
             {{ link.text }}
           </div>
         </div>
 
-        <div v-if="datas.configParamJson?.showCopyright" class="footer-copyright">
-          {{ datas.configParamJson?.copyrightText || defaultCopyright }}
+        <div v-if="data.configParamJson?.showCopyright" class="footer-copyright">
+          {{ data.configParamJson?.copyrightText || defaultCopyright }}
         </div>
 
-        <div v-if="datas.configParamJson?.showContact" class="footer-contact">
+        <div v-if="data.configParamJson?.showContact" class="footer-contact">
           <div class="contact-item">
             <span class="contact-label">客服热线：</span>
-            <span class="contact-value">{{ datas.configParamJson?.phone || '400-000-0000' }}</span>
+            <span class="contact-value">{{ data.configParamJson?.phone || '400-000-0000' }}</span>
           </div>
           <div class="contact-item">
             <span class="contact-label">邮箱：</span>
-            <span class="contact-value">{{ datas.configParamJson?.email || 'service@example.com' }}</span>
+            <span class="contact-value">{{ data.configParamJson?.email || 'service@example.com' }}</span>
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  datas: {
+  data: {
     componentName: string
     componentType: string
     configParamJson: {
@@ -56,7 +56,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode'
+  pageModel: 'websiteMode',
 })
 
 const defaultLogo = '@/assets/images/imgs.png'
@@ -64,11 +64,11 @@ const defaultCopyright = '© 2024 WebVision. All rights reserved.'
 
 const footerLinks = computed(() => {
   return (
-    props.datas.configParamJson?.links || [
+    props.data.configParamJson?.links || [
       { text: '关于我们', url: '/about' },
       { text: '服务条款', url: '/terms' },
       { text: '隐私政策', url: '/privacy' },
-      { text: '联系我们', url: '/contact' }
+      { text: '联系我们', url: '/contact' },
     ]
   )
 })

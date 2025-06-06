@@ -1,18 +1,18 @@
 <template>
   <div class="headerbarbox">
     <!-- <component
-      :is="datas?.configParamJson?.Attr?.sticky ? 'van-sticky' : 'div'"
-      :offset-top="datas?.configParamJson?.Attr?.offsetTop || 0"
+      :is="data?.configParamJson?.Attr?.sticky ? 'van-sticky' : 'div'"
+      :offset-top="data?.configParamJson?.Attr?.offsetTop || 0"
     > -->
-    <van-sticky :offset-top="datas?.configParamJson?.Attr?.offsetTop || 0">
+    <van-sticky :offset-top="data?.configParamJson?.Attr?.offsetTop || 0">
       <div class="header-bar" :style="headerBarStyle">
-        <van-image class="responsive-image" :src="PUBLIC_CND_URL + datas?.configParamJson.logoSrc" />
+        <van-image class="responsive-image" :src="PUBLIC_CND_URL + data?.configParamJson.logoSrc" />
         <van-image
-          v-if="datas?.configParamJson.middleSrc"
+          v-if="data?.configParamJson.middleSrc"
           class="middle-image"
-          :src="PUBLIC_CND_URL + datas?.configParamJson.middleSrc"
+          :src="PUBLIC_CND_URL + data?.configParamJson.middleSrc"
         />
-        <div v-if="datas?.configParamJson.backToHome" class="back-top" @click="scrollToTop">
+        <div v-if="data?.configParamJson.backToHome" class="back-top" @click="scrollToTop">
           <div class="back-top-icon">
             <van-icon name="back-top" />
           </div>
@@ -41,12 +41,12 @@ import type { HeaderBarBox } from './type'
 // import homeIcon from '../../assets/images/homeIcon.png' // 添加图片导入
 
 interface IProps {
-  datas: {
+  data: {
     configParamJson: HeaderBarBox
   }
 }
 
-const { datas } = defineProps<IProps>()
+const { data } = defineProps<IProps>()
 
 const PUBLIC_CND_URL = 'https://stt.pwtk.cc/'
 const WEBSITE_DOMAIN = 'tk02.pwtk.cc'
@@ -54,35 +54,42 @@ const WEBSITE_DOMAIN = 'tk02.pwtk.cc'
 const websitDomain = ref(WEBSITE_DOMAIN)
 
 const headerBarStyle = computed(() => {
-  return {
-    background: getBackgroundStyle(datas.configParamJson),
-    backgroundSize: '100% 100%',
-    color: datas.configParamJson.textColor
+  if (data) {
+    return {
+      background: getBackgroundStyle(data.configParamJson),
+      backgroundSize: '100% 100%',
+      color: data.configParamJson.textColor,
+    }
+  } else {
+    return {
+      backgroundSize: '100% 100%',
+    }
   }
 })
 
 function getBackgroundStyle(data: HeaderBarBox): string {
-  if (data.bgImg) {
+  if (data?.bgImg) {
     return `url(${PUBLIC_CND_URL}${data.bgImg})` // 使用背景图片
+  } else {
+    return data.bgColor || 'var(--theme-color)' // 否则使用背景颜色
   }
-  return data.bgColor || 'var(--theme-color)' // 否则使用背景颜色
 }
 
 onMounted(() => {
-  if (datas.configParamJson.theme) {
-    document.documentElement.style.setProperty('--theme-color', datas.configParamJson.theme.primary)
+  if (data.configParamJson.theme) {
+    document.documentElement.style.setProperty('--theme-color', data.configParamJson.theme.primary)
     document.documentElement.style.setProperty(
       '--second-color',
-      datas.configParamJson.theme.secondary || datas.configParamJson.theme.primary
+      data.configParamJson.theme.secondary || data.configParamJson.theme.primary
     )
     document.documentElement.style.setProperty(
       '--gradient-direction',
-      datas.configParamJson.theme?.gradient || 'to right'
+      data.configParamJson.theme?.gradient || 'to right'
     )
   }
 })
 // console.log("WEBSITE_DOMAIN",websitDomain.value)
-// console.log("WEBSITE_DOMAIN",PUBLIC_CND_URL + datas.middleSrc ?? websitDomain.value.icon)
+// console.log("WEBSITE_DOMAIN",PUBLIC_CND_URL + data.middleSrc ?? websitDomain.value.icon)
 const backToHome = () => {
   window.location.href = '/'
 }
@@ -90,7 +97,7 @@ const backToHome = () => {
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
-    behavior: 'smooth' // 平滑滚动
+    behavior: 'smooth', // 平滑滚动
   })
 }
 </script>

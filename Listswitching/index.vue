@@ -1,25 +1,25 @@
 <template>
-  <div class="Listswitching" :ref="listSwitchName" :style="{ backgroundImage: 'url(' + datas.bgImg + ')' }">
+  <div class="Listswitching" :ref="listSwitchName" :style="{ backgroundImage: 'url(' + data.bgImg + ')' }">
     <!-- 没有视频展示默认 -->
     <!-- 类型一 -->
     <div
       class="more"
-      v-show="datas.showMore && datas.commoditylisttype == 0"
-      :style="{ 'margin-right': datas.pageMargin + 'px' }"
+      v-show="data.showMore && data.commoditylisttype == 0"
+      :style="{ 'margin-right': data.pageMargin + 'px' }"
     >
       更多》
     </div>
     <section
-      v-show="!datas.imageList[0] && datas.commoditylisttype === 0"
+      v-show="!data.imageList[0] && data.commoditylisttype === 0"
       :class="[
-        datas.commodityType === 5 ? 'defaultcommodityList5' : '',
-        datas.commodityType === 1 ? 'defaultcommodityListFlex' : ''
+        data.commodityType === 5 ? 'defaultcommodityList5' : '',
+        data.commodityType === 1 ? 'defaultcommodityListFlex' : '',
       ]"
       class="defaultcommodity"
       :style="{
-        'padding-top': datas.commodityMargin + 'px',
-        'padding-left': datas.pageMargin + 'px',
-        'padding-right': datas.pageMargin + 'px'
+        'padding-top': data.commodityMargin + 'px',
+        'padding-left': data.pageMargin + 'px',
+        'padding-right': data.pageMargin + 'px',
       }"
     >
       <div
@@ -27,26 +27,26 @@
         :key="index"
         class="defaultcommodityList"
         :class="[
-          datas.commodityType === 0 ? 'defaultcommodityList0' : '',
-          datas.commodityType === 1 ? 'defaultcommodityList1' : '',
-          datas.commodityType === 2 ? 'defaultcommodityList2' : '',
-          datas.commodityType === 3 ? 'defaultcommodityList3' : '',
-          datas.commodityType === 4 ? 'defaultcommodityList4' : '',
-          datas.commodityType === 5 ? 'defaultcommodityList5' : ''
+          data.commodityType === 0 ? 'defaultcommodityList0' : '',
+          data.commodityType === 1 ? 'defaultcommodityList1' : '',
+          data.commodityType === 2 ? 'defaultcommodityList2' : '',
+          data.commodityType === 3 ? 'defaultcommodityList3' : '',
+          data.commodityType === 4 ? 'defaultcommodityList4' : '',
+          data.commodityType === 5 ? 'defaultcommodityList5' : '',
         ]"
         :style="{
-          border: datas.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
-          'box-shadow': datas.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
-          margin: datas.commodityMargin + 'px',
+          border: data.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
+          'box-shadow': data.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
+          margin: data.commodityMargin + 'px',
           width:
-            datas.commodityType === 1
-              ? 50 - datas.commodityMargin / 6 + '%'
-              : datas.commodityType === 2
-              ? 33 - datas.commodityMargin / 5 + '%'
-              : datas.commodityType === 4
-              ? 50 - datas.commodityMargin / 5 + '%'
-              : '',
-          'border-radius': datas.borderRadius + 'px'
+            data.commodityType === 1
+              ? 50 - data.commodityMargin / 6 + '%'
+              : data.commodityType === 2
+                ? 33 - data.commodityMargin / 5 + '%'
+                : data.commodityType === 4
+                  ? 50 - data.commodityMargin / 5 + '%'
+                  : '',
+          'border-radius': data.borderRadius + 'px',
         }"
       >
         <!-- 视频图片 -->
@@ -55,42 +55,42 @@
             draggable="false"
             src="@/assets/images/imgs.png"
             alt=""
-            :style="{ 'border-radius': datas.borderRadius + 'px' }"
+            :style="{ 'border-radius': data.borderRadius + 'px' }"
           />
           <!-- 标签 -->
           <van-tag
             mark
-            :color="datas.commodityTagColor || tagColor"
+            :color="data.commodityTagColor || tagColor"
             :style="styleString"
             class="marks"
-            v-show="datas.commoditycorner && datas.commoditycornertype === 0"
+            v-show="data.commoditycorner && data.commoditycornertype === 0"
           >
             新品
           </van-tag>
           <van-tag
-            :color="datas.commodityTagColor || tagColor"
+            :color="data.commodityTagColor || tagColor"
             :style="styleString"
             class="marks"
-            v-show="datas.commoditycorner && datas.commoditycornertype === 1"
+            v-show="data.commoditycorner && data.commoditycornertype === 1"
           >
             热
             <br />
             卖
           </van-tag>
           <van-tag
-            :color="datas.commodityTagColor || tagColor"
+            :color="data.commodityTagColor || tagColor"
             :style="styleString"
             class="marks"
-            v-show="datas.commoditycorner && datas.commoditycornertype === 2"
+            v-show="data.commoditycorner && data.commoditycornertype === 2"
           >
             NEW
           </van-tag>
           <van-tag
             plain
-            :color="datas.commodityTagColor || tagColor"
+            :color="data.commodityTagColor || tagColor"
             :style="styleString"
             class="marks"
-            v-show="datas.commoditycorner && datas.commoditycornertype === 3"
+            v-show="data.commoditycorner && data.commoditycornertype === 3"
           >
             HOT
           </van-tag>
@@ -100,16 +100,16 @@
         <div
           class="text"
           :style="{
-            background: datas.moditystyle !== 3 ? '#fff' : 'none',
-            'border-top-right-radius': datas.borderRadius + 'px',
-            'border-bottom-right-radius': datas.borderRadius + 'px'
+            background: data.moditystyle !== 3 ? '#fff' : 'none',
+            'border-top-right-radius': data.borderRadius + 'px',
+            'border-bottom-right-radius': data.borderRadius + 'px',
           }"
         >
           <!-- 视频名称 -->
           <h5
             :style="{
-              'font-weight': datas.textWeight,
-              'text-align': datas.positions === 'center' ? 'center' : ''
+              'font-weight': data.textWeight,
+              'text-align': data.positions === 'center' ? 'center' : '',
             }"
           >
             这里显示商品名称，最多显示1行
@@ -117,25 +117,25 @@
           <!-- 视频描述 -->
           <p
             :style="{
-              'text-align': datas.positions === 'center' ? 'center' : ''
+              'text-align': data.positions === 'center' ? 'center' : '',
             }"
           >
             这里显示商品描述，最多显示1行
           </p>
           <div class="mony">
-            <span v-show="datas.priceofcommodity">
+            <span v-show="data.priceofcommodity">
               <i>￥</i>
               99
             </span>
-            <div v-show="datas.purchasebutton">
-              <van-icon name="cart-circle-o" size="23" v-show="datas.purchasebuttonType === 0" />
-              <van-icon name="add-o" size="23" v-show="datas.purchasebuttonType === 1" />
-              <van-icon name="add" size="23" v-show="datas.purchasebuttonType === 2" />
-              <van-icon name="cart-o" size="23" v-show="datas.purchasebuttonType === 3" />
-              <em v-show="datas.purchasebuttonType === 4">{{ datas.purchase }}</em>
-              <em v-show="datas.purchasebuttonType === 5">{{ datas.purchase }}</em>
-              <em v-show="datas.purchasebuttonType === 6">{{ datas.purchase }}</em>
-              <em v-show="datas.purchasebuttonType === 7">{{ datas.purchase }}</em>
+            <div v-show="data.purchasebutton">
+              <van-icon name="cart-circle-o" size="23" v-show="data.purchasebuttonType === 0" />
+              <van-icon name="add-o" size="23" v-show="data.purchasebuttonType === 1" />
+              <van-icon name="add" size="23" v-show="data.purchasebuttonType === 2" />
+              <van-icon name="cart-o" size="23" v-show="data.purchasebuttonType === 3" />
+              <em v-show="data.purchasebuttonType === 4">{{ data.purchase }}</em>
+              <em v-show="data.purchasebuttonType === 5">{{ data.purchase }}</em>
+              <em v-show="data.purchasebuttonType === 6">{{ data.purchase }}</em>
+              <em v-show="data.purchasebuttonType === 7">{{ data.purchase }}</em>
             </div>
           </div>
         </div>
@@ -143,82 +143,82 @@
     </section>
 
     <section
-      v-show="datas.imageList[0] && datas.commoditylisttype === 0"
+      v-show="data.imageList[0] && data.commoditylisttype === 0"
       :class="[
-        datas.commodityType === 5 ? 'defaultcommodityList5' : '',
-        datas.commodityType === 1 ? 'defaultcommodityListFlex' : ''
+        data.commodityType === 5 ? 'defaultcommodityList5' : '',
+        data.commodityType === 1 ? 'defaultcommodityListFlex' : '',
       ]"
       class="defaultcommodity"
       :style="{
-        'padding-top': datas.commodityMargin + 'px',
-        'padding-left': datas.pageMargin + 'px',
-        'padding-right': datas.pageMargin + 'px'
+        'padding-top': data.commodityMargin + 'px',
+        'padding-left': data.pageMargin + 'px',
+        'padding-right': data.pageMargin + 'px',
       }"
     >
       <div
-        v-for="(item, index) in datas.imageList"
+        v-for="(item, index) in data.imageList"
         :key="index"
         class="defaultcommodityList"
         :class="[
-          datas.commodityType === 0 ? 'defaultcommodityList0' : '',
-          datas.commodityType === 1 ? 'defaultcommodityList1' : '',
-          datas.commodityType === 2 ? 'defaultcommodityList2' : '',
-          datas.commodityType === 3 ? 'defaultcommodityList3' : '',
-          datas.commodityType === 4 ? 'defaultcommodityList4' : '',
-          datas.commodityType === 5 ? 'defaultcommodityList5' : ''
+          data.commodityType === 0 ? 'defaultcommodityList0' : '',
+          data.commodityType === 1 ? 'defaultcommodityList1' : '',
+          data.commodityType === 2 ? 'defaultcommodityList2' : '',
+          data.commodityType === 3 ? 'defaultcommodityList3' : '',
+          data.commodityType === 4 ? 'defaultcommodityList4' : '',
+          data.commodityType === 5 ? 'defaultcommodityList5' : '',
         ]"
         :style="{
-          border: datas.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
-          'box-shadow': datas.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
-          margin: datas.commodityMargin + 'px',
+          border: data.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
+          'box-shadow': data.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
+          margin: data.commodityMargin + 'px',
           width:
-            datas.commodityType === 1
-              ? 50 - datas.commodityMargin / 6 + '%'
-              : datas.commodityType === 2
-              ? 33 - datas.commodityMargin / 5 + '%'
-              : datas.commodityType === 4
-              ? 50 - datas.commodityMargin / 5 + '%'
-              : '',
-          'border-radius': datas.borderRadius + 'px'
+            data.commodityType === 1
+              ? 50 - data.commodityMargin / 6 + '%'
+              : data.commodityType === 2
+                ? 33 - data.commodityMargin / 5 + '%'
+                : data.commodityType === 4
+                  ? 50 - data.commodityMargin / 5 + '%'
+                  : '',
+          'border-radius': data.borderRadius + 'px',
         }"
       >
         <!-- 视频图片 -->
         <div class="bg-pic">
-          <img draggable="false" :src="item.coverUrl" alt="" :style="{ 'border-radius': datas.borderRadius + 'px' }" />
+          <img draggable="false" :src="item.coverUrl" alt="" :style="{ 'border-radius': data.borderRadius + 'px' }" />
           <!-- 标签 -->
           <van-tag
             mark
-            :color="datas.commodityTagColor || tagColor"
+            :color="data.commodityTagColor || tagColor"
             :style="styleString"
             class="marks"
-            v-show="datas.commoditycorner && datas.commoditycornertype === 0"
+            v-show="data.commoditycorner && data.commoditycornertype === 0"
           >
             新品
           </van-tag>
           <van-tag
-            :color="datas.commodityTagColor || tagColor"
+            :color="data.commodityTagColor || tagColor"
             :style="styleString"
             class="marks"
-            v-show="datas.commoditycorner && datas.commoditycornertype === 1"
+            v-show="data.commoditycorner && data.commoditycornertype === 1"
           >
             热
             <br />
             卖
           </van-tag>
           <van-tag
-            :color="datas.commodityTagColor || tagColor"
+            :color="data.commodityTagColor || tagColor"
             :style="styleString"
             class="marks"
-            v-show="datas.commoditycorner && datas.commoditycornertype === 2"
+            v-show="data.commoditycorner && data.commoditycornertype === 2"
           >
             NEW
           </van-tag>
           <van-tag
             plain
-            :color="datas.commodityTagColor || tagColor"
+            :color="data.commodityTagColor || tagColor"
             :style="styleString"
             class="marks"
-            v-show="datas.commoditycorner && datas.commoditycornertype === 3"
+            v-show="data.commoditycorner && data.commoditycornertype === 3"
           >
             HOT
           </van-tag>
@@ -228,16 +228,16 @@
         <div
           class="text"
           :style="{
-            background: datas.moditystyle !== 3 ? '#fff' : 'none',
-            'border-top-right-radius': datas.borderRadius + 'px',
-            'border-bottom-right-radius': datas.borderRadius + 'px'
+            background: data.moditystyle !== 3 ? '#fff' : 'none',
+            'border-top-right-radius': data.borderRadius + 'px',
+            'border-bottom-right-radius': data.borderRadius + 'px',
           }"
         >
           <!-- 视频名称 -->
           <h5
             :style="{
-              'font-weight': datas.textWeight,
-              'text-align': datas.positions === 'center' ? 'center' : ''
+              'font-weight': data.textWeight,
+              'text-align': data.positions === 'center' ? 'center' : '',
             }"
           >
             {{ item.name }}
@@ -245,25 +245,25 @@
           <!-- 视频描述 -->
           <p
             :style="{
-              'text-align': datas.positions === 'center' ? 'center' : ''
+              'text-align': data.positions === 'center' ? 'center' : '',
             }"
           >
             {{ item.introduce }}
           </p>
-          <div class="mony" v-if="datas.priceofcommodity || datas.purchasebutton">
-            <span v-show="datas.priceofcommodity">
+          <div class="mony" v-if="data.priceofcommodity || data.purchasebutton">
+            <span v-show="data.priceofcommodity">
               <i>￥</i>
               {{ item.price }}
             </span>
-            <div v-show="datas.purchasebutton">
-              <van-icon name="cart-circle-o" size="23" v-show="datas.purchasebuttonType === 0" />
-              <van-icon name="add-o" size="23" v-show="datas.purchasebuttonType === 1" />
-              <van-icon name="add" size="23" v-show="datas.purchasebuttonType === 2" />
-              <van-icon name="cart-o" size="23" v-show="datas.purchasebuttonType === 3" />
-              <em v-show="datas.purchasebuttonType === 4">{{ datas.purchase }}</em>
-              <em v-show="datas.purchasebuttonType === 5">{{ datas.purchase }}</em>
-              <em v-show="datas.purchasebuttonType === 6">{{ datas.purchase }}</em>
-              <em v-show="datas.purchasebuttonType === 7">{{ datas.purchase }}</em>
+            <div v-show="data.purchasebutton">
+              <van-icon name="cart-circle-o" size="23" v-show="data.purchasebuttonType === 0" />
+              <van-icon name="add-o" size="23" v-show="data.purchasebuttonType === 1" />
+              <van-icon name="add" size="23" v-show="data.purchasebuttonType === 2" />
+              <van-icon name="cart-o" size="23" v-show="data.purchasebuttonType === 3" />
+              <em v-show="data.purchasebuttonType === 4">{{ data.purchase }}</em>
+              <em v-show="data.purchasebuttonType === 5">{{ data.purchase }}</em>
+              <em v-show="data.purchasebuttonType === 6">{{ data.purchase }}</em>
+              <em v-show="data.purchasebuttonType === 7">{{ data.purchase }}</em>
             </div>
           </div>
         </div>
@@ -274,39 +274,33 @@
     <div class="tab-type2">
       <div
         class="more"
-        v-show="datas.showMore && datas.commoditylisttype == 1"
+        v-show="data.showMore && data.commoditylisttype == 1"
         :style="{
-          'margin-right': datas.pageMargin + 'px',
-          'margin-top': '0px'
+          'margin-right': data.pageMargin + 'px',
+          'margin-top': '0px',
         }"
       >
         更多》
       </div>
-      <van-tabs
-        v-model:active="active1"
-        v-if="datas.commoditylisttype === 1"
-        animated
-        swipeable
-        :color="datas.tabColor"
-      >
+      <van-tabs v-model:active="active1" v-if="data.commoditylisttype === 1" animated swipeable :color="data.tabColor">
         <van-tab
           :name="index"
           :title="item.text"
-          v-for="(item, index) in datas.commoditylisttypetab"
+          v-for="(item, index) in data.commoditylisttypetab"
           :key="index"
           :style="{
             'font-size': item.wordSize + 'px',
-            'font-weight': item.wordWeight
+            'font-weight': item.wordWeight,
           }"
         >
           <section
-            v-show="!item.imageList[0] && datas.commoditylisttype === 1"
-            :class="[datas.commodityType === 5 ? 'defaultcommodityList5' : '']"
+            v-show="!item.imageList[0] && data.commoditylisttype === 1"
+            :class="[data.commodityType === 5 ? 'defaultcommodityList5' : '']"
             class="defaultcommodity"
             :style="{
-              'padding-top': datas.commodityMargin + 'px',
-              'padding-left': datas.pageMargin + 'px',
-              'padding-right': datas.pageMargin + 'px'
+              'padding-top': data.commodityMargin + 'px',
+              'padding-left': data.pageMargin + 'px',
+              'padding-right': data.pageMargin + 'px',
             }"
           >
             <div
@@ -314,26 +308,26 @@
               :key="index"
               class="defaultcommodityList"
               :class="[
-                datas.commodityType === 0 ? 'defaultcommodityList0' : '',
-                datas.commodityType === 1 ? 'defaultcommodityList1' : '',
-                datas.commodityType === 2 ? 'defaultcommodityList2' : '',
-                datas.commodityType === 3 ? 'defaultcommodityList3' : '',
-                datas.commodityType === 4 ? 'defaultcommodityList4' : '',
-                datas.commodityType === 5 ? 'defaultcommodityList5' : ''
+                data.commodityType === 0 ? 'defaultcommodityList0' : '',
+                data.commodityType === 1 ? 'defaultcommodityList1' : '',
+                data.commodityType === 2 ? 'defaultcommodityList2' : '',
+                data.commodityType === 3 ? 'defaultcommodityList3' : '',
+                data.commodityType === 4 ? 'defaultcommodityList4' : '',
+                data.commodityType === 5 ? 'defaultcommodityList5' : '',
               ]"
               :style="{
-                border: datas.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
-                'box-shadow': datas.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
-                margin: datas.commodityMargin + 'px',
+                border: data.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
+                'box-shadow': data.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
+                margin: data.commodityMargin + 'px',
                 width:
-                  datas.commodityType === 1
-                    ? 50 - datas.commodityMargin / 6 + '%'
-                    : datas.commodityType === 2
-                    ? 33 - datas.commodityMargin / 5 + '%'
-                    : datas.commodityType === 4
-                    ? 50 - datas.commodityMargin / 5 + '%'
-                    : '',
-                'border-radius': datas.borderRadius + 'px'
+                  data.commodityType === 1
+                    ? 50 - data.commodityMargin / 6 + '%'
+                    : data.commodityType === 2
+                      ? 33 - data.commodityMargin / 5 + '%'
+                      : data.commodityType === 4
+                        ? 50 - data.commodityMargin / 5 + '%'
+                        : '',
+                'border-radius': data.borderRadius + 'px',
               }"
             >
               <!-- 视频图片 -->
@@ -342,42 +336,42 @@
                   draggable="false"
                   src="@/assets/images/imgs.png"
                   alt=""
-                  :style="{ 'border-radius': datas.borderRadius + 'px' }"
+                  :style="{ 'border-radius': data.borderRadius + 'px' }"
                 />
                 <!-- 标签 -->
                 <van-tag
                   mark
-                  :color="datas.commodityTagColor || tagColor"
+                  :color="data.commodityTagColor || tagColor"
                   :style="styleString"
                   class="marks"
-                  v-show="datas.commoditycorner && datas.commoditycornertype === 0"
+                  v-show="data.commoditycorner && data.commoditycornertype === 0"
                 >
                   新品
                 </van-tag>
                 <van-tag
-                  :color="datas.commodityTagColor || tagColor"
+                  :color="data.commodityTagColor || tagColor"
                   :style="styleString"
                   class="marks"
-                  v-show="datas.commoditycorner && datas.commoditycornertype === 1"
+                  v-show="data.commoditycorner && data.commoditycornertype === 1"
                 >
                   热
                   <br />
                   卖
                 </van-tag>
                 <van-tag
-                  :color="datas.commodityTagColor || tagColor"
+                  :color="data.commodityTagColor || tagColor"
                   :style="styleString"
                   class="marks"
-                  v-show="datas.commoditycorner && datas.commoditycornertype === 2"
+                  v-show="data.commoditycorner && data.commoditycornertype === 2"
                 >
                   NEW
                 </van-tag>
                 <van-tag
                   plain
-                  :color="datas.commodityTagColor || tagColor"
+                  :color="data.commodityTagColor || tagColor"
                   :style="styleString"
                   class="marks"
-                  v-show="datas.commoditycorner && datas.commoditycornertype === 3"
+                  v-show="data.commoditycorner && data.commoditycornertype === 3"
                 >
                   HOT
                 </van-tag>
@@ -387,16 +381,16 @@
               <div
                 class="text"
                 :style="{
-                  background: datas.moditystyle !== 3 ? '#fff' : 'none',
-                  'border-top-right-radius': datas.borderRadius + 'px',
-                  'border-bottom-right-radius': datas.borderRadius + 'px'
+                  background: data.moditystyle !== 3 ? '#fff' : 'none',
+                  'border-top-right-radius': data.borderRadius + 'px',
+                  'border-bottom-right-radius': data.borderRadius + 'px',
                 }"
               >
                 <!-- 视频名称 -->
                 <h5
                   :style="{
-                    'font-weight': datas.textWeight,
-                    'text-align': datas.positions === 'center' ? 'center' : ''
+                    'font-weight': data.textWeight,
+                    'text-align': data.positions === 'center' ? 'center' : '',
                   }"
                 >
                   这里显示商品名称，最多显示1行
@@ -404,38 +398,38 @@
                 <!-- 视频描述 -->
                 <p
                   :style="{
-                    'text-align': datas.positions === 'center' ? 'center' : ''
+                    'text-align': data.positions === 'center' ? 'center' : '',
                   }"
                 >
                   这里显示商品描述，最多显示1行
                 </p>
                 <div class="mony">
-                  <span v-show="datas.priceofcommodity">
+                  <span v-show="data.priceofcommodity">
                     <i>￥</i>
                     99
                   </span>
-                  <div v-show="datas.purchasebutton">
-                    <van-icon name="cart-circle-o" size="23" v-show="datas.purchasebuttonType === 0" />
-                    <van-icon name="add-o" size="23" v-show="datas.purchasebuttonType === 1" />
-                    <van-icon name="add" size="23" v-show="datas.purchasebuttonType === 2" />
-                    <van-icon name="cart-o" size="23" v-show="datas.purchasebuttonType === 3" />
-                    <em v-show="datas.purchasebuttonType === 4">{{ datas.purchase }}</em>
-                    <em v-show="datas.purchasebuttonType === 5">{{ datas.purchase }}</em>
-                    <em v-show="datas.purchasebuttonType === 6">{{ datas.purchase }}</em>
-                    <em v-show="datas.purchasebuttonType === 7">{{ datas.purchase }}</em>
+                  <div v-show="data.purchasebutton">
+                    <van-icon name="cart-circle-o" size="23" v-show="data.purchasebuttonType === 0" />
+                    <van-icon name="add-o" size="23" v-show="data.purchasebuttonType === 1" />
+                    <van-icon name="add" size="23" v-show="data.purchasebuttonType === 2" />
+                    <van-icon name="cart-o" size="23" v-show="data.purchasebuttonType === 3" />
+                    <em v-show="data.purchasebuttonType === 4">{{ data.purchase }}</em>
+                    <em v-show="data.purchasebuttonType === 5">{{ data.purchase }}</em>
+                    <em v-show="data.purchasebuttonType === 6">{{ data.purchase }}</em>
+                    <em v-show="data.purchasebuttonType === 7">{{ data.purchase }}</em>
                   </div>
                 </div>
               </div>
             </div>
           </section>
           <section
-            v-show="item.imageList[0] && datas.commoditylisttype === 1"
-            :class="[datas.commodityType === 5 ? 'defaultcommodityList5' : '']"
+            v-show="item.imageList[0] && data.commoditylisttype === 1"
+            :class="[data.commodityType === 5 ? 'defaultcommodityList5' : '']"
             class="defaultcommodity"
             :style="{
-              'padding-top': datas.commodityMargin + 'px',
-              'padding-left': datas.pageMargin + 'px',
-              'padding-right': datas.pageMargin + 'px'
+              'padding-top': data.commodityMargin + 'px',
+              'padding-left': data.pageMargin + 'px',
+              'padding-right': data.pageMargin + 'px',
             }"
           >
             <div
@@ -443,26 +437,26 @@
               :key="index"
               class="defaultcommodityList"
               :class="[
-                datas.commodityType === 0 ? 'defaultcommodityList0' : '',
-                datas.commodityType === 1 ? 'defaultcommodityList1' : '',
-                datas.commodityType === 2 ? 'defaultcommodityList2' : '',
-                datas.commodityType === 3 ? 'defaultcommodityList3' : '',
-                datas.commodityType === 4 ? 'defaultcommodityList4' : '',
-                datas.commodityType === 5 ? 'defaultcommodityList5' : ''
+                data.commodityType === 0 ? 'defaultcommodityList0' : '',
+                data.commodityType === 1 ? 'defaultcommodityList1' : '',
+                data.commodityType === 2 ? 'defaultcommodityList2' : '',
+                data.commodityType === 3 ? 'defaultcommodityList3' : '',
+                data.commodityType === 4 ? 'defaultcommodityList4' : '',
+                data.commodityType === 5 ? 'defaultcommodityList5' : '',
               ]"
               :style="{
-                border: datas.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
-                'box-shadow': datas.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
-                margin: datas.commodityMargin + 'px',
+                border: data.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
+                'box-shadow': data.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
+                margin: data.commodityMargin + 'px',
                 width:
-                  datas.commodityType === 1
-                    ? 50 - datas.commodityMargin / 6 + '%'
-                    : datas.commodityType === 2
-                    ? 33 - datas.commodityMargin / 5 + '%'
-                    : datas.commodityType === 4
-                    ? 50 - datas.commodityMargin / 5 + '%'
-                    : '',
-                'border-radius': datas.borderRadius + 'px'
+                  data.commodityType === 1
+                    ? 50 - data.commodityMargin / 6 + '%'
+                    : data.commodityType === 2
+                      ? 33 - data.commodityMargin / 5 + '%'
+                      : data.commodityType === 4
+                        ? 50 - data.commodityMargin / 5 + '%'
+                        : '',
+                'border-radius': data.borderRadius + 'px',
               }"
             >
               <!-- 视频图片 -->
@@ -471,42 +465,42 @@
                   draggable="false"
                   :src="item.coverUrl"
                   alt=""
-                  :style="{ 'border-radius': datas.borderRadius + 'px' }"
+                  :style="{ 'border-radius': data.borderRadius + 'px' }"
                 />
                 <!-- 标签 -->
                 <van-tag
                   mark
-                  :color="datas.commodityTagColor || tagColor"
+                  :color="data.commodityTagColor || tagColor"
                   :style="styleString"
                   class="marks"
-                  v-show="datas.commoditycorner && datas.commoditycornertype === 0"
+                  v-show="data.commoditycorner && data.commoditycornertype === 0"
                 >
                   新品
                 </van-tag>
                 <van-tag
-                  :color="datas.commodityTagColor || tagColor"
+                  :color="data.commodityTagColor || tagColor"
                   :style="styleString"
                   class="marks"
-                  v-show="datas.commoditycorner && datas.commoditycornertype === 1"
+                  v-show="data.commoditycorner && data.commoditycornertype === 1"
                 >
                   热
                   <br />
                   卖
                 </van-tag>
                 <van-tag
-                  :color="datas.commodityTagColor || tagColor"
+                  :color="data.commodityTagColor || tagColor"
                   :style="styleString"
                   class="marks"
-                  v-show="datas.commoditycorner && datas.commoditycornertype === 2"
+                  v-show="data.commoditycorner && data.commoditycornertype === 2"
                 >
                   NEW
                 </van-tag>
                 <van-tag
                   plain
-                  :color="datas.commodityTagColor || tagColor"
+                  :color="data.commodityTagColor || tagColor"
                   :style="styleString"
                   class="marks"
-                  v-show="datas.commoditycorner && datas.commoditycornertype === 3"
+                  v-show="data.commoditycorner && data.commoditycornertype === 3"
                 >
                   HOT
                 </van-tag>
@@ -516,16 +510,16 @@
               <div
                 class="text"
                 :style="{
-                  background: datas.moditystyle !== 3 ? '#fff' : 'none',
-                  'border-top-right-radius': datas.borderRadius + 'px',
-                  'border-bottom-right-radius': datas.borderRadius + 'px'
+                  background: data.moditystyle !== 3 ? '#fff' : 'none',
+                  'border-top-right-radius': data.borderRadius + 'px',
+                  'border-bottom-right-radius': data.borderRadius + 'px',
                 }"
               >
                 <!-- 视频名称 -->
                 <h5
                   :style="{
-                    'font-weight': datas.textWeight,
-                    'text-align': datas.positions === 'center' ? 'center' : ''
+                    'font-weight': data.textWeight,
+                    'text-align': data.positions === 'center' ? 'center' : '',
                   }"
                 >
                   {{ item.name }}
@@ -533,25 +527,25 @@
                 <!-- 视频描述 -->
                 <p
                   :style="{
-                    'text-align': datas.positions === 'center' ? 'center' : ''
+                    'text-align': data.positions === 'center' ? 'center' : '',
                   }"
                 >
                   {{ item.introduce }}
                 </p>
-                <div class="mony" v-if="datas.priceofcommodity || datas.purchasebutton">
-                  <span v-show="datas.priceofcommodity">
+                <div class="mony" v-if="data.priceofcommodity || data.purchasebutton">
+                  <span v-show="data.priceofcommodity">
                     <i>￥</i>
                     {{ item.price }}
                   </span>
-                  <div v-show="datas.purchasebutton">
-                    <van-icon name="cart-circle-o" size="23" v-show="datas.purchasebuttonType === 0" />
-                    <van-icon name="add-o" size="23" v-show="datas.purchasebuttonType === 1" />
-                    <van-icon name="add" size="23" v-show="datas.purchasebuttonType === 2" />
-                    <van-icon name="cart-o" size="23" v-show="datas.purchasebuttonType === 3" />
-                    <em v-show="datas.purchasebuttonType === 4">{{ datas.purchase }}</em>
-                    <em v-show="datas.purchasebuttonType === 5">{{ datas.purchase }}</em>
-                    <em v-show="datas.purchasebuttonType === 6">{{ datas.purchase }}</em>
-                    <em v-show="datas.purchasebuttonType === 7">{{ datas.purchase }}</em>
+                  <div v-show="data.purchasebutton">
+                    <van-icon name="cart-circle-o" size="23" v-show="data.purchasebuttonType === 0" />
+                    <van-icon name="add-o" size="23" v-show="data.purchasebuttonType === 1" />
+                    <van-icon name="add" size="23" v-show="data.purchasebuttonType === 2" />
+                    <van-icon name="cart-o" size="23" v-show="data.purchasebuttonType === 3" />
+                    <em v-show="data.purchasebuttonType === 4">{{ data.purchase }}</em>
+                    <em v-show="data.purchasebuttonType === 5">{{ data.purchase }}</em>
+                    <em v-show="data.purchasebuttonType === 6">{{ data.purchase }}</em>
+                    <em v-show="data.purchasebuttonType === 7">{{ data.purchase }}</em>
                   </div>
                 </div>
               </div>
@@ -566,10 +560,10 @@
     <div>
       <div
         class="more"
-        v-show="datas.showMore && datas.commoditylisttype == 2"
+        v-show="data.showMore && data.commoditylisttype == 2"
         :style="{
-          'margin-right': datas.pageMargin + 'px',
-          'margin-top': '0px'
+          'margin-right': data.pageMargin + 'px',
+          'margin-top': '0px',
         }"
       >
         更多》
@@ -577,21 +571,21 @@
       <van-tree-select
         v-model:main-active-index="active"
         height="auto"
-        :items="datas.commoditylisttypetab"
-        v-show="datas.commoditylisttype === 2"
+        :items="data.commoditylisttypetab"
+        v-show="data.commoditylisttype === 2"
         class="type3"
         @click-nav="treeSelect"
       >
         <template #content>
-          <div v-for="(item, index) in datas.commoditylisttypetab" :key="index">
+          <div v-for="(item, index) in data.commoditylisttypetab" :key="index">
             <section
               v-if="active === index"
               v-show="!item.imageList[0]"
               class="defaultcommodity"
               :style="{
-                'padding-top': datas.commodityMargin + 'px',
-                'padding-left': datas.pageMargin + 'px',
-                'padding-right': datas.pageMargin + 'px'
+                'padding-top': data.commodityMargin + 'px',
+                'padding-left': data.pageMargin + 'px',
+                'padding-right': data.pageMargin + 'px',
               }"
             >
               <div
@@ -599,10 +593,10 @@
                 :key="index"
                 class="defaultcommodityList defaultcommodityList3"
                 :style="{
-                  border: datas.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
-                  'box-shadow': datas.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
-                  margin: datas.commodityMargin + 'px',
-                  'border-radius': datas.borderRadius + 'px'
+                  border: data.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
+                  'box-shadow': data.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
+                  margin: data.commodityMargin + 'px',
+                  'border-radius': data.borderRadius + 'px',
                 }"
               >
                 <!-- 视频图片 -->
@@ -611,42 +605,42 @@
                     draggable="false"
                     src="@/assets/images/imgs.png"
                     alt=""
-                    :style="{ 'border-radius': datas.borderRadius + 'px' }"
+                    :style="{ 'border-radius': data.borderRadius + 'px' }"
                   />
                   <!-- 标签 -->
                   <van-tag
                     mark
-                    :color="datas.commodityTagColor || tagColor"
+                    :color="data.commodityTagColor || tagColor"
                     :style="styleString"
                     class="marks"
-                    v-show="datas.commoditycorner && datas.commoditycornertype === 0"
+                    v-show="data.commoditycorner && data.commoditycornertype === 0"
                   >
                     新品
                   </van-tag>
                   <van-tag
-                    :color="datas.commodityTagColor || tagColor"
+                    :color="data.commodityTagColor || tagColor"
                     :style="styleString"
                     class="marks"
-                    v-show="datas.commoditycorner && datas.commoditycornertype === 1"
+                    v-show="data.commoditycorner && data.commoditycornertype === 1"
                   >
                     热
                     <br />
                     卖
                   </van-tag>
                   <van-tag
-                    :color="datas.commodityTagColor || tagColor"
+                    :color="data.commodityTagColor || tagColor"
                     :style="styleString"
                     class="marks"
-                    v-show="datas.commoditycorner && datas.commoditycornertype === 2"
+                    v-show="data.commoditycorner && data.commoditycornertype === 2"
                   >
                     NEW
                   </van-tag>
                   <van-tag
                     plain
-                    :color="datas.commodityTagColor || tagColor"
+                    :color="data.commodityTagColor || tagColor"
                     :style="styleString"
                     class="marks"
-                    v-show="datas.commoditycorner && datas.commoditycornertype === 3"
+                    v-show="data.commoditycorner && data.commoditycornertype === 3"
                   >
                     HOT
                   </van-tag>
@@ -656,16 +650,16 @@
                 <div
                   class="text"
                   :style="{
-                    background: datas.moditystyle !== 3 ? '#fff' : 'none',
-                    'border-top-right-radius': datas.borderRadius + 'px',
-                    'border-bottom-right-radius': datas.borderRadius + 'px'
+                    background: data.moditystyle !== 3 ? '#fff' : 'none',
+                    'border-top-right-radius': data.borderRadius + 'px',
+                    'border-bottom-right-radius': data.borderRadius + 'px',
                   }"
                 >
                   <!-- 视频名称 -->
                   <h5
                     :style="{
-                      'font-weight': datas.textWeight,
-                      'text-align': datas.positions === 'center' ? 'center' : ''
+                      'font-weight': data.textWeight,
+                      'text-align': data.positions === 'center' ? 'center' : '',
                     }"
                   >
                     这里显示商品名称，最多显示1行
@@ -673,25 +667,25 @@
                   <!-- 视频描述 -->
                   <p
                     :style="{
-                      'text-align': datas.positions === 'center' ? 'center' : ''
+                      'text-align': data.positions === 'center' ? 'center' : '',
                     }"
                   >
                     这里显示商品描述，最多显示1行
                   </p>
                   <div class="mony">
-                    <span v-show="datas.priceofcommodity">
+                    <span v-show="data.priceofcommodity">
                       <i>￥</i>
                       99
                     </span>
-                    <div v-show="datas.purchasebutton">
-                      <van-icon name="cart-circle-o" size="23" v-show="datas.purchasebuttonType === 0" />
-                      <van-icon name="add-o" size="23" v-show="datas.purchasebuttonType === 1" />
-                      <van-icon name="add" size="23" v-show="datas.purchasebuttonType === 2" />
-                      <van-icon name="cart-o" size="23" v-show="datas.purchasebuttonType === 3" />
-                      <em v-show="datas.purchasebuttonType === 4">{{ datas.purchase }}</em>
-                      <em v-show="datas.purchasebuttonType === 5">{{ datas.purchase }}</em>
-                      <em v-show="datas.purchasebuttonType === 6">{{ datas.purchase }}</em>
-                      <em v-show="datas.purchasebuttonType === 7">{{ datas.purchase }}</em>
+                    <div v-show="data.purchasebutton">
+                      <van-icon name="cart-circle-o" size="23" v-show="data.purchasebuttonType === 0" />
+                      <van-icon name="add-o" size="23" v-show="data.purchasebuttonType === 1" />
+                      <van-icon name="add" size="23" v-show="data.purchasebuttonType === 2" />
+                      <van-icon name="cart-o" size="23" v-show="data.purchasebuttonType === 3" />
+                      <em v-show="data.purchasebuttonType === 4">{{ data.purchase }}</em>
+                      <em v-show="data.purchasebuttonType === 5">{{ data.purchase }}</em>
+                      <em v-show="data.purchasebuttonType === 6">{{ data.purchase }}</em>
+                      <em v-show="data.purchasebuttonType === 7">{{ data.purchase }}</em>
                     </div>
                   </div>
                 </div>
@@ -702,9 +696,9 @@
               v-show="item.imageList[0]"
               class="defaultcommodity"
               :style="{
-                'padding-top': datas.commodityMargin + 'px',
-                'padding-left': datas.pageMargin + 'px',
-                'padding-right': datas.pageMargin + 'px'
+                'padding-top': data.commodityMargin + 'px',
+                'padding-left': data.pageMargin + 'px',
+                'padding-right': data.pageMargin + 'px',
               }"
             >
               <div
@@ -712,10 +706,10 @@
                 :key="index"
                 class="defaultcommodityList defaultcommodityList3"
                 :style="{
-                  border: datas.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
-                  'box-shadow': datas.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
-                  margin: datas.commodityMargin + 'px',
-                  'border-radius': datas.borderRadius + 'px'
+                  border: data.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
+                  'box-shadow': data.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
+                  margin: data.commodityMargin + 'px',
+                  'border-radius': data.borderRadius + 'px',
                 }"
               >
                 <!-- 视频图片 -->
@@ -724,42 +718,42 @@
                     draggable="false"
                     :src="item.coverUrl"
                     alt=""
-                    :style="{ 'border-radius': datas.borderRadius + 'px' }"
+                    :style="{ 'border-radius': data.borderRadius + 'px' }"
                   />
                   <!-- 标签 -->
                   <van-tag
                     mark
-                    :color="datas.commodityTagColor || tagColor"
+                    :color="data.commodityTagColor || tagColor"
                     :style="styleString"
                     class="marks"
-                    v-show="datas.commoditycorner && datas.commoditycornertype === 0"
+                    v-show="data.commoditycorner && data.commoditycornertype === 0"
                   >
                     新品
                   </van-tag>
                   <van-tag
-                    :color="datas.commodityTagColor || tagColor"
+                    :color="data.commodityTagColor || tagColor"
                     :style="styleString"
                     class="marks"
-                    v-show="datas.commoditycorner && datas.commoditycornertype === 1"
+                    v-show="data.commoditycorner && data.commoditycornertype === 1"
                   >
                     热
                     <br />
                     卖
                   </van-tag>
                   <van-tag
-                    :color="datas.commodityTagColor || tagColor"
+                    :color="data.commodityTagColor || tagColor"
                     :style="styleString"
                     class="marks"
-                    v-show="datas.commoditycorner && datas.commoditycornertype === 2"
+                    v-show="data.commoditycorner && data.commoditycornertype === 2"
                   >
                     NEW
                   </van-tag>
                   <van-tag
                     plain
-                    :color="datas.commodityTagColor || tagColor"
+                    :color="data.commodityTagColor || tagColor"
                     :style="styleString"
                     class="marks"
-                    v-show="datas.commoditycorner && datas.commoditycornertype === 3"
+                    v-show="data.commoditycorner && data.commoditycornertype === 3"
                   >
                     HOT
                   </van-tag>
@@ -769,16 +763,16 @@
                 <div
                   class="text"
                   :style="{
-                    background: datas.moditystyle !== 3 ? '#fff' : 'none',
-                    'border-top-right-radius': datas.borderRadius + 'px',
-                    'border-bottom-right-radius': datas.borderRadius + 'px'
+                    background: data.moditystyle !== 3 ? '#fff' : 'none',
+                    'border-top-right-radius': data.borderRadius + 'px',
+                    'border-bottom-right-radius': data.borderRadius + 'px',
                   }"
                 >
                   <!-- 视频名称 -->
                   <h5
                     :style="{
-                      'font-weight': datas.textWeight,
-                      'text-align': datas.positions === 'center' ? 'center' : ''
+                      'font-weight': data.textWeight,
+                      'text-align': data.positions === 'center' ? 'center' : '',
                     }"
                   >
                     {{ item.name }}
@@ -786,25 +780,25 @@
                   <!-- 视频描述 -->
                   <p
                     :style="{
-                      'text-align': datas.positions === 'center' ? 'center' : ''
+                      'text-align': data.positions === 'center' ? 'center' : '',
                     }"
                   >
                     {{ item.introduce }}
                   </p>
-                  <div class="mony" v-if="datas.priceofcommodity || datas.purchasebutton">
-                    <span v-show="datas.priceofcommodity">
+                  <div class="mony" v-if="data.priceofcommodity || data.purchasebutton">
+                    <span v-show="data.priceofcommodity">
                       <i>￥</i>
                       {{ item.price }}
                     </span>
-                    <div v-show="datas.purchasebutton">
-                      <van-icon name="cart-circle-o" size="23" v-show="datas.purchasebuttonType === 0" />
-                      <van-icon name="add-o" size="23" v-show="datas.purchasebuttonType === 1" />
-                      <van-icon name="add" size="23" v-show="datas.purchasebuttonType === 2" />
-                      <van-icon name="cart-o" size="23" v-show="datas.purchasebuttonType === 3" />
-                      <em v-show="datas.purchasebuttonType === 4">{{ datas.purchase }}</em>
-                      <em v-show="datas.purchasebuttonType === 5">{{ datas.purchase }}</em>
-                      <em v-show="datas.purchasebuttonType === 6">{{ datas.purchase }}</em>
-                      <em v-show="datas.purchasebuttonType === 7">{{ datas.purchase }}</em>
+                    <div v-show="data.purchasebutton">
+                      <van-icon name="cart-circle-o" size="23" v-show="data.purchasebuttonType === 0" />
+                      <van-icon name="add-o" size="23" v-show="data.purchasebuttonType === 1" />
+                      <van-icon name="add" size="23" v-show="data.purchasebuttonType === 2" />
+                      <van-icon name="cart-o" size="23" v-show="data.purchasebuttonType === 3" />
+                      <em v-show="data.purchasebuttonType === 4">{{ data.purchase }}</em>
+                      <em v-show="data.purchasebuttonType === 5">{{ data.purchase }}</em>
+                      <em v-show="data.purchasebuttonType === 6">{{ data.purchase }}</em>
+                      <em v-show="data.purchasebuttonType === 7">{{ data.purchase }}</em>
                     </div>
                   </div>
                 </div>
@@ -824,7 +818,7 @@
 export default {
   name: 'Listswitching',
   props: {
-    datas: Object
+    data: Object,
   },
   data() {
     return {
@@ -832,17 +826,17 @@ export default {
       active: 0,
       listSwitchName: null,
       tagColor: '#07c160',
-      styleString: {}
+      styleString: {},
     }
   },
   created() {
-    console.log(this.datas, '--------------Listswitching datas')
+    console.log(this.data, '--------------Listswitching data')
   },
   mounted() {
     this.$nextTick(() => {
       if (this.$refs[this.listSwitchName]) {
         this.$refs[this.listSwitchName][0].querySelector('.van-sidebar-item--select').style.borderColor =
-          this.datas.tabColor
+          this.data.tabColor
       }
 
       this.listSwitchName = 'Listswitching' + document.querySelectorAll('.Listswitching').length
@@ -859,26 +853,26 @@ export default {
           }
         })
         this.$refs[this.listSwitchName].querySelector('.van-sidebar-item--select').style.borderColor =
-          this.datas.tabColor
+          this.data.tabColor
       })
     },
 
     // 处理标记位置
     tagPositionStyle() {
       this.styleString = {
-        position: 'absolute'
+        position: 'absolute',
       }
-      // if(!this.datas.tagPosition) {
+      // if(!this.data.tagPosition) {
       //   this.styleString.top = '5px'
       //   this.styleString.left = '0px'
-      //   this.datas.commoditycornertype === 0 ?  this.styleString.borderRadius = '10px 0px 0px 10px !important' : ''
+      //   this.data.commoditycornertype === 0 ?  this.styleString.borderRadius = '10px 0px 0px 10px !important' : ''
       //   return
       // }
       /* '左上',
         '左下',
         '又上',
         '又下' */
-      switch (this.datas.tagPosition) {
+      switch (this.data.tagPosition) {
         case 0: // 左上
           this.styleString.top = '5px'
           this.styleString.left = '0px'
@@ -890,34 +884,34 @@ export default {
         case 2: // 右上
           this.styleString.top = '5px'
           this.styleString.right = '0px'
-          this.datas.commoditycornertype === 0 ? (this.styleString.borderRadius = '10px 0px 0px 10px !important') : ''
+          this.data.commoditycornertype === 0 ? (this.styleString.borderRadius = '10px 0px 0px 10px !important') : ''
           break
         case 3: // 右下
           this.styleString.bottom = '5px'
           this.styleString.right = '0px'
-          this.datas.commoditycornertype === 0 ? (this.styleString.borderRadius = '10px 0px 0px 10px !important') : ''
+          this.data.commoditycornertype === 0 ? (this.styleString.borderRadius = '10px 0px 0px 10px !important') : ''
           break
       }
-    }
+    },
   },
   watch: {
-    'datas.tabColor': function () {
-      this.$refs[this.listSwitchName].querySelector('.van-tabs__line').style.backgroundColor = this.datas.tabColor
-      this.$refs[this.listSwitchName].querySelector('.van-sidebar-item--select').style.borderColor = this.datas.tabColor
+    'data.tabColor': function () {
+      this.$refs[this.listSwitchName].querySelector('.van-tabs__line').style.backgroundColor = this.data.tabColor
+      this.$refs[this.listSwitchName].querySelector('.van-sidebar-item--select').style.borderColor = this.data.tabColor
     },
-    'datas.commoditylisttype': function () {
-      if (this.datas.commoditylisttype === 2) {
+    'data.commoditylisttype': function () {
+      if (this.data.commoditylisttype === 2) {
         this.$refs[this.listSwitchName].querySelector('.van-sidebar-item--select').style.borderColor =
-          this.datas.tabColor
+          this.data.tabColor
       }
     },
-    'datas.tagPosition': function () {
+    'data.tagPosition': function () {
       this.tagPositionStyle()
     },
-    'datas.commoditycornertype': function () {
+    'data.commoditycornertype': function () {
       this.tagPositionStyle()
-    }
-  }
+    },
+  },
 }
 </script>
 

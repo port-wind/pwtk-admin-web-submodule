@@ -1,8 +1,8 @@
 <template>
   <div class="nav-bar-box">
-    <div class="nav-container" :class="`model-${datas.configParamJson?.model || 's1'}`">
-      <div v-if="datas.configParamJson?.title" class="nav-title">
-        {{ datas.configParamJson.title }}
+    <div class="nav-container" :class="`model-${data.configParamJson?.model || 's1'}`">
+      <div v-if="data.configParamJson?.title" class="nav-title">
+        {{ data.configParamJson.title }}
       </div>
 
       <div class="nav-items">
@@ -22,7 +22,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  datas: {
+  data: {
     componentName: string
     componentType: string
     configParamJson: {
@@ -36,16 +36,16 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode'
+  pageModel: 'websiteMode',
 })
 
 const navItems = computed(() => {
   return (
-    props.datas.configParamJson?.itemData || [
+    props.data.configParamJson?.itemData || [
       { id: '1', name: '首页', badge: '' },
       { id: '2', name: '分类', badge: 'New' },
       { id: '3', name: '发现', badge: '' },
-      { id: '4', name: '我的', badge: '3' }
+      { id: '4', name: '我的', badge: '3' },
     ]
   )
 })
