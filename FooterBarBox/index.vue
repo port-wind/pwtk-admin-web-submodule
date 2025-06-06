@@ -56,10 +56,10 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode',
+  pageModel: 'websiteMode'
 })
 
-const defaultLogo = '../../../assets/images/imgs.png'
+// const defaultLogo = '../../../assets/images/imgs.png'
 const defaultCopyright = '© 2024 WebVision. All rights reserved.'
 
 const footerLinks = computed(() => {
@@ -68,7 +68,7 @@ const footerLinks = computed(() => {
       { text: '关于我们', url: '/about' },
       { text: '服务条款', url: '/terms' },
       { text: '隐私政策', url: '/privacy' },
-      { text: '联系我们', url: '/contact' },
+      { text: '联系我们', url: '/contact' }
     ]
   )
 })

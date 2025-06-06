@@ -51,12 +51,7 @@
       >
         <!-- 视频图片 -->
         <div class="bg-pic">
-          <img
-            draggable="false"
-            src="../../../assets/images/imgs.png"
-            alt=""
-            :style="{ 'border-radius': datas.borderRadius + 'px' }"
-          />
+          <img draggable="false" src="" alt="" :style="{ 'border-radius': datas.borderRadius + 'px' }" />
           <!-- 标签 -->
           <van-tag
             mark
@@ -338,12 +333,7 @@
             >
               <!-- 视频图片 -->
               <div class="bg-pic">
-                <img
-                  draggable="false"
-                  src="../../../assets/images/imgs.png"
-                  alt=""
-                  :style="{ 'border-radius': datas.borderRadius + 'px' }"
-                />
+                <img draggable="false" src="" alt="" :style="{ 'border-radius': datas.borderRadius + 'px' }" />
                 <!-- 标签 -->
                 <van-tag
                   mark
@@ -607,12 +597,7 @@
               >
                 <!-- 视频图片 -->
                 <div class="bg-pic">
-                  <img
-                    draggable="false"
-                    src="../../../assets/images/imgs.png"
-                    alt=""
-                    :style="{ 'border-radius': datas.borderRadius + 'px' }"
-                  />
+                  <img draggable="false" src="" alt="" :style="{ 'border-radius': datas.borderRadius + 'px' }" />
                   <!-- 标签 -->
                   <van-tag
                     mark
