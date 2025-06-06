@@ -36,7 +36,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode',
+  pageModel: 'websiteMode'
 })
 
 // 模拟数据
@@ -44,7 +44,7 @@ const mockData = computed(() => {
   const size = props.data.configParamJson?.pageSize || 5
   return Array.from({ length: size }, (_, index) => ({
     title: `BBS帖子标题 ${index + 1}`,
-    time: `2024-01-${String(index + 1).padStart(2, '0')}`,
+    time: `2024-01-${String(index + 1).padStart(2, '0')}`
   }))
 })
 </script>

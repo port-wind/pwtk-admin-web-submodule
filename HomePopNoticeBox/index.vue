@@ -46,7 +46,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode',
+  pageModel: 'websiteMode'
 })
 
 const formatTime = computed(() => {
