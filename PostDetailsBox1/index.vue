@@ -64,11 +64,11 @@ export default {
   name: 'PostDetailsBox',
   data() {
     return {
-      jsonData: [],
+      jsonData: []
     }
   },
   props: {
-    data: Object,
+    data: Object
   },
   created() {},
   mounted() {},
@@ -76,7 +76,7 @@ export default {
     //点击显示下拉框
     showpic(index1) {
       event.stopPropagation()
-      this.data.jsonData.forEach(el => {
+      this.data.jsonData.forEach((el) => {
         el.showPicker = false
       })
       this.data.jsonData[index1].showPicker = !this.data.jsonData[index1].showPicker
@@ -94,13 +94,13 @@ export default {
     //   })
     // },
     leave() {
-      this.data.jsonData.forEach(el => {
+      this.data.jsonData.forEach((el) => {
         el.showPicker = false
       })
-    },
+    }
     //
   },
-  watch: {},
+  watch: {}
 }
 </script>
 
