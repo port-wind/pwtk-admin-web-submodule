@@ -38,7 +38,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode',
+  pageModel: 'websiteMode'
 })
 
 // 模拟推广广告数据
@@ -47,7 +47,7 @@ const mockAds = computed(() => {
   return Array.from({ length: count }, (_, index) => ({
     title: `推广广告 ${index + 1}`,
     description: `这是推广广告的描述内容 ${index + 1}`,
-    image: '../../../assets/images/imgs.png',
+    image: '../../../assets/images/imgs.png'
   }))
 })
 </script>
