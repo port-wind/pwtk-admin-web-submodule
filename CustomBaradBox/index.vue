@@ -50,15 +50,18 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import type { CustomBarAdConfig, AdItem } from './type'
 
 interface Props {
-  datas?: CustomBarAdConfig
+  data: {
+    componentName: string
+    componentType: string
+    configParamJson: {
+      model?: string
+      itemData?: Array<{ text: string; link?: string; icon?: string }>
+    }
+  }
   pageModel?: 'websiteMode' | 'templateMode' | 'componentMode'
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  datas: () => ({
-    model: 's1',
-    itemData: []
-  }),
   pageModel: 'websiteMode'
 })
 
@@ -69,19 +72,19 @@ let scrollInterval: NodeJS.Timeout | null = null
 const config = computed(() => {
   let configParamJson = {}
 
-  if (props.datas?.configParamJson) {
+  if (props.data?.configParamJson) {
     try {
-      if (typeof props.datas.configParamJson === 'string') {
-        configParamJson = JSON.parse(props.datas.configParamJson)
+      if (typeof props.data.configParamJson === 'string') {
+        configParamJson = JSON.parse(props.data.configParamJson)
       } else {
-        configParamJson = props.datas.configParamJson
+        configParamJson = props.data.configParamJson
       }
     } catch (error) {
       console.error('CustomBarAdBox: JSON 解析错误', error)
     }
   }
 
-  const itemData = configParamJson.itemData || props.datas?.itemData || []
+  const itemData = configParamJson.itemData || []
 
   // 如果没有数据，生成默认数据
   const defaultData =
@@ -94,7 +97,7 @@ const config = computed(() => {
         ]
 
   return {
-    model: configParamJson.model || props.datas?.model || 's1',
+    model: configParamJson.model || 's1',
     itemData: defaultData
   }
 })
