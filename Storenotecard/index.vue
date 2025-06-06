@@ -2,8 +2,8 @@
   <div class="storenotecard">
     <!-- 更多 -->
     <div class="more1">
-      <h4>{{ data.name }}</h4>
-      <p v-show="data.viewMore1">
+      <h4>{{ datas.name }}</h4>
+      <p v-show="datas.viewMore1">
         查看更多
         <van-icon name="arrow" />
       </p>
@@ -11,8 +11,8 @@
 
     <!-- 没有视频展示默认 -->
     <section
-      v-show="!data.imageList[0]"
-      :class="[data.commodityType === 2 ? 'defaultcommodityList2' : '']"
+      v-show="!datas.imageList[0]"
+      :class="[datas.commodityType === 2 ? 'defaultcommodityList2' : '']"
       class="defaultcommodity"
     >
       <div
@@ -20,36 +20,36 @@
         :key="index"
         class="defaultcommodityList"
         :class="[
-          data.commodityType === 0 ? 'defaultcommodityList0' : '',
-          data.commodityType === 1 ? 'defaultcommodityList1' : '',
-          data.commodityType === 2 ? 'defaultcommodityList2' : '',
-          data.commodityType === 3 ? 'defaultcommodityList3' : '',
-          data.commodityType === 4 ? 'defaultcommodityList4' : '',
-          data.commodityType === 5 ? 'defaultcommodityList5' : '',
+          datas.commodityType === 0 ? 'defaultcommodityList0' : '',
+          datas.commodityType === 1 ? 'defaultcommodityList1' : '',
+          datas.commodityType === 2 ? 'defaultcommodityList2' : '',
+          datas.commodityType === 3 ? 'defaultcommodityList3' : '',
+          datas.commodityType === 4 ? 'defaultcommodityList4' : '',
+          datas.commodityType === 5 ? 'defaultcommodityList5' : ''
         ]"
         :style="{
-          'border-radius': data.borderRadius + 'px',
-          border: data.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
-          'box-shadow': data.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
+          'border-radius': datas.borderRadius + 'px',
+          border: datas.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
+          'box-shadow': datas.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
           width:
-            data.commodityType === 1
-              ? 50 - data.commodityMargin / 6 + '%'
-              : data.commodityType === 2
-                ? 33 - data.commodityMargin / 5 + '%'
-                : data.commodityType === 4
-                  ? 50 - data.commodityMargin / 5 + '%'
-                  : '',
+            datas.commodityType === 1
+              ? 50 - datas.commodityMargin / 6 + '%'
+              : datas.commodityType === 2
+              ? 33 - datas.commodityMargin / 5 + '%'
+              : datas.commodityType === 4
+              ? 50 - datas.commodityMargin / 5 + '%'
+              : ''
         }"
       >
         <!-- 视频图片 -->
         <div
           class="imgss"
           style="position: relative; width: 100%"
-          :class="[data.positions === 'top' ? 'containoptions' : '']"
+          :class="[datas.positions === 'top' ? 'containoptions' : '']"
         >
           <img draggable="false" src="../../../assets/images/imgs.png" alt="" />
           <!-- 标签 -->
-          <p class="marks" v-if="data.noteLabels">
+          <p class="marks" v-if="datas.noteLabels">
             <span>#</span>
             笔记标签
           </p>
@@ -58,16 +58,16 @@
         <!-- 文字内容 -->
         <div
           class="text"
-          :class="[data.positions === 'top' ? 'positionsTop' : '']"
-          :style="{ background: data.moditystyle !== 3 ? '#fff' : 'none' }"
+          :class="[datas.positions === 'top' ? 'positionsTop' : '']"
+          :style="{ background: datas.moditystyle !== 3 ? '#fff' : 'none' }"
         >
           <!-- 视频名称 -->
           <h5>这里显示商品名称，最多显示2行</h5>
           <!-- 点赞和阅读量 -->
           <div class="dianz">
-            <span class="fir" v-if="data.readingNumber">999 阅读</span>
+            <span class="fir" v-if="datas.readingNumber">999 阅读</span>
             <span v-else></span>
-            <span v-show="data.praisePoints">
+            <span v-show="datas.praisePoints">
               <van-icon name="good-job-o" />
               999
             </span>
@@ -77,45 +77,45 @@
     </section>
 
     <section
-      v-show="data.imageList[0]"
-      :class="[data.commodityType === 2 ? 'defaultcommodityList2' : '']"
+      v-show="datas.imageList[0]"
+      :class="[datas.commodityType === 2 ? 'defaultcommodityList2' : '']"
       class="defaultcommodity"
     >
       <div
-        v-for="(item, index) in data.imageList"
+        v-for="(item, index) in datas.imageList"
         :key="index"
         class="defaultcommodityList"
         :class="[
-          data.commodityType === 0 ? 'defaultcommodityList0' : '',
-          data.commodityType === 1 ? 'defaultcommodityList1' : '',
-          data.commodityType === 2 ? 'defaultcommodityList2' : '',
-          data.commodityType === 3 ? 'defaultcommodityList3' : '',
-          data.commodityType === 4 ? 'defaultcommodityList4' : '',
-          data.commodityType === 5 ? 'defaultcommodityList5' : '',
+          datas.commodityType === 0 ? 'defaultcommodityList0' : '',
+          datas.commodityType === 1 ? 'defaultcommodityList1' : '',
+          datas.commodityType === 2 ? 'defaultcommodityList2' : '',
+          datas.commodityType === 3 ? 'defaultcommodityList3' : '',
+          datas.commodityType === 4 ? 'defaultcommodityList4' : '',
+          datas.commodityType === 5 ? 'defaultcommodityList5' : ''
         ]"
         :style="{
-          'border-radius': data.borderRadius + 'px',
-          border: data.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
-          'box-shadow': data.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
+          'border-radius': datas.borderRadius + 'px',
+          border: datas.moditystyle === 2 ? '1px solid rgba(50,50,51,0.1)' : '',
+          'box-shadow': datas.moditystyle === 1 ? '0 2px 8px rgba(93,113,127,0.08)' : '',
           width:
-            data.commodityType === 1
-              ? 50 - data.commodityMargin / 6 + '%'
-              : data.commodityType === 2
-                ? 33 - data.commodityMargin / 5 + '%'
-                : data.commodityType === 4
-                  ? 50 - data.commodityMargin / 5 + '%'
-                  : '',
+            datas.commodityType === 1
+              ? 50 - datas.commodityMargin / 6 + '%'
+              : datas.commodityType === 2
+              ? 33 - datas.commodityMargin / 5 + '%'
+              : datas.commodityType === 4
+              ? 50 - datas.commodityMargin / 5 + '%'
+              : ''
         }"
       >
         <!-- 视频图片 -->
         <div
           class="imgss"
           style="position: relative; width: 100%"
-          :class="[data.positions === 'top' ? 'containoptions' : '']"
+          :class="[datas.positions === 'top' ? 'containoptions' : '']"
         >
           <img draggable="false" :src="item.src" alt="" />
           <!-- 标签 -->
-          <p class="marks" v-if="data.noteLabels">
+          <p class="marks" v-if="datas.noteLabels">
             <span>#</span>
             笔记标签
           </p>
@@ -124,16 +124,16 @@
         <!-- 文字内容 -->
         <div
           class="text"
-          :class="[data.positions === 'top' ? 'positionsTop' : '']"
-          :style="{ background: data.moditystyle !== 3 ? '#fff' : 'none' }"
+          :class="[datas.positions === 'top' ? 'positionsTop' : '']"
+          :style="{ background: datas.moditystyle !== 3 ? '#fff' : 'none' }"
         >
           <!-- 视频名称 -->
           <h5>{{ item.text }}</h5>
           <!-- 点赞和阅读量 -->
           <div class="dianz">
-            <span class="fir" v-if="data.readingNumber">999 阅读</span>
+            <span class="fir" v-if="datas.readingNumber">999 阅读</span>
             <span v-else></span>
-            <span v-show="data.praisePoints">
+            <span v-show="datas.praisePoints">
               <van-icon name="good-job-o" />
               999
             </span>
@@ -142,7 +142,7 @@
       </div>
     </section>
 
-    <p class="more2" v-show="data.viewMore2">
+    <p class="more2" v-show="datas.viewMore2">
       查看更多
       <van-icon name="arrow" />
     </p>
@@ -156,17 +156,17 @@
 export default {
   name: 'Storenotecard',
   props: {
-    data: Object,
+    datas: Object
   },
   data() {
     return {
-      active: 0,
+      active: 0
     }
   },
 
   created() {},
 
-  methods: {},
+  methods: {}
 }
 </script>
 

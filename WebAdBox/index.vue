@@ -1,4 +1,14 @@
-<script setup lang="ts" name="WebAdBox"></script>
+<script setup lang="ts" name="WebAdBox">
+import { ref, computed, onMounted } from 'vue'
+
+const props = defineProps<{
+  datas: any
+}>()
+
+onMounted(() => {
+  console.log('props', props.datas)
+})
+</script>
 
 <template>
   <div class="WebAdBox">

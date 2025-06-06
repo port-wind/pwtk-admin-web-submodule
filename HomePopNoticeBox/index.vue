@@ -1,23 +1,23 @@
 <template>
   <div class="home-pop-notice-box">
-    <div class="notice-container" :class="`style-${data.configParamJson?.style || 'default'}`">
-      <div v-if="data.configParamJson?.showIcon" class="notice-icon">📢</div>
+    <div class="notice-container" :class="`style-${datas.configParamJson?.style || 'default'}`">
+      <div v-if="datas.configParamJson?.showIcon" class="notice-icon">📢</div>
 
       <div class="notice-content">
-        <div v-if="data.configParamJson?.title" class="notice-title">
-          {{ data.configParamJson.title }}
+        <div v-if="datas.configParamJson?.title" class="notice-title">
+          {{ datas.configParamJson.title }}
         </div>
 
         <div class="notice-text">
-          {{ data.configParamJson?.content || '这是一条重要公告信息，请注意查看！' }}
+          {{ datas.configParamJson?.content || '这是一条重要公告信息，请注意查看！' }}
         </div>
 
-        <div v-if="data.configParamJson?.showTime" class="notice-time">
+        <div v-if="datas.configParamJson?.showTime" class="notice-time">
           {{ formatTime }}
         </div>
       </div>
 
-      <div v-if="data.configParamJson?.showClose" class="notice-close">✕</div>
+      <div v-if="datas.configParamJson?.showClose" class="notice-close">✕</div>
     </div>
     <slot name="deles" />
   </div>
@@ -27,7 +27,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  data: {
+  datas: {
     componentName: string
     componentType: string
     configParamJson: {

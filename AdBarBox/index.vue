@@ -1,13 +1,13 @@
 <template>
   <div class="adbar-box">
     <div class="adbar-container">
-      <div v-if="data.configParamJson?.showTitle && data.configParamJson?.title" class="adbar-title">
-        {{ data.configParamJson.title }}
+      <div v-if="datas.configParamJson?.showTitle && datas.configParamJson?.title" class="adbar-title">
+        {{ datas.configParamJson.title }}
       </div>
-      <div class="adbar-content" :class="`layout-${data.configParamJson?.layout || 'horizontal'}`">
+      <div class="adbar-content" :class="`layout-${datas.configParamJson?.layout || 'horizontal'}`">
         <div v-for="(item, index) in mockAds" :key="index" class="adbar-item">
           <img :src="item.image" :alt="item.title" draggable="false" />
-          <div v-if="data.configParamJson?.showText" class="adbar-text">
+          <div v-if="datas.configParamJson?.showText" class="adbar-text">
             <div class="adbar-item-title">{{ item.title }}</div>
             <div class="adbar-item-desc">{{ item.description }}</div>
           </div>
@@ -22,7 +22,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  data: {
+  datas: {
     componentName: string
     componentType: string
     configParamJson: {
@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // 模拟推广广告数据
 const mockAds = computed(() => {
-  const count = props.data.configParamJson?.adCount || 3
+  const count = props.datas.configParamJson?.adCount || 3
   return Array.from({ length: count }, (_, index) => ({
     title: `推广广告 ${index + 1}`,
     description: `这是推广广告的描述内容 ${index + 1}`,

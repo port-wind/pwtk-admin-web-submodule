@@ -1,8 +1,8 @@
 <template>
   <div class="nav-bbs-list-box">
     <div class="bbs-list-container">
-      <div v-if="data.configParamJson?.title" class="bbs-title">
-        {{ data.configParamJson.title }}
+      <div v-if="datas.configParamJson?.title" class="bbs-title">
+        {{ datas.configParamJson.title }}
       </div>
       <div class="bbs-list">
         <div v-for="(item, index) in mockData" :key="index" class="bbs-item">
@@ -19,7 +19,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  data: {
+  datas: {
     componentName: string
     componentType: string
     configParamJson: {

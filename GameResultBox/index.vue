@@ -21,7 +21,7 @@ export interface GameResultType {
 }
 
 const props = defineProps({
-  data: {
+  datas: {
     type: Object as () => GameResultType,
     required: true
   },
