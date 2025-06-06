@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="NavBarBox">
 import { computed } from 'vue'
 
 interface Props {
@@ -36,7 +36,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode',
+  pageModel: 'websiteMode'
 })
 
 const navItems = computed(() => {
@@ -45,7 +45,7 @@ const navItems = computed(() => {
       { id: '1', name: '首页', badge: '' },
       { id: '2', name: '分类', badge: 'New' },
       { id: '3', name: '发现', badge: '' },
-      { id: '4', name: '我的', badge: '3' },
+      { id: '4', name: '我的', badge: '3' }
     ]
   )
 })
