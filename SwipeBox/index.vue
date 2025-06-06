@@ -107,7 +107,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode'
+  pageModel: 'websiteMode',
 })
 
 // 配置处理
@@ -138,8 +138,8 @@ const config = computed(() => {
       indicatorColor: '#1989fa',
       loop: true,
       touchable: true,
-      ...configParamJson.otherAttrs
-    }
+      ...configParamJson.otherAttrs,
+    },
   }
 })
 
@@ -151,10 +151,10 @@ const displayData = computed(() => {
   if (data.length === 0) {
     return Array.from({ length: Math.min(config.value.total, 6) }, (_, index) => ({
       index: index + 1,
-      image: 'https://via.placeholder.com/300x150?text=Image+' + (index + 1),
+      image: '',
       link: '',
       alt: `默认图片${index + 1}`,
-      title: `轮播图${index + 1}`
+      title: `轮播图${index + 1}`,
     }))
   }
 
@@ -176,7 +176,7 @@ const groupedData = computed(() => {
 
 // 获取完整图片URL
 const getFullImageUrl = (path: string) => {
-  if (!path) return 'https://via.placeholder.com/300x150?text=No+Image'
+  if (!path) return ''
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path
   }
@@ -273,7 +273,9 @@ const handleItemClick = (item: SwipeItem) => {
   overflow: hidden;
   background-color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 
   &:hover {
     transform: translateY(-2px);

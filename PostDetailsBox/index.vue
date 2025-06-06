@@ -1,8 +1,8 @@
 <template>
   <div class="postdetailbox">
     <!-- 内容 -->
-    <div class="title">{{ datas.configParamJson.title }}</div>
-    <div class="rescon" v-for="(item1, index1) in datas.configParamJson.jsonData" :key="index1" @mouseleave="leave()">
+    <div class="title">{{ datas?.configParamJson?.title }}</div>
+    <div class="rescon" v-for="(item1, index1) in datas?.configParamJson?.jsonData" :key="index1" @mouseleave="leave()">
       <!-- 输入框 -->
       <div v-if="item1.type == 0">
         <van-cell-group>
@@ -64,11 +64,11 @@ export default {
   name: 'PostDetailsBox',
   data() {
     return {
-      jsonData: []
+      jsonData: [],
     }
   },
   props: {
-    datas: Object
+    datas: Object,
   },
   created() {},
   mounted() {},
@@ -76,7 +76,7 @@ export default {
     //点击显示下拉框
     showpic(index1) {
       event.stopPropagation()
-      this.datas.jsondatas.forEach((el) => {
+      this.datas.jsondatas.forEach(el => {
         el.showPicker = false
       })
       this.datas.jsonData[index1].showPicker = !this.datas.jsonData[index1].showPicker
@@ -94,13 +94,13 @@ export default {
     //   })
     // },
     leave() {
-      this.datas.jsondatas.forEach((el) => {
+      this.datas.jsondatas.forEach(el => {
         el.showPicker = false
       })
-    }
+    },
     //
   },
-  watch: {}
+  watch: {},
 }
 </script>
 
