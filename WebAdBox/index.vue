@@ -54,6 +54,8 @@ import service from '@/service'
 import type { IBizTkWebsiteListPageModel, GAME_DATA } from './type'
 import StateManager from '../StateManager.vue'
 import WebSiteGridLayout from './WebSiteGridLayout.vue'
+import utils from '@/utils'
+import constants from '@/constants'
 
 const isLoading = ref(false)
 const isError = ref(false)
@@ -120,8 +122,9 @@ const fetchWebGuideList = async (index?: number) => {
     const res = await service.website.getPageWebsiteList({
       focusGameType: [gameTypeCode.value],
       page: page.value,
-      size
+      size,
     })
+    console.log('🚀 ~ 999999fetchWebGuideList8889999999 ~ res:', res)
     // console.log('fetchWebGuideList', res)
     // console.log('fetchWebGuideList', index, page.value);
     if (res.data.success) {
@@ -152,9 +155,16 @@ const handleClickButton = () => {
 }
 
 onMounted(async () => {
-  // const GAME_DATA = JSON.parse(utils.getSession(constants.sessionStorageKeys.GAME_DATA) || '[]');
-  // webADTabs.value = GAME_DATA;
-  // console.log('onMounted', tabsData.value);
+  const GAME_DATA = JSON.parse(utils.getSession(constants.sessionStorageKeys.GAME_DATA) || '[]')
+  console.log('🚀 ~ onMounted ~ GAME_DATA:', GAME_DATA)
+  // gameType: string;
+  // gameTypeCode: string;
+  // gameTypeName: string;
+  // sortNum: string;
+  // gameTypeShortName: string;
+
+  // webADTabs.value = GAME_DATA
+  // console.log('onMounted', tabsData.value)
   await fetchWebGuideList()
 })
 </script>
