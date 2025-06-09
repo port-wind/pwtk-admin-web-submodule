@@ -2,11 +2,11 @@
 <template>
   <div class="web-ad-box">
     <div class="web-ad-box-content">
-      <div class="mbox web-guide" v-if="tabsData.length > 0 && isError === false">
+      <div class="mbox web-guide" v-if="datas?.configParamJson?.tabsData?.length > 0 && isError === false">
         <StateManager :loading="isLoading" :error="isError" @refresh="fetchWebGuideList()">
           <van-tabs color="var(--theme-color)" v-model:active="tabIndex" type="card" @change="onTabChange">
             <van-tab
-              v-for="(item, index) in tabsData"
+              v-for="(item, index) in datas?.configParamJson?.tabsData"
               :key="item.sortNum"
               :title="item.gameTypeShortName"
               :name="index"
@@ -63,16 +63,20 @@ const listData = ref<IBizTkWebsiteListPageModel[]>([])
 const page = ref(1)
 const size = 12
 
-const props = defineProps({
-  data: {
-    type: Object,
-    required: true
-  },
-  tabsData: {
-    type: Array as () => GAME_DATA[],
-    required: true
+interface IData {
+  configParamJson: {
+    model: 's1' | 's2' | 's3'
+    // itemData: ColorBarType[]
+    title?: string
+    align?: string
+    titleBg?: string
+    tabsData: GAME_DATA[]
   }
-})
+}
+
+const props = defineProps<{ datas: IData }>()
+
+console.log('prop webadbox', props.datas)
 
 const isWebExpand = ref<boolean>(false)
 
@@ -83,7 +87,7 @@ const onTabChange = (index: number) => {
   // console.log('active1', gameType)
   resetPagination()
   tabIndex.value = index
-  gameTypeCode.value = props.tabsData[index].gameTypeCode
+  gameTypeCode.value = props.datas.configParamJson.tabsData[index].gameTypeCode
   fetchWebGuideList(index)
 }
 
@@ -105,7 +109,7 @@ const handleClickClose = () => {
 // 监听 index 变化
 // 注入 tabIndex，提供默认值
 // const tabIndex = inject('tabIndex', ref(0)); // 注入 tabIndex，提供默认值
-const gameTypeCode = ref(props.tabsData[0].gameTypeCode)
+const gameTypeCode = ref(props?.datas?.configParamJson?.tabsData?.[0]?.gameTypeCode)
 const tabIndex = ref(0)
 // const gameTypeCode = ref(webADTabs.value.[0].gameTypeCode);
 
