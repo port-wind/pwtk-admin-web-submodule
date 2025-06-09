@@ -2,11 +2,11 @@
 <template>
   <div class="web-ad-box">
     <div class="web-ad-box-content">
-      <div class="mbox web-guide" v-if="datas?.configParamJson?.tabsData?.length > 0 && isError === false">
+      <div class="mbox web-guide" v-if="datas.configParamJson.tabsData.length > 0 && isError === false">
         <StateManager :loading="isLoading" :error="isError" @refresh="fetchWebGuideList()">
           <van-tabs color="var(--theme-color)" v-model:active="tabIndex" type="card" @change="onTabChange">
             <van-tab
-              v-for="(item, index) in datas?.configParamJson?.tabsData"
+              v-for="(item, index) in datas.configParamJson.tabsData"
               :key="item.sortNum"
               :title="item.gameTypeShortName"
               :name="index"
