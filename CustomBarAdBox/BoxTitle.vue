@@ -1,25 +1,23 @@
 <template>
   <div v-if="data && data.title" class="webs-guide-title">
-    <h3
-      :style="`text-align: ${data.align || 'left'}; background: ${data.titleBg ||'var(--theme-color)' }`"
-    >
+    <h3 :style="`text-align: ${data.align || 'left'}; background: ${data.titleBg || 'var(--theme-color)'}`">
       {{ data.title }}
     </h3>
   </div>
 </template>
 <script setup lang="ts">
 interface Props {
-  title?: string;
-  align?: string;
-  titleBg?: string;
+  title?: string
+  align?: string
+  titleBg?: string
 }
 const props = defineProps({
   data: {
     type: Object as () => Props,
-    required: true,
-  },
-});
-console.log(props.data);
+    required: true
+  }
+})
+console.log(props.data)
 </script>
 
 <style scoped lang="less">
@@ -36,11 +34,7 @@ console.log(props.data);
     border-bottom: solid 1px #000;
     // border-top-left-radius: 0.75rem;
     // border-top-right-radius: 0.75rem;
-    background: linear-gradient(
-      var(--gradient-direction, 0deg),
-      var(--second-color),
-      var(--theme-color)
-    );
+    background: linear-gradient(var(--gradient-direction, 0deg), var(--second-color), var(--theme-color));
   }
 }
 </style>

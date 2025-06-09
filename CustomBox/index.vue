@@ -29,7 +29,7 @@ export default {
   </div>
 </template>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .custombox {
   // 必须要这样写，deles 才可以显示到正确位置上
   position: relative;
