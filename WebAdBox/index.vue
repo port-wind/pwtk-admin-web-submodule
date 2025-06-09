@@ -2,14 +2,15 @@
 <template>
   <div class="web-ad-box">
     <div class="web-ad-box-content">
+      {{ datas.configParamJson.tabsData }}
       <div class="mbox web-guide" v-if="datas.configParamJson.tabsData.length > 0 && isError === false">
         <StateManager :loading="isLoading" :error="isError" @refresh="fetchWebGuideList()">
           <van-tabs color="var(--theme-color)" v-model:active="tabIndex" type="card" @change="onTabChange">
             <van-tab
               v-for="(item, index) in datas.configParamJson.tabsData"
-              :key="item.sortNum"
-              :title="item.gameTypeShortName"
-              :name="index"
+              :key="item.gameTypeCode"
+              :title="item.gameTypeName"
+              :name="item.gameTypeName"
             ></van-tab>
           </van-tabs>
           <div class="web-container">
@@ -109,11 +110,12 @@ const handleClickClose = () => {
 // 监听 index 变化
 // 注入 tabIndex，提供默认值
 // const tabIndex = inject('tabIndex', ref(0)); // 注入 tabIndex，提供默认值
-const gameTypeCode = ref(props?.datas?.configParamJson?.tabsData?.[0]?.gameTypeCode)
+const gameTypeCode = ref(props.datas.configParamJson.tabsData[0].gameTypeCode)
 const tabIndex = ref(0)
 // const gameTypeCode = ref(webADTabs.value.[0].gameTypeCode);
 
 const fetchWebGuideList = async (index?: number) => {
+  console.log('🚀 ~ fetchWebGuideList ~ gameTypeCode:', gameTypeCode)
   if (isWebExpand.value || !gameTypeCode.value) return
   try {
     isLoading.value = true
