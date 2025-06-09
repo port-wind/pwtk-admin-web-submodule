@@ -70,7 +70,8 @@ function getRandomColor() {
   return color
 }
 
-console.log('props.datas------>', props.datas)
+// 更新数据
+console.log('props.datas zzzz------>', props.datas.configParamJson)
 </script>
 
 <style scoped lang="scss">
