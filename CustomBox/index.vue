@@ -1,41 +1,63 @@
-<script>
-export default {
-  name: 'CustomBox',
-  props: {
-    datas: {
-      type: Object,
-      default: () => ({})
-    }
-  },
-  data() {
-    return {
-      jsonData: []
-    }
-  }
-}
-</script>
-
 <template>
-  <div class="custombox">
-    <div class="custombox-container">
-      <div class="custombox-header">
-        <h1>CustomBox</h1>
-      </div>
-      <div class="custombox-content">
-        <h1>CustomBox</h1>
+  <div class="custom-box">
+    <div class="custom-box-container">
+      <div class="mbox">
+        <BoxTitle :data="datas.configParamJson"></BoxTitle>
+        <div class="custom-box-content">
+          <img v-if="datas.img" :src="getFullUrl(datas.img, PUBLIC_CDN_URL)" />
+          <div v-if="datas.content" v-html="datas.content"></div>
+          <p v-if="datas.text">{{ datas.text }}</p>
+        </div>
       </div>
     </div>
     <slot name="deles" />
   </div>
 </template>
 
-<style scoped lang="scss">
-.custombox {
-  // 必须要这样写，deles 才可以显示到正确位置上
-  position: relative;
-  // padding: 0 6px;
+<script setup lang="ts" name="CustomBox">
+// import { PUBLIC_CDN_URL } from '@/consts'
+import BoxTitle from './BoxTitle.vue'
+
+const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
+
+const getFullUrl = (url: string, baseUrl: string): string => {
+  return /^https?:\/\//.test(url) ? url : `${baseUrl}${url}`
 }
-.custombox-container {
-  min-height: 200px;
+interface Props {
+  title: string
+  content?: string
+  img?: string
+  text?: string
+  configParamJson: {
+    title?: string
+    align?: string
+    titleBg?: string
+  }
+}
+
+const props = defineProps({
+  datas: {
+    type: Object as () => Props,
+    required: true
+  }
+})
+</script>
+
+<style scoped lang="less">
+.custom-box {
+  position: relative;
+}
+.custom-box-container {
+  min-height: 50px;
+}
+.custom-box-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

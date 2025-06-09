@@ -79,7 +79,7 @@ console.log('props.datas zzzz------>', props.datas.configParamJson)
   position: relative;
 
   .custom-bar-ad-box-container {
-    min-height: 200px;
+    min-height: 50px;
   }
 }
 
