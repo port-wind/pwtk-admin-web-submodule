@@ -4,9 +4,9 @@
       <div class="mbox">
         <BoxTitle :data="datas.configParamJson"></BoxTitle>
         <div class="custom-box-content">
-          <img v-if="datas.img" :src="getFullUrl(datas.img, PUBLIC_CDN_URL)" />
-          <div v-if="datas.content" v-html="datas.content"></div>
-          <p v-if="datas.text">{{ datas.text }}</p>
+          <img v-if="datas.configParamJson.img" :src="getFullUrl(datas.configParamJson.img, PUBLIC_CDN_URL)" />
+          <div v-if="datas.configParamJson.content" v-html="datas.configParamJson.content"></div>
+          <p v-if="datas.configParamJson.text">{{ datas.configParamJson.text }}</p>
         </div>
       </div>
     </div>
@@ -24,12 +24,11 @@ const getFullUrl = (url: string, baseUrl: string): string => {
   return /^https?:\/\//.test(url) ? url : `${baseUrl}${url}`
 }
 interface Props {
-  title: string
-  content?: string
-  img?: string
-  text?: string
   configParamJson: {
-    title?: string
+    title: string
+    content?: string
+    img?: string
+    text?: string
     align?: string
     titleBg?: string
   }
