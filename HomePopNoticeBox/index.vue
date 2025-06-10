@@ -24,6 +24,8 @@
 <script setup lang="ts" name="HomePopNoticeBox">
 import { onMounted, ref } from 'vue'
 import { Popup as VanPopup } from 'vant'
+const route = useRoute()
+
 interface HomePopNoticeProps {
   model: string
   title: string
@@ -46,12 +48,6 @@ const props = defineProps<{ datas: HomePopNoticeProps }>()
 const showCenter = ref(true)
 
 const countdown = ref(props.datas.configParamJson.time ?? 5) // 倒计时初始值
-
-// route 路由
-const route = useRoute()
-if (route.path === '/webVisionBuilderWebsite') {
-  console.log('🚀 ~ route:')
-}
 
 onMounted(() => {
   const interval = setInterval(() => {

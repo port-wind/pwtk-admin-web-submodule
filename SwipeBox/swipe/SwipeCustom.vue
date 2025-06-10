@@ -4,6 +4,7 @@ import { Swipe as vanSwipe, SwipeItem as vanSwipeItem, Image as vanImage } from 
 // import { PUBLIC_CDN_URL } from '@/consts'
 import type { SwipeModelOne } from '../Swipe-type'
 const PUBLIC_CDN_URL = 'https://tk2cdn.ai4funs.com/'
+// https://tk2cdn.ai4funs.com/devmedia/img/webVision/img/25/06/10/fc5d84b569bb40dcade1e284ef2c5daa.png
 
 // 使用 defineProps 接收父组件传入的 componentData
 const props = defineProps({
