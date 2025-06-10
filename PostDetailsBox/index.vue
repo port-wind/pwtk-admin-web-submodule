@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts" name="PostDetailsBox">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import StateManager from '../StateManager.vue'
 import ModelThree from './PostBox/ModelThree.vue'
 import ModelFour from './PostBox/ModelFour.vue'
@@ -68,7 +68,7 @@ const getBBSDetail = async (_postId?: string) => {
     try {
       isLoading.value = true
       const response = await service.bbs.getDetailPost({
-        postId: _postId || postId.value || firstPostId //实际这里用的是postId也就是帖子ID
+        postId: _postId || postId.value || firstPostId, //实际这里用的是postId也就是帖子ID
       })
       if (response.data.success) {
         bbs_content.value = response.data.data
@@ -77,7 +77,7 @@ const getBBSDetail = async (_postId?: string) => {
       } else {
         ElMessage({
           type: 'error',
-          message: '未找到帖子信息'
+          message: '未找到帖子信息',
         })
         isError.value = true
       }
@@ -97,7 +97,7 @@ watch(
     }
   },
   {
-    immediate: true
+    immediate: true,
   }
 )
 
