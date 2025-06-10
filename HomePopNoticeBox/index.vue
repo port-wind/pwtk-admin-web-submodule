@@ -1,6 +1,6 @@
 <template>
   <div class="HomePopNoticeBox">
-    <div class="home-pop-notice-box-container">
+    <div class="home-pop-notice-box-container" :class="{ show: route.path === '/webVisionBuilderWebsite' }">
       <van-popup v-if="datas.configParamJson.content" v-model:show="showCenter" closeable round class="home-pop">
         <template #default>
           <h4 class="title">{{ datas.configParamJson.title }}</h4>
@@ -45,7 +45,13 @@ const props = defineProps<{ datas: HomePopNoticeProps }>()
 
 const showCenter = ref(true)
 
-const countdown = ref(props.data.time ?? 5) // 倒计时初始值
+const countdown = ref(props.datas.configParamJson.time ?? 5) // 倒计时初始值
+
+// route 路由
+const route = useRoute()
+if (route.path === '/webVisionBuilderWebsite') {
+  console.log('🚀 ~ route:')
+}
 
 onMounted(() => {
   const interval = setInterval(() => {
@@ -60,6 +66,16 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
+.HomePopNoticeBox {
+  position: relative;
+}
+.home-pop-notice-box-container {
+  // min-height: 50px;
+  &.show {
+    min-height: 50px;
+  }
+}
+
 /* 添加一些样式以便更好地展示 */
 .home-pop {
   height: 40%;
