@@ -1,14 +1,13 @@
 <template>
   <div class="AdBarBox">
     <div class="ad-bar-box-container">
-      {{ datas.configParamJson.adData }}
       <div
         class="mbox"
         data-component-name="广告大全"
         data-component-title
         v-if="datas.configParamJson.adData && datas.configParamJson.adData.length > 0"
       >
-        <div class="ad-bar" v-for="(item, index) in sortedAdData" :key="index">
+        <div class="ad-bar" v-for="(item, index) in datas.configParamJson.adData" :key="index">
           <a v-if="item" class="ad-bar-image" :href="item.link || '#'" target="_blank">
             <van-image :src="getFullUrl(item.img, PUBLIC_CDN_URL)" :alt="item.name" />
           </a>
@@ -52,20 +51,20 @@ const props = defineProps({
   }
 })
 
-const sortedAdData = computed(() => {
-  // 创建一个新的数组，长度为 total，初始值为 null
-  const totalArray = Array(props.datas.configParamJson.total).fill(null)
+// const sortedAdData = computed(() => {
+//   // 创建一个新的数组，长度为 total，初始值为 null
+//   const totalArray = Array(props.datas.configParamJson.total).fill(null)
 
-  // 将 adData 中有 index 的项放入 totalArray 的对应位置
-  props.datas.configParamJson.adData.forEach((item) => {
-    // console.log(item);
-    if (item.index !== undefined && item.index - 1 < props.datas.configParamJson.total) {
-      totalArray[item.index - 1] = item
-    }
-  })
+//   // 将 adData 中有 index 的项放入 totalArray 的对应位置
+//   props.datas.configParamJson.adData.forEach((item) => {
+//     // console.log(item);
+//     if (item.index !== undefined && item.index - 1 < props.datas.configParamJson.total) {
+//       totalArray[item.index - 1] = item
+//     }
+//   })
 
-  return totalArray
-})
+//   return totalArray
+// })
 </script>
 
 <style scoped lang="less">
