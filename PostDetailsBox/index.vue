@@ -34,6 +34,9 @@ import ModelFour from './PostBox/ModelFour.vue'
 import ModelFive from './PostBox/ModelFive.vue'
 import service from '@/service'
 
+const PUBLIC_DISPLAY = import.meta.env.PUBLIC_DISPLAY
+console.log('🚀 ~ PUBLIC_DISPLAY:', PUBLIC_DISPLAY)
+
 interface IConfigParamJson {
   jsonData: any[]
   postIdData: any[]
@@ -72,13 +75,10 @@ const getBBSDetail = async (_postId?: string) => {
       })
       if (response.data.success) {
         bbs_content.value = response.data.data
-        props.datas.configParamJson.title = bbs_content.value.title
-        // data.value.title = response.data.data.title
+        if (!PUBLIC_DISPLAY) {
+          props.datas.configParamJson.title = bbs_content.value.title
+        }
       } else {
-        ElMessage({
-          type: 'error',
-          message: '未找到帖子信息',
-        })
         isError.value = true
       }
     } catch (error) {
