@@ -22,7 +22,7 @@ const props = defineProps({
     required: true
   },
   data: {
-    type: Object as () => PostDetail,
+    type: Object as () => any,
     required: true
   }
 })

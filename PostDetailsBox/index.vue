@@ -43,6 +43,7 @@ interface IConfigParamJson {
   pageSize: number
   id: string
   align: 'center'
+  postId: string
 }
 
 interface IDatas {
@@ -53,25 +54,18 @@ const props = defineProps<{ datas: IDatas }>()
 
 const isLoading = ref(false)
 const isError = ref(false)
-const postId = new URL(window.location.href).searchParams.get('postId')
-
-const data = ref<PostDetail>(props.datas.configParamJson)
-console.log('🚀 ~ data:', data)
+const postId = ref(props.datas.configParamJson.postId)
+const data = ref<any>(props.datas.configParamJson)
 
 const bbs_content = ref()
 const gameType = ref('a6') // ref(gameDataStore.get().gameType)
 
-const getBBSDetail = async () => {
-  const postData = data.value.postIdData?.find((item) => item.gameType === gameType.value)
-  console.log('🚀 ~ getBBSDetail ~ postData:', postData)
-  // console.log('getBBSDetail', postData?.postId)
-  // if (!props.data.postIdData) return showFailToast('postId未配置');
-  // console.log('gameDataStore', gameDataStore.get()); //gameDataStore.get()
-  // return;
+const getBBSDetail = async (_postId: string) => {
+  // const postData = data.value.postIdData?.find((item) => item.gameType === gameType.value)
   try {
     isLoading.value = true
     const response = await service.bbs.getDetailPost({
-      postId: postData?.postId //实际这里用的是postId也就是帖子ID
+      postId: _postId || postId.value //实际这里用的是postId也就是帖子ID
     })
     // console.log(response);
     if (response.data.success) {
@@ -90,6 +84,18 @@ const getBBSDetail = async () => {
     isLoading.value = false
   }
 }
+
+watch(
+  () => props.datas.configParamJson.postId,
+  (newVal, oldVal) => {
+    if (newVal) {
+      getBBSDetail(newVal)
+    }
+  },
+  {
+    immediate: true
+  }
+)
 
 // gameDataStore.subscribe(async (item) => {
 //   // console.log('gameDataStore', data, gameType.value)

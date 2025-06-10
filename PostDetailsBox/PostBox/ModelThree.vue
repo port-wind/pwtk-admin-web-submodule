@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import type { PostData, PostDetail } from '../NavBBSListBox'
+import type { PostData } from '../NavBBSListBox'
 // import { PUBLIC_CDN_URL } from '@/consts'
 const PUBLIC_CDN_URL = 'https://tk2cdn.ai4funs.com/'
 const props = defineProps({
@@ -21,12 +21,12 @@ const props = defineProps({
     required: true
   },
   data: {
-    type: Object as () => PostDetail,
+    type: Object as () => any,
     required: true
   }
 })
 
-function getBackgroundStyle(data: PostDetail): string {
+function getBackgroundStyle(data: any): string {
   if (data.titleBgImg) {
     const isAbsoluteUrl = data.titleBgImg.startsWith('http') || data.titleBgImg.startsWith('https')
     return `url(${isAbsoluteUrl ? data.titleBgImg : `${PUBLIC_CDN_URL}${data.titleBgImg}`})` // 使用背景图片
