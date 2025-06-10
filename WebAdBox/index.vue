@@ -2,15 +2,14 @@
 <template>
   <div class="web-ad-box">
     <div class="web-ad-box-content">
-      {{ datas.configParamJson.tabsData }}
       <div class="mbox web-guide" v-if="datas.configParamJson.tabsData.length > 0 && isError === false">
         <StateManager :loading="isLoading" :error="isError" @refresh="fetchWebGuideList()">
           <van-tabs color="var(--theme-color)" v-model:active="tabIndex" type="card" @change="onTabChange">
             <van-tab
               v-for="(item, index) in datas.configParamJson.tabsData"
-              :key="item.gameTypeCode"
-              :title="item.gameTypeName"
-              :name="item.gameTypeName"
+              :key="index"
+              :title="item.gameTypeShortName"
+              :name="index"
             ></van-tab>
           </van-tabs>
           <div class="web-container">
@@ -124,7 +123,7 @@ const fetchWebGuideList = async (index?: number) => {
     const res = await service.website.getPageWebsiteList({
       focusGameType: [gameTypeCode.value],
       page: page.value,
-      size,
+      size
     })
     console.log('🚀 ~ 999999fetchWebGuideList8889999999 ~ res:', res)
     // console.log('fetchWebGuideList', res)
