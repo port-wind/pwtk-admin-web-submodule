@@ -1,11 +1,11 @@
 <template>
   <div class="swipe">
     <!-- Model 1 的渲染内容 -->
-    <SwipeCustom v-if="data.model === 's1'" :data="data" />
+    <SwipeCustom v-if="datas.configParamJson.model === 's1'" :data="datas.configParamJson" />
     <!-- Model 2 的渲染内容 -->
-    <SwipeLine v-else-if="data.model === 's2'" :data="data" />
+    <SwipeLine v-else-if="datas.configParamJson.model === 's2'" :data="datas.configParamJson" />
     <!-- Model 3 的渲染内容 -->
-    <SwipeCode v-else :data="data" />
+    <SwipeCode v-else :data="datas.configParamJson" />
   </div>
 </template>
 <script setup lang="ts" name="Swipe">
@@ -15,7 +15,7 @@ import SwipeLine from './swipe/SwipeLine.vue'
 import SwipeCode from './swipe/SwipeCode.vue'
 
 const props = defineProps({
-  data: {
+  datas: {
     type: Object as () => any,
     required: true
   }

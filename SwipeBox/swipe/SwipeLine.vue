@@ -1,6 +1,6 @@
 <template>
   <div class="mbox">
-    <van-swipe class="my-swipe" v-bind="props.data.otherAttrs">
+    <van-swipe class="my-swipe" v-bind="data.otherAttrs">
       <van-swipe-item v-for="(group, groupIndex) in groupedImages" :key="groupIndex">
         <div class="swipe-item" v-for="(item, index) in group" :key="index">
           <div class="swipe-item-image" v-if="item">
