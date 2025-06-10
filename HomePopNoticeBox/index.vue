@@ -1,212 +1,94 @@
 <template>
-  <div class="home-pop-notice-box">
-    <div class="notice-container" :class="`style-${datas.configParamJson?.style || 'default'}`">
-      <div v-if="datas.configParamJson?.showIcon" class="notice-icon">📢</div>
-
-      <div class="notice-content">
-        <div v-if="datas.configParamJson?.title" class="notice-title">
-          {{ datas.configParamJson.title }}
-        </div>
-
-        <div class="notice-text">
-          {{ datas.configParamJson?.content || '这是一条重要公告信息，请注意查看！' }}
-        </div>
-
-        <div v-if="datas.configParamJson?.showTime" class="notice-time">
-          {{ formatTime }}
-        </div>
-      </div>
-
-      <div v-if="datas.configParamJson?.showClose" class="notice-close">✕</div>
+  <div class="HomePopNoticeBox">
+    <div class="home-pop-notice-box-container">
+      <van-popup v-if="datas.configParamJson.content" v-model:show="showCenter" closeable round class="home-pop">
+        <template #default>
+          <h4 class="title">{{ datas.configParamJson.title }}</h4>
+          <div class="content" v-html="datas.configParamJson.content"></div>
+          <div class="close-pop">
+            <span class="close-pop-time">{{ countdown }}&nbsp;</span>
+            秒后关闭
+          </div>
+        </template>
+      </van-popup>
+      <!-- <section v-if="data?.model === 's1"></section>
+  </section> -->
+      <section v-else-if="datas.configParamJson.model === 's2'">
+        <p>正在开发中</p>
+      </section>
     </div>
     <slot name="deles" />
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed } from 'vue'
-
-interface Props {
-  datas: {
-    componentName: string
-    componentType: string
-    configParamJson: {
-      model?: string
-      title?: string
-      content?: string
-      style?: 'default' | 'warning' | 'info' | 'success'
-      showIcon?: boolean
-      showTime?: boolean
-      showClose?: boolean
-      autoClose?: boolean
-      duration?: number
-    }
+<script setup lang="ts" name="HomePopNoticeBox">
+import { onMounted, ref } from 'vue'
+import { Popup as VanPopup } from 'vant'
+interface HomePopNoticeProps {
+  model: string
+  title: string
+  content: string
+  time: number
+  configParamJson: {
+    model: string
+    title: string
+    content: string
+    time: number
   }
-  pageModel?: 'websiteMode' | 'templateMode' | 'componentMode'
 }
+// 接收父组件传入的富文本内容
+const props = defineProps<{ datas: HomePopNoticeProps }>()
+// console.log(props.data);
+// const props = defineProps<{
+//   content: string;
+// }>();
 
-const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode'
-})
+const showCenter = ref(true)
 
-const formatTime = computed(() => {
-  const now = new Date()
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(
-    2,
-    '0'
-  )} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
+const countdown = ref(props.data.time ?? 5) // 倒计时初始值
+
+onMounted(() => {
+  const interval = setInterval(() => {
+    if (countdown.value > 0) {
+      countdown.value -= 1
+    } else {
+      showCenter.value = false
+      clearInterval(interval)
+    }
+  }, 1000)
 })
 </script>
 
-<style lang="scss" scoped>
-.home-pop-notice-box {
-  position: relative;
-  margin: 16px;
-
-  .notice-container {
-    display: flex;
-    align-items: flex-start;
-    padding: 16px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-
-    &:hover {
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    }
-
-    .notice-icon {
-      font-size: 20px;
-      margin-right: 12px;
-      flex-shrink: 0;
-    }
-
-    .notice-content {
-      flex: 1;
-
-      .notice-title {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        line-height: 1.4;
-      }
-
-      .notice-text {
-        font-size: 14px;
-        line-height: 1.6;
-        margin-bottom: 8px;
-      }
-
-      .notice-time {
-        font-size: 12px;
-        opacity: 0.7;
-      }
-    }
-
-    .notice-close {
-      font-size: 16px;
-      cursor: pointer;
-      opacity: 0.6;
-      transition: opacity 0.2s;
-      flex-shrink: 0;
-      margin-left: 12px;
-
-      &:hover {
-        opacity: 1;
-      }
-    }
-
-    // 默认样式
-    &.style-default {
-      background: #f8f9fa;
-      border-left: 4px solid #6c757d;
-      color: #495057;
-
-      .notice-icon {
-        color: #6c757d;
-      }
-    }
-
-    // 警告样式
-    &.style-warning {
-      background: #fff3cd;
-      border-left: 4px solid #ffc107;
-      color: #856404;
-
-      .notice-icon {
-        color: #ffc107;
-      }
-    }
-
-    // 信息样式
-    &.style-info {
-      background: #d1ecf1;
-      border-left: 4px solid #17a2b8;
-      color: #0c5460;
-
-      .notice-icon {
-        color: #17a2b8;
-      }
-    }
-
-    // 成功样式
-    &.style-success {
-      background: #d4edda;
-      border-left: 4px solid #28a745;
-      color: #155724;
-
-      .notice-icon {
-        color: #28a745;
-      }
-    }
+<style scoped lang="less">
+/* 添加一些样式以便更好地展示 */
+.home-pop {
+  height: 40%;
+  width: 80%;
+  max-width: 600px;
+  padding: 0.5rem;
+  overflow: hidden;
+  .title {
+    font-size: 1rem;
+    text-align: center;
+    color: #333; // 设置字体颜色
+    margin-bottom: 0.5rem; // 增加下边距
+    border-bottom: 2px solid #eee; // 添加下边框
+    padding-bottom: 0.5rem; // 增加下边距
+  }
+  .content {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    overflow-y: scroll;
+    height: 100%;
   }
 }
-
-// 弹窗动画效果
-@keyframes slideInDown {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideOutUp {
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-}
-
-.home-pop-notice-box {
-  animation: slideInDown 0.3s ease-out;
-}
-
-// 响应式设计
-@media (max-width: 768px) {
-  .home-pop-notice-box {
-    margin: 8px;
-
-    .notice-container {
-      padding: 12px;
-
-      .notice-content {
-        .notice-title {
-          font-size: 14px;
-        }
-
-        .notice-text {
-          font-size: 13px;
-        }
-      }
-    }
+.close-pop {
+  position: fixed;
+  top: 1%;
+  right: 1%;
+  font-size: 0.6rem;
+  .close-pop-time {
+    color: red;
   }
 }
 </style>
