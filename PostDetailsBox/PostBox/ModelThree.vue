@@ -5,7 +5,7 @@
       v-if="data && data.title"
       :style="`text-align: ${data.align || 'left'}; background: ${getBackgroundStyle(data)};background-size: cover;`"
     >
-      {{ bbs_content.title ?? data.title }}
+      {{ data.title ?? bbs_content.title }}
     </h3>
     <div class="bbs-content" v-html="bbs_content.postContent"></div>
   </div>

@@ -55,7 +55,6 @@ const postId = ref(props.datas.configParamJson.postId)
 // const data = ref<any>(props.datas.configParamJson)
 
 const bbs_content = ref()
-const gameType = ref('a6') // ref(gameDataStore.get().gameType)
 
 const getBBSDetail = async (_postId?: string) => {
   if (_postId || postId.value) {
@@ -66,8 +65,13 @@ const getBBSDetail = async (_postId?: string) => {
       })
       if (response.data.success) {
         bbs_content.value = response.data.data
+        props.datas.configParamJson.title = bbs_content.value.title
         // data.value.title = response.data.data.title
       } else {
+        ElMessage({
+          type: 'error',
+          message: '未找到帖子信息'
+        })
         isError.value = true
       }
     } catch (error) {
