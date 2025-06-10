@@ -43,6 +43,10 @@ const props = defineProps({
 </script>
 
 <style scoped lang="less">
+:deep(.custom-box-container) {
+  --theme-color: #f39800;
+}
+
 .custom-box {
   position: relative;
 }
