@@ -67,15 +67,18 @@ const getBBSDetail = async (_postId?: string) => {
 
   const firstPostId = postList[0].postId
 
-  if (_postId || postId.value || firstPostId) {
+  const tempPostId = _postId || postId.value || firstPostId
+
+  if (tempPostId) {
     try {
       isLoading.value = true
       const response = await service.bbs.getDetailPost({
-        postId: _postId || postId.value || firstPostId, //实际这里用的是postId也就是帖子ID
+        postId: tempPostId //实际这里用的是postId也就是帖子ID
       })
       if (response.data.success) {
         bbs_content.value = response.data.data
-        if (!PUBLIC_DISPLAY) {
+        if (_postId) {
+          console.log('🚀 ~ getBBSDetail ~ _postId:', _postId)
           props.datas.configParamJson.title = bbs_content.value.title
         }
       } else {
@@ -95,9 +98,6 @@ watch(
     if (newVal) {
       getBBSDetail(newVal)
     }
-  },
-  {
-    immediate: true,
   }
 )
 
