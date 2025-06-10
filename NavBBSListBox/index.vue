@@ -1,13 +1,15 @@
 <template>
-  <div class="nav-bbs-list-box">
-    <div class="bbs-list-container">
-      <div v-if="datas.configParamJson?.title" class="bbs-title">
-        {{ datas.configParamJson.title }}
-      </div>
-      <div class="bbs-list">
-        <div v-for="(item, index) in mockData" :key="index" class="bbs-item">
-          <div class="bbs-item-title">{{ item.title }}</div>
-          <div class="bbs-item-time">{{ item.time }}</div>
+  <div class="NavBBSListBox">
+    <div class="nav-bbs-list-box">
+      <div class="bbs-list-container">
+        <div v-if="datas.configParamJson?.title" class="bbs-title">
+          {{ datas.configParamJson.title }}
+        </div>
+        <div class="bbs-list">
+          <div v-for="(item, index) in mockData" :key="index" class="bbs-item">
+            <div class="bbs-item-title">{{ item.title }}</div>
+            <div class="bbs-item-time">{{ item.time }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -15,7 +17,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="NavBBSListBox">
 import { computed } from 'vue'
 
 interface Props {
@@ -36,7 +38,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode',
+  pageModel: 'websiteMode'
 })
 
 // 模拟数据
@@ -44,12 +46,16 @@ const mockData = computed(() => {
   const size = props.datas?.configParamJson?.pageSize || 5
   return Array.from({ length: size }, (_, index) => ({
     title: `BBS帖子标题 ${index + 1}`,
-    time: `2024-01-${String(index + 1).padStart(2, '0')}`,
+    time: `2024-01-${String(index + 1).padStart(2, '0')}`
   }))
 })
 </script>
 
 <style lang="scss" scoped>
+.NavBBSListBox {
+  position: relative;
+}
+
 .nav-bbs-list-box {
   position: relative;
   padding: 16px;
