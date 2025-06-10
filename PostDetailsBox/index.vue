@@ -25,25 +25,22 @@
 
 <script setup lang="ts" name="PostDetailsBox">
 import { onMounted, ref } from 'vue'
-import type { PostDetail } from './NavBBSListBox'
-// import { gameDataStore } from '@/store'
 import StateManager from '../StateManager.vue'
 import ModelThree from './PostBox/ModelThree.vue'
 import ModelFour from './PostBox/ModelFour.vue'
 import ModelFive from './PostBox/ModelFive.vue'
 import service from '@/service'
-import utils from '@/utils'
 
 interface IConfigParamJson {
   jsonData: any[]
   postIdData: any[]
-  text: string
-  title: string
   model: string
-  pageSize: number
-  id: string
-  align: 'center'
+  title: string
+  text: string
   postId: string
+  align: 'center'
+  titleBgImg: string
+  titleBg: string
 }
 
 interface IDatas {
@@ -55,33 +52,29 @@ const props = defineProps<{ datas: IDatas }>()
 const isLoading = ref(false)
 const isError = ref(false)
 const postId = ref(props.datas.configParamJson.postId)
-const data = ref<any>(props.datas.configParamJson)
+// const data = ref<any>(props.datas.configParamJson)
 
 const bbs_content = ref()
 const gameType = ref('a6') // ref(gameDataStore.get().gameType)
 
-const getBBSDetail = async (_postId: string) => {
-  // const postData = data.value.postIdData?.find((item) => item.gameType === gameType.value)
-  try {
-    isLoading.value = true
-    const response = await service.bbs.getDetailPost({
-      postId: _postId || postId.value //实际这里用的是postId也就是帖子ID
-    })
-    // console.log(response);
-    if (response.data.success) {
-      bbs_content.value = response.data.data
-      data.value.title = response.data.data.title
-
-      // _title.value = response.data.data.title
-      // console.log(bbs_content.value)
-      // console.log(BBS_Data.value);
-    } else {
+const getBBSDetail = async (_postId?: string) => {
+  if (_postId || postId.value) {
+    try {
+      isLoading.value = true
+      const response = await service.bbs.getDetailPost({
+        postId: _postId || postId.value //实际这里用的是postId也就是帖子ID
+      })
+      if (response.data.success) {
+        bbs_content.value = response.data.data
+        // data.value.title = response.data.data.title
+      } else {
+        isError.value = true
+      }
+    } catch (error) {
       isError.value = true
+    } finally {
+      isLoading.value = false
     }
-  } catch (error) {
-    isError.value = true
-  } finally {
-    isLoading.value = false
   }
 }
 
@@ -97,23 +90,6 @@ watch(
   }
 )
 
-// gameDataStore.subscribe(async (item) => {
-//   // console.log('gameDataStore', data, gameType.value)
-//   //   console.log('gameDataStore 更新')
-//   if (item.gameType && (gameType.value = item.gameType)) {
-//     switch (data.value.model) {
-//       case 's1':
-//       case 's2': //获取帖子详情
-//       case 's3': //获取帖子详情
-//         await getBBSDetail()
-//         break
-
-//       default:
-//         console.log('无匹配到模版', data.value.model)
-//         break
-//     }
-//   }
-// })
 onMounted(async () => {
   await getBBSDetail()
 })
@@ -122,5 +98,9 @@ onMounted(async () => {
 <style scoped lang="less">
 .PostDetailsBox {
   position: relative;
+}
+
+:deep(.post-details-box-container) {
+  --theme-color: #f39800;
 }
 </style>
