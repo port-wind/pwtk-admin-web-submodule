@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts" name="CustomBarAdBox">
-import BoxTitle from './BoxTitle.vue'
+import BoxTitle from './CustomBarAdBoxTitle.vue'
 import { Grid as VanGrid, GridItem as VanGridItem } from 'vant'
 
 interface CustomBarType {

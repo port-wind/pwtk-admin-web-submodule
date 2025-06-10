@@ -27,7 +27,7 @@
 import { onMounted, ref } from 'vue'
 import type { PostDetail } from './NavBBSListBox'
 // import { gameDataStore } from '@/store'
-import StateManager from '@/components/Vue/components/StateManager.vue'
+import StateManager from '../StateManager.vue'
 import ModelThree from './PostBox/ModelThree.vue'
 import ModelFour from './PostBox/ModelFour.vue'
 import ModelFive from './PostBox/ModelFive.vue'
