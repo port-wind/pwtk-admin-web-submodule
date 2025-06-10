@@ -18,6 +18,9 @@
           <p>{{ datas.configParamJson.model }}此模式尚未开发</p>
         </div>
       </StateManager>
+      <div v-if="!bbs_content" class="post-details-box-container-empty">
+        <p>暂无帖子信息</p>
+      </div>
     </div>
     <slot name="deles" />
   </div>
@@ -57,11 +60,15 @@ const postId = ref(props.datas.configParamJson.postId)
 const bbs_content = ref()
 
 const getBBSDetail = async (_postId?: string) => {
-  if (_postId || postId.value) {
+  const postList = props.datas.configParamJson.postIdData
+
+  const firstPostId = postList[0].postId
+
+  if (_postId || postId.value || firstPostId) {
     try {
       isLoading.value = true
       const response = await service.bbs.getDetailPost({
-        postId: _postId || postId.value //实际这里用的是postId也就是帖子ID
+        postId: _postId || postId.value || firstPostId //实际这里用的是postId也就是帖子ID
       })
       if (response.data.success) {
         bbs_content.value = response.data.data
@@ -102,6 +109,14 @@ onMounted(async () => {
 <style scoped lang="less">
 .PostDetailsBox {
   position: relative;
+}
+
+.post-details-box-container-empty {
+  height: 120px;
+  text-align: center;
+  line-height: 120px;
+  font-size: 16px;
+  color: #999;
 }
 
 :deep(.post-details-box-container) {
