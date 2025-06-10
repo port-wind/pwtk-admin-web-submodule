@@ -2,20 +2,20 @@
   <div class="PostDetailsBox">
     <div class="post-details-box-container">
       <StateManager :loading="isLoading" :error="isError">
-        <div v-if="data.model === 's1'">
+        <div v-if="datas.configParamJson.model === 's1'">
           <!-- s3 模式的内容 -->
-          <ModelThree v-if="bbs_content" :bbs_content="bbs_content" :data="data" />
+          <ModelThree v-if="bbs_content" :bbs_content="bbs_content" :data="datas.configParamJson" />
         </div>
-        <div v-else-if="data.model === 's2'">
+        <div v-else-if="datas.configParamJson.model === 's2'">
           <!-- s2 模式的内容 -->
-          <ModelFour v-if="bbs_content" :bbs_content="bbs_content" :data="data" />
+          <ModelFour v-if="bbs_content" :bbs_content="bbs_content" :data="datas.configParamJson" />
         </div>
-        <div v-else-if="data.model === 's3'">
+        <div v-else-if="datas.configParamJson.model === 's3'">
           <!-- s2 模式的内容 -->
-          <ModelFive v-if="bbs_content" :bbs_content="bbs_content" :data="data" />
+          <ModelFive v-if="bbs_content" :bbs_content="bbs_content" :data="datas.configParamJson" />
         </div>
         <div v-else>
-          <p>{{ data.model }}此模式尚未开发</p>
+          <p>{{ datas.configParamJson.model }}此模式尚未开发</p>
         </div>
       </StateManager>
     </div>
@@ -34,24 +34,36 @@ import ModelFive from './PostBox/ModelFive.vue'
 import service from '@/service'
 import utils from '@/utils'
 
-const props = defineProps({
-  componentData: {
-    type: Object,
-    required: true
-  }
-})
+interface IConfigParamJson {
+  jsonData: any[]
+  postIdData: any[]
+  text: string
+  title: string
+  model: string
+  pageSize: number
+  id: string
+  align: 'center'
+}
+
+interface IDatas {
+  configParamJson: IConfigParamJson
+}
+
+const props = defineProps<{ datas: IDatas }>()
 
 const isLoading = ref(false)
 const isError = ref(false)
 const postId = new URL(window.location.href).searchParams.get('postId')
 
-const data = ref<PostDetail>(utils.formateJSON(props.componentData.configParamJson))
+const data = ref<PostDetail>(props.datas.configParamJson)
+console.log('🚀 ~ data:', data)
 
 const bbs_content = ref()
 const gameType = ref('a6') // ref(gameDataStore.get().gameType)
 
 const getBBSDetail = async () => {
   const postData = data.value.postIdData?.find((item) => item.gameType === gameType.value)
+  console.log('🚀 ~ getBBSDetail ~ postData:', postData)
   // console.log('getBBSDetail', postData?.postId)
   // if (!props.data.postIdData) return showFailToast('postId未配置');
   // console.log('gameDataStore', gameDataStore.get()); //gameDataStore.get()
@@ -97,8 +109,12 @@ const getBBSDetail = async () => {
 //   }
 // })
 onMounted(async () => {
-  //   await getBBSDetail()
+  await getBBSDetail()
 })
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.PostDetailsBox {
+  position: relative;
+}
+</style>
