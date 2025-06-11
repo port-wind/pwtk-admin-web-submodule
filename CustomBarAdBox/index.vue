@@ -12,13 +12,11 @@
             </div>
           </template>
         </div>
-
         <div v-else-if="datas.configParamJson.model === 's2'">
           <template v-for="(item, index) in datas.configParamJson.itemData" :key="index">
             <div v-html="item.content"></div>
           </template>
         </div>
-
         <van-grid v-else class="button-bar" :column-num="2" :border="false" :gutter="10">
           <van-grid-item v-for="(item, index) in datas.configParamJson.itemData" :key="index">
             <a :href="item.link" class="button-bar-ad">
@@ -35,29 +33,10 @@
 <script setup lang="ts" name="CustomBarAdBox">
 import BoxTitle from './CustomBarAdBoxTitle.vue'
 import { Grid as VanGrid, GridItem as VanGridItem } from 'vant'
+import type { IDatas } from './type'
 
-interface CustomBarType {
-  model: 's1' | 's2' | 's3'
-  title?: string
-  itemData: ColorBarType[]
-  configParamJson: {
-    model: 's1' | 's2' | 's3'
-    itemData: ColorBarType[]
-    title?: string
-    align?: string
-    titleBg?: string
-  }
-}
-
-interface ColorBarType {
-  link: string
-  text: string
-  content?: string
-}
-
-// 使用 ColorBarType 作为 props 的类型
 const props = defineProps<{
-  datas: CustomBarType
+  datas: IDatas
 }>()
 
 // 生成随机颜色的函数
@@ -72,15 +51,15 @@ function getRandomColor() {
 </script>
 
 <style scoped lang="scss">
-:deep(.custom-bar-ad-box-container) {
-  --theme-color: #f39800;
-}
-
 .custom-bar-ad-box {
   position: relative;
 
+  :deep(.custom-bar-ad-box-container) {
+    --theme-color: #f39800;
+  }
+
   .custom-bar-ad-box-container {
-    min-height: 50px;
+    min-height: 20px;
   }
 }
 
