@@ -69,12 +69,13 @@ function getRandomColor() {
   }
   return color
 }
-
-// 更新数据
-console.log('props.datas zzzz------>', props.datas.configParamJson)
 </script>
 
 <style scoped lang="scss">
+:deep(.custom-bar-ad-box-container) {
+  --theme-color: #f39800;
+}
+
 .custom-bar-ad-box {
   position: relative;
 
