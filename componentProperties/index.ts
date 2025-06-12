@@ -69,6 +69,7 @@ import TopNavBarProperties from './TopNavBar'
 import ImageCardProperties from './ImageCard'
 import LotteryResultProperties from './LotteryResult'
 import InfoboxProperties from './Infobox'
+import LotteryRiddleSolutionProperties from './LotteryRiddleSolution'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -231,6 +232,10 @@ LotteryResultProperties.forEach((value, key) => {
 })
 
 InfoboxProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+LotteryRiddleSolutionProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
