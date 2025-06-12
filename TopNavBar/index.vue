@@ -5,8 +5,8 @@ import TopImage from '../assets/images/top.png'
 const props = defineProps({
   datas: {
     type: Object as () => any,
-    required: true,
-  },
+    required: true
+  }
 })
 const onClickLeft = () => history.back()
 const onClickRight = () => {
@@ -15,11 +15,20 @@ const onClickRight = () => {
   if (comContainer) {
     comContainer.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: 'smooth'
     })
   }
 }
 const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
+const route = useRoute()
+
+const isAdminEditor = computed(
+  () =>
+    route.path === '/webVisionBuilder' ||
+    route.path === '/webVisionBuilderWebsite' ||
+    route.path === '/webVisionBuilderTemplate'
+)
+console.log('🚀 ~ isAdminEditor:', isAdminEditor.value)
 // 定义 props 接收父组件传入的数据
 const getFullUrl = (url: string, baseUrl: string): string => {
   return /^https?:\/\//.test(url) ? url : `${baseUrl}${url}`
@@ -50,7 +59,8 @@ const getFullUrl = (url: string, baseUrl: string): string => {
           <template #right>
             <!-- <Icon name="arrow-up" size="18" /> -->
             <div class="top-nav-bar-right-image">
-              <Image :src="TopImage.src" />
+              <img v-if="!isAdminEditor" src="@/assets/images/top.png" />
+              <Image v-else :src="TopImage" />
             </div>
           </template>
         </NavBar>

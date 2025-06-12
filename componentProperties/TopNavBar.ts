@@ -25,14 +25,8 @@ componentProperties.set('TopNavBar', {
     pageCode: '',
     configParamJson: {
       title: '首页',
-      model: 's1',
       logo: '',
-      itemData: [
-        {
-          text: '广告文字内容',
-          link: 'https://www.baidu.com'
-        }
-      ]
+      homeUrl: ''
     }
   }
 })
