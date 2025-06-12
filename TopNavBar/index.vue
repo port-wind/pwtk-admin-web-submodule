@@ -9,8 +9,8 @@ console.log('🚀 ~ display:', display)
 const props = defineProps({
   datas: {
     type: Object as () => any,
-    required: true,
-  },
+    required: true
+  }
 })
 const onClickLeft = () => history.back()
 const onClickRight = () => {
@@ -19,7 +19,7 @@ const onClickRight = () => {
   if (comContainer) {
     comContainer.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: 'smooth'
     })
   }
 }
