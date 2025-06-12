@@ -27,10 +27,11 @@ componentProperties.set('Infobox', {
       line2: 'Copyright @ 2006-2025 天天好彩',
       line3: '广告联系TG:@U22244',
       styleJSON: {
-        backgroundColor: '#f7f8fa'
+        backgroundColor: '#f7f8fa',
+        textColor: '#000'
       }
     }
   }
 })
 
-export default componentProperties 
+export default componentProperties

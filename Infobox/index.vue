@@ -11,7 +11,8 @@ const styleJSON = computed(() => props.datas.configParamJson.styleJSON)
 
 const imageStyle = computed(() => {
   return {
-    backgroundColor: styleJSON.value?.backgroundColor
+    backgroundColor: styleJSON.value?.backgroundColor,
+    color: styleJSON.value?.textColor
   }
 })
 </script>
@@ -32,9 +33,9 @@ const imageStyle = computed(() => {
 <style scoped lang="scss">
 .infobox-wrapper {
   position: relative;
-  padding: 20px 15px;
+  padding: 10px 0;
   background-color: #f7f8fa;
-  border-radius: 8px;
+  border-radius: 0;
 }
 
 .infobox-content {
