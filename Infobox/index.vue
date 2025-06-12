@@ -8,11 +8,17 @@ interface IProps {
 const props = defineProps<IProps>()
 
 const styleJSON = computed(() => props.datas.configParamJson.styleJSON)
+
+const imageStyle = computed(() => {
+  return {
+    backgroundColor: styleJSON.value?.backgroundColor
+  }
+})
 </script>
 
 <template>
   <div class="infobox-wrapper">
-    <div class="infobox-content" :style="{ backgroundColor: styleJSON?.value?.backgroundColor }">
+    <div class="infobox-content" :style="imageStyle">
       <p class="info-line">{{ datas.configParamJson.line1 }}</p>
       <p class="info-line">{{ datas.configParamJson.line2 }}</p>
       <p class="info-line">
