@@ -1,13 +1,13 @@
 <script setup lang="ts" name="TopNavBar">
 import { defineProps } from 'vue'
 import { NavBar } from 'vant'
+import { Image } from 'vant'
 import { Icon } from 'vant'
-import getImageUrl from '@/utils/getImageUrl'
 const props = defineProps({
   datas: {
     type: Object as () => any,
-    required: true
-  }
+    required: true,
+  },
 })
 const onClickLeft = () => history.back()
 
@@ -21,7 +21,7 @@ const getFullUrl = (url: string, baseUrl: string): string => {
 <template>
   <div class="top-nav-bar">
     <div class="top-nav-bar-container">
-      <van-nav-bar
+      <NavBar
         class="custom-bar-nav"
         :title="datas.configParamJson.title"
         left-text="返回"
@@ -29,16 +29,16 @@ const getFullUrl = (url: string, baseUrl: string): string => {
         @click-left="onClickLeft"
       >
         <template #left>
-          <van-image
+          <Image
             class="top-nav-bar-logo"
             :src="getFullUrl(datas.configParamJson.logo, PUBLIC_CDN_URL)"
             :alt="datas.configParamJson.title"
           />
         </template>
         <template #right>
-          <van-icon name="arrow-up" size="18" />
+          <Icon name="arrow-up" size="18" />
         </template>
-      </van-nav-bar>
+      </NavBar>
     </div>
     <slot name="deles" />
   </div>
