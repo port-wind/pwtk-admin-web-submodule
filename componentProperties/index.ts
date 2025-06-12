@@ -67,6 +67,7 @@ import PersonalizedrecommendationProperties from './personalizedrecommendation'
 import OnlineserviceProperties from './onlineservice'
 import TopNavBarProperties from './TopNavBar'
 import ImageCardProperties from './ImageCard'
+import LotteryResultProperties from './LotteryResult'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -221,6 +222,10 @@ OnlineserviceProperties.forEach((value, key) => {
 })
 
 ImageCardProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+LotteryResultProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
