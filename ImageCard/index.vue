@@ -1,36 +1,97 @@
 <script setup lang="ts" name="ImageCard">
-import { defineProps } from 'vue'
-import { Card } from 'vant'
+import { computed } from 'vue'
 import type { IDatas } from './type'
 
-const props = defineProps({
-  datas: {
-    type: Object as () => IDatas,
-    required: true
+interface IProps {
+  datas: IDatas
+}
+const props = defineProps<IProps>()
+
+const styleJSON = computed(() => props.datas.configParamJson.imageStyleJSON)
+
+const imageStyle = computed(() => {
+  return {
+    height: styleJSON.value?.height ? `${styleJSON.value.height}px` : 'auto',
+    borderRadius: styleJSON.value?.borderRadius ? `${styleJSON.value.borderRadius}px` : '8px'
   }
 })
 
 const handleLink = () => {
-  if (props.datas.configParamJson.link) {
-    window.open(props.datas.configParamJson.link, '_blank')
+  const link = props.datas.configParamJson.link
+  if (link) {
+    window.open(link, '_blank')
   }
 }
 </script>
 
 <template>
-  <div class="image-card" @click="handleLink">
-    <van-card
-      :desc="datas.configParamJson.description"
-      :title="datas.configParamJson.title"
-      :thumb="datas.configParamJson.imageUrl"
-    />
+  <div class="ImageCard">
+    <div class="ImageCard-content">
+      <div class="ImageCard-container" @click="handleLink">
+        <img
+          :src="props.datas.configParamJson.imageUrl"
+          :alt="props.datas.configParamJson.title"
+          class="card-image"
+          :style="imageStyle"
+          draggable="false"
+        />
+        <div class="card-content">
+          <h3 class="card-title">{{ props.datas.configParamJson.title }}</h3>
+          <p class="card-description">{{ props.datas.configParamJson.description }}</p>
+        </div>
+      </div>
+    </div>
     <slot name="deles" />
   </div>
 </template>
 
-<style lang="scss" scoped>
-.image-card {
+<style scoped lang="scss">
+.ImageCard {
   position: relative;
+}
+
+.ImageCard-content {
+}
+
+.ImageCard-container {
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  background-color: #fff;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.card-image {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-content {
+  padding: 15px;
+  flex-grow: 1;
+}
+
+.card-title {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.card-description {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
 }
 </style>

@@ -2,16 +2,15 @@
 import { defineProps, computed } from 'vue'
 import { NavBar, Image, Icon, Sticky } from 'vant'
 import TopImage from '../assets/images/top.png'
-
+import type { IDatas } from './type'
 const display = import.meta.env.PUBLIC_DISPLAY
 console.log('🚀 ~ display:', display)
 
-const props = defineProps({
-  datas: {
-    type: Object as () => any,
-    required: true
-  }
-})
+interface IProps {
+  datas: IDatas
+}
+const props = defineProps<IProps>()
+
 const onClickLeft = () => history.back()
 const onClickRight = () => {
   // "#com-container" 滚动到顶部

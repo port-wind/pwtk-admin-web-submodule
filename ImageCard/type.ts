@@ -1,11 +1,18 @@
-import type { ISetStyle } from '@/views/WebVision/components/componentsbiz/componentProperties'
+import type { ISetStyle } from '../componentProperties/index'
 
-export interface IDatas extends ISetStyle<ImageCard> {}
-
+export interface IDatas extends ISetStyle<ImageCard> {
+}
 export interface ImageCard {
-  model: 's1' | 's2' | 's3'
   imageUrl: string
   title: string
   description: string
   link: string
-} 
+  imageStyleJSON: ImageStyleJSON
+}
+
+// configParamJson 的结构
+export interface ImageStyleJSON {
+  height?: number
+  borderRadius?: number
+}
+

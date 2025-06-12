@@ -23,13 +23,16 @@ componentProperties.set('ImageCard', {
     memo: '',
     pageCode: '',
     configParamJson: {
-      model: 's1',
-      imageUrl: '',
+      imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
       title: '产品标题',
       description: '这里是产品描述',
-      link: ''
+      link: '',
+      imageStyleJSON: {
+        height: 200,
+        borderRadius: 8
+      }
     }
   }
 })
 
-export default componentProperties 
+export default componentProperties
