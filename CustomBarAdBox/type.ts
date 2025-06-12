@@ -12,7 +12,7 @@
 //   componentSort?: string
 // }
 
-import type { ISetStyle } from "@/views/WebVision/const/componentProperties"
+import type { ISetStyle } from '../componentProperties/index'
 
 export interface IDatas extends ISetStyle<CustomBarType> {
   // configParamJson: CustomBarType

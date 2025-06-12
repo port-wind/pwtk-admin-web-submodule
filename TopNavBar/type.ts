@@ -1,4 +1,4 @@
-import type { ISetStyle } from '../componentProperties'
+import type { ISetStyle } from '../componentProperties/index'
 
 export interface IDatas extends ISetStyle<TopNavBar> {
   // configParamJson: CustomBarType
