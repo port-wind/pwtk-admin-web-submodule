@@ -21,7 +21,13 @@ const getFullUrl = (url: string, baseUrl: string): string => {
 <template>
   <div class="top-nav-bar">
     <div class="top-nav-bar-container">
-      <van-nav-bar :title="datas.configParamJson.title" left-text="返回" left-arrow @click-left="onClickLeft">
+      <van-nav-bar
+        class="custom-bar-nav"
+        :title="datas.configParamJson.title"
+        left-text="返回"
+        left-arrow
+        @click-left="onClickLeft"
+      >
         <template #left>
           <van-image
             class="top-nav-bar-logo"
@@ -48,5 +54,11 @@ const getFullUrl = (url: string, baseUrl: string): string => {
 
 .top-nav-bar-logo {
   height: 100%;
+}
+
+.custom-bar-nav {
+  :deep(.van-nav-bar__left) {
+    padding: 0;
+  }
 }
 </style>
