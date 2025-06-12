@@ -4,6 +4,7 @@ import { NavBar } from 'vant'
 import { Image } from 'vant'
 import { Icon } from 'vant'
 import { Sticky } from 'vant'
+import TopImage from '../assets/images/top.png'
 const props = defineProps({
   datas: {
     type: Object as () => any,
@@ -48,7 +49,10 @@ const getFullUrl = (url: string, baseUrl: string): string => {
             />
           </template>
           <template #right>
-            <Icon name="arrow-up" size="18" />
+            <!-- <Icon name="arrow-up" size="18" /> -->
+            <div class="top-nav-bar-right-image">
+              <Image :src="TopImage.src" />
+            </div>
           </template>
         </NavBar>
       </Sticky>
@@ -73,5 +77,17 @@ const getFullUrl = (url: string, baseUrl: string): string => {
   :deep(.van-nav-bar__left) {
     padding: 0;
   }
+  :deep(.van-nav-bar__right) {
+    padding: 0;
+  }
+}
+
+.top-nav-bar-right-image {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
 }
 </style>
