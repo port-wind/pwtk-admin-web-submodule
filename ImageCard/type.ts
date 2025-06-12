@@ -1,12 +1,12 @@
 import type { ISetStyle } from '../componentProperties/index'
 
-export interface IDatas extends ISetStyle<ImageCard> {
-}
+export interface IDatas extends ISetStyle<ImageCard> {}
 export interface ImageCard {
   imageUrl: string
   title: string
   description: string
   link: string
+  enable: boolean
   imageStyleJSON: ImageStyleJSON
 }
 
@@ -15,4 +15,3 @@ export interface ImageStyleJSON {
   height?: number
   borderRadius?: number
 }
-

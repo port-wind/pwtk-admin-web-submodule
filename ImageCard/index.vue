@@ -22,6 +22,11 @@ const handleLink = () => {
     window.open(link, '_blank')
   }
 }
+const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
+// 定义 props 接收父组件传入的数据
+const getFullUrl = (url: string, baseUrl: string): string => {
+  return /^https?:\/\//.test(url) ? url : `${baseUrl}${url}`
+}
 </script>
 
 <template>
@@ -29,13 +34,13 @@ const handleLink = () => {
     <div class="ImageCard-content">
       <div class="ImageCard-container" @click="handleLink">
         <img
-          :src="props.datas.configParamJson.imageUrl"
+          :src="getFullUrl(datas.configParamJson.imageUrl, PUBLIC_CDN_URL)"
           :alt="props.datas.configParamJson.title"
           class="card-image"
           :style="imageStyle"
           draggable="false"
         />
-        <div class="card-content">
+        <div class="card-content" v-if="props.datas.configParamJson.enable">
           <h3 class="card-title">{{ props.datas.configParamJson.title }}</h3>
           <p class="card-description">{{ props.datas.configParamJson.description }}</p>
         </div>

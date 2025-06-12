@@ -23,6 +23,7 @@ componentProperties.set('ImageCard', {
     memo: '',
     pageCode: '',
     configParamJson: {
+      enable: true,
       imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
       title: '产品标题',
       description: '这里是产品描述',
