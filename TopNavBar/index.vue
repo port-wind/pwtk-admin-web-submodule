@@ -1,8 +1,11 @@
 <script setup lang="ts" name="TopNavBar">
 import { defineProps, computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { NavBar, Image, Icon, Sticky } from 'vant'
 import TopImage from '../assets/images/top.png'
+
+const display = import.meta.env.PUBLIC_DISPLAY
+console.log('🚀 ~ display:', display)
+
 const props = defineProps({
   datas: {
     type: Object as () => any,
@@ -21,15 +24,7 @@ const onClickRight = () => {
   }
 }
 const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
-const route = useRoute()
 
-const isAdminEditor = computed(
-  () =>
-    route.path === '/webVisionBuilder' ||
-    route.path === '/webVisionBuilderWebsite' ||
-    route.path === '/webVisionBuilderTemplate'
-)
-console.log('🚀 ~ isAdminEditor:', isAdminEditor.value)
 // 定义 props 接收父组件传入的数据
 const getFullUrl = (url: string, baseUrl: string): string => {
   return /^https?:\/\//.test(url) ? url : `${baseUrl}${url}`
@@ -60,8 +55,8 @@ const getFullUrl = (url: string, baseUrl: string): string => {
           <template #right>
             <!-- <Icon name="arrow-up" size="18" /> -->
             <div class="top-nav-bar-right-image">
-              <img v-if="!isAdminEditor" src="@/assets/images/top.png" />
-              <Image v-else :src="TopImage" />
+              <Image v-if="display" :src="TopImage.src" />
+              <img v-else src="@/assets/images/top.png" />
             </div>
           </template>
         </NavBar>
