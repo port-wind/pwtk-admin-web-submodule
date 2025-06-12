@@ -29,6 +29,7 @@ componentProperties.set('ImageCard', {
       description: '这里是产品描述',
       link: '',
       imageStyleJSON: {
+        enableHeight: false,
         height: 200,
         borderRadius: 8
       }

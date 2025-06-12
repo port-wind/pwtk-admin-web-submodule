@@ -11,7 +11,7 @@ const styleJSON = computed(() => props.datas.configParamJson.imageStyleJSON)
 
 const imageStyle = computed(() => {
   return {
-    height: styleJSON.value?.height ? `${styleJSON.value.height}px` : 'auto',
+    height: styleJSON.value?.enableHeight ? `${styleJSON.value.height}px` : 'auto',
     borderRadius: styleJSON.value?.borderRadius ? `${styleJSON.value.borderRadius}px` : '0px'
   }
 })
@@ -33,13 +33,14 @@ const getFullUrl = (url: string, baseUrl: string): string => {
   <div class="ImageCard">
     <div class="ImageCard-content">
       <div class="ImageCard-container" @click="handleLink">
-        <img
-          :src="getFullUrl(datas.configParamJson.imageUrl, PUBLIC_CDN_URL)"
-          :alt="props.datas.configParamJson.title"
-          class="card-image"
-          :style="imageStyle"
-          draggable="false"
-        />
+        <div :style="imageStyle">
+          <img
+            :src="getFullUrl(datas.configParamJson.imageUrl, PUBLIC_CDN_URL)"
+            :alt="props.datas.configParamJson.title"
+            class="card-image"
+            draggable="false"
+          />
+        </div>
         <div class="card-content" v-if="props.datas.configParamJson.enable">
           <h3 class="card-title">{{ props.datas.configParamJson.title }}</h3>
           <p class="card-description">{{ props.datas.configParamJson.description }}</p>
@@ -76,9 +77,10 @@ const getFullUrl = (url: string, baseUrl: string): string => {
 }
 
 .card-image {
-  width: 100%;
-  object-fit: cover;
-  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 0;
+  vertical-align: middle;
 }
 
 .card-content {

@@ -12,6 +12,7 @@ export interface ImageCard {
 
 // configParamJson 的结构
 export interface ImageStyleJSON {
+  enableHeight: boolean
   height?: number
   borderRadius?: number
 }
