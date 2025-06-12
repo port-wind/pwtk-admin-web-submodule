@@ -1,4 +1,4 @@
-import type { ImageCard } from '@/views/WebVision/components/componentsbiz/ImageCard/type'
+import type { ImageCard } from '../ImageCard/type'
 import type { IComponentProperty, ISetStyle } from './index'
 
 const componentProperties = new Map<string, IComponentProperty<ISetStyle<ImageCard>>>()

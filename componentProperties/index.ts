@@ -68,6 +68,7 @@ import OnlineserviceProperties from './onlineservice'
 import TopNavBarProperties from './TopNavBar'
 import ImageCardProperties from './ImageCard'
 import LotteryResultProperties from './LotteryResult'
+import InfoboxProperties from './Infobox'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -226,6 +227,10 @@ ImageCardProperties.forEach((value, key) => {
 })
 
 LotteryResultProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+InfoboxProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
