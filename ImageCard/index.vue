@@ -12,7 +12,7 @@ const styleJSON = computed(() => props.datas.configParamJson.imageStyleJSON)
 const imageStyle = computed(() => {
   return {
     height: styleJSON.value?.enableHeight ? `${styleJSON.value.height}px` : 'auto',
-    borderRadius: styleJSON.value?.borderRadius ? `${styleJSON.value.borderRadius}px` : '0px',
+    borderRadius: styleJSON.value?.borderRadius ? `${styleJSON.value.borderRadius}px` : '0px'
   }
 })
 
@@ -61,21 +61,12 @@ const getFullUrl = (url: string, baseUrl: string): string => {
 
 .ImageCard-container {
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition:
-    transform 0.3s,
-    box-shadow 0.3s;
   background-color: #fff;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   height: 100%;
   position: relative;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  }
 }
 
 .card-image {
