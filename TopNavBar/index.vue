@@ -1,12 +1,13 @@
 <script setup lang="ts" name="TopNavBar">
-import { defineProps } from 'vue'
+import { defineProps, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { NavBar, Image, Icon, Sticky } from 'vant'
 import TopImage from '../assets/images/top.png'
 const props = defineProps({
   datas: {
     type: Object as () => any,
-    required: true
-  }
+    required: true,
+  },
 })
 const onClickLeft = () => history.back()
 const onClickRight = () => {
@@ -15,7 +16,7 @@ const onClickRight = () => {
   if (comContainer) {
     comContainer.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: 'smooth',
     })
   }
 }
