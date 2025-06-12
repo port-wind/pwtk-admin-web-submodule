@@ -2,11 +2,12 @@
 import { defineProps } from 'vue'
 import { NavBar, Image, Icon, Sticky } from 'vant'
 import TopImage from '../assets/images/top.png'
+console.log('🚀 ~ TopImage:', TopImage)
 const props = defineProps({
   datas: {
     type: Object as () => any,
-    required: true,
-  },
+    required: true
+  }
 })
 const onClickLeft = () => history.back()
 const onClickRight = () => {
@@ -15,7 +16,7 @@ const onClickRight = () => {
   if (comContainer) {
     comContainer.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: 'smooth'
     })
   }
 }
@@ -50,7 +51,7 @@ const getFullUrl = (url: string, baseUrl: string): string => {
           <template #right>
             <!-- <Icon name="arrow-up" size="18" /> -->
             <div class="top-nav-bar-right-image">
-              <Image :src="TopImage.src" />
+              <Image :src="TopImage" />
             </div>
           </template>
         </NavBar>
