@@ -1,9 +1,6 @@
 <script setup lang="ts" name="TopNavBar">
 import { defineProps } from 'vue'
-import { NavBar } from 'vant'
-import { Image } from 'vant'
-import { Icon } from 'vant'
-import { Sticky } from 'vant'
+import { NavBar, Image, Icon, Sticky } from 'vant'
 import TopImage from '../assets/images/top.png'
 const props = defineProps({
   datas: {
@@ -42,11 +39,13 @@ const getFullUrl = (url: string, baseUrl: string): string => {
           @click-right="onClickRight"
         >
           <template #left>
-            <Image
-              class="top-nav-bar-logo"
-              :src="getFullUrl(datas.configParamJson.logo, PUBLIC_CDN_URL)"
-              :alt="datas.configParamJson.title"
-            />
+            <a class="top-nav-bar-home-url" :href="datas.configParamJson.homeUrl" @click="onClickLeft">
+              <Image
+                class="top-nav-bar-logo"
+                :src="getFullUrl(datas.configParamJson.logo, PUBLIC_CDN_URL)"
+                :alt="datas.configParamJson.title"
+              />
+            </a>
           </template>
           <template #right>
             <!-- <Icon name="arrow-up" size="18" /> -->
@@ -89,5 +88,10 @@ const getFullUrl = (url: string, baseUrl: string): string => {
   align-items: center;
   justify-content: center;
   margin-right: 10px;
+}
+
+.top-nav-bar-home-url {
+  padding: 5px 0;
+  height: 100%;
 }
 </style>
