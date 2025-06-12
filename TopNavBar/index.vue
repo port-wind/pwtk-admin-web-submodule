@@ -3,6 +3,7 @@ import { defineProps } from 'vue'
 import { NavBar } from 'vant'
 import { Image } from 'vant'
 import { Icon } from 'vant'
+import { Sticky } from 'vant'
 const props = defineProps({
   datas: {
     type: Object as () => any,
@@ -21,24 +22,26 @@ const getFullUrl = (url: string, baseUrl: string): string => {
 <template>
   <div class="top-nav-bar">
     <div class="top-nav-bar-container">
-      <NavBar
-        class="custom-bar-nav"
-        :title="datas.configParamJson.title"
-        left-text="返回"
-        left-arrow
-        @click-left="onClickLeft"
-      >
-        <template #left>
-          <Image
-            class="top-nav-bar-logo"
-            :src="getFullUrl(datas.configParamJson.logo, PUBLIC_CDN_URL)"
-            :alt="datas.configParamJson.title"
-          />
-        </template>
-        <template #right>
-          <Icon name="arrow-up" size="18" />
-        </template>
-      </NavBar>
+      <Sticky>
+        <NavBar
+          class="custom-bar-nav"
+          :title="datas.configParamJson.title"
+          left-text="返回"
+          left-arrow
+          @click-left="onClickLeft"
+        >
+          <template #left>
+            <Image
+              class="top-nav-bar-logo"
+              :src="getFullUrl(datas.configParamJson.logo, PUBLIC_CDN_URL)"
+              :alt="datas.configParamJson.title"
+            />
+          </template>
+          <template #right>
+            <Icon name="arrow-up" size="18" />
+          </template>
+        </NavBar>
+      </Sticky>
     </div>
     <slot name="deles" />
   </div>
