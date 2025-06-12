@@ -66,6 +66,7 @@ import CrowdoperationProperties from './crowdoperation'
 import PersonalizedrecommendationProperties from './personalizedrecommendation'
 import OnlineserviceProperties from './onlineservice'
 import TopNavBarProperties from './TopNavBar'
+import ImageCardProperties from './ImageCard'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -216,6 +217,10 @@ PersonalizedrecommendationProperties.forEach((value, key) => {
 })
 
 OnlineserviceProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+ImageCardProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 

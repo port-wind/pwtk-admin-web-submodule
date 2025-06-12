@@ -25,8 +25,8 @@ componentProperties.set('TopNavBar', {
     pageCode: '',
     configParamJson: {
       title: '首页',
-      logo: '',
-      homeUrl: ''
+      logo: 'dev/wm/domain/logo/7a9b3263723a44ed87c7f6e89d20c173.png',
+      homeUrl: 'https://www.baidu.com'
     }
   }
 })
