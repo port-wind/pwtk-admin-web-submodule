@@ -7,11 +7,23 @@ const PUBLIC_KV_URL = 'https://ocs.ai4funs.com/pwtk'
 const instance = axios.create({})
 // const WEBSITE = JSON.parse(utils.getSession(constants.sessionStorageKeys.WEBSITE) || '');
 // const WEBSITE_DOMAIN = JSON.parse(utils.getSession(constants.sessionStorageKeys.WEBSITE_DOMAIN) || '');
-
+// https://ocs.ai4funs.com/pwtk/tk/a6/issueList
 export default () => {
   let init: string[] = []
 
   const api = {
+    getAllNumInfo: () => {
+      init.push(`allNumInfo`)
+      return api
+    },
+    /**
+     * @description 获取最近几年的期数
+     * @param {string} gameType 游戏类型
+     */
+    getRecentYearsIssueList: (gameType: string) => {
+      init.push(`tk/${gameType}/issueList`)
+      return api
+    },
     /**
      * @description 获取站点信息
      */

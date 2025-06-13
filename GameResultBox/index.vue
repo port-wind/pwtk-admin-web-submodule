@@ -5,7 +5,7 @@ import { defineEmits } from 'vue'
 // import GameResultModel1 from './GameResultModel1.vue'
 // import GameResultModel2 from './GameResultModel2.vue'
 import GameResultModel3 from './GameResultModel3.vue'
-import service from './service/index'
+import service from '../service/index'
 
 export interface GameResultType {
   isLongName: boolean
