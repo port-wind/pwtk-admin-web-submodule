@@ -1,23 +1,28 @@
 <script setup lang="ts" name="LotteryRiddleSolution">
-import type { IDatas, RiddleItem } from './type'
+import type { IDatas } from './type'
 import service from '../service/index'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
+interface IProps {
+  datas: IDatas
+}
+const props = withDefaults(defineProps<IProps>(), {})
 
-const gameType = 'a6'
-const year = 2025
+const gameType = computed(() => props.datas.configParamJson.gameType)
+const year = computed(() => props.datas.configParamJson.year)
+const getIssueNumber = computed(() => props.datas.configParamJson.getIssueNumber)
 
 // 用于存储合并后的数据
 const mergedList = ref<any[]>([])
 
 const fetchData = async () => {
   const res = await service.kv().getAllNumInfo().do()
-  const res2: any[] = await service.kv().getRecentYearsIssueList(gameType).getRequest()
-  const res3: any = await service.kv().getGameResultHistory(gameType, String(year)).getRequest()
+  const res2: any[] = await service.kv().getRecentYearsIssueList(gameType.value).getRequest()
+  const res3: any = await service.kv().getGameResultHistory(gameType.value, String(year.value)).getRequest()
   console.log('🚀 ~ fetchData ~ res3:', res3)
 
   // 1. 找到当前 year 的 issues
   const yearItem = res2.find((item: any) => item.year === year)
-  const res2List: any[] = yearItem?.issues?.slice(0, 5) || []
+  const res2List: any[] = yearItem?.issues?.slice(0, getIssueNumber.value) || []
 
   // 2. res3.data 直接用
   const res3List: any[] = res3?.data || []
@@ -41,12 +46,7 @@ onMounted(() => {
   fetchData()
 })
 
-interface IProps {
-  datas: IDatas
-}
-const props = withDefaults(defineProps<IProps>(), {})
-
-const isHighlighted = (zodiac: string, item: RiddleItem) => {
+const isHighlighted = (zodiac: string, item: any) => {
   return item.highlightZodiacs.includes(zodiac)
 }
 
@@ -67,19 +67,18 @@ const getRiddleText = (item: any) => {
   // 159 ≤一唱雄鸡天下白,白手起家從零起≥
   // 158 ≤真金不怕火来烧,不见棺材不落泪≥
 
-  const issueShort = item.issueShort
-  switch (issueShort) {
-    case '164':
+  switch (String(item.issue)) {
+    case year + '164':
       return '≤丈夫双泪不轻弹,带着铃铛去做贼≥'
-    case '163':
+    case year + '163':
       return '≤看见八钱散发打,七九相连三一走≥'
-    case '162':
+    case year + '162':
       return '≤船到桥头自会直,摇头不算点头算≥'
-    case '160':
+    case year + '160':
       return '≤四头连旺暴今期,得饶人处且饶人≥'
-    case '159':
+    case year + '159':
       return '≤一唱雄鸡天下白,白手起家從零起≥'
-    case '158':
+    case year + '158':
       return '≤真金不怕火来烧,不见棺材不落泪≥'
     default:
       return ''
@@ -116,10 +115,8 @@ const getSizeText = (size: string) => {
             开{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}准
           </span>
         </div>
-        <div v-if="item.type !== 'next'" class="riddle-text">≤{{ getRiddleText(item) }}≥</div>
-        <div v-if="item.type !== 'next'" class="answer-text">
-          本期谜底：（{{ getZodiacFromTeNum(item) }}）送：{{ getSizeText(item.totalSize) }}
-        </div>
+        <div class="riddle-text">≤{{ getRiddleText(item) }}≥</div>
+        <div class="answer-text">本期谜底：（{{ getZodiacFromTeNum(item) }}）送：{{ getSizeText(item.totalSize) }}</div>
       </div>
     </div>
     <!-- <div class="content">

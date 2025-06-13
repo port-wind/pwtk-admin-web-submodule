@@ -1,4 +1,4 @@
-import type { LotteryResult } from '@/views/WebVision/components/componentsbiz/LotteryResult/type'
+import type { LotteryResult } from '../LotteryResult/type'
 import type { IComponentProperty, ISetStyle } from './index'
 
 const componentProperties = new Map<string, IComponentProperty<ISetStyle<LotteryResult>>>()
