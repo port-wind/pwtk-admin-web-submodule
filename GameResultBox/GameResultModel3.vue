@@ -19,12 +19,12 @@ import { type GameResultType } from './index.vue'
 const props = defineProps({
   data: {
     type: Object as () => GameResultType,
-    required: true
+    required: true,
   },
   tabsData: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const truncateString = (str: string): string => {
@@ -47,7 +47,7 @@ const tabsData = computed(() => {
     return baseData
   }
 
-  return baseData.filter((item: any) => props.data.showArray?.some((gameType) => gameType === item.gameType))
+  return baseData.filter((item: any) => props.data.showArray?.some(gameType => gameType === item.gameType))
 })
 
 const nowTime = ref(dayjs().format('HH:mm:ss'))
@@ -160,7 +160,7 @@ a {
 .active {
   /* border-bottom: 2px solid #000; */
   color: #fff;
-  background: linear-gradient(var(--gradient-direction, 0deg), var(--second-color), var(--theme-color));
+  background: var(--theme-color);
   h4 {
     color: #fff;
   }
@@ -182,7 +182,7 @@ a {
     margin-bottom: 0.5rem;
     div > h5 {
       font-size: 1.2rem;
-      background: linear-gradient(var(--gradient-direction, 0deg), var(--second-color), var(--theme-color));
+      background: var(--theme-color);
       color: #fff;
       padding: 0.1rem 0.5rem;
       border-radius: 5px;
@@ -219,5 +219,9 @@ a {
       color: var(--theme-color);
     }
   }
+}
+
+.tab-content-top-time {
+  color: var(--theme-color);
 }
 </style>

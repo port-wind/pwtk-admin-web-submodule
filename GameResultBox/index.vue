@@ -23,12 +23,12 @@ export interface GameResultType {
 const props = defineProps({
   datas: {
     type: Object as () => GameResultType,
-    required: true
+    required: true,
   },
   tabsData: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 // console.log('props', props);
@@ -51,7 +51,7 @@ const rawData = ref<GameResultType>({
   isIssue: true,
   isGifAd: false,
   showArray: ['2032', '1', '6', '5'],
-  noTab: false
+  noTab: false,
 })
 onMounted(async () => {
   console.log('props', props)
@@ -69,7 +69,7 @@ onMounted(async () => {
 
     rawTabsData.value = response[0].data.map((item: any, index: number) => ({
       ...item,
-      ...res[index]
+      ...res[index],
     }))
     // globalStore.setKey("GameData", tabsData);
     // componentsData.value = [...componentsData.value];
@@ -103,7 +103,7 @@ const tabsData = ref([
       { color: 'R', fiveElements: 't', index: 4, num: 19, oddEven: 'o', shengxiao: '猪', size: 's' },
       { color: 'B', fiveElements: 'j', index: 5, num: 41, oddEven: 'o', shengxiao: '牛', size: 'b' },
       { color: 'B', fiveElements: 'h', index: 6, num: 10, oddEven: 'e', shengxiao: '猴', size: 's' },
-      { color: 'R', fiveElements: 'm', index: 7, num: 7, oddEven: 'o', shengxiao: '猪', size: 's' }
+      { color: 'R', fiveElements: 'm', index: 7, num: 7, oddEven: 'o', shengxiao: '猪', size: 's' },
     ],
     currentYear: 2025,
     data: {
@@ -116,7 +116,7 @@ const tabsData = ref([
       lotteryName: '澳門六合彩',
       originalDataList: [],
       pet: '蛇',
-      serverTime: '2025-06-03 21:36:00'
+      serverTime: '2025-06-03 21:36:00',
     },
     lastIssue: 2025155,
     lastOpenCode: '37,08,44,19,41,10,07',
@@ -127,14 +127,14 @@ const tabsData = ref([
       { color: 'B', fiveElements: 'm', index: 4, num: 15, oddEven: 'o', shengxiao: '兔', size: 's' },
       { color: 'B', fiveElements: 't', index: 5, num: 36, oddEven: 'e', shengxiao: '马', size: 'b' },
       { color: 'B', fiveElements: 'h', index: 6, num: 47, oddEven: 'o', shengxiao: '羊', size: 'b' },
-      { color: 'G', fiveElements: 't', index: 7, num: 5, oddEven: 'o', shengxiao: '牛', size: 's' }
+      { color: 'G', fiveElements: 't', index: 7, num: 5, oddEven: 'o', shengxiao: '牛', size: 's' },
     ],
     lastYear: 2025,
     nextCompleteIssue: 2025157,
     nextOpenTime: '2025-06-06 21:32:32',
     nextPeriod: 157,
     nextShortIssue: '157',
-    nextYear: 2025
+    nextYear: 2025,
   },
   {
     gameType: '1',
@@ -158,7 +158,7 @@ const tabsData = ref([
       { color: 'G', fiveElements: 'j', index: 4, num: 33, oddEven: 'o', shengxiao: '鸡', size: 'b' },
       { color: 'R', fiveElements: 'm', index: 5, num: 24, oddEven: 'e', shengxiao: '马', size: 's' },
       { color: 'G', fiveElements: 's', index: 6, num: 44, oddEven: 'e', shengxiao: '狗', size: 'b' },
-      { color: 'B', fiveElements: 'j', index: 7, num: 3, oddEven: 'o', shengxiao: '兔', size: 's' }
+      { color: 'B', fiveElements: 'j', index: 7, num: 3, oddEven: 'o', shengxiao: '兔', size: 's' },
     ],
     currentYear: 2025,
     data: {
@@ -166,7 +166,7 @@ const tabsData = ref([
       nextLotteryNumber: '063',
       nextLotteryTimestamp: 1749299400000,
       originalDataList: ['39', '22', '18', '33', '24', '44', '03'],
-      period: '062'
+      period: '062',
     },
     lastIssue: 62,
     lastResult: [
@@ -176,7 +176,7 @@ const tabsData = ref([
       { color: 'G', fiveElements: 'j', index: 4, num: 33, oddEven: 'o', shengxiao: '鸡', size: 'b' },
       { color: 'R', fiveElements: 'm', index: 5, num: 24, oddEven: 'e', shengxiao: '马', size: 's' },
       { color: 'G', fiveElements: 's', index: 6, num: 44, oddEven: 'e', shengxiao: '狗', size: 'b' },
-      { color: 'B', fiveElements: 'j', index: 7, num: 3, oddEven: 'o', shengxiao: '兔', size: 's' }
+      { color: 'B', fiveElements: 'j', index: 7, num: 3, oddEven: 'o', shengxiao: '兔', size: 's' },
     ],
     lastYear: 2025,
     nextCompleteIssue: 63,
@@ -184,7 +184,7 @@ const tabsData = ref([
     nextOpenTime: '2025-06-07 21:30:00',
     nextPeriod: 63,
     nextShortIssue: '063',
-    nextYear: 2025
+    nextYear: 2025,
   },
   {
     gameType: '6',
@@ -208,7 +208,7 @@ const tabsData = ref([
       { color: 'G', fiveElements: 'j', index: 4, num: 33, oddEven: 'o', shengxiao: '鸡', size: 'b' },
       { color: 'G', fiveElements: 't', index: 5, num: 28, oddEven: 'e', shengxiao: '虎', size: 'b' },
       { color: 'R', fiveElements: 'm', index: 6, num: 46, oddEven: 'e', shengxiao: '猴', size: 'b' },
-      { color: 'G', fiveElements: 's', index: 7, num: 22, oddEven: 'e', shengxiao: '猴', size: 's' }
+      { color: 'G', fiveElements: 's', index: 7, num: 22, oddEven: 'e', shengxiao: '猴', size: 's' },
     ],
     currentYear: 2025,
     data: {
@@ -216,7 +216,7 @@ const tabsData = ref([
       nextLotteryNumber: '147',
       nextLotteryTimestamp: 1749213000000,
       originalDataList: ['17', '12', '10', '33', '28', '46', '22'],
-      period: '146'
+      period: '146',
     },
     lastIssue: 2025146,
     lastResult: [
@@ -226,7 +226,7 @@ const tabsData = ref([
       { color: 'G', fiveElements: 'j', index: 4, num: 33, oddEven: 'o', shengxiao: '鸡', size: 'b' },
       { color: 'G', fiveElements: 't', index: 5, num: 28, oddEven: 'e', shengxiao: '虎', size: 'b' },
       { color: 'R', fiveElements: 'm', index: 6, num: 46, oddEven: 'e', shengxiao: '猴', size: 'b' },
-      { color: 'G', fiveElements: 's', index: 7, num: 22, oddEven: 'e', shengxiao: '猴', size: 's' }
+      { color: 'G', fiveElements: 's', index: 7, num: 22, oddEven: 'e', shengxiao: '猴', size: 's' },
     ],
     lastYear: 2025,
     nextCompleteIssue: 2025147,
@@ -234,7 +234,7 @@ const tabsData = ref([
     nextOpenTime: '2025-06-06 21:30:00',
     nextPeriod: 147,
     nextShortIssue: '147',
-    nextYear: 2025
+    nextYear: 2025,
   },
   {
     gameType: '5',
@@ -258,7 +258,7 @@ const tabsData = ref([
       { color: 'G', fiveElements: 'h', index: 4, num: 17, oddEven: 'o', shengxiao: '牛', size: 's' },
       { color: 'G', fiveElements: 't', index: 5, num: 28, oddEven: 'e', shengxiao: '虎', size: 'b' },
       { color: 'G', fiveElements: 'h', index: 6, num: 32, oddEven: 'e', shengxiao: '狗', size: 'b' },
-      { color: 'R', fiveElements: 'h', index: 7, num: 18, oddEven: 'e', shengxiao: '鼠', size: 's' }
+      { color: 'R', fiveElements: 'h', index: 7, num: 18, oddEven: 'e', shengxiao: '鼠', size: 's' },
     ],
     currentYear: 2025,
     data: { originalDataList: [] },
@@ -271,15 +271,15 @@ const tabsData = ref([
       { color: 'G', fiveElements: 'h', index: 4, num: 17, oddEven: 'o', shengxiao: '牛', size: 's' },
       { color: 'G', fiveElements: 't', index: 5, num: 28, oddEven: 'e', shengxiao: '虎', size: 'b' },
       { color: 'G', fiveElements: 'h', index: 6, num: 32, oddEven: 'e', shengxiao: '狗', size: 'b' },
-      { color: 'R', fiveElements: 'h', index: 7, num: 18, oddEven: 'e', shengxiao: '鼠', size: 's' }
+      { color: 'R', fiveElements: 'h', index: 7, num: 18, oddEven: 'e', shengxiao: '鼠', size: 's' },
     ],
     lastYear: 2025,
     nextCompleteIssue: 2025157,
     nextOpenTime: '2025-06-06 21:32:32',
     nextPeriod: 157,
     nextShortIssue: '157',
-    nextYear: 2025
-  }
+    nextYear: 2025,
+  },
 ])
 
 const data = ref({
@@ -291,7 +291,7 @@ const data = ref({
   isLongName: false,
   isGifAd: false,
   noTab: false,
-  showArray: ['2032', '1', '84', '5', '3995']
+  showArray: ['2032', '1', '84', '5', '3995'],
 })
 </script>
 
@@ -316,6 +316,10 @@ const data = ref({
 <style lang="less" scoped>
 .gameresultbox {
   position: relative;
+
+  :root {
+    --theme-color: #5e9525;
+  }
 }
 
 .gameresultbox-content {

@@ -2,6 +2,7 @@
 import type { IDatas } from './type'
 import service from '../service/index'
 import { onMounted, ref, computed, watch } from 'vue'
+import StateManager from '../StateManager.vue'
 interface IProps {
   datas: IDatas
 }
@@ -123,46 +124,30 @@ const getSizeText = (size: string) => {
 
 <template>
   <div class="LotteryRiddleSolution">
-    <div class="solution-wrapper">
-      <div class="header">
-        <span class="main-title">{{ datas.configParamJson.mainTitle }}</span>
-        <span class="sub-title">【{{ datas.configParamJson.subTitle }}】</span>
-      </div>
-      <div class="content-extends">
-        <div v-for="(item, index) in mergedList" :key="index" class="item">
-          <div class="item-header">
-            <span>{{ item.issueShort || item.issue }}期: {{ datas.configParamJson.subTitle }}</span>
-            <span v-if="item.type === 'next'" class="result-text">开<span class="red">? 00</span>准</span>
-            <span v-else-if="item.result" :class="`result-text`">
-              开<span class="red">{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}</span
-              >准
-            </span>
+    <StateManager>
+      <div class="solution-wrapper">
+        <div class="header">
+          <span class="main-title">{{ datas.configParamJson.mainTitle }}</span>
+          <span class="sub-title">【{{ datas.configParamJson.subTitle }}】</span>
+        </div>
+        <div class="content-extends">
+          <div v-for="(item, index) in mergedList" :key="index" class="item">
+            <div class="item-header">
+              <span>{{ item.issueShort || item.issue }}期: {{ datas.configParamJson.subTitle }}</span>
+              <span v-if="item.type === 'next'" class="result-text">开<span class="red">? 00</span>准</span>
+              <span v-else-if="item.result" :class="`result-text`">
+                开<span class="red">{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}</span
+                >准
+              </span>
+            </div>
+            <div class="riddle-text">≤{{ getRiddleText(item) }}≥</div>
+            <div class="answer-text">
+              本期谜底：（{{ getZodiacFromTeNum(item) }}）送：{{ getSizeText(item.totalSize) }}
+            </div>
           </div>
-          <div class="riddle-text">≤{{ getRiddleText(item) }}≥</div>
-          <div class="answer-text">
-            本期谜底：（{{ getZodiacFromTeNum(item) }}）送：{{ getSizeText(item.totalSize) }}
-          </div>
         </div>
       </div>
-      <!-- <div class="content">
-      <div v-for="(item, index) in datas.configParamJson.items" :key="index" class="item">
-        <div class="item-header">
-          <span>{{ item.issue }}: {{ item.title }}</span>
-          <span :class="`result-text color-${item.resultColor}`">{{ item.result }}</span>
-        </div>
-        <div class="riddle-text">≤{{ item.riddle }}≥</div>
-        <div class="answer-text">
-          {{ item.answerPrefix }} (
-          <template v-for="(z, i) in item.answerZodiacs" :key="i">
-            <span :class="{ highlight: isHighlighted(z, item) }">{{ z }}</span>
-            <span v-if="i < item.answerZodiacs.length - 1"></span>
-          </template>
-          ) {{ item.hintPrefix }}
-          <span :class="{ highlight: item.highlightHint }">{{ item.hintText }}</span>
-        </div>
-      </div>
-    </div> -->
-    </div>
+    </StateManager>
     <slot name="deles" />
   </div>
 </template>
