@@ -121,8 +121,8 @@ export default () => {
       return api
     },
 
-    do: () => instance.get<any[]>(`${PUBLIC_KV_URL}?keys=${init.join(',')}`).then((res) => res.data),
-    getRequest: () => instance.get<any[]>(`${PUBLIC_KV_URL}/${init}`).then((res) => res.data)
+    do: () => instance.get<any[]>(`${PUBLIC_KV_URL}?keys=${init.join(',')}`).then((res) => Object.values(res.data)),
+    getRequest: () => instance.get<any[]>(`${PUBLIC_KV_URL}/${init}`).then((res) => Object.values(res.data))
   }
   return api
 }
