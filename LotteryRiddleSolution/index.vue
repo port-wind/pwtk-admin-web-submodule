@@ -49,6 +49,35 @@ const props = withDefaults(defineProps<IProps>(), {})
 const isHighlighted = (zodiac: string, item: RiddleItem) => {
   return item.highlightZodiacs.includes(zodiac)
 }
+
+// 辅助函数
+const getResultColor = (item: any) => {
+  // 根据开奖颜色返回对应的样式类
+  if (item.color === 'R') return 'red'
+  if (item.color === 'G') return 'green'
+  if (item.color === 'B') return 'blue'
+  return 'red'
+}
+
+const getRiddleText = (item: any) => {
+  // 这里可以根据实际业务逻辑生成谜语文本
+  // 暂时返回一个示例文本
+  return `看见人钱散发打，七九相连一二走`
+}
+
+const getZodiacFromTeNum = (item: any) => {
+  // 从numInfo中找到特码对应的生肖
+  if (!item.numInfo || !item.teNum) return ''
+
+  const teNumStr = String(item.teNum).padStart(2, '0')
+  const teNumInfo = item.numInfo.find((info: any) => info.num === teNumStr)
+
+  return teNumInfo ? teNumInfo.shengxiao : ''
+}
+
+const getSizeText = (size: string) => {
+  return size === 'b' ? '大数' : '小数'
+}
 </script>
 
 <template>
@@ -57,7 +86,22 @@ const isHighlighted = (zodiac: string, item: RiddleItem) => {
       <span class="main-title">{{ datas.configParamJson.mainTitle }}</span>
       <span class="sub-title">【{{ datas.configParamJson.subTitle }}】</span>
     </div>
-    <div class="content">
+    <div class="content-extends">
+      <div v-for="(item, index) in mergedList" :key="index" class="item">
+        <div class="item-header">
+          <span>{{ item.issueShort || item.issue }}期: 谜语解特</span>
+          <span v-if="item.type === 'next'" class="result-text color-blue">开? 00准</span>
+          <span v-else-if="item.result" :class="`result-text color-${getResultColor(item)}`">
+            开{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}准
+          </span>
+        </div>
+        <div v-if="item.type !== 'next'" class="riddle-text">≤{{ getRiddleText(item) }}≥</div>
+        <div v-if="item.type !== 'next'" class="answer-text">
+          本期谜底：（{{ getZodiacFromTeNum(item) }}）送：{{ getSizeText(item.totalSize) }}
+        </div>
+      </div>
+    </div>
+    <!-- <div class="content">
       <div v-for="(item, index) in datas.configParamJson.items" :key="index" class="item">
         <div class="item-header">
           <span>{{ item.issue }}: {{ item.title }}</span>
@@ -74,7 +118,7 @@ const isHighlighted = (zodiac: string, item: RiddleItem) => {
           <span :class="{ highlight: item.highlightHint }">{{ item.hintText }}</span>
         </div>
       </div>
-    </div>
+    </div> -->
     <slot name="deles" />
   </div>
 </template>
@@ -99,6 +143,12 @@ const isHighlighted = (zodiac: string, item: RiddleItem) => {
 .content {
   padding: 0 15px;
   background-color: #f0f9eb;
+}
+
+.content-extends {
+  padding: 0 15px;
+  background-color: #f0f9eb;
+  border-bottom: 1px solid #c8e6c9;
 }
 
 .item {
