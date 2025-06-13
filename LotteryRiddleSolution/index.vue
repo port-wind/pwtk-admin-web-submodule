@@ -60,9 +60,30 @@ const getResultColor = (item: any) => {
 }
 
 const getRiddleText = (item: any) => {
-  // 这里可以根据实际业务逻辑生成谜语文本
-  // 暂时返回一个示例文本
-  return `看见人钱散发打，七九相连一二走`
+  // 164 ≤丈夫双泪不轻弹,带着铃铛去做贼≥
+  // 163 ≤看见八钱散发打,七九相连三一走≥
+  // 162 ≤船到桥头自会直,摇头不算点头算≥
+  // 160 ≤四头连旺暴今期,得饶人处且饶人≥
+  // 159 ≤一唱雄鸡天下白,白手起家從零起≥
+  // 158 ≤真金不怕火来烧,不见棺材不落泪≥
+
+  const issueShort = item.issueShort
+  switch (issueShort) {
+    case '164':
+      return '≤丈夫双泪不轻弹,带着铃铛去做贼≥'
+    case '163':
+      return '≤看见八钱散发打,七九相连三一走≥'
+    case '162':
+      return '≤船到桥头自会直,摇头不算点头算≥'
+    case '160':
+      return '≤四头连旺暴今期,得饶人处且饶人≥'
+    case '159':
+      return '≤一唱雄鸡天下白,白手起家從零起≥'
+    case '158':
+      return '≤真金不怕火来烧,不见棺材不落泪≥'
+    default:
+      return ''
+  }
 }
 
 const getZodiacFromTeNum = (item: any) => {
