@@ -36,7 +36,7 @@ const fetchData = async () => {
   isLoading.value = true
   try {
     const res2: any[] = await service.kv().getRecentYearsIssueList(gameTypeCode.value).getRequest()
-    const res3: any = await service.kv().getGameResultHistory(gameTypeCode.value, String(year.value)).getRequest()
+    const res3: any[] = await service.kv().getGameResultHistory(gameTypeCode.value, String(year.value)).getRequest()
     console.log('🚀 ~ fetchData ~ res3:', res3)
 
     // 1. 找到当前 year 的 issues
@@ -44,7 +44,7 @@ const fetchData = async () => {
     const res2List: any[] = yearItem?.issues?.slice(0, getIssueNumber.value) || []
 
     // 2. res3.data 直接用
-    const res3List: any[] = res3?.data || []
+    const res3List = res3[1] || []
 
     // 3. 合并逻辑
     mergedList.value = res2List.map((item2: any) => {
