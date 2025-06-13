@@ -7,6 +7,7 @@ export interface ICarouselApp {
 
 export interface TabItem {
   title: string
+  banner: string
   promoText: string
   amount: string
   bannerColor: string

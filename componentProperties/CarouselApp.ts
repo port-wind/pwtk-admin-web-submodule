@@ -40,7 +40,8 @@ componentProperties.set('CarouselApp', {
           androidDownload: 'https://example.com/android-download-1',
           iosDownload: 'https://example.com/ios-download-1',
           webUrl: 'https://example.com/website-1',
-          statusText: '已有本站评分9999万，请放心下载！'
+          statusText: '已有本站评分9999万，请放心下载！',
+          banner: ''
         },
         {
           title: '6262彩票',
@@ -57,7 +58,8 @@ componentProperties.set('CarouselApp', {
           androidDownload: 'https://example.com/android-download-2',
           iosDownload: 'https://example.com/ios-download-2',
           webUrl: 'https://example.com/website-2',
-          statusText: '已有本站评分5000万，请放心投注！'
+          statusText: '已有本站评分5000万，请放心投注！',
+          banner: ''
         }
       ]
     }

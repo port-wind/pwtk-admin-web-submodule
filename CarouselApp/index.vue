@@ -21,11 +21,12 @@
           :class="['tab-pane', { active: activeTab === index }]"
         >
           <!-- 推广横幅 -->
-          <div class="promo-banner" :style="{ backgroundColor: tab.bannerColor }">
-            <div class="banner-content">
+          <div class="promo-banner">
+            <img :src="getFullUrl(tab.banner, PUBLIC_CDN_URL)" :alt="tab.appName" draggable="false" />
+            <!-- <div class="banner-content">
               <span class="promo-text">{{ tab.promoText }}</span>
               <span class="amount">{{ tab.amount }}</span>
-            </div>
+            </div> -->
           </div>
 
           <!-- 应用推广卡片 -->
@@ -53,7 +54,7 @@
               </div>
             </div>
 
-            <!-- 应用截图 -->
+            <!-- 应用截图
             <div class="app-screenshot">
               <img
                 v-if="tab.screenshot"
@@ -61,7 +62,7 @@
                 :alt="tab.appName + '截图'"
                 draggable="false"
               />
-            </div>
+            </div> -->
 
             <!-- 下载按钮 -->
             <div class="download-actions">
@@ -70,22 +71,26 @@
                 class="download-btn android"
                 @click="handleDownload(tab.androidDownload, 'android')"
               >
-                <van-icon name="plus" />
-                Android下载
+                <img :src="AndroidSvg" alt="Android下载" />
+                <!-- <van-icon name="android" /> -->
+                <span>Android下载</span>
               </button>
               <button v-if="tab.iosDownload" class="download-btn ios" @click="handleDownload(tab.iosDownload, 'ios')">
-                <van-icon name="plus" />
-                iPhone下载
+                <!-- <van-icon name="apple" /> -->
+                <img :src="AppleSvg" alt="iPhone下载" />
+                <span>iPhone下载</span>
               </button>
               <button v-if="tab.webUrl" class="download-btn web" @click="handleDownload(tab.webUrl, 'web')">
-                访问官网
+                <!-- <van-icon name="desktop-o" /> -->
+                <img :src="DesktopSvg" alt="访问官网" />
+                <span>访问官网</span>
               </button>
             </div>
 
             <!-- 状态指示 -->
-            <div class="status-indicator">
+            <!-- <div class="status-indicator">
               <span class="status-text">{{ tab.statusText }}</span>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -97,6 +102,9 @@
 <script setup lang="ts" name="CarouselApp">
 import { ref } from 'vue'
 import type { IDatas } from './type'
+import AppleSvg from '../assets/svg/apple-fill.svg'
+import AndroidSvg from '../assets/svg/android.svg'
+import DesktopSvg from '../assets/svg/desktop.svg'
 
 const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
 
@@ -142,22 +150,23 @@ const handleDownload = (url: string, type: string) => {
 
   .tab-item {
     flex: 1;
-    padding: 12px 16px;
+    padding: 0 16px;
     text-align: center;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     color: #666;
     background: #f5f5f5;
     border-right: 1px solid #eee;
     transition: all 0.3s;
+    line-height: 40px;
 
     &:last-child {
       border-right: none;
     }
 
     &.active {
-      background: #fff;
-      color: #333;
+      background: red;
+      color: #fff;
       font-weight: 600;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
@@ -172,7 +181,7 @@ const handleDownload = (url: string, type: string) => {
 .tab-content {
   .tab-pane {
     display: none;
-    padding: 16px;
+    // padding: 16px;
 
     &.active {
       display: block;
@@ -181,11 +190,17 @@ const handleDownload = (url: string, type: string) => {
 }
 
 .promo-banner {
-  background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-  border-radius: 6px;
-  padding: 12px 16px;
-  margin-bottom: 16px;
-  text-align: center;
+  // background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+  // border-radius: 6px;
+  padding: 0;
+  // margin-bottom: 16px;
+  // text-align: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
   .banner-content {
     display: flex;
@@ -216,7 +231,7 @@ const handleDownload = (url: string, type: string) => {
 .app-info {
   display: flex;
   align-items: center;
-  padding: 16px;
+  // padding: 16px;
   border-bottom: 1px solid #f0f0f0;
 
   .app-icon {
@@ -279,9 +294,10 @@ const handleDownload = (url: string, type: string) => {
 
 .download-actions {
   display: flex;
+  padding: 10px 0;
   gap: 8px;
-  padding: 16px;
-  justify-content: center;
+  // padding: 16px;
+  justify-content: space-around;
 
   .download-btn {
     display: flex;
@@ -289,36 +305,39 @@ const handleDownload = (url: string, type: string) => {
     gap: 4px;
     padding: 8px 16px;
     border: none;
-    border-radius: 20px;
+    border-radius: 5px;
     font-size: 12px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s;
 
     &.android {
-      background: #4caf50;
+      background: #c34dff;
       color: #fff;
 
-      &:hover {
-        background: #45a049;
+      img {
+        width: 20px;
+        height: 20px;
       }
     }
 
     &.ios {
-      background: #007aff;
+      background: #ff5b5b;
       color: #fff;
 
-      &:hover {
-        background: #0056b3;
+      img {
+        width: 20px;
+        height: 20px;
       }
     }
 
     &.web {
-      background: #28a745;
+      background: #3ebc40;
       color: #fff;
 
-      &:hover {
-        background: #218838;
+      img {
+        width: 20px;
+        height: 20px;
       }
     }
   }
