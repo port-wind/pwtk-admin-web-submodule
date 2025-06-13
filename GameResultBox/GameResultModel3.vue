@@ -9,6 +9,8 @@ import tw from '../assets/country/tw-96.png'
 import xg from '../assets/country/xg.png'
 import xjp from '../assets/country/xjp-96.png'
 import kl8 from '../assets/country/kl8.png'
+import { gameDataStore } from '../store'
+import { increment } from '../store/counter'
 const display = import.meta.env.PUBLIC_DISPLAY
 
 const GAME_ICONS = {
@@ -17,7 +19,7 @@ const GAME_ICONS = {
   '1': display ? xg.src : xg,
   '84': display ? tw.src : tw,
   '5': display ? am.src : am,
-  '6': display ? kl8.src : kl8,
+  '6': display ? kl8.src : kl8
 }
 
 import { type GameResultType } from './index.vue'
@@ -62,7 +64,7 @@ const tabsData = computed(() => {
     return baseData
   }
 
-  return baseData.filter((item: any) => props.data.showArray?.some(gameType => gameType === item.gameType))
+  return baseData.filter((item: any) => props.data.showArray?.some((gameType) => gameType === item.gameType))
 })
 
 const nowTime = ref(dayjs().format('HH:mm:ss'))
@@ -73,12 +75,13 @@ const nowTime = ref(dayjs().format('HH:mm:ss'))
 const tabIndex = ref(0)
 function selectTab(index: number) {
   // console.log('index', index);
+  increment()
   tabIndex.value = index
-  // gameDataStore.set({
-  //   tabIndex: index,
-  //   gameType: props.tabsData[index].gameType,
-  //   gameTypeCode: props.tabsData[index].gameTypeCode
-  // })
+  gameDataStore.set({
+    tabIndex: index,
+    gameType: props.tabsData[index].gameType,
+    gameTypeCode: props.tabsData[index].gameTypeCode
+  })
   // console.log("gameDataStore", gameDataStore.get());
 }
 

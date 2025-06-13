@@ -3,6 +3,9 @@ import type { IDatas } from './type'
 import service from '../service/index'
 import { onMounted, ref, computed, watch } from 'vue'
 import StateManager from '../StateManager.vue'
+import { gameDataStore } from '../store'
+import { useStore } from '@nanostores/vue'
+import { counter } from '../store/counter'
 interface IProps {
   datas: IDatas
 }
@@ -11,6 +14,28 @@ const props = withDefaults(defineProps<IProps>(), {})
 const gameType = computed(() => props.datas?.configParamJson?.gameType || 'a6')
 const year = computed(() => props.datas?.configParamJson?.year || 2025)
 const getIssueNumber = computed(() => props.datas?.configParamJson?.getIssueNumber || 5)
+
+const count = useStore(counter)
+console.log('🚀 ~ count:', count)
+
+gameDataStore.subscribe(async (item) => {
+  console.log('🚀 ~ gameDataStore.subscribe ~ item:', item)
+  // console.log('gameDataStore', data, gameType.value)
+  //   console.log('gameDataStore 更新')
+  // if (item.gameType && (gameType.value = item.gameType)) {
+  //   switch (data.value.model) {
+  //     case 's1':
+  //     case 's2': //获取帖子详情
+  //     case 's3': //获取帖子详情
+  //       await getBBSDetail()
+  //       break
+
+  //     default:
+  //       console.log('无匹配到模版', data.value.model)
+  //       break
+  //   }
+  // }
+})
 
 // 用于存储合并后的数据
 const mergedList = ref<any[]>([])
@@ -124,6 +149,7 @@ const getSizeText = (size: string) => {
 
 <template>
   <div class="LotteryRiddleSolution">
+    ZZZZZ {{ count }}XXXX
     <StateManager>
       <div class="solution-wrapper">
         <div class="header">
@@ -134,10 +160,15 @@ const getSizeText = (size: string) => {
           <div v-for="(item, index) in mergedList" :key="index" class="item">
             <div class="item-header">
               <span>{{ item.issueShort || item.issue }}期: {{ datas.configParamJson.subTitle }}</span>
-              <span v-if="item.type === 'next'" class="result-text">开<span class="red">? 00</span>准</span>
+              <span v-if="item.type === 'next'" class="result-text">
+                开
+                <span class="red">? 00</span>
+                准
+              </span>
               <span v-else-if="item.result" :class="`result-text`">
-                开<span class="red">{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}</span
-                >准
+                开
+                <span class="red">{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}</span>
+                准
               </span>
             </div>
             <div class="riddle-text">≤{{ getRiddleText(item) }}≥</div>
