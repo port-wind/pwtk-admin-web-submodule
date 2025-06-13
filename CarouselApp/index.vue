@@ -303,7 +303,7 @@ const handleDownload = (url: string, type: string) => {
     display: flex;
     align-items: center;
     gap: 4px;
-    padding: 8px 16px;
+    padding: 8px 10px;
     border: none;
     border-radius: 5px;
     font-size: 12px;
