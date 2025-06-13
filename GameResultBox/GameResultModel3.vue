@@ -8,9 +8,7 @@ import am from './assets/country/am.png'
 import tw from './assets/country/tw-96.png'
 import xg from './assets/country/xg.png'
 import xjp from './assets/country/xjp-96.png'
-console.log('🚀 ~ xjp:', xjp)
 const display = import.meta.env.PUBLIC_DISPLAY
-console.log('🚀 ~ display:', display)
 
 const GAME_ICONS = {
   '3995': display ? xjp.src : xjp,
