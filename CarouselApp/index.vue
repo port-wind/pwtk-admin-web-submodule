@@ -234,7 +234,6 @@ const handleDownload = (url: string, type: string) => {
   align-items: center;
   padding: 10px 0;
   border-bottom: 1px solid #f0f0f0;
-  gap: 10px;
 
   .app-icon {
     // width: 60px;
@@ -299,9 +298,9 @@ const handleDownload = (url: string, type: string) => {
 .download-actions {
   display: flex;
   padding: 10px 0;
-  gap: 8px;
+  gap: 12px;
   // padding: 16px;
-  justify-content: space-around;
+  justify-content: center;
 
   .download-btn {
     display: flex;
