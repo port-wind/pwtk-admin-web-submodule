@@ -43,25 +43,35 @@ defineProps<{
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  padding: 0 0.5rem;
+  row-gap: 5px;
+  // padding: 0 0.5rem;
   @media screen and (max-width: 650px) {
     padding: 0 0.1rem;
   }
   .image-container {
     width: 100%;
     position: relative;
+    aspect-ratio: 1/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: -4px;
+    margin-top: -3px;
 
     .lottery-icon {
+      position: absolute;
+      top: 3px;
+      left: 4px;
       width: 100%;
       height: 100%;
     }
 
     .number {
-      position: absolute;
-      top: 16%;
-      left: 19%;
-      font-size: min(5.5vw, 33px);
-      transform: translateY(-10%);
+      // position: absolute;
+      // top: 16%;
+      // left: 19%;
+      font-size: 20px;
+      // transform: translateY(-10%);
     }
   }
 
