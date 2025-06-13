@@ -120,7 +120,12 @@ export default () => {
       instance
         .get<any[]>(`${PUBLIC_KV_URL}?keys=${init.join(',')}`)
         // .get<any[]>(`https://ocs.ai4funs.com/pwtk?keys=${init.join(",")}`)
-        .then((res) => Object.values(res.data))
+        .then(res => Object.values(res.data)),
+
+    getRequest: () =>
+      instance.get<any[]>(`${PUBLIC_KV_URL}/${init}`).then(res => {
+        return res.data
+      }),
   }
   return api
 }

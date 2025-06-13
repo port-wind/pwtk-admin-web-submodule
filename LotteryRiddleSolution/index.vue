@@ -1,5 +1,45 @@
 <script setup lang="ts" name="LotteryRiddleSolution">
 import type { IDatas, RiddleItem } from './type'
+import service from '../service/index'
+import { onMounted, ref } from 'vue'
+
+const gameType = 'a6'
+const year = 2025
+
+// 用于存储合并后的数据
+const mergedList = ref<any[]>([])
+
+const fetchData = async () => {
+  const res = await service.kv().getAllNumInfo().do()
+  const res2: any[] = await service.kv().getRecentYearsIssueList(gameType).getRequest()
+  const res3: any = await service.kv().getGameResultHistory(gameType, String(year)).getRequest()
+  console.log('🚀 ~ fetchData ~ res3:', res3)
+
+  // 1. 找到当前 year 的 issues
+  const yearItem = res2.find((item: any) => item.year === year)
+  const res2List: any[] = yearItem?.issues?.slice(0, 5) || []
+
+  // 2. res3.data 直接用
+  const res3List: any[] = res3?.data || []
+
+  // 3. 合并逻辑
+  mergedList.value = res2List.map((item2: any) => {
+    if (item2.type === 'next') {
+      return item2
+    } else {
+      // 注意类型转换，res2的issue是数字，res3的issue是字符串
+      const match = res3List.find((item3: any) => String(item3.issue) === String(item2.issue))
+      return match ? { ...item2, ...match } : item2
+    }
+  })
+
+  // mergedList.value 就是你要用的数据
+  console.log('mergedList', mergedList.value)
+}
+
+onMounted(() => {
+  fetchData()
+})
 
 interface IProps {
   datas: IDatas
