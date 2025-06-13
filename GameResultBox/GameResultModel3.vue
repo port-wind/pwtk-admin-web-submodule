@@ -79,6 +79,8 @@ onMounted(() => {
   })
 })
 
+console.log('props.data', props.data)
+
 // watch([() => props.tabIndex], ([newIndex]) => {
 //   selectedTab.value = newIndex;
 // });

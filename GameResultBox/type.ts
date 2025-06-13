@@ -1,5 +1,5 @@
 // 定义类型
-export type GameIconKeys = '2032' | '1' | '84' | '3995' | '5'
+export type GameIconKeys = '2032' | '1' | '84' | '3995' | '5' | '6'
 import am from '@/assets/images/county/am.png'
 import xg from '@/assets/images/county/xg.png'
 import tw from '@/assets/images/county/tw-96.png'
@@ -10,5 +10,6 @@ export const GAME_ICONS: Record<GameIconKeys, string> = {
   '1': xg.src,
   '84': tw.src,
   '3995': xjp.src,
-  '5': am.src
+  '5': am.src,
+  '6': tw.src,
 } as const
