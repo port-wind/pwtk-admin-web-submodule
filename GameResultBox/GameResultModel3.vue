@@ -9,7 +9,7 @@ import tw from '../assets/country/tw-96.png'
 import xg from '../assets/country/xg.png'
 import xjp from '../assets/country/xjp-96.png'
 import kl8 from '../assets/country/kl8.png'
-import { changeGameType } from '../store/gameStore'
+import { changeGameType } from '../store/index'
 const display = import.meta.env.PUBLIC_DISPLAY
 
 const GAME_ICONS = {
@@ -127,7 +127,7 @@ console.log('props.data', props.data)
         </div>
       </div>
       <LotteryBallDisplayNoAdd3 :currentResult="tabsData[tabIndex].currentResult" />
-      <div class="tab-content-bottom">
+      <div v-if="data.isHistory" class="tab-content-bottom">
         <p v-if="data.isNextIssue">{{ tabsData[tabIndex].nextIssue }}</p>
         <a v-if="data.isHistory" href="/lottery">历史记录</a>
       </div>
@@ -181,19 +181,19 @@ a {
 }
 
 .tab-content {
-  padding: 0.3rem;
+  padding: 5px;
   background-image: none;
   border: 0.02rem solid var(--theme-color);
   background-color: #f5f5f5;
   box-shadow: 0.04rem 0.04rem 0.1rem #eee;
-  border-radius: 10px;
+  // border-radius: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   .tab-content-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 5px;
     div > h5 {
       font-size: 1.2rem;
       background: var(--theme-color);

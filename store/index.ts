@@ -1,3 +1,7 @@
-import { gameStore } from './gameStore'
+import { gameStore, changeGameType, changeYear } from './gameStore'
 
-export { gameStore }
+export { 
+  gameStore, 
+  changeGameType, 
+  changeYear 
+}

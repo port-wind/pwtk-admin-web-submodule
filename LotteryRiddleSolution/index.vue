@@ -35,7 +35,6 @@ const fetchData = async () => {
 
   isLoading.value = true
   try {
-    const res = await service.kv().getAllNumInfo().do()
     const res2: any[] = await service.kv().getRecentYearsIssueList(gameTypeCode.value).getRequest()
     const res3: any = await service.kv().getGameResultHistory(gameTypeCode.value, String(year.value)).getRequest()
     console.log('🚀 ~ fetchData ~ res3:', res3)
@@ -84,9 +83,7 @@ watch(
       return
     }
 
-    console.log('🚀 ~ 22222newVal:', newVal)
-    console.log('🚀 ~ 22222oldVal:', oldVal)
-
+    console.log('🚀 ~ gameTypeCode ~ newVal:', gameStoreData.value)
     // 使用防抖函数，避免频繁切换
     debouncedFetchData()
   },
@@ -150,7 +147,6 @@ const getSizeText = (size: string) => {
 <template>
   <div class="LotteryRiddleSolution">
     <div class="solution-wrapper">
-      yyyy {{ gameStoreData.gameTypeCode }} yyyyy
       <div class="header">
         <span class="main-title">{{ datas.configParamJson.mainTitle }}</span>
         <span class="sub-title">【{{ datas.configParamJson.subTitle }}】</span>
@@ -208,13 +204,13 @@ const getSizeText = (size: string) => {
 }
 
 .content-extends {
-  padding: 0 15px;
+  padding: 0;
   background-color: #fff;
   border-bottom: 1px solid #c8e6c9;
 }
 
 .item {
-  padding: 5px 0;
+  padding: 5px 10px;
   border-bottom: 1px dashed #c8e6c9;
   &:last-child {
     border-bottom: none;

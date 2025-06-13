@@ -5,6 +5,11 @@ import axios from 'axios'
 const PUBLIC_KV_URL = 'https://ocs.ai4funs.com/pwtk'
 
 const instance = axios.create({})
+
+interface IAllNumInfo {
+  allNumInfo: any[]
+}
+
 // const WEBSITE = JSON.parse(utils.getSession(constants.sessionStorageKeys.WEBSITE) || '');
 // const WEBSITE_DOMAIN = JSON.parse(utils.getSession(constants.sessionStorageKeys.WEBSITE_DOMAIN) || '');
 // https://ocs.ai4funs.com/pwtk/tk/a6/issueList
@@ -116,16 +121,8 @@ export default () => {
       return api
     },
 
-    do: () =>
-      instance
-        .get<any[]>(`${PUBLIC_KV_URL}?keys=${init.join(',')}`)
-        // .get<any[]>(`https://ocs.ai4funs.com/pwtk?keys=${init.join(",")}`)
-        .then(res => Object.values(res.data)),
-
-    getRequest: () =>
-      instance.get<any[]>(`${PUBLIC_KV_URL}/${init}`).then(res => {
-        return res.data
-      }),
+    do: () => instance.get<any[]>(`${PUBLIC_KV_URL}?keys=${init.join(',')}`).then((res) => res.data),
+    getRequest: () => instance.get<any[]>(`${PUBLIC_KV_URL}/${init}`).then((res) => res.data)
   }
   return api
 }
