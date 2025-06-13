@@ -1,3 +1,13 @@
+import type { ISetStyle } from '../componentProperties/index'
+
+export interface IDatas extends ISetStyle<GameResultBox> {}
+export interface GameResultBox {
+  model: string // s1 s2 s3
+}
+
+// configParamJson 的结构
+export interface ImageStyleJSON {}
+
 // 定义类型
 export type GameIconKeys = '2032' | '1' | '84' | '3995' | '5' | '6'
 import am from '@/assets/images/county/am.png'
@@ -11,5 +21,5 @@ export const GAME_ICONS: Record<GameIconKeys, string> = {
   '84': tw.src,
   '3995': xjp.src,
   '5': am.src,
-  '6': tw.src,
+  '6': tw.src
 } as const

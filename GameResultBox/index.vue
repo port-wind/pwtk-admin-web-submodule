@@ -5,6 +5,7 @@ import { defineEmits } from 'vue'
 // import GameResultModel1 from './GameResultModel1.vue'
 // import GameResultModel2 from './GameResultModel2.vue'
 import GameResultModel3 from './GameResultModel3.vue'
+import type { IDatas } from './type'
 import service from '../service/index'
 
 export interface GameResultType {
@@ -20,16 +21,12 @@ export interface GameResultType {
   noTab: boolean
 }
 
-const props = defineProps({
-  datas: {
-    type: Object as () => GameResultType,
-    required: true
-  },
-  tabsData: {
-    type: Object,
-    required: true
-  }
-})
+interface IProps {
+  datas: IDatas
+  tabsData: Record<string, any>
+}
+
+const props = defineProps<IProps>()
 
 // console.log('props', props);
 // console.log('全局变量', window.globalVar); // 输出: This is a global variable
@@ -300,10 +297,19 @@ const data = ref({
     <div class="gameresultbox-content">
       <div class="game-result" data-id="game-result">
         <!-- Model 1 的渲染内容 -->
-        <!-- <GameResultModel1 @update-issue="handleUpdateIssue" :data="props.data" :tabsData="tabsData" /> -->
+        <!-- <GameResultModel1
+          v-if="props.datas.configParamJson.model === 's1'"
+          @update-issue="handleUpdateIssue"
+          :data="props.datas.configParamJson"
+          :tabsData="tabsData"
+        /> -->
 
         <!-- Model 2 的渲染内容 -->
-        <!-- <GameResultModel2 v-else-if="props.data.model === 's2'" :tabsData="props.tabsData" :data="props.data" /> -->
+        <!-- <GameResultModel2
+          v-else-if="props.datas.configParamJson.model === 's2'"
+          :tabsData="props.tabsData"
+          :data="props.data"
+        /> -->
 
         <!-- Model 3 的渲染内容 -->
         <GameResultModel3 :tabsData="rawTabsData" :data="rawData" />

@@ -1,31 +1,47 @@
 <script setup lang="ts">
-// ! CSR
-import { ref, onMounted, onUnmounted, inject, computed } from 'vue'
-// import tabGif from '@/assets/images/home_tab_imgs/gfkj.gif';
-// import utils from '@/utils';
-// import localStorageKeys from '@/constants/localStorageKeys';
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import dayjs from 'dayjs'
 import LotteryBallDisplayNoAdd3 from './LotteryBallDisplayNoAdd3.vue'
-// import { type GameResultType } from '@/components/Vue/GameResult.vue'
-// import type { GAME_DATA_ALL } from '@/types/GameType'
-// import { GAME_ICONS, type GameIconKeys } from '@/components/Vue/GameResult'
 import { Image as VanImage } from 'vant'
-// import { gameDataStore } from '@/store'
+import { type GameIconKeys } from './type'
+import am from './assets/country/am.png'
+import tw from './assets/country/tw-96.png'
+import xg from './assets/country/xg.png'
+import xjp from './assets/country/xjp-96.png'
+console.log('🚀 ~ xjp:', xjp)
+const display = import.meta.env.PUBLIC_DISPLAY
+console.log('🚀 ~ display:', display)
 
-import { GAME_ICONS, type GameIconKeys } from './type'
+const GAME_ICONS = {
+  '3995': display ? xjp.src : xjp,
+  '2032': display ? am.src : am,
+  '1': display ? xg.src : xg,
+  '84': display ? tw.src : tw,
+  '5': display ? am.src : am,
+  '6': display ? tw.src : tw
+}
 
 import { type GameResultType } from './index.vue'
 
-const props = defineProps({
-  data: {
-    type: Object as () => GameResultType,
-    required: true
-  },
-  tabsData: {
-    type: Object,
-    required: true
-  }
-})
+interface IProps {
+  data: GameResultType
+  tabsData: Record<string, any>
+}
+
+const props = defineProps<IProps>()
+console.log('🚀 ~ props1111111 data:', props.data)
+console.log('🚀 ~ props1111111 tabsData:', props.tabsData)
+
+// const props = defineProps({
+//   data: {
+//     type: Object as () => GameResultType,
+//     required: true
+//   },
+//   tabsData: {
+//     type: Object,
+//     required: true
+//   }
+// })
 
 const truncateString = (str: string): string => {
   let newStr = str.toString()

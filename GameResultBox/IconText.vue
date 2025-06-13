@@ -67,11 +67,7 @@ defineProps<{
     }
 
     .number {
-      // position: absolute;
-      // top: 16%;
-      // left: 19%;
       font-size: 20px;
-      // transform: translateY(-10%);
     }
   }
 
