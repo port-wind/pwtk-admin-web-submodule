@@ -89,7 +89,7 @@ const getSizeText = (size: string) => {
     <div class="content-extends">
       <div v-for="(item, index) in mergedList" :key="index" class="item">
         <div class="item-header">
-          <span>{{ item.issueShort || item.issue }}期: 谜语解特</span>
+          <span>{{ item.issueShort || item.issue }}期: {{ datas.configParamJson.subTitle }}</span>
           <span v-if="item.type === 'next'" class="result-text color-blue">开? 00准</span>
           <span v-else-if="item.result" :class="`result-text color-${getResultColor(item)}`">
             开{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}准
