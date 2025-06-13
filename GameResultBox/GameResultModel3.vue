@@ -9,8 +9,7 @@ import tw from '../assets/country/tw-96.png'
 import xg from '../assets/country/xg.png'
 import xjp from '../assets/country/xjp-96.png'
 import kl8 from '../assets/country/kl8.png'
-import { gameDataStore } from '../store'
-import { increment } from '../store/counter'
+import { changeGameType } from '../store/gameStore'
 const display = import.meta.env.PUBLIC_DISPLAY
 
 const GAME_ICONS = {
@@ -74,15 +73,14 @@ const nowTime = ref(dayjs().format('HH:mm:ss'))
 
 const tabIndex = ref(0)
 function selectTab(index: number) {
-  // console.log('index', index);
-  increment()
   tabIndex.value = index
-  gameDataStore.set({
-    tabIndex: index,
-    gameType: props.tabsData[index].gameType,
-    gameTypeCode: props.tabsData[index].gameTypeCode
-  })
-  // console.log("gameDataStore", gameDataStore.get());
+
+  changeGameType(props.tabsData[index].gameType, props.tabsData[index].gameTypeCode)
+  console.log(
+    '🚀 ~ selectTab ~ props.tabsData[index].gameType, props.tabsData[index].gameTypeCode:',
+    props.tabsData[index].gameType,
+    props.tabsData[index].gameTypeCode
+  )
 }
 
 const currentTime = ref('')
@@ -98,10 +96,6 @@ onMounted(() => {
 })
 
 console.log('props.data', props.data)
-
-// watch([() => props.tabIndex], ([newIndex]) => {
-//   selectedTab.value = newIndex;
-// });
 </script>
 <template>
   <div class="tabs">

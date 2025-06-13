@@ -2,55 +2,42 @@
 import type { IDatas } from './type'
 import service from '../service/index'
 import { onMounted, ref, computed, watch } from 'vue'
-import StateManager from '../StateManager.vue'
-import { gameDataStore } from '../store'
 import { useStore } from '@nanostores/vue'
-import { counter } from '../store/counter'
+import { gameStore } from '../store/index'
+import { debounce } from 'lodash-es' // 引入防抖函数
+
 interface IProps {
   datas: IDatas
 }
 const props = withDefaults(defineProps<IProps>(), {})
+const gameStoreData = useStore(gameStore)
 
-const gameType = computed(() => props.datas?.configParamJson?.gameType || 'a6')
-const year = computed(() => props.datas?.configParamJson?.year || 2025)
+const gameTypeCode = computed(() => gameStoreData.value.gameTypeCode)
+const year = computed(() => gameStoreData.value.year)
+
 const getIssueNumber = computed(() => props.datas?.configParamJson?.getIssueNumber || 5)
-
-const count = useStore(counter)
-console.log('🚀 ~ count:', count)
-
-gameDataStore.subscribe(async (item) => {
-  console.log('🚀 ~ gameDataStore.subscribe ~ item:', item)
-  // console.log('gameDataStore', data, gameType.value)
-  //   console.log('gameDataStore 更新')
-  // if (item.gameType && (gameType.value = item.gameType)) {
-  //   switch (data.value.model) {
-  //     case 's1':
-  //     case 's2': //获取帖子详情
-  //     case 's3': //获取帖子详情
-  //       await getBBSDetail()
-  //       break
-
-  //     default:
-  //       console.log('无匹配到模版', data.value.model)
-  //       break
-  //   }
-  // }
-})
 
 // 用于存储合并后的数据
 const mergedList = ref<any[]>([])
+const isLoading = ref(false) // 添加加载状态
 
 const fetchData = async () => {
   // 确保有必要的参数才执行请求
-  if (!gameType.value || !year.value) {
+  if (!gameTypeCode.value || !year.value) {
     console.warn('gameType or year is not available')
     return
   }
 
+  if (isLoading.value) {
+    console.log('正在加载中，跳过重复请求')
+    return
+  }
+
+  isLoading.value = true
   try {
     const res = await service.kv().getAllNumInfo().do()
-    const res2: any[] = await service.kv().getRecentYearsIssueList(gameType.value).getRequest()
-    const res3: any = await service.kv().getGameResultHistory(gameType.value, String(year.value)).getRequest()
+    const res2: any[] = await service.kv().getRecentYearsIssueList(gameTypeCode.value).getRequest()
+    const res3: any = await service.kv().getGameResultHistory(gameTypeCode.value, String(year.value)).getRequest()
     console.log('🚀 ~ fetchData ~ res3:', res3)
 
     // 1. 找到当前 year 的 issues
@@ -75,8 +62,13 @@ const fetchData = async () => {
     console.log('mergedList', mergedList.value)
   } catch (error) {
     console.error('fetchData error:', error)
+  } finally {
+    isLoading.value = false
   }
 }
+
+// 创建防抖函数
+const debouncedFetchData = debounce(fetchData, 300) // 300ms 防抖
 
 onMounted(() => {
   fetchData()
@@ -84,11 +76,19 @@ onMounted(() => {
 
 // 监听关键参数变化，重新获取数据
 watch(
-  [gameType, year],
-  () => {
-    if (gameType.value && year.value) {
-      fetchData()
+  gameTypeCode,
+  (newVal, oldVal) => {
+    // 避免相同值的重复请求
+    if (newVal === oldVal) {
+      console.log('gameTypeCode 值未发生变化，跳过请求')
+      return
     }
+
+    console.log('🚀 ~ 22222newVal:', newVal)
+    console.log('🚀 ~ 22222oldVal:', oldVal)
+
+    // 使用防抖函数，避免频繁切换
+    debouncedFetchData()
   },
   { immediate: false }
 )
@@ -149,36 +149,34 @@ const getSizeText = (size: string) => {
 
 <template>
   <div class="LotteryRiddleSolution">
-    ZZZZZ {{ count }}XXXX
-    <StateManager>
-      <div class="solution-wrapper">
-        <div class="header">
-          <span class="main-title">{{ datas.configParamJson.mainTitle }}</span>
-          <span class="sub-title">【{{ datas.configParamJson.subTitle }}】</span>
-        </div>
-        <div class="content-extends">
-          <div v-for="(item, index) in mergedList" :key="index" class="item">
-            <div class="item-header">
-              <span>{{ item.issueShort || item.issue }}期: {{ datas.configParamJson.subTitle }}</span>
-              <span v-if="item.type === 'next'" class="result-text">
-                开
-                <span class="red">? 00</span>
-                准
-              </span>
-              <span v-else-if="item.result" :class="`result-text`">
-                开
-                <span class="red">{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}</span>
-                准
-              </span>
-            </div>
-            <div class="riddle-text">≤{{ getRiddleText(item) }}≥</div>
-            <div class="answer-text">
-              本期谜底：（{{ getZodiacFromTeNum(item) }}）送：{{ getSizeText(item.totalSize) }}
-            </div>
+    <div class="solution-wrapper">
+      yyyy {{ gameStoreData.gameTypeCode }} yyyyy
+      <div class="header">
+        <span class="main-title">{{ datas.configParamJson.mainTitle }}</span>
+        <span class="sub-title">【{{ datas.configParamJson.subTitle }}】</span>
+      </div>
+      <div class="content-extends">
+        <div v-for="(item, index) in mergedList" :key="index" class="item">
+          <div class="item-header">
+            <span>{{ item.issueShort || item.issue }}期: {{ datas.configParamJson.subTitle }}</span>
+            <span v-if="item.type === 'next'" class="result-text">
+              开
+              <span class="red">? 00</span>
+              准
+            </span>
+            <span v-else-if="item.result" :class="`result-text`">
+              开
+              <span class="red">{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}</span>
+              准
+            </span>
+          </div>
+          <div class="riddle-text">≤{{ getRiddleText(item) }}≥</div>
+          <div class="answer-text">
+            本期谜底：（{{ getZodiacFromTeNum(item) }}）送：{{ getSizeText(item.totalSize) }}
           </div>
         </div>
       </div>
-    </StateManager>
+    </div>
     <slot name="deles" />
   </div>
 </template>
