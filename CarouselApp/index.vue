@@ -199,6 +199,7 @@ const handleDownload = (url: string, type: string) => {
   img {
     width: 100%;
     height: 100%;
+    display: block;
     object-fit: cover;
   }
 
@@ -223,24 +224,27 @@ const handleDownload = (url: string, type: string) => {
 
 .app-card {
   background: #fff;
-  border-radius: 8px;
-  border: 1px solid #e5e5e5;
-  overflow: hidden;
+  // border-radius: 8px;
+  // border: 1px solid #e5e5e5;
+  // overflow: hidden;
 }
 
 .app-info {
   display: flex;
   align-items: center;
-  // padding: 16px;
+  padding: 10px 0;
   border-bottom: 1px solid #f0f0f0;
+  gap: 10px;
 
   .app-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
+    // width: 60px;
+    height: 100%;
+    // border-radius: 12px;
     overflow: hidden;
-    margin-right: 16px;
+    // margin-right: 16px;
     flex-shrink: 0;
+    padding: 10px;
+    max-width: 100px;
 
     img {
       width: 100%;
