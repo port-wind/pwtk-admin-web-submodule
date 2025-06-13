@@ -71,18 +71,18 @@
                 class="download-btn android"
                 @click="handleDownload(tab.androidDownload, 'android')"
               >
-                <img :src="AndroidSvg" alt="Android下载" />
-                <!-- <van-icon name="android" /> -->
+                <img v-if="display" :src="AndroidSvg.src" alt="Android下载" />
+                <img v-else :src="AndroidSvg" alt="Android下载" />
                 <span>Android下载</span>
               </button>
               <button v-if="tab.iosDownload" class="download-btn ios" @click="handleDownload(tab.iosDownload, 'ios')">
-                <!-- <van-icon name="apple" /> -->
-                <img :src="AppleSvg" alt="iPhone下载" />
+                <img v-if="display" :src="AppleSvg.src" alt="iPhone下载" />
+                <img v-else :src="AppleSvg" alt="iPhone下载" />
                 <span>iPhone下载</span>
               </button>
               <button v-if="tab.webUrl" class="download-btn web" @click="handleDownload(tab.webUrl, 'web')">
-                <!-- <van-icon name="desktop-o" /> -->
-                <img :src="DesktopSvg" alt="访问官网" />
+                <img v-if="display" :src="DesktopSvg.src" alt="访问官网" />
+                <img v-else :src="DesktopSvg" alt="访问官网" />
                 <span>访问官网</span>
               </button>
             </div>
@@ -105,6 +105,8 @@ import type { IDatas } from './type'
 import AppleSvg from '../assets/svg/apple-fill.svg'
 import AndroidSvg from '../assets/svg/android.svg'
 import DesktopSvg from '../assets/svg/desktop.svg'
+
+const display = import.meta.env.PUBLIC_DISPLAY
 
 const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
 
