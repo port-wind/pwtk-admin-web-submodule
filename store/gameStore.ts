@@ -26,11 +26,12 @@ export function changeYear(year: number) {
 
 async function getNumInfo() {
   const res: any = await service.kv().getAllNumInfo().do()
-  console.log('🚀 ~ getNumInfo ~ res:', res)
-  gameStore.set({
-    ...gameStore.get(),
-    numInfo: res.allNumInfo
-  })
+  if (res && res.length > 0) {
+    gameStore.set({
+      ...gameStore.get(),
+      numInfo: res[0]
+    })
+  }
 }
 
 getNumInfo()
