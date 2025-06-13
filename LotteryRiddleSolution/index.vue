@@ -1,50 +1,71 @@
 <script setup lang="ts" name="LotteryRiddleSolution">
 import type { IDatas } from './type'
 import service from '../service/index'
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 interface IProps {
   datas: IDatas
 }
 const props = withDefaults(defineProps<IProps>(), {})
 
-const gameType = computed(() => props.datas.configParamJson.gameType)
-const year = computed(() => props.datas.configParamJson.year)
-const getIssueNumber = computed(() => props.datas.configParamJson.getIssueNumber)
+const gameType = computed(() => props.datas?.configParamJson?.gameType || 'a6')
+const year = computed(() => props.datas?.configParamJson?.year || 2025)
+const getIssueNumber = computed(() => props.datas?.configParamJson?.getIssueNumber || 5)
 
 // 用于存储合并后的数据
 const mergedList = ref<any[]>([])
 
 const fetchData = async () => {
-  const res = await service.kv().getAllNumInfo().do()
-  const res2: any[] = await service.kv().getRecentYearsIssueList(gameType.value).getRequest()
-  const res3: any = await service.kv().getGameResultHistory(gameType.value, String(year.value)).getRequest()
-  console.log('🚀 ~ fetchData ~ res3:', res3)
+  // 确保有必要的参数才执行请求
+  if (!gameType.value || !year.value) {
+    console.warn('gameType or year is not available')
+    return
+  }
 
-  // 1. 找到当前 year 的 issues
-  const yearItem = res2.find((item: any) => item.year === year)
-  const res2List: any[] = yearItem?.issues?.slice(0, getIssueNumber.value) || []
+  try {
+    const res = await service.kv().getAllNumInfo().do()
+    const res2: any[] = await service.kv().getRecentYearsIssueList(gameType.value).getRequest()
+    const res3: any = await service.kv().getGameResultHistory(gameType.value, String(year.value)).getRequest()
+    console.log('🚀 ~ fetchData ~ res3:', res3)
 
-  // 2. res3.data 直接用
-  const res3List: any[] = res3?.data || []
+    // 1. 找到当前 year 的 issues
+    const yearItem = res2.find((item: any) => item.year === year.value)
+    const res2List: any[] = yearItem?.issues?.slice(0, getIssueNumber.value) || []
 
-  // 3. 合并逻辑
-  mergedList.value = res2List.map((item2: any) => {
-    if (item2.type === 'next') {
-      return item2
-    } else {
-      // 注意类型转换，res2的issue是数字，res3的issue是字符串
-      const match = res3List.find((item3: any) => String(item3.issue) === String(item2.issue))
-      return match ? { ...item2, ...match } : item2
-    }
-  })
+    // 2. res3.data 直接用
+    const res3List: any[] = res3?.data || []
 
-  // mergedList.value 就是你要用的数据
-  console.log('mergedList', mergedList.value)
+    // 3. 合并逻辑
+    mergedList.value = res2List.map((item2: any) => {
+      if (item2.type === 'next') {
+        return item2
+      } else {
+        // 注意类型转换，res2的issue是数字，res3的issue是字符串
+        const match = res3List.find((item3: any) => String(item3.issue) === String(item2.issue))
+        return match ? { ...item2, ...match } : item2
+      }
+    })
+
+    // mergedList.value 就是你要用的数据
+    console.log('mergedList', mergedList.value)
+  } catch (error) {
+    console.error('fetchData error:', error)
+  }
 }
 
 onMounted(() => {
   fetchData()
 })
+
+// 监听关键参数变化，重新获取数据
+watch(
+  [gameType, year],
+  () => {
+    if (gameType.value && year.value) {
+      fetchData()
+    }
+  },
+  { immediate: false }
+)
 
 const isHighlighted = (zodiac: string, item: any) => {
   return item.highlightZodiacs.includes(zodiac)
@@ -68,17 +89,17 @@ const getRiddleText = (item: any) => {
   // 158 ≤真金不怕火来烧,不见棺材不落泪≥
 
   switch (String(item.issue)) {
-    case year + '164':
+    case year.value + '164':
       return '≤丈夫双泪不轻弹,带着铃铛去做贼≥'
-    case year + '163':
+    case year.value + '163':
       return '≤看见八钱散发打,七九相连三一走≥'
-    case year + '162':
+    case year.value + '162':
       return '≤船到桥头自会直,摇头不算点头算≥'
-    case year + '160':
+    case year.value + '160':
       return '≤四头连旺暴今期,得饶人处且饶人≥'
-    case year + '159':
+    case year.value + '159':
       return '≤一唱雄鸡天下白,白手起家從零起≥'
-    case year + '158':
+    case year.value + '158':
       return '≤真金不怕火来烧,不见棺材不落泪≥'
     default:
       return ''
@@ -101,25 +122,29 @@ const getSizeText = (size: string) => {
 </script>
 
 <template>
-  <div class="solution-wrapper">
-    <div class="header">
-      <span class="main-title">{{ datas.configParamJson.mainTitle }}</span>
-      <span class="sub-title">【{{ datas.configParamJson.subTitle }}】</span>
-    </div>
-    <div class="content-extends">
-      <div v-for="(item, index) in mergedList" :key="index" class="item">
-        <div class="item-header">
-          <span>{{ item.issueShort || item.issue }}期: {{ datas.configParamJson.subTitle }}</span>
-          <span v-if="item.type === 'next'" class="result-text color-blue">开? 00准</span>
-          <span v-else-if="item.result" :class="`result-text color-${getResultColor(item)}`">
-            开{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}准
-          </span>
-        </div>
-        <div class="riddle-text">≤{{ getRiddleText(item) }}≥</div>
-        <div class="answer-text">本期谜底：（{{ getZodiacFromTeNum(item) }}）送：{{ getSizeText(item.totalSize) }}</div>
+  <div class="LotteryRiddleSolution">
+    <div class="solution-wrapper">
+      <div class="header">
+        <span class="main-title">{{ datas.configParamJson.mainTitle }}</span>
+        <span class="sub-title">【{{ datas.configParamJson.subTitle }}】</span>
       </div>
-    </div>
-    <!-- <div class="content">
+      <div class="content-extends">
+        <div v-for="(item, index) in mergedList" :key="index" class="item">
+          <div class="item-header">
+            <span>{{ item.issueShort || item.issue }}期: {{ datas.configParamJson.subTitle }}</span>
+            <span v-if="item.type === 'next'" class="result-text">开<span class="red">? 00</span>准</span>
+            <span v-else-if="item.result" :class="`result-text`">
+              开<span class="red">{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}</span
+              >准
+            </span>
+          </div>
+          <div class="riddle-text">≤{{ getRiddleText(item) }}≥</div>
+          <div class="answer-text">
+            本期谜底：（{{ getZodiacFromTeNum(item) }}）送：{{ getSizeText(item.totalSize) }}
+          </div>
+        </div>
+      </div>
+      <!-- <div class="content">
       <div v-for="(item, index) in datas.configParamJson.items" :key="index" class="item">
         <div class="item-header">
           <span>{{ item.issue }}: {{ item.title }}</span>
@@ -137,14 +162,19 @@ const getSizeText = (size: string) => {
         </div>
       </div>
     </div> -->
+    </div>
     <slot name="deles" />
   </div>
 </template>
 
 <style scoped lang="scss">
+.LotteryRiddleSolution {
+  position: relative;
+}
+
 .solution-wrapper {
   border: 1px solid #4caf50;
-  border-radius: 8px;
+  // border-radius: 8px;
   overflow: hidden;
   font-family: 'SimSun', '宋体', sans-serif;
   position: relative;
@@ -153,8 +183,8 @@ const getSizeText = (size: string) => {
 .header {
   background-color: #4caf50;
   color: white;
-  padding: 10px 15px;
-  font-size: 18px;
+  padding: 3px 15px;
+  font-size: 20px;
   font-weight: bold;
 }
 
@@ -165,12 +195,12 @@ const getSizeText = (size: string) => {
 
 .content-extends {
   padding: 0 15px;
-  background-color: #f0f9eb;
+  background-color: #fff;
   border-bottom: 1px solid #c8e6c9;
 }
 
 .item {
-  padding: 15px 0;
+  padding: 5px 0;
   border-bottom: 1px dashed #c8e6c9;
   &:last-child {
     border-bottom: none;
@@ -181,32 +211,24 @@ const getSizeText = (size: string) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
   font-size: 16px;
   color: #333;
 
   .result-text {
     font-weight: bold;
-    &.color-red {
+    .red {
       color: #f44336;
-    }
-    &.color-green {
-      color: #4caf50;
-    }
-    &.color-blue {
-      color: #2196f3;
     }
   }
 }
 
 .riddle-text {
-  color: #0000ff;
+  color: green;
   font-size: 16px;
-  margin-bottom: 8px;
 }
 
 .answer-text {
-  color: #333;
+  color: blue;
   font-size: 16px;
 }
 
