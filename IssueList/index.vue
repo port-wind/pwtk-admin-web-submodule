@@ -37,66 +37,74 @@ const formatItemText = (item: any) => {
 </script>
 
 <template>
-  <div class="issue-list" v-if="datas.configParamJson.enable">
-    <slot name="deles" />
+  <div class="IssueList">
+    <div class="issue-list" v-if="datas.configParamJson.enable">
+      <!-- 标题区域 -->
+      <div
+        class="issue-list__header"
+        :style="{
+          backgroundColor: datas.configParamJson.listStyleJSON.headerBackgroundColor,
+          color: datas.configParamJson.listStyleJSON.headerTextColor,
+          padding: `${datas.configParamJson.listStyleJSON.headerPadding}px`,
+          borderRadius: `${datas.configParamJson.listStyleJSON.borderRadius}px ${datas.configParamJson.listStyleJSON.borderRadius}px 0 0`
+        }"
+      >
+        <h2 class="issue-list__title">{{ datas.configParamJson.title }}</h2>
+      </div>
 
-    <!-- 标题区域 -->
-    <div
-      class="issue-list__header"
-      :style="{
-        backgroundColor: datas.configParamJson.listStyleJSON.headerBackgroundColor,
-        color: datas.configParamJson.listStyleJSON.headerTextColor,
-        padding: `${datas.configParamJson.listStyleJSON.headerPadding}px`,
-        borderRadius: `${datas.configParamJson.listStyleJSON.borderRadius}px ${datas.configParamJson.listStyleJSON.borderRadius}px 0 0`
-      }"
-    >
-      <h2 class="issue-list__title">{{ datas.configParamJson.title }}</h2>
-    </div>
-
-    <!-- 列表区域 -->
-    <div
-      class="issue-list__content"
-      :style="{
-        backgroundColor: datas.configParamJson.listStyleJSON.listBackgroundColor,
-        padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`,
-        borderRadius: `0 0 ${datas.configParamJson.listStyleJSON.borderRadius}px ${datas.configParamJson.listStyleJSON.borderRadius}px`
-      }"
-    >
-      <div class="issue-list__items">
-        <div
-          v-for="(item, index) in displayItems"
-          :key="item.id"
-          class="issue-list__item"
-          :style="{
-            padding: `${datas.configParamJson.listStyleJSON.itemPadding}px`,
-            marginBottom:
-              index < displayItems.length - 1 ? `${datas.configParamJson.listStyleJSON.itemSpacing}px` : '0',
-            borderBottom:
-              index < displayItems.length - 1
-                ? `${datas.configParamJson.listStyleJSON.itemBorderWidth}px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`
-                : 'none'
-          }"
-          @click="handleItemClick(item)"
-        >
-          <span class="issue-list__period" :style="{ color: datas.configParamJson.listStyleJSON.periodTextColor }">
-            {{ item.period }}
-          </span>
-          <span class="issue-list__title-text" :style="{ color: datas.configParamJson.listStyleJSON.titleTextColor }">
-            {{ item.title }}
-          </span>
-          <span class="issue-list__subtitle" :style="{ color: datas.configParamJson.listStyleJSON.subtitleTextColor }">
-            【{{ item.subtitle }}】
-          </span>
-          <span class="issue-list__status" :style="{ color: datas.configParamJson.listStyleJSON.statusTextColor }">
-            {{ item.status }}！
-          </span>
+      <!-- 列表区域 -->
+      <div
+        class="issue-list__content"
+        :style="{
+          backgroundColor: datas.configParamJson.listStyleJSON.listBackgroundColor,
+          padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`,
+          borderRadius: `0 0 ${datas.configParamJson.listStyleJSON.borderRadius}px ${datas.configParamJson.listStyleJSON.borderRadius}px`
+        }"
+      >
+        <div class="issue-list__items">
+          <div
+            v-for="(item, index) in displayItems"
+            :key="item.id"
+            class="issue-list__item"
+            :style="{
+              padding: `${datas.configParamJson.listStyleJSON.itemPadding}px`,
+              marginBottom:
+                index < displayItems.length - 1 ? `${datas.configParamJson.listStyleJSON.itemSpacing}px` : '0',
+              borderBottom:
+                index < displayItems.length - 1
+                  ? `${datas.configParamJson.listStyleJSON.itemBorderWidth}px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`
+                  : 'none'
+            }"
+            @click="handleItemClick(item)"
+          >
+            <span class="issue-list__period" :style="{ color: datas.configParamJson.listStyleJSON.periodTextColor }">
+              {{ item.period }}
+            </span>
+            <span class="issue-list__title-text" :style="{ color: datas.configParamJson.listStyleJSON.titleTextColor }">
+              {{ item.title }}
+            </span>
+            <span
+              class="issue-list__subtitle"
+              :style="{ color: datas.configParamJson.listStyleJSON.subtitleTextColor }"
+            >
+              【{{ item.subtitle }}】
+            </span>
+            <span class="issue-list__status" :style="{ color: datas.configParamJson.listStyleJSON.statusTextColor }">
+              {{ item.status }}！
+            </span>
+          </div>
         </div>
       </div>
     </div>
+    <slot name="deles" />
   </div>
 </template>
 
 <style lang="scss" scoped>
+.IssueList {
+  position: relative;
+}
+
 .issue-list {
   position: relative;
   width: 100%;

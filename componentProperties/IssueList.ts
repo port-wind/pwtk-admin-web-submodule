@@ -308,7 +308,7 @@ const componentProperties = new Map<string, IComponentProperty<ISetStyle<IssueLi
 
 componentProperties.set('IssueList', {
   component: 'IssueList',
-  text: '开奖信息列表',
+  text: '期数列表',
   active: false,
   style: 'IssueListStyle',
   setStyle: {
@@ -318,7 +318,7 @@ componentProperties.set('IssueList', {
     pageRenderingSeq: 0,
     websiteId: '',
     componentRef: '',
-    componentName: '开奖信息列表',
+    componentName: '期数列表',
     componentType: 'IssueList',
     componentSort: '',
     status: 'y',
