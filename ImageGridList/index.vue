@@ -1,6 +1,7 @@
 <script setup lang="ts" name="ImageGridList">
 import { computed } from 'vue'
 import type { IDatas } from './type'
+import { getLatestIssue } from '../api'
 
 interface IProps {
   datas: IDatas
@@ -91,6 +92,16 @@ const handleMouseLeave = (event: Event) => {
   target.style.transform = 'translateY(0)'
   target.style.boxShadow = 'none'
 }
+
+onMounted(async () => {
+  const res = await getLatestIssue({
+    newspaperCode: 'newspaper11227',
+    gameType: 1
+  })
+  if (res.success) {
+    console.log('🚀 ~ onMounted ~ image grid list res.data:', res.data)
+  }
+})
 </script>
 
 <template>
