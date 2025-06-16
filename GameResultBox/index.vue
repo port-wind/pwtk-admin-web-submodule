@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { defineEmits } from 'vue'
 // import { globalStore } from '@/store';
 import GameResultModel1 from './GameResultModel1.vue'
-// import GameResultModel2 from './GameResultModel2.vue'
+import GameResultModel2 from './GameResultModel2.vue'
 import GameResultModel3 from './GameResultModel3.vue'
 import type { IDatas } from './type'
 import service from '../service/index'
@@ -305,11 +305,11 @@ const tabsData = ref([
         />
 
         <!-- Model 2 的渲染内容 -->
-        <!-- <GameResultModel2
+        <GameResultModel2
           v-else-if="props.datas.configParamJson.model === 's2'"
-          :tabsData="props.tabsData"
-          :data="props.data"
-        /> -->
+          :tabsData="rawTabsData"
+          :datas="props.datas"
+        />
 
         <!-- Model 3 的渲染内容 -->
         <GameResultModel3
