@@ -127,7 +127,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 a {
   color: var(--theme-color);
 }
@@ -166,7 +166,7 @@ a {
 .active {
   /* border-bottom: 2px solid #000; */
   color: #fff;
-  background: linear-gradient(var(--gradient-direction, 0deg), var(--second-color), var(--theme-color));
+  background: var(--theme-color);
   h4 {
     color: #fff;
   }
