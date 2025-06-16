@@ -3,16 +3,25 @@ import type { ISetStyle } from '../componentProperties/index'
 export interface IDatas extends ISetStyle<GameResultBox> {}
 export interface GameResultBox {
   model: 's1' | 's2' | 's3'
-  isNextIssue: boolean
   isHistory: boolean
+  isNextIssue: boolean
   isIssue: boolean
   isGifAd: boolean
   isLongName: boolean
   isIcon: boolean
   showArray: string[]
-  // nameType: string
   noTab: boolean
 }
+
+// model
+// isHistory
+// isNextIssue
+// isIssue
+// isGifAd
+// isLongName
+// isIcon
+// showArray
+// noTab
 
 // configParamJson 的结构
 export interface ImageStyleJSON {}

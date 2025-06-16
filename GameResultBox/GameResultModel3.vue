@@ -2,16 +2,24 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import dayjs from 'dayjs'
 import LotteryBallDisplayNoAdd3 from './LotteryBallDisplayNoAdd3.vue'
+import { changeGameType } from '../store/index'
 import { Image as VanImage } from 'vant'
 import type { GameIconKeys, IDatas } from './type'
+
 import am from '../assets/country/am.png'
 import tw from '../assets/country/tw-96.png'
 import xg from '../assets/country/xg.png'
 import xjp from '../assets/country/xjp-96.png'
 import kl8 from '../assets/country/kl8.png'
-import { changeGameType } from '../store/index'
 const display = import.meta.env.PUBLIC_DISPLAY
 
+interface IProps {
+  datas: IDatas
+  tabsData: Record<string, any>
+}
+const props = defineProps<IProps>()
+
+// 彩种图标 特殊处理 display 为 true 时，使用 src 属性，否则使用图片路径
 const GAME_ICONS = {
   '3995': display ? xjp.src : xjp,
   '2032': display ? am.src : am,
@@ -21,31 +29,6 @@ const GAME_ICONS = {
   '6': display ? kl8.src : kl8
 }
 
-import { type GameResultType } from './index.vue'
-
-interface IProps {
-  datas: IDatas
-  data: GameResultType
-  tabsData: Record<string, any>
-}
-
-const props = defineProps<IProps>()
-console.log('🚀 ~ props1111111 data:', props.data)
-console.log('🚀 ~ props1111111 tabsData:', props.tabsData)
-console.log('🚀 ~ props1111111 datas:', props.datas)
-console.log('🚀 ~ props1111111 datas.configParamJson:', props.datas.configParamJson)
-
-// const props = defineProps({
-//   data: {
-//     type: Object as () => GameResultType,
-//     required: true
-//   },
-//   tabsData: {
-//     type: Object,
-//     required: true
-//   }
-// })
-
 const truncateString = (str: string): string => {
   let newStr = str.toString()
   if (newStr.length > 4) {
@@ -54,36 +37,27 @@ const truncateString = (str: string): string => {
   return newStr
 }
 
-// console.log("props", props);
 // const GameData = ref([]);
-
-// console.log("GAME_DATA_ALL", GameData);
 
 const tabsData = computed(() => {
   const baseData = props.tabsData
 
-  if (!props.data.showArray?.length) {
+  if (!props.datas.configParamJson.showArray?.length) {
     return baseData
   }
 
-  return baseData.filter((item: any) => props.data.showArray?.some((gameType) => gameType === item.gameType))
+  return baseData.filter((item: any) =>
+    props.datas.configParamJson.showArray?.some((gameType) => gameType === item.gameType)
+  )
 })
 
 const nowTime = ref(dayjs().format('HH:mm:ss'))
-// console.log('GAME_DATA_ALL', GAME_DATA_ALL);
-// console.log('tabsData', tabsData.value);
-// const selectedTab = ref(0);
 
 const tabIndex = ref(0)
 function selectTab(index: number) {
   tabIndex.value = index
 
   changeGameType(props.tabsData[index].gameType, props.tabsData[index].gameTypeCode)
-  console.log(
-    '🚀 ~ selectTab ~ props.tabsData[index].gameType, props.tabsData[index].gameTypeCode:',
-    props.tabsData[index].gameType,
-    props.tabsData[index].gameTypeCode
-  )
 }
 
 const currentTime = ref('')
@@ -97,12 +71,10 @@ onMounted(() => {
     clearInterval(interval)
   })
 })
-
-console.log('props.data', props.data)
 </script>
 <template>
   <div class="tabs">
-    <div class="tab-headers" v-if="!data.noTab">
+    <div class="tab-headers" v-if="!props.datas.configParamJson.noTab">
       <div
         v-for="(tab, index) in tabsData"
         :key="index"
@@ -110,8 +82,12 @@ console.log('props.data', props.data)
         @click="selectTab(index)"
       >
         <h4>
-          <van-image width="24" v-if="data.isIcon" :src="GAME_ICONS[tab.gameType as GameIconKeys]" />
-          {{ data.isLongName ? tab.gameTypeLongName : tab.gameTypeShortName }}
+          <van-image
+            width="24"
+            v-if="props.datas.configParamJson.isIcon"
+            :src="GAME_ICONS[tab.gameType as GameIconKeys]"
+          />
+          {{ props.datas.configParamJson.isLongName ? tab.gameTypeLongName : tab.gameTypeShortName }}
         </h4>
       </div>
     </div>
@@ -130,9 +106,9 @@ console.log('props.data', props.data)
         </div>
       </div>
       <LotteryBallDisplayNoAdd3 :currentResult="tabsData[tabIndex].currentResult" />
-      <div v-if="data.isHistory" class="tab-content-bottom">
-        <p v-if="data.isNextIssue">{{ tabsData[tabIndex].nextIssue }}</p>
-        <a v-if="data.isHistory" href="/lottery">历史记录</a>
+      <div v-if="props.datas.configParamJson.isHistory" class="tab-content-bottom">
+        <p v-if="props.datas.configParamJson.isNextIssue">{{ tabsData[tabIndex].nextIssue }}</p>
+        <a v-if="props.datas.configParamJson.isHistory" href="/lottery">历史记录</a>
       </div>
     </div>
   </div>

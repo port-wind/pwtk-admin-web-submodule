@@ -280,17 +280,17 @@ const tabsData = ref([
   }
 ])
 
-const data = ref({
-  model: 's1' as 's1' | 's2' | 's3',
-  isHistory: false,
-  isNextIssue: false,
-  isIssue: true,
-  isIcon: true,
-  isLongName: false,
-  isGifAd: false,
-  noTab: false,
-  showArray: ['2032', '1', '84', '5', '3995']
-})
+// const data = ref({
+//   model: 's1' as 's1' | 's2' | 's3',
+//   isHistory: false,
+//   isNextIssue: false,
+//   isIssue: true,
+//   isIcon: true,
+//   isLongName: false,
+//   isGifAd: false,
+//   noTab: false,
+//   showArray: ['2032', '1', '84', '5', '3995']
+// })
 </script>
 
 <template>
@@ -313,7 +313,7 @@ const data = ref({
         /> -->
 
         <!-- Model 3 的渲染内容 -->
-        <GameResultModel3 :data="rawData" :tabsData="rawTabsData" :datas="props.datas" />
+        <GameResultModel3 :tabsData="rawTabsData" :datas="props.datas" />
       </div>
     </div>
     <slot name="deles" />
