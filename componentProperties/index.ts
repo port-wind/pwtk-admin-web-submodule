@@ -73,6 +73,7 @@ import LotteryRiddleSolutionProperties from './LotteryRiddleSolution'
 import CarouselAppProperties from './CarouselApp'
 import ImageGridListProperties from './ImageGridList'
 import componentProperties from './NewsPaperCategoryList'
+import TextLinkListProperties from './TextLinkList'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -255,6 +256,10 @@ componentProperties.forEach((value, key) => {
 })
 
 HeaderBarBoxProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+TextLinkListProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
