@@ -3,7 +3,7 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import dayjs from 'dayjs'
 import LotteryBallDisplayNoAdd3 from './LotteryBallDisplayNoAdd3.vue'
 import { Image as VanImage } from 'vant'
-import { type GameIconKeys } from './type'
+import type { GameIconKeys, IDatas } from './type'
 import am from '../assets/country/am.png'
 import tw from '../assets/country/tw-96.png'
 import xg from '../assets/country/xg.png'
@@ -24,6 +24,7 @@ const GAME_ICONS = {
 import { type GameResultType } from './index.vue'
 
 interface IProps {
+  datas: IDatas
   data: GameResultType
   tabsData: Record<string, any>
 }
@@ -31,6 +32,8 @@ interface IProps {
 const props = defineProps<IProps>()
 console.log('🚀 ~ props1111111 data:', props.data)
 console.log('🚀 ~ props1111111 tabsData:', props.tabsData)
+console.log('🚀 ~ props1111111 datas:', props.datas)
+console.log('🚀 ~ props1111111 datas.configParamJson:', props.datas.configParamJson)
 
 // const props = defineProps({
 //   data: {

@@ -8,7 +8,7 @@ export interface GameResultBoxConfigType {
   isIssue: string
   isIcon: string
   isLongName: string
-  showArray: string
+  showArray: string[]
 }
 
 const componentProperties = new Map<String, IComponentProperty<ISetStyle<GameResultBoxConfigType>>>()
@@ -39,7 +39,7 @@ componentProperties.set('GameResultBox', {
       isIssue: '',
       isIcon: '',
       isLongName: '',
-      showArray: ''
+      showArray: ['2032', '1', '5', '6']
     }
   }
 })

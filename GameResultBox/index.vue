@@ -27,6 +27,7 @@ interface IProps {
 }
 
 const props = defineProps<IProps>()
+// console.log('🚀 ~ props:', props.datas.configParamJson)
 
 // console.log('props', props);
 // console.log('全局变量', window.globalVar); // 输出: This is a global variable
@@ -312,7 +313,7 @@ const data = ref({
         /> -->
 
         <!-- Model 3 的渲染内容 -->
-        <GameResultModel3 :tabsData="rawTabsData" :data="rawData" />
+        <GameResultModel3 :data="rawData" :tabsData="rawTabsData" :datas="props.datas" />
       </div>
     </div>
     <slot name="deles" />
