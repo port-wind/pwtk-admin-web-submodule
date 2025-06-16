@@ -9,9 +9,18 @@ export interface IssueList {
   enable: boolean
   issueItems: IssueItem[]
   imageStyleJSON: ImageStyleJSON
+  showStatus: boolean
+  showPriority: boolean
+  showTime: boolean
+  showAssignee: boolean
+  showTags: boolean
+  maxDisplayCount: number
+  layout: 'list' | 'card' | 'timeline'
+  showIcon: boolean
 }
 
 export interface IssueItem {
+  id: string
   tags: string[]
   title: string
   status: string
@@ -19,6 +28,8 @@ export interface IssueItem {
   description: string
   createTime: string
   updateTime: string
+  assignee: string
+  link: string
 }
 
 // configParamJson 的结构
@@ -26,4 +37,6 @@ export interface ImageStyleJSON {
   enableHeight: boolean
   height?: number
   borderRadius?: number
+  maxHeight: number
+  enableMaxHeight: boolean
 }

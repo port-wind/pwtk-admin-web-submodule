@@ -74,6 +74,7 @@ import CarouselAppProperties from './CarouselApp'
 import ImageGridListProperties from './ImageGridList'
 import componentProperties from './NewsPaperCategoryList'
 import TextLinkListProperties from './TextLinkList'
+import IssueListProperties from './IssueList'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -260,6 +261,10 @@ HeaderBarBoxProperties.forEach((value, key) => {
 })
 
 TextLinkListProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+IssueListProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
