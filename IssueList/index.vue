@@ -7,92 +7,186 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 
-const styleJSON = computed(() => props.datas.configParamJson.imageStyleJSON)
+// 获取启用且限制数量的列表项
+const displayItems = computed(() => {
+  if (!props.datas.configParamJson.enable) return []
 
-const imageStyle = computed(() => {
-  return {
-    height: styleJSON.value?.enableHeight ? `${styleJSON.value.height}px` : 'auto',
-    borderRadius: styleJSON.value?.borderRadius ? `${styleJSON.value.borderRadius}px` : '0px'
-  }
+  const enabledItems = props.datas.configParamJson.issueItems?.filter((item) => item.enabled) || []
+  const maxCount = props.datas.configParamJson.maxDisplayCount || 30
+
+  return enabledItems.slice(0, maxCount)
 })
 
-const handleLink = () => {
-  const link = props.datas.configParamJson.link
-  if (link) {
-    window.open(link, '_blank')
+// 处理项目点击
+const handleItemClick = (item: any) => {
+  if (item.link) {
+    // 判断是否为外部链接
+    if (item.link.startsWith('http://') || item.link.startsWith('https://')) {
+      window.open(item.link, '_blank')
+    } else {
+      // 内部路由跳转
+      window.location.href = item.link
+    }
   }
 }
-const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
-// 定义 props 接收父组件传入的数据
-const getFullUrl = (url: string, baseUrl: string): string => {
-  return /^https?:\/\//.test(url) ? url : `${baseUrl}${url}`
+
+// 格式化显示文本
+const formatItemText = (item: any) => {
+  return `${item.period} ${item.title} 【${item.subtitle}】${item.status}！`
 }
 </script>
 
 <template>
-  <div class="IssueList">
-    <div class="ImageCard-content">
-      <div class="ImageCard-container" @click="handleLink">
-        <div :style="imageStyle">
-          <img
-            :src="getFullUrl(datas.configParamJson.imageUrl, PUBLIC_CDN_URL)"
-            :alt="props.datas.configParamJson.title"
-            class="card-image"
-            draggable="false"
-          />
-        </div>
-        <div class="card-content" v-if="props.datas.configParamJson.enable">
-          <h3 class="card-title">{{ props.datas.configParamJson.title }}</h3>
-          <p class="card-description">{{ props.datas.configParamJson.description }}</p>
+  <div class="issue-list" v-if="datas.configParamJson.enable">
+    <slot name="deles" />
+
+    <!-- 标题区域 -->
+    <div
+      class="issue-list__header"
+      :style="{
+        backgroundColor: datas.configParamJson.listStyleJSON.headerBackgroundColor,
+        color: datas.configParamJson.listStyleJSON.headerTextColor,
+        padding: `${datas.configParamJson.listStyleJSON.headerPadding}px`,
+        borderRadius: `${datas.configParamJson.listStyleJSON.borderRadius}px ${datas.configParamJson.listStyleJSON.borderRadius}px 0 0`
+      }"
+    >
+      <h2 class="issue-list__title">{{ datas.configParamJson.title }}</h2>
+    </div>
+
+    <!-- 列表区域 -->
+    <div
+      class="issue-list__content"
+      :style="{
+        backgroundColor: datas.configParamJson.listStyleJSON.listBackgroundColor,
+        padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`,
+        borderRadius: `0 0 ${datas.configParamJson.listStyleJSON.borderRadius}px ${datas.configParamJson.listStyleJSON.borderRadius}px`
+      }"
+    >
+      <div class="issue-list__items">
+        <div
+          v-for="(item, index) in displayItems"
+          :key="item.id"
+          class="issue-list__item"
+          :style="{
+            padding: `${datas.configParamJson.listStyleJSON.itemPadding}px`,
+            marginBottom:
+              index < displayItems.length - 1 ? `${datas.configParamJson.listStyleJSON.itemSpacing}px` : '0',
+            borderBottom:
+              index < displayItems.length - 1
+                ? `${datas.configParamJson.listStyleJSON.itemBorderWidth}px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`
+                : 'none'
+          }"
+          @click="handleItemClick(item)"
+        >
+          <span class="issue-list__period" :style="{ color: datas.configParamJson.listStyleJSON.periodTextColor }">
+            {{ item.period }}
+          </span>
+          <span class="issue-list__title-text" :style="{ color: datas.configParamJson.listStyleJSON.titleTextColor }">
+            {{ item.title }}
+          </span>
+          <span class="issue-list__subtitle" :style="{ color: datas.configParamJson.listStyleJSON.subtitleTextColor }">
+            【{{ item.subtitle }}】
+          </span>
+          <span class="issue-list__status" :style="{ color: datas.configParamJson.listStyleJSON.statusTextColor }">
+            {{ item.status }}！
+          </span>
         </div>
       </div>
     </div>
-    <slot name="deles" />
   </div>
 </template>
 
-<style scoped lang="scss">
-.IssueList {
+<style lang="scss" scoped>
+.issue-list {
   position: relative;
-}
-
-.ImageCard-content {
-}
-
-.ImageCard-container {
+  width: 100%;
+  background: #fff;
   overflow: hidden;
-  background-color: #fff;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  &__header {
+    text-align: center;
+    border-bottom: 1px solid #e6e6e6;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  &__content {
+    min-height: 120px;
+  }
+
+  &__items {
+    width: 100%;
+  }
+
+  &__item {
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    line-height: 1.5;
+
+    &:hover {
+      background-color: #f8f9fa !important;
+    }
+
+    &:active {
+      background-color: #e9ecef !important;
+    }
+  }
+
+  &__period {
+    margin-right: 8px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  &__title-text {
+    margin-right: 8px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  &__subtitle {
+    margin-right: 8px;
+    white-space: nowrap;
+  }
+
+  &__status {
+    font-weight: 500;
+    white-space: nowrap;
+  }
 }
 
-.card-image {
-  max-width: 100%;
-  height: auto;
-  border: 0;
-  vertical-align: middle;
-  border-radius: 0px;
+// 响应式设计
+@media (max-width: 768px) {
+  .issue-list {
+    &__item {
+      font-size: 12px;
+      flex-wrap: wrap;
+    }
+
+    &__title {
+      font-size: 16px;
+    }
+  }
 }
 
-.card-content {
-  padding: 15px;
-  flex-grow: 1;
-}
+@media (max-width: 480px) {
+  .issue-list {
+    &__item {
+      font-size: 11px;
+    }
 
-.card-title {
-  margin: 0 0 8px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-}
-
-.card-description {
-  margin: 0;
-  font-size: 14px;
-  color: #666;
-  line-height: 1.5;
+    &__title {
+      font-size: 14px;
+    }
+  }
 }
 </style>
