@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { defineEmits } from 'vue'
 // import { globalStore } from '@/store';
-// import GameResultModel1 from './GameResultModel1.vue'
+import GameResultModel1 from './GameResultModel1.vue'
 // import GameResultModel2 from './GameResultModel2.vue'
 import GameResultModel3 from './GameResultModel3.vue'
 import type { IDatas } from './type'
@@ -298,12 +298,11 @@ const tabsData = ref([
     <div class="gameresultbox-content">
       <div class="game-result" data-id="game-result">
         <!-- Model 1 的渲染内容 -->
-        <!-- <GameResultModel1
+        <GameResultModel1
           v-if="props.datas.configParamJson.model === 's1'"
-          @update-issue="handleUpdateIssue"
-          :data="props.datas.configParamJson"
-          :tabsData="tabsData"
-        /> -->
+          :tabsData="rawTabsData"
+          :datas="props.datas"
+        />
 
         <!-- Model 2 的渲染内容 -->
         <!-- <GameResultModel2
@@ -313,7 +312,11 @@ const tabsData = ref([
         /> -->
 
         <!-- Model 3 的渲染内容 -->
-        <GameResultModel3 :tabsData="rawTabsData" :datas="props.datas" />
+        <GameResultModel3
+          v-if="props.datas.configParamJson.model === 's3'"
+          :tabsData="rawTabsData"
+          :datas="props.datas"
+        />
       </div>
     </div>
     <slot name="deles" />

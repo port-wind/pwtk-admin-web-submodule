@@ -1,34 +1,36 @@
 <script setup lang="ts">
 // ! CSR
-import { ref, inject, computed } from 'vue'
-import { Button as VanButton, Image as VanImage } from 'vant'
-// import tabGif from '@/assets/images/home_tab_imgs/gfkj.gif';
-// import utils from '@/utils';
-// import localStorageKeys from '@/constants/localStorageKeys';
-// import { useStore } from 'nanostores/vue';
-// import { gameDataStore } from '@/store'
-// import type { GAME_DATA_ALL } from '@/types/GameType'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import dayjs from 'dayjs'
 import LotteryBallDisplayNoAdd from './LotteryBallDisplayNoAdd.vue'
-// import utils from '@/utils';
-// import constants from '@/constants';
-// import { globalStore } from "@/store";
-import { GAME_ICONS, type GameIconKeys } from './type'
+import { changeGameType } from '../store/index'
+import { Button as VanButton, Image as VanImage } from 'vant'
+import type { GameIconKeys, IDatas } from './type'
 
-import { type GameResultType } from './index.vue'
+import am from '../assets/country/am.png'
+import tw from '../assets/country/tw-96.png'
+import xg from '../assets/country/xg.png'
+import xjp from '../assets/country/xjp-96.png'
+import kl8 from '../assets/country/kl8.png'
 
-const props = defineProps({
-  data: {
-    type: Object as () => GameResultType,
-    required: true
-  },
-  tabsData: {
-    type: Object,
-    required: true
-  }
-})
+const display = import.meta.env.PUBLIC_DISPLAY
 
-// const game = ref(globalStore.get().game);
+interface IProps {
+  datas: IDatas
+  tabsData: Record<string, any>
+}
+
+const props = defineProps<IProps>()
+
+// 彩种图标 特殊处理 display 为 true 时，使用 src 属性，否则使用图片路径
+const GAME_ICONS = {
+  '3995': display ? xjp.src : xjp,
+  '2032': display ? am.src : am,
+  '1': display ? xg.src : xg,
+  '84': display ? tw.src : tw,
+  '5': display ? am.src : am,
+  '6': display ? kl8.src : kl8
+}
 
 const truncateString = (str: string): string => {
   let newStr = str.toString()
@@ -46,11 +48,13 @@ const emits = defineEmits(['update-issue'])
 const tabsData = computed(() => {
   const baseData = props.tabsData
 
-  if (!props.data?.showArray?.length) {
+  if (!props.datas.configParamJson.showArray?.length) {
     return baseData
   }
 
-  return baseData.filter((item: any) => props.data?.showArray?.some((gameType) => gameType === item.gameType))
+  return baseData.filter((item: any) =>
+    props.datas.configParamJson.showArray?.some((gameType) => gameType === item.gameType)
+  )
 })
 // console.log('GAME_DATA_ALL', GAME_DATA_ALL);
 // console.log('tabsData', tabsData.value);
@@ -59,6 +63,7 @@ const tabIndex = ref(0)
 function selectTab(index: number) {
   // console.log('index', index);
   tabIndex.value = index
+  changeGameType(props.tabsData[index].gameType, props.tabsData[index].gameTypeCode)
   // gameDataStore.set({
   //   tabIndex: index,
   //   gameType: props.tabsData[index].gameType,
@@ -74,7 +79,8 @@ function selectTab(index: number) {
 }
 
 const handleUpdate = () => {
-  emits('update-issue')
+  // TODO: 刷新 后面补上这个功能
+  // emits('update-issue')
   // window.location.reload();
 }
 </script>
@@ -89,15 +95,19 @@ const handleUpdate = () => {
         @click="selectTab(index)"
       >
         <h4>
-          <van-image width="24" v-if="data.isIcon" :src="GAME_ICONS[tab.gameType as GameIconKeys]" />
-          {{ data.isLongName ? tab.gameTypeLongName : tab.gameTypeShortName }}
+          <van-image
+            width="24"
+            v-if="props.datas.configParamJson.isIcon"
+            :src="GAME_ICONS[tab.gameType as GameIconKeys]"
+          />
+          {{ props.datas.configParamJson.isLongName ? tab.gameTypeLongName : tab.gameTypeShortName }}
         </h4>
         <p>{{ dayjs(tab.currentOpenTime).format('MM月DD日') }}</p>
       </div>
     </div>
     <div class="tab-content" v-if="tabsData[tabIndex]">
       <div class="tab-content-top">
-        <div class="tab-content-top-p" v-if="data.isIssue">
+        <div class="tab-content-top-p" v-if="props.datas.configParamJson.isIssue">
           <p>
             {{ tabsData[tabIndex].gameTypeShortName }}
             <br />
@@ -108,16 +118,15 @@ const handleUpdate = () => {
         </div>
         <LotteryBallDisplayNoAdd :currentResult="tabsData[tabIndex].currentResult" />
       </div>
-
       <div class="tab-content-bottom">
-        <p v-if="data.isNextIssue">{{ tabsData[tabIndex].nextIssue }}</p>
-        <a v-if="data.isHistory" href="/lottery">历史记录</a>
+        <p v-if="props.datas.configParamJson.isNextIssue">{{ tabsData[tabIndex].nextIssue }}</p>
+        <a v-if="props.datas.configParamJson.isHistory" href="/lottery">历史记录</a>
       </div>
     </div>
   </div>
 </template>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 a {
   color: var(--theme-color);
 }
@@ -162,7 +171,7 @@ a {
 .active {
   /* border-bottom: 2px solid #000; */
   color: #fff;
-  background: linear-gradient(var(--gradient-direction, 0deg), var(--second-color), var(--theme-color));
+  background: var(--theme-color);
   h4 {
     color: #fff;
   }
