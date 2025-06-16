@@ -71,6 +71,7 @@ import LotteryResultProperties from './LotteryResult'
 import InfoboxProperties from './Infobox'
 import LotteryRiddleSolutionProperties from './LotteryRiddleSolution'
 import CarouselAppProperties from './CarouselApp'
+import ImageGridListProperties from './ImageGridList'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -241,6 +242,10 @@ LotteryRiddleSolutionProperties.forEach((value, key) => {
 })
 
 CarouselAppProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+ImageGridListProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
