@@ -72,7 +72,7 @@ import InfoboxProperties from './Infobox'
 import LotteryRiddleSolutionProperties from './LotteryRiddleSolution'
 import CarouselAppProperties from './CarouselApp'
 import ImageGridListProperties from './ImageGridList'
-import NewsPaperCategoryListProperties from './NewsPaperCategoryList'
+import componentProperties from './NewsPaperCategoryList'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -250,7 +250,7 @@ ImageGridListProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
-NewsPaperCategoryListProperties.forEach((value, key) => {
+componentProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
