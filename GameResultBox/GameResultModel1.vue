@@ -211,6 +211,7 @@ a {
 
     .tab-content-middle-left {
       display: flex;
+      column-gap: 5px;
     }
     .tab-content-middle-center {
       display: flex;

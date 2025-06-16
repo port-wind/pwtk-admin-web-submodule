@@ -56,6 +56,7 @@ const props = defineProps<{
             ? item.shengxiao
             : item.shengxiao + '/' + FiveElements[item.fiveElements as keyof typeof FiveElements]
         "
+        class="game-icon"
       />
     </div>
     <!-- <div class="tab-content-middle-center">
@@ -84,6 +85,7 @@ const props = defineProps<{
   align-items: center;
   .tab-content-middle-left {
     display: flex;
+    column-gap: 5px;
   }
   .tab-content-middle-center {
     display: flex;
@@ -92,5 +94,9 @@ const props = defineProps<{
   .tab-content-middle-right {
     display: flex;
   }
+}
+
+.game-icon {
+  width: 40px;
 }
 </style>
