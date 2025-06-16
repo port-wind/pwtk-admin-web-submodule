@@ -1,17 +1,18 @@
 import type { IComponentProperty, ISetStyle } from './index'
+import type { GameResultBox } from '../GameResultBox/type'
 
-// 开奖结果组件配置类型
-export interface GameResultBoxConfigType {
-  model: string
-  isHistory: string
-  isNextIssue: string
-  isIssue: string
-  isIcon: string
-  isLongName: string
-  showArray: string[]
-}
+// // 开奖结果组件配置类型
+// export interface GameResultBoxConfigType {
+//   model: string
+//   isHistory: boolean
+//   isNextIssue: boolean
+//   isIssue: boolean
+//   isIcon: boolean
+//   isLongName: boolean
+//   showArray: string[]
+// }
 
-const componentProperties = new Map<String, IComponentProperty<ISetStyle<GameResultBoxConfigType>>>()
+const componentProperties = new Map<String, IComponentProperty<ISetStyle<GameResultBox>>>()
 
 componentProperties.set('GameResultBox', {
   component: 'GameResultBox',
@@ -33,13 +34,15 @@ componentProperties.set('GameResultBox', {
     memo: '',
     pageCode: '',
     configParamJson: {
-      model: '',
-      isHistory: '',
-      isNextIssue: '',
-      isIssue: '',
-      isIcon: '',
-      isLongName: '',
-      showArray: ['2032', '1', '5', '6']
+      model: 's1',
+      isHistory: true,
+      isNextIssue: true,
+      isIssue: true,
+      isIcon: true,
+      isLongName: true,
+      showArray: ['2032', '1', '5', '6'],
+      isGifAd: false,
+      noTab: false
     }
   }
 })
