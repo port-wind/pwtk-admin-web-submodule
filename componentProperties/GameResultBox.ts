@@ -1,17 +1,6 @@
 import type { IComponentProperty, ISetStyle } from './index'
 import type { GameResultBox } from '../GameResultBox/type'
 
-// // 开奖结果组件配置类型
-// export interface GameResultBoxConfigType {
-//   model: string
-//   isHistory: boolean
-//   isNextIssue: boolean
-//   isIssue: boolean
-//   isIcon: boolean
-//   isLongName: boolean
-//   showArray: string[]
-// }
-
 const componentProperties = new Map<String, IComponentProperty<ISetStyle<GameResultBox>>>()
 
 componentProperties.set('GameResultBox', {

@@ -72,6 +72,7 @@ import InfoboxProperties from './Infobox'
 import LotteryRiddleSolutionProperties from './LotteryRiddleSolution'
 import CarouselAppProperties from './CarouselApp'
 import ImageGridListProperties from './ImageGridList'
+import NewsPaperCategoryListProperties from './NewsPaperCategoryList'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -249,68 +250,12 @@ ImageGridListProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
-// 🎉 所有组件配置合并完成！
-// HeaderBarBoxProperties.forEach((value, key) => {
-//   allComponentProperties.set(key, value)
-// })
+NewsPaperCategoryListProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+HeaderBarBoxProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
 
 export default allComponentProperties
-
-// 导出类型定义
-export type { AdBarConfigType, AdBarItemType } from './AdBarBox'
-export type { CustomBarType } from '../CustomBarAdBox/type'
-export type { CaptiontextConfigType } from './captiontext'
-export type { ListswitchingConfigType } from './Listswitching'
-export type { PictureadsConfigType } from './pictureads'
-export type { NoticeConfigType } from './notice'
-export type { TabbarConfigType } from './tabbar'
-export type { GraphicnavigationConfigType } from './graphicnavigation'
-export type { RichtextConfigType } from './richtext'
-export type { MagiccubeConfigType } from './magiccube'
-export type { VideossConfigType } from './videoss'
-export type { CustommoduleConfigType } from './custommodule'
-export type { CustomBoxConfigType } from './CustomBox'
-export type { SwipeBoxConfigType } from './SwipeBox'
-export type { AuxiliarysegmentationConfigType } from './auxiliarysegmentation'
-export type { CommoditysearchConfigType } from './commoditysearch'
-export type { StoreinformationConfigType } from './storeinformation'
-export type { EntertheshopConfigType } from './entertheshop'
-export type { GameResultBoxConfigType } from './GameResultBox'
-export type { HeaderBarBoxConfigType } from './HeaderBarBox'
-export type { WebAdBoxConfigType } from './WebAdBox'
-export type { NavBBSListBoxConfigType } from './NavBBSListBox'
-export type { WebAdMoreBoxConfigType } from './WebAdMoreBox'
-export type { InvestigateConfigType } from './Investigate'
-export type { FollowConfigType } from './follow'
-export type { FooterBarBoxConfigType } from './FooterBarBox'
-export type { NavBarBoxConfigType } from './NavBarBox'
-export type { PostDetailsBoxConfigType } from './PostDetailsBox'
-export type { SuspensionConfigType } from './suspension'
-export type { HomePopNoticeBoxConfigType } from './HomePopNoticeBox'
-export type { NoticeBarBoxConfigType } from './NoticeBarBox'
-export type { CommunitypowderConfigType } from './communitypowder'
-export type { StorenotecardConfigType } from './Storenotecard'
-export type { CrowdoperationConfigType } from './crowdoperation'
-export type { PersonalizedrecommendationConfigType } from './personalizedrecommendation'
-export type { OnlineserviceConfigType } from './onlineservice'
-
-// 工具函数：获取组件配置
-export const getComponentConfig = (componentName: string) => {
-  return allComponentProperties.get(componentName)
-}
-
-// 工具函数：获取所有组件名称
-export const getAllComponentNames = () => {
-  return Array.from(allComponentProperties.keys())
-}
-
-// 工具函数：根据组件类型过滤
-export const getComponentsByType = (componentType: string) => {
-  const result = new Map()
-  allComponentProperties.forEach((value, key) => {
-    if (value.setStyle?.componentType === componentType) {
-      result.set(key, value)
-    }
-  })
-  return result
-}
