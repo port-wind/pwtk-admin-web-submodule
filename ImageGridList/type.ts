@@ -5,10 +5,17 @@ export interface IDatas extends ISetStyle<ImageGridList> {}
 export interface ImageGridList {
   title: string
   description: string
-  gridItems: GridImageItem[]
   enable: boolean
   gameType: string
   gridStyleJSON: GridStyleJSON
+  // 按彩种分组的图片项数据，key为彩种ID
+  [gameTypeId: string]: any
+  '2032'?: { gridItems: GridImageItem[] } // 澳彩
+  '1'?: { gridItems: GridImageItem[] } // 港彩
+  '84'?: { gridItems: GridImageItem[] } // 台彩
+  '3995'?: { gridItems: GridImageItem[] } // 新彩
+  '5'?: { gridItems: GridImageItem[] } // 新澳彩
+  '6'?: { gridItems: GridImageItem[] } // 快乐8
 }
 
 // 单个图片项的类型
@@ -18,6 +25,7 @@ export interface GridImageItem {
   imageUrl: string
   link: string
   enabled: boolean
+  newspaper: string
 }
 
 // 样式配置类型

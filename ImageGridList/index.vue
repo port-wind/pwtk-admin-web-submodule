@@ -1,5 +1,5 @@
 <script setup lang="ts" name="ImageGridList">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import type { IDatas } from './type'
 import { getLatestIssue } from '../api'
 
@@ -10,6 +10,12 @@ const props = defineProps<IProps>()
 
 const styleJSON = computed(() => props.datas.configParamJson.gridStyleJSON)
 const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
+
+// 获取当前彩种的图片项
+const currentGridItems = computed(() => {
+  const gameType = props.datas.configParamJson.gameType || '2032'
+  return props.datas.configParamJson[gameType]?.gridItems || []
+})
 
 // 获取完整URL的方法
 const getFullUrl = (url: string, baseUrl: string): string => {
@@ -93,15 +99,23 @@ const handleMouseLeave = (event: Event) => {
   target.style.boxShadow = 'none'
 }
 
-onMounted(async () => {
+const getLatestIssueList = async (newspaperCode: string) => {
   const res = await getLatestIssue({
-    newspaperCode: 'newspaper11227',
-    gameType: 1
+    newspaperCode: newspaperCode,
+    gameType: Number(props.datas.configParamJson.gameType)
   })
-  if (res.success) {
-    console.log('🚀 ~ onMounted ~ image grid list res.data:', res.data)
-  }
-})
+  return res.data
+}
+
+// onMounted(async () => {
+//   const res = await getLatestIssue({
+//     newspaperCode: 'kellytestb',
+//     gameType: 1
+//   })
+//   if (res.success) {
+//     console.log('🚀 ~ onMounted ~ image grid list res.data:', res.data)
+//   }
+// })
 </script>
 
 <template>
@@ -118,7 +132,7 @@ onMounted(async () => {
       <!-- 图片网格 -->
       <div class="image-grid" :style="containerStyle">
         <div
-          v-for="item in props.datas.configParamJson.gridItems"
+          v-for="item in currentGridItems"
           :key="item.id"
           class="grid-item"
           :style="getItemStyle(item)"
@@ -128,13 +142,13 @@ onMounted(async () => {
         >
           <!-- 图片 -->
           <img
+            v-if="item.imageUrl"
             :src="getFullUrl(item.imageUrl, PUBLIC_CDN_URL)"
             :alt="item.title"
             :style="imageStyle"
             class="grid-image"
             draggable="false"
           />
-
           <!-- 标题 -->
           <div v-if="styleJSON.showTitle && item.title" class="grid-item-title" :style="titleStyle">
             {{ item.title }}

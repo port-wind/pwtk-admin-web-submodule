@@ -26,71 +26,104 @@ componentProperties.set('ImageGridList', {
       title: '澳门好彩【热门推荐】',
       description: '精选彩票资讯图片',
       enable: true,
-      gridItems: [
-        {
-          id: '1',
-          title: '澳门跑狗图',
-          imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
-          link: '#',
-          enabled: true
-        },
-        {
-          id: '2',
-          title: '九肖十码',
-          imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
-          link: '#',
-          enabled: true
-        },
-        {
-          id: '3',
-          title: '大三巴30码',
-          imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
-          link: '#',
-          enabled: true
-        },
-        {
-          id: '4',
-          title: '水哥杀一肖',
-          imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
-          link: '#',
-          enabled: true
-        },
-        {
-          id: '5',
-          title: '老跑狗图',
-          imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
-          link: '#',
-          enabled: true
-        },
-        {
-          id: '6',
-          title: '水哥平特',
-          imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
-          link: '#',
-          enabled: true
-        },
-        {
-          id: '7',
-          title: '内幕资料',
-          imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
-          link: '#',
-          enabled: true
-        },
-        {
-          id: '8',
-          title: '天线宝宝图',
-          imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
-          link: '#',
-          enabled: true
-        },
-        {
-          id: '9',
-          title: '澳门彩霸王',
-          imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
-          link: '#',
-          enabled: true
-        }
-      ],
+      gameType: '2032', // 默认选择澳彩
+      // 按彩种分组的图片项数据
+      '2032': {
+        gridItems: [
+          {
+            id: '1',
+            title: '澳门跑狗图',
+            imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
+            link: '#',
+            enabled: true,
+            newspaper: ''
+          },
+          {
+            id: '2',
+            title: '九肖十码',
+            imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
+            link: '#',
+            enabled: true,
+            newspaper: ''
+          },
+          {
+            id: '3',
+            title: '大三巴30码',
+            imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
+            link: '#',
+            enabled: true,
+            newspaper: ''
+          }
+        ]
+      },
+      '1': {
+        gridItems: [
+          {
+            id: '4',
+            title: '港彩开奖图',
+            imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
+            link: '#',
+            enabled: true,
+            newspaper: ''
+          },
+          {
+            id: '5',
+            title: '港版跑狗图',
+            imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
+            link: '#',
+            enabled: true,
+            newspaper: ''
+          }
+        ]
+      },
+      '84': {
+        gridItems: [
+          {
+            id: '6',
+            title: '台彩资讯',
+            imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
+            link: '#',
+            enabled: true,
+            newspaper: ''
+          }
+        ]
+      },
+      '3995': {
+        gridItems: [
+          {
+            id: '7',
+            title: '新彩推荐',
+            imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
+            link: '#',
+            enabled: true,
+            newspaper: ''
+          }
+        ]
+      },
+      '5': {
+        gridItems: [
+          {
+            id: '8',
+            title: '新澳彩资料',
+            imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
+            link: '#',
+            enabled: true,
+            newspaper: ''
+          }
+        ]
+      },
+      '6': {
+        gridItems: [
+          {
+            id: '9',
+            title: '快乐8预测',
+            imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
+            link: '#',
+            enabled: true,
+            newspaper: ''
+          }
+        ]
+      },
       gridStyleJSON: {
         columnsPerRow: 3,
         itemSpacing: 8,
@@ -109,4 +142,4 @@ componentProperties.set('ImageGridList', {
   }
 })
 
-export default componentProperties 
+export default componentProperties
