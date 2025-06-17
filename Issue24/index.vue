@@ -65,19 +65,27 @@ const getNumberColorClass = (color: string) => {
   return colorMap[color as keyof typeof colorMap] || 'number-black'
 }
 
-const fetchIssueList = async () => {
+const fetchIssueList = async (gameType: string) => {
   const res = await getWebSitePost({
     page: 1,
     size: 10,
-    gameType: '2032',
+    gameType: gameType,
     forumId: 'haocai001'
   })
   console.log('🚀 ~ fetchIssueList ~ res:', res)
 }
 
 onMounted(() => {
-  fetchIssueList()
+  fetchIssueList(gameType.value)
 })
+
+watch(
+  () => gameType.value,
+  (newVal, oldVal) => {
+    console.log('🚀 ~ newVal:', newVal)
+    fetchIssueList(newVal)
+  }
+)
 </script>
 
 <template>

@@ -66,7 +66,6 @@ async function getNumInfo() {
 async function getIssueList() {
   const { gameTypeCode, year } = gameStore.get()
   const res: any = await service.kv().getGameResultHistory(gameTypeCode, year.toString()).do()
-  console.log('🚀 ~ getIssueList ~ res:', res)
   if (res && res.length > 0) {
     gameStore.set({
       ...gameStore.get(),
