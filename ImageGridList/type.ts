@@ -7,6 +7,7 @@ export interface ImageGridList {
   description: string
   gridItems: GridImageItem[]
   enable: boolean
+  gameType: string
   gridStyleJSON: GridStyleJSON
 }
 
