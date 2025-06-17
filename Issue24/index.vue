@@ -12,15 +12,22 @@ const styleJSON = computed(() => props.datas.configParamJson.styleJSON)
 const containerStyle = computed(() => {
   return {
     backgroundColor: styleJSON.value?.backgroundColor || '#f8f9fa',
-    borderRadius: `${styleJSON.value?.borderRadius || 8}px`,
-    padding: `${styleJSON.value?.padding || 16}px`
+    borderRadius: `${styleJSON.value?.borderRadius || 0}px`,
+    padding: `${styleJSON.value?.padding || 0}px`
   }
 })
 
 const headerStyle = computed(() => {
-  return {
-    backgroundColor: styleJSON.value?.headerBgColor || '#4a90e2',
-    color: styleJSON.value?.headerTextColor || '#ffffff'
+  if (styleJSON.value.isGradient) {
+    return {
+      background: `linear-gradient(to right,  ${styleJSON.value.headerBg}, ${styleJSON.value.headerBg2})`,
+      color: styleJSON.value?.headerTextColor || '#ffffff'
+    }
+  } else {
+    return {
+      backgroundColor: styleJSON.value?.headerBgColor || '#4a90e2',
+      color: styleJSON.value?.headerTextColor || '#ffffff'
+    }
   }
 })
 

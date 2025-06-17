@@ -37,6 +37,9 @@ export interface Issue24StyleJSON {
   showPeriod: boolean
   showStatus: boolean
   showResult: boolean
+  isGradient: boolean
   headerBgColor: string
+  headerBg: string
+  headerBg2: string
   headerTextColor: string
 }

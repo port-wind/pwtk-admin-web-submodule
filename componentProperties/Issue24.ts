@@ -28,6 +28,10 @@ componentProperties.set('Issue24', {
       enable: true,
       styleJSON: {
         backgroundColor: '#f8f9fa',
+        isGradient: true,
+        headerBg: '#09663f',
+        headerBg2: '#1d9b3f',
+        headerBgColor: '#4a90e2',
         titleColor: '#333333',
         numberSize: 14,
         numberSpacing: 4,
@@ -36,7 +40,6 @@ componentProperties.set('Issue24', {
         showPeriod: true,
         showStatus: true,
         showResult: true,
-        headerBgColor: '#4a90e2',
         headerTextColor: '#ffffff'
       },
       issueList: [
