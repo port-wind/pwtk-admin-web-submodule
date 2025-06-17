@@ -215,6 +215,7 @@ const getNumberColorClass = (color: string) => {
   min-width: 24px;
   text-align: center;
   transition: all 0.2s ease;
+  font-variant: tabular-nums;
 
   &.highlight {
     background-color: #ffeb3b !important;
