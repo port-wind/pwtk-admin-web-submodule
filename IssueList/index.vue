@@ -90,7 +90,7 @@ const formatItemText = (item: any) => {
               【{{ item.subtitle }}】
             </span>
             <span class="issue-list__status" :style="{ color: datas.configParamJson.listStyleJSON.statusTextColor }">
-              {{ item.status }}！
+              {{ item.status }}
             </span>
           </div>
         </div>
@@ -139,6 +139,7 @@ const formatItemText = (item: any) => {
     display: flex;
     align-items: center;
     line-height: 1.5;
+    justify-content: center;
 
     &:hover {
       background-color: #f8f9fa !important;

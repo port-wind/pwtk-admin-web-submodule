@@ -30,6 +30,7 @@ export interface GridImageItem {
 
 // 样式配置类型
 export interface GridStyleJSON {
+  contentItemPadding: number // 最外面的边框
   columnsPerRow: number // 每行显示的列数
   itemSpacing: number // 项目间距
   itemPadding: number // 项目内边距

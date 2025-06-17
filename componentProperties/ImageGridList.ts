@@ -125,6 +125,7 @@ componentProperties.set('ImageGridList', {
         ]
       },
       gridStyleJSON: {
+        contentItemPadding: 10,
         columnsPerRow: 3,
         itemSpacing: 8,
         itemPadding: 8,

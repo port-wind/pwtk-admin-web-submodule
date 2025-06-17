@@ -2,19 +2,24 @@
 import { computed, onMounted } from 'vue'
 import type { IDatas } from './type'
 import { getLatestIssue, getLatestIssues } from '../api'
+import { useStore } from '@nanostores/vue'
+import { gameStore } from '../store/index'
+const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
 
 interface IProps {
   datas: IDatas
 }
 const props = defineProps<IProps>()
+const gameStoreData = useStore(gameStore)
+const gameType = computed(() => gameStoreData.value.gameType)
+console.log('🚀 ~ gameType:', gameType.value)
 
 const styleJSON = computed(() => props.datas.configParamJson.gridStyleJSON)
-const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
 
 // 获取当前彩种的图片项
 const currentGridItems = computed(() => {
-  const gameType = props.datas.configParamJson.gameType || '2032'
-  return props.datas.configParamJson[gameType]?.gridItems || []
+  const _gameType = gameType.value || '2032'
+  return props.datas.configParamJson[_gameType]?.gridItems || []
 })
 
 // 获取完整URL的方法
@@ -29,7 +34,7 @@ const containerStyle = computed(() => {
     gridTemplateColumns: `repeat(${styleJSON.value.columnsPerRow}, 1fr)`,
     gap: `${styleJSON.value.itemSpacing}px`,
     backgroundColor: styleJSON.value.backgroundColor,
-    padding: '16px'
+    padding: `${styleJSON.value.contentItemPadding}px`
   }
 })
 
@@ -63,7 +68,7 @@ const titleStyle = computed(() => {
     fontSize: `${styleJSON.value.titleFontSize}px`,
     color: styleJSON.value.titleColor,
     textAlign: 'center' as const,
-    marginTop: '8px',
+    marginTop: '0px',
     fontWeight: 500,
     lineHeight: 1.4
   }
@@ -102,20 +107,20 @@ const handleMouseLeave = (event: Event) => {
 const getLatestIssueList = async (newspaperCode: string) => {
   const res = await getLatestIssue({
     newspaperCode: newspaperCode,
-    gameType: Number(props.datas.configParamJson.gameType)
+    gameType: Number(gameType.value)
   })
   return res.data
 }
 
-onMounted(async () => {
-  const res = await getLatestIssues({
-    newspaperCodes: ['kellytestb'],
-    gameType: 1
-  })
-  if (res.success) {
-    console.log('🚀 ~ onMounted ~ image grid list res.data:', res.data)
-  }
-})
+// onMounted(async () => {
+//   const res = await getLatestIssues({
+//     newspaperCodes: ['kellytestb'],
+//     gameType: 1
+//   })
+//   if (res.success) {
+//     console.log('🚀 ~ onMounted ~ image grid list res.data:', res.data)
+//   }
+// })
 </script>
 
 <template>
@@ -164,21 +169,28 @@ onMounted(async () => {
 .ImageGridList {
   position: relative;
   width: 100%;
+
+  --theme-color: #5e9525;
 }
 
 .ImageGridList-content {
   width: 100%;
+  overflow: hidden;
+  border-radius: 5px;
 }
 
 .header-section {
-  padding: 16px;
-  text-align: center;
+  border-radius: 10px;
+  // padding: 5px;
+  // text-align: center;
 
   .grid-title {
-    margin: 0 0 8px;
+    // margin: 0 0 8px;
+    padding: 5px;
     font-size: 18px;
     font-weight: bold;
-    color: #333;
+    color: #fff;
+    background-color: var(--theme-color);
   }
 
   .grid-description {
@@ -221,11 +233,11 @@ onMounted(async () => {
 // 响应式设计
 @media (max-width: 768px) {
   .image-grid {
-    padding: 12px;
+    // padding: 12px;
   }
 
   .header-section {
-    padding: 12px;
+    padding: 10px;
 
     .grid-title {
       font-size: 16px;
