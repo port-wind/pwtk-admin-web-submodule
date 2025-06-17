@@ -75,6 +75,7 @@ import ImageGridListProperties from './ImageGridList'
 import componentProperties from './NewsPaperCategoryList'
 import TextLinkListProperties from './TextLinkList'
 import IssueListProperties from './IssueList'
+import Issue24Properties from './Issue24'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -265,6 +266,10 @@ TextLinkListProperties.forEach((value, key) => {
 })
 
 IssueListProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+Issue24Properties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
