@@ -1,6 +1,14 @@
 <script setup lang="ts" name="Issue24">
 import { computed } from 'vue'
 import type { IDatas } from './type'
+import { getWebSitePost } from '../api'
+import { gameStore } from '../store'
+import { useStore } from '@nanostores/vue'
+
+const gameStoreData = useStore(gameStore)
+
+const IssueList = computed(() => gameStoreData.value.issueList)
+console.log('🚀 ~ IssueList:', IssueList)
 
 interface IProps {
   datas: IDatas
@@ -54,6 +62,20 @@ const getNumberColorClass = (color: string) => {
   }
   return colorMap[color as keyof typeof colorMap] || 'number-black'
 }
+
+const fetchIssueList = async () => {
+  const res = await getWebSitePost({
+    page: 1,
+    size: 10,
+    gameType: '2032',
+    forumId: 'haocai001'
+  })
+  console.log('🚀 ~ fetchIssueList ~ res:', res)
+}
+
+onMounted(() => {
+  fetchIssueList()
+})
 </script>
 
 <template>

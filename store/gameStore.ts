@@ -41,7 +41,7 @@ export const gameStore = atom({
       code: 'kl8'
     }
   ],
-  issueList: []
+  issueList: []  //https://ocs.ai4funs.com/pwtk/gr/a6/history/2025
 })
 
 export function changeGameType(gameType: string, gameTypeCode: string) {
