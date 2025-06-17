@@ -152,7 +152,6 @@ const getSizeText = (size: string) => {
         <span class="sub-title">【{{ datas.configParamJson.subTitle }}】</span>
       </div>
       <div class="content-extends">
-        {{ mergedList }}
         <div v-for="(item, index) in mergedList" :key="index" class="item">
           <div class="item-header">
             <span>{{ item.issueShort || item.issue }}期: {{ datas.configParamJson.subTitle }}</span>

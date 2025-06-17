@@ -6,6 +6,7 @@ export const gameStore = atom({
   year: 2025,
   gameType: '2032', // 默认值 澳彩
   gameTypeCode: 'a6',
+  currentGame: {},
   numInfo: [],
   gameTypeList: [
     {
@@ -39,7 +40,8 @@ export const gameStore = atom({
       label: '快乐8',
       code: 'kl8'
     }
-  ]
+  ],
+  issueList: []
 })
 
 export function changeGameType(gameType: string, gameTypeCode: string) {
@@ -60,6 +62,7 @@ export function changeYear(year: number) {
 async function getNumInfo() {
   const res: any = await service.kv().getAllNumInfo().do()
   if (res && res.length > 0) {
+    console.log("🚀 ~ getNumInfo ~ res:", res)
     gameStore.set({
       ...gameStore.get(),
       numInfo: res[0]
@@ -67,16 +70,28 @@ async function getNumInfo() {
   }
 }
 
+async function getIssueList() {
+  const { gameTypeCode, year } = gameStore.get()
+  const res: any = await service.kv().getGameResultHistory(gameTypeCode, year.toString()).do()
+  console.log('🚀 ~ getIssueList ~ res:', res)
+  if (res && res.length > 0) {
+    gameStore.set({
+      ...gameStore.get(),
+      issueList: res[0].data
+    })
+  }
+}
+
 export async function getGameTypeList() {
   const res = await service.kv().getGamePlatform().do()
-  console.log('🚀 ~ getGameTypeList ~ res:', res)
-  // if (res && res.length > 0) {
-  //   gameStore.set({
-  //     ...gameStore.get(),
-  //     gameTypeList: res
-  //   })
-  // }
+  if (res && res.length > 0) {
+    gameStore.set({
+      ...gameStore.get(),
+      gameTypeList: res[0].data
+    })
+  }
 }
 
 getNumInfo()
 getGameTypeList()
+getIssueList()
