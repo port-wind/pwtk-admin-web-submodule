@@ -152,6 +152,7 @@ const getSizeText = (size: string) => {
         <span class="sub-title">【{{ datas.configParamJson.subTitle }}】</span>
       </div>
       <div class="content-extends">
+        {{ mergedList }}
         <div v-for="(item, index) in mergedList" :key="index" class="item">
           <div class="item-header">
             <span>{{ item.issueShort || item.issue }}期: {{ datas.configParamJson.subTitle }}</span>
@@ -168,6 +169,7 @@ const getSizeText = (size: string) => {
           </div>
           <div class="riddle-text">≤{{ getRiddleText(item) }}≥</div>
           <div class="answer-text">
+            <!--  -->
             本期谜底：（{{ getZodiacFromTeNum(item) }}）送：{{ getSizeText(item.totalSize) }}
           </div>
         </div>

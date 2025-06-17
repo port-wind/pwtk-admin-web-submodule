@@ -67,4 +67,16 @@ async function getNumInfo() {
   }
 }
 
+export async function getGameTypeList() {
+  const res = await service.kv().getGamePlatform().do()
+  console.log('🚀 ~ getGameTypeList ~ res:', res)
+  // if (res && res.length > 0) {
+  //   gameStore.set({
+  //     ...gameStore.get(),
+  //     gameTypeList: res
+  //   })
+  // }
+}
+
 getNumInfo()
+getGameTypeList()

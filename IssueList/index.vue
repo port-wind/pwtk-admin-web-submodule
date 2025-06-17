@@ -1,10 +1,12 @@
 <script setup lang="ts" name="IssueList">
 import { computed } from 'vue'
 import type { IDatas } from './type'
+import { getWebSitePost } from '../api'
 
 interface IProps {
   datas: IDatas
 }
+
 const props = defineProps<IProps>()
 
 // 获取启用且限制数量的列表项
@@ -16,6 +18,18 @@ const displayItems = computed(() => {
 
   return enabledItems.slice(0, maxCount)
 })
+
+// getWebSitePost
+
+const getWebSitePostData = async () => {
+  const res = await getWebSitePost({
+    page: 1,
+    size: 100,
+    forumId: 'haocai001',
+    gameType: '2032'
+  })
+  console.log('🚀 ~ getWebSitePostData ~ res:', res)
+}
 
 // 处理项目点击
 const handleItemClick = (item: any) => {
@@ -34,6 +48,10 @@ const handleItemClick = (item: any) => {
 const formatItemText = (item: any) => {
   return `${item.period} ${item.title} 【${item.subtitle}】${item.status}！`
 }
+
+onMounted(() => {
+  getWebSitePostData()
+})
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import http from './http'
-import type { IAccountInfoData, IBaseResponse } from './type'
+import type { IBaseResponse, IResponse } from './type'
 
 interface IGetLatestIssueParams {
   newspaperCode: string
@@ -10,7 +10,6 @@ interface IGetLatestIssuesParams {
   newspaperCodes: string[]
   gameType: number
 }
-
 
 interface IGetLatestIssueResponse {
   issueId: number
@@ -67,27 +66,78 @@ export const getLatestIssues = (data: IGetLatestIssuesParams): Promise<IBaseResp
   return http.post('/newspaper/latestIssues', data)
 }
 
-// 查询个人信息接口
-export const accountInfo = (): Promise<IBaseResponse<IAccountInfoData>> => {
-  return http.get('/account/info')
+export interface IGetWebSitePostParams {
+  page: number // Page number for pagination
+  size: number // Number of items per page
+  forumId: string // Forum ID
+  gameType: string // Lottery or game type
+  sortName?: string // Sorting field (optional)
+  sortOrder?: 'ASC' | 'DESC' // Sorting order, either ascending or descending (optional)
 }
 
-// 获取类型接口
-export const getSelectType = (data: any) => {
-  return http.get('/dict/getDictByType', data)
+export interface IGetWebSitePostResponse {
+  postId: string // Post or comment ID
+  bbsId: string // BBS ID
+  title: string // Post title
+  postContent: string // Post or comment content
+  likeCount: string // Number of likes
+  threadCount: string // Number of replies
+  postYear: string // Year of posting
+  postIssue: string // Issue number of posting
+  shortIssue: string // Short-term issue number
+  postGameRef: string // Game reference for the post
+  postGametypeRef: string // Game type reference for the post
+  gameTypeName: string // Lottery/game type name
+  gameTypeCode: string // Lottery/game type code
+  isHot: string // Indicates if the post is hot (popular)
+  isSelected: string // Indicates if the post is selected
+  isTop: string // Indicates if the post is pinned/topped
+  isRecommended: string // Indicates if the post is recommended
+  isBloom: string // Indicates if the post is a blockbuster
+  vipLevel: number // User level (0 or higher)
+  avatar: string // User avatar
+  nickname: string // User nickname
+  attachments: object // Attachments associated with the post
+  isLike: string // Indicates if the user has liked the post
+  isDislike: string // Indicates if the user has disliked the post
+  postUserId: string // ID of the user who posted
+  predictFlag: string // Indicates if the post is a prediction post ('y' for yes, 'n' for no)
+  postTime: string // Post time in format 'yyyy-MM-dd HH:mm:ss'
+  forumId: string // Forum ID
+  lotteryPredictions: ILotteryPredictions[]
 }
 
-// 用户编号模糊查询
-export const getBlurquery = (data: any) => {
-  return http.get('/user/queryBlurUserId', data)
+export interface ILotteryPredictions {
+  name: string // Prediction type name
+  predict: Array<string> // Prediction details
+  hitDetail: string // Hit details ('1' for hit, '0' for not hit)
+  isHit: string // Indicates if the prediction was a hit ('i' for pending, 'y' for hit, 'n' for not hit)
 }
 
-// 获取ip地址
-// Constants for cache configuration
-const IP_CACHE_KEY = 'user_ip_data'
-const CACHE_DURATION = 30 * 60 * 1000 // 30 minutes in milliseconds
-
-// Generate unique IDs
-export const generateUniqueIds = (count: number = 1) => {
-  return http.post('/webgw/issueMapping/generateUniqueIds', { count })
+export const getWebSitePost = (data: IGetWebSitePostParams): Promise<IResponse<IGetWebSitePostResponse>> => {
+  return http.post('/bbsForumPost/webSitePost', data)
 }
+// // 查询个人信息接口
+// export const accountInfo = (): Promise<IBaseResponse<IAccountInfoData>> => {
+//   return http.get('/account/info')
+// }
+
+// // 获取类型接口
+// export const getSelectType = (data: any) => {
+//   return http.get('/dict/getDictByType', data)
+// }
+
+// // 用户编号模糊查询
+// export const getBlurquery = (data: any) => {
+//   return http.get('/user/queryBlurUserId', data)
+// }
+
+// // 获取ip地址
+// // Constants for cache configuration
+// const IP_CACHE_KEY = 'user_ip_data'
+// const CACHE_DURATION = 30 * 60 * 1000 // 30 minutes in milliseconds
+
+// // Generate unique IDs
+// export const generateUniqueIds = (count: number = 1) => {
+//   return http.post('/webgw/issueMapping/generateUniqueIds', { count })
+// }
