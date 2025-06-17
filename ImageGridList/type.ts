@@ -21,11 +21,11 @@ export interface ImageGridList {
 // 单个图片项的类型
 export interface GridImageItem {
   id: string
-  title: string
   imageUrl: string
-  link: string
-  enabled: boolean
   newspaper: string
+  title: string
+  link: string
+  enabled?: boolean
 }
 
 // 样式配置类型

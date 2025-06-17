@@ -1,7 +1,7 @@
 <script setup lang="ts" name="ImageGridList">
 import { computed, onMounted } from 'vue'
 import type { IDatas } from './type'
-import { getLatestIssue } from '../api'
+import { getLatestIssue, getLatestIssues } from '../api'
 
 interface IProps {
   datas: IDatas
@@ -107,15 +107,15 @@ const getLatestIssueList = async (newspaperCode: string) => {
   return res.data
 }
 
-// onMounted(async () => {
-//   const res = await getLatestIssue({
-//     newspaperCode: 'kellytestb',
-//     gameType: 1
-//   })
-//   if (res.success) {
-//     console.log('🚀 ~ onMounted ~ image grid list res.data:', res.data)
-//   }
-// })
+onMounted(async () => {
+  const res = await getLatestIssues({
+    newspaperCodes: ['kellytestb'],
+    gameType: 1
+  })
+  if (res.success) {
+    console.log('🚀 ~ onMounted ~ image grid list res.data:', res.data)
+  }
+})
 </script>
 
 <template>

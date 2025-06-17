@@ -6,6 +6,11 @@ interface IGetLatestIssueParams {
   newspaperCode: string
   gameType: number
 }
+interface IGetLatestIssuesParams {
+  newspaperCodes: string[]
+  gameType: number
+}
+
 
 interface IGetLatestIssueResponse {
   issueId: number
@@ -56,6 +61,10 @@ interface IGetLatestIssueResponse {
 // /newspaper/latestIssue
 export const getLatestIssue = (data: IGetLatestIssueParams): Promise<IBaseResponse<IGetLatestIssueResponse>> => {
   return http.post('/newspaper/latestIssue', data)
+}
+
+export const getLatestIssues = (data: IGetLatestIssuesParams): Promise<IBaseResponse<IGetLatestIssueResponse>> => {
+  return http.post('/newspaper/latestIssues', data)
 }
 
 // 查询个人信息接口
