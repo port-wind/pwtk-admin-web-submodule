@@ -2,54 +2,48 @@
 import { atom } from 'nanostores'
 import service from '../service/index'
 
-export const gameStore = atom({
+interface IGameStore {
+  year: number
+  gameType: string
+  gameTypeCode: string
+  currentGame: IGameType | null
+  gameTypeList: IGameType[]
+  numInfo: any[]
+  issueList: any[]
+}
+
+export const gameStore = atom<IGameStore>({
   year: 2025,
   gameType: '2032', // 默认值 澳彩
   gameTypeCode: 'a6',
-  currentGame: {},
+  currentGame: {
+    areaCode: '',
+    classifier: '',
+    createTime: 0,
+    gameType: '2032',
+    gameTypeCode: 'a6',
+    gameTypeLongName: '澳门六合彩',
+    gameTypeName: '澳彩',
+    gameTypeShortName: '澳彩',
+    sortNum: 0,
+    updateTime: 0,
+    status: 'y'
+  },
   numInfo: [],
-  gameTypeList: [
-    {
-      value: '2032',
-      label: '澳彩',
-      code: '6'
-    },
-    {
-      value: '1',
-      label: '港彩',
-      code: 'hk'
-    },
-
-    {
-      value: '84',
-      label: '台彩',
-      code: 'tw'
-    },
-    {
-      value: '3995',
-      label: '新彩',
-      code: 'xa6'
-    },
-    {
-      value: '5',
-      label: '新澳彩',
-      code: 'xa'
-    },
-    {
-      value: '6',
-      label: '快乐8',
-      code: 'kl8'
-    }
-  ],
-  issueList: []  //https://ocs.ai4funs.com/pwtk/gr/a6/history/2025
+  gameTypeList: [],
+  issueList: [] //https://ocs.ai4funs.com/pwtk/gr/a6/history/2025
 })
 
-export function changeGameType(gameType: string, gameTypeCode: string) {
-  gameStore.set({
-    ...gameStore.get(),
-    gameType,
-    gameTypeCode
-  })
+export function changeGameType(_gameType: string) {
+  const obj = gameStore.get().gameTypeList.find((item) => item.gameType === _gameType)
+  if (obj) {
+    gameStore.set({
+      ...gameStore.get(),
+      gameType: obj.gameType,
+      gameTypeCode: obj.gameTypeCode,
+      currentGame: obj
+    })
+  }
 }
 
 export function changeYear(year: number) {
@@ -94,3 +88,17 @@ export async function getGameTypeList() {
 getNumInfo()
 getGameTypeList()
 getIssueList()
+
+export interface IGameType {
+  areaCode: string
+  classifier: string
+  createTime: number
+  gameType: string
+  gameTypeCode: string
+  gameTypeLongName: string
+  gameTypeName: string
+  gameTypeShortName: string
+  sortNum: number
+  status: string
+  updateTime: number
+}

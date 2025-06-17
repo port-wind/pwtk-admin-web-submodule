@@ -8,6 +8,8 @@ import { useStore } from '@nanostores/vue'
 const gameStoreData = useStore(gameStore)
 
 const IssueList = computed(() => gameStoreData.value.issueList)
+
+const gameType = computed(() => gameStoreData.value.gameType)
 console.log('🚀 ~ IssueList:', IssueList)
 
 interface IProps {
