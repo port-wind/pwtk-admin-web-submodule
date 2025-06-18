@@ -8,16 +8,16 @@ import { useStore } from '@nanostores/vue'
 const gameStoreData = useStore(gameStore)
 
 const IssueList = computed(() => gameStoreData.value.issueList)
+console.log('🚀 ~ IssueList:', IssueList.value)
 
 const gameType = computed(() => gameStoreData.value.gameType)
-console.log('🚀 ~ IssueList:', IssueList)
 
 interface IProps {
   datas: IDatas
 }
 const props = defineProps<IProps>()
 
-const issueList = ref<IGetWebSitePostResponse[]>([])
+const issueListItem = ref<IGetWebSitePostResponse[]>([])
 
 // 处理彩票预测数据的函数
 const processLotteryData = (predictions: any[]) => {
@@ -38,13 +38,32 @@ const processLotteryData = (predictions: any[]) => {
   })
 }
 
+// 根据issue匹配获取开奖信息
+const getIssueResultInfo = (issueNumber: string) => {
+  const matchedIssue = IssueList.value.find((item) => item.issue === issueNumber)
+
+  if (matchedIssue && matchedIssue.numInfo && matchedIssue.numInfo.length > 6) {
+    const lastNumInfo = matchedIssue.numInfo[6] // 取最后一个元素（索引6）
+    return {
+      shengxiao: lastNumInfo.shengxiao || '',
+      teNum: matchedIssue.teNum || '', // 特码号码
+      result: matchedIssue.result || ''
+    }
+  }
+  return { shengxiao: '', teNum: '', result: '' }
+}
+
 // 计算处理后的期数数据
 const processedIssueList = computed(() => {
-  return issueList.value.map((issue) => {
+  return issueListItem.value.map((issue) => {
     const processedPredictions = processLotteryData(issue.lotteryPredictions || [])
+    // 通过postIssue匹配获取开奖信息
+    const resultInfo = getIssueResultInfo(issue.postIssue)
+
     return {
       ...issue,
-      processedPredictions
+      processedPredictions,
+      resultInfo
     }
   })
 })
@@ -100,6 +119,21 @@ const extractIssueNumber = (postIssue: string) => {
   return postIssue
 }
 
+// 获取中奖号码
+const getHitNumber = (issue: any) => {
+  if (issue.processedPredictions && issue.processedPredictions.length > 0) {
+    for (const prediction of issue.processedPredictions) {
+      if (prediction.numbers) {
+        const hitNumber = prediction.numbers.find((num: any) => num.isHighlight)
+        if (hitNumber) {
+          return hitNumber.number // 返回中奖的号码
+        }
+      }
+    }
+  }
+  return '00' // 如果没有中奖号码，返回00
+}
+
 const getNumberColorClass = (color: string) => {
   const colorMap = {
     red: 'number-red',
@@ -118,7 +152,7 @@ const fetchIssueList = async (gameType: string) => {
     gameType: gameType,
     forumId: 'haocai001'
   })
-  issueList.value = res.data.list
+  issueListItem.value = res.data.list
 }
 
 onMounted(() => {
@@ -153,8 +187,8 @@ watch(
               <span class="draw-title">精选24码</span>
             </div>
             <div class="status-info">
-              <span v-if="styleJSON?.showStatus" class="status">开?</span>
-              <span v-if="styleJSON?.showResult" class="result">00准</span>
+              <span v-if="styleJSON?.showStatus" class="status">开{{ issue.resultInfo.shengxiao || '?' }}</span>
+              <span v-if="styleJSON?.showResult" class="result">{{ getHitNumber(issue) }}准</span>
             </div>
           </div>
 
