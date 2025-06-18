@@ -24,8 +24,7 @@ componentProperties.set('ImageGridList', {
     pageCode: '',
     configParamJson: {
       title: '澳门好彩【热门推荐】',
-      description: '精选彩票资讯图片',
-      enable: true,
+      subtitle: '精选彩票资讯图片',
       gameType: '2032', // 默认选择澳彩
       // 按彩种分组的图片项数据
       '2032': {
@@ -138,6 +137,15 @@ componentProperties.set('ImageGridList', {
         borderWidth: 1,
         hoverEffect: true,
         showTitle: true
+      },
+      styleJSON: {
+        backgroundColor: '#f8f9fa',
+        isGradient: true,
+        headerBgColor: '#4a90e2',
+        headerBg: '#09663f',
+        headerBg2: '#1d9b3f',
+        subTitleColor: '#ffffff',
+        titleColor: '#FFFFFF'
       }
     }
   }

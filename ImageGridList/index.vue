@@ -12,42 +12,58 @@ interface IProps {
 const props = defineProps<IProps>()
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
-console.log('🚀 ~ gameType:', gameType.value)
-
-const styleJSON = computed(() => props.datas.configParamJson.gridStyleJSON)
-
-// 获取当前彩种的图片项
-const currentGridItems = computed(() => {
-  const _gameType = gameType.value || '2032'
-  return props.datas.configParamJson[_gameType]?.gridItems || []
-})
+const GridStyleJSON = computed(() => props.datas.configParamJson.gridStyleJSON)
+const styleJSON = computed(() => props.datas.configParamJson.styleJSON)
 
 // 获取完整URL的方法
 const getFullUrl = (url: string, baseUrl: string): string => {
   return /^https?:\/\//.test(url) ? url : `${baseUrl}${url}`
 }
 
+const titleHeaderStyle = computed(() => {
+  if (styleJSON.value.isGradient) {
+    return {
+      background: `linear-gradient(to right,  ${styleJSON.value.headerBg}, ${styleJSON.value.headerBg2})`
+    }
+  } else {
+    return {
+      backgroundColor: styleJSON.value?.headerBgColor || '#4a90e2'
+    }
+  }
+})
+
+const mainTitleStyle = computed(() => {
+  return {
+    color: styleJSON.value?.titleColor || '#333333'
+  }
+})
+
+const subTitleStyle = computed(() => {
+  return {
+    color: styleJSON.value?.subTitleColor || '#333333'
+  }
+})
+
 // 容器样式
 const containerStyle = computed(() => {
   return {
     display: 'grid',
-    gridTemplateColumns: `repeat(${styleJSON.value.columnsPerRow}, 1fr)`,
-    gap: `${styleJSON.value.itemSpacing}px`,
-    backgroundColor: styleJSON.value.backgroundColor,
-    padding: `${styleJSON.value.contentItemPadding}px`
+    gridTemplateColumns: `repeat(${GridStyleJSON.value.columnsPerRow}, 1fr)`,
+    gap: `${GridStyleJSON.value.itemSpacing}px`,
+    backgroundColor: GridStyleJSON.value.backgroundColor,
+    padding: `${GridStyleJSON.value.contentItemPadding}px`
   }
 })
 
 // 单个图片项样式
 const getItemStyle = (item: any) => {
   return {
-    padding: `${styleJSON.value.itemPadding}px`,
-    borderRadius: `${styleJSON.value.borderRadius}px`,
+    padding: `${GridStyleJSON.value.itemPadding}px`,
+    borderRadius: `${GridStyleJSON.value.borderRadius}px`,
     backgroundColor: '#fff',
-    border: `${styleJSON.value.borderWidth}px solid ${styleJSON.value.borderColor}`,
+    border: `${GridStyleJSON.value.borderWidth}px solid ${GridStyleJSON.value.borderColor}`,
     cursor: 'pointer',
-    transition: styleJSON.value.hoverEffect ? 'all 0.3s ease' : 'none',
-    opacity: item.enabled ? 1 : 0.6,
+    transition: GridStyleJSON.value.hoverEffect ? 'all 0.3s ease' : 'none',
     overflow: 'hidden'
   }
 }
@@ -56,17 +72,17 @@ const getItemStyle = (item: any) => {
 const imageStyle = computed(() => {
   return {
     width: '100%',
-    height: `${styleJSON.value.imageHeight}px`,
+    height: `${GridStyleJSON.value.imageHeight}px`,
     objectFit: 'cover' as const,
-    borderRadius: `${Math.max(0, styleJSON.value.borderRadius - 2)}px`
+    borderRadius: `${Math.max(0, GridStyleJSON.value.borderRadius - 2)}px`
   }
 })
 
 // 标题样式
-const titleStyle = computed(() => {
+const gridTitleStyle = computed(() => {
   return {
-    fontSize: `${styleJSON.value.titleFontSize}px`,
-    color: styleJSON.value.titleColor,
+    fontSize: `${GridStyleJSON.value.titleFontSize}px`,
+    color: GridStyleJSON.value.titleColor,
     textAlign: 'center' as const,
     marginTop: '0px',
     fontWeight: 500,
@@ -76,8 +92,6 @@ const titleStyle = computed(() => {
 
 // 处理图片项点击
 const handleItemClick = (item: any) => {
-  if (!item.enabled) return
-
   if (item.link) {
     // 如果是外部链接
     if (item.link.startsWith('http')) {
@@ -91,53 +105,33 @@ const handleItemClick = (item: any) => {
 
 // 悬停效果
 const handleMouseEnter = (event: Event) => {
-  if (!styleJSON.value.hoverEffect) return
+  if (!GridStyleJSON.value.hoverEffect) return
   const target = event.target as HTMLElement
   target.style.transform = 'translateY(-2px)'
   target.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)'
 }
 
 const handleMouseLeave = (event: Event) => {
-  if (!styleJSON.value.hoverEffect) return
+  if (!GridStyleJSON.value.hoverEffect) return
   const target = event.target as HTMLElement
   target.style.transform = 'translateY(0)'
   target.style.boxShadow = 'none'
 }
-
-const getLatestIssueList = async (newspaperCode: string) => {
-  const res = await getLatestIssue({
-    newspaperCode: newspaperCode,
-    gameType: Number(gameType.value)
-  })
-  return res.data
-}
-
-// onMounted(async () => {
-//   const res = await getLatestIssues({
-//     newspaperCodes: ['kellytestb'],
-//     gameType: 1
-//   })
-//   if (res.success) {
-//     console.log('🚀 ~ onMounted ~ image grid list res.data:', res.data)
-//   }
-// })
 </script>
 
 <template>
   <div class="ImageGridList">
     <div class="ImageGridList-content">
-      <!-- 标题区域 -->
-      <div v-if="props.datas.configParamJson.enable && props.datas.configParamJson.title" class="header-section">
-        <h3 class="grid-title">{{ props.datas.configParamJson.title }}</h3>
-        <p v-if="props.datas.configParamJson.description" class="grid-description">
-          {{ props.datas.configParamJson.description }}
-        </p>
+      <!-- 头部标题 -->
+      <div class="title-header" :style="titleHeaderStyle">
+        <h2 class="main-title" :style="mainTitleStyle">{{ datas.configParamJson.title }}</h2>
+        <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
       </div>
 
       <!-- 图片网格 -->
       <div class="image-grid" :style="containerStyle">
         <div
-          v-for="item in currentGridItems"
+          v-for="item in props.datas.configParamJson[gameType]?.gridItems"
           :key="item.id"
           class="grid-item"
           :style="getItemStyle(item)"
@@ -155,7 +149,7 @@ const getLatestIssueList = async (newspaperCode: string) => {
             draggable="false"
           />
           <!-- 标题 -->
-          <div v-if="styleJSON.showTitle && item.title" class="grid-item-title" :style="titleStyle">
+          <div v-if="GridStyleJSON.showTitle && item.title" class="grid-item-title" :style="gridTitleStyle">
             {{ item.title }}
           </div>
         </div>
@@ -171,6 +165,25 @@ const getLatestIssueList = async (newspaperCode: string) => {
   width: 100%;
 
   --theme-color: #5e9525;
+}
+
+.title-header {
+  padding: 12px 16px;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .main-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .sub-title {
+    font-size: 14px;
+    opacity: 0.9;
+  }
 }
 
 .ImageGridList-content {

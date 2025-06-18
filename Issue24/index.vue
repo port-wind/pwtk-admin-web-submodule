@@ -21,7 +21,7 @@ const issueListItem = ref<IGetWebSitePostResponse[]>([])
 const processLotteryData = (predictions: any[]) => {
   if (!predictions || predictions.length === 0) return []
 
-  return predictions.map(prediction => {
+  return predictions.map((prediction) => {
     const { predict, hitDetail } = prediction
     if (!predict || !hitDetail) return { numbers: [] }
 
@@ -29,7 +29,7 @@ const processLotteryData = (predictions: any[]) => {
     const numbers = predict.map((number: string, index: number) => ({
       number,
       color: 'blue', // 默认颜色
-      isHighlight: hitDetail[index] === '1', // hitDetail中"1"表示中奖需要高亮
+      isHighlight: hitDetail[index] === '1' // hitDetail中"1"表示中奖需要高亮
     }))
 
     return { numbers }
@@ -38,14 +38,14 @@ const processLotteryData = (predictions: any[]) => {
 
 // 根据issue匹配获取开奖信息
 const getIssueResultInfo = (issueNumber: string) => {
-  const matchedIssue = IssueList.value.find(item => item.issue === issueNumber)
+  const matchedIssue = IssueList.value.find((item) => item.issue === issueNumber)
 
   if (matchedIssue && matchedIssue.numInfo && matchedIssue.numInfo.length > 6) {
     const lastNumInfo = matchedIssue.numInfo[6] // 取最后一个元素（索引6）
     return {
       shengxiao: lastNumInfo.shengxiao || '',
       teNum: matchedIssue.teNum || '', // 特码号码
-      result: matchedIssue.result || '',
+      result: matchedIssue.result || ''
     }
   }
   return { shengxiao: '', teNum: '', result: '' }
@@ -53,7 +53,7 @@ const getIssueResultInfo = (issueNumber: string) => {
 
 // 计算处理后的期数数据
 const processedIssueList = computed(() => {
-  return issueListItem.value.map(issue => {
+  return issueListItem.value.map((issue) => {
     const processedPredictions = processLotteryData(issue.lotteryPredictions || [])
     // 通过postIssue匹配获取开奖信息
     const resultInfo = getIssueResultInfo(issue.postIssue)
@@ -61,7 +61,7 @@ const processedIssueList = computed(() => {
     return {
       ...issue,
       processedPredictions,
-      resultInfo,
+      resultInfo
     }
   })
 })
@@ -72,7 +72,7 @@ const containerStyle = computed(() => {
   return {
     backgroundColor: styleJSON.value?.backgroundColor || '#f8f9fa',
     borderRadius: `${styleJSON.value?.borderRadius || 0}px`,
-    padding: `${styleJSON.value?.padding || 0}px`,
+    padding: `${styleJSON.value?.padding || 0}px`
   }
 })
 
@@ -80,26 +80,26 @@ const headerStyle = computed(() => {
   if (styleJSON.value.isGradient) {
     return {
       background: `linear-gradient(to right,  ${styleJSON.value.headerBg}, ${styleJSON.value.headerBg2})`,
-      color: styleJSON.value?.headerTextColor || '#ffffff',
+      color: styleJSON.value?.headerTextColor || '#ffffff'
     }
   } else {
     return {
       backgroundColor: styleJSON.value?.headerBgColor || '#4a90e2',
-      color: styleJSON.value?.headerTextColor || '#ffffff',
+      color: styleJSON.value?.headerTextColor || '#ffffff'
     }
   }
 })
 
 const titleStyle = computed(() => {
   return {
-    color: styleJSON.value?.titleColor || '#333333',
+    color: styleJSON.value?.titleColor || '#333333'
   }
 })
 
 const numberStyle = computed(() => {
   return {
     fontSize: `${styleJSON.value?.numberSize || 14}px`,
-    margin: `0 ${styleJSON.value?.numberSpacing || 0}px`,
+    margin: `0 ${styleJSON.value?.numberSpacing || 0}px`
   }
 })
 
@@ -138,7 +138,7 @@ const getNumberColorClass = (color: string) => {
     blue: 'number-blue',
     green: 'number-green',
     black: 'number-black',
-    yellow: 'number-yellow',
+    yellow: 'number-yellow'
   }
   return colorMap[color as keyof typeof colorMap] || 'number-black'
 }
@@ -148,7 +148,7 @@ const fetchIssueList = async (gameType: string, size: number, forumId: string) =
     gameType: gameType,
     page: 1,
     size: size || 10,
-    forumId: forumId,
+    forumId: forumId
   })
   issueListItem.value = res.data.list
 }
@@ -169,7 +169,7 @@ watch(
   <div class="Issue24">
     <div class="Issue24-content" :style="containerStyle">
       <!-- 头部标题 -->
-      <div class="issue-header" :style="headerStyle">
+      <div class="title-header" :style="headerStyle">
         <h2 class="main-title" :style="titleStyle">{{ datas.configParamJson.title }}</h2>
         <span class="sub-title">{{ datas.configParamJson.subtitle }}</span>
       </div>
@@ -178,7 +178,7 @@ watch(
       <div class="issue-list" v-if="datas.configParamJson.enable">
         <div v-for="(issue, issueIndex) in processedIssueList" :key="issue.postId" class="issue-item">
           <!-- 期数和状态行 -->
-          <div class="issue-header-row">
+          <div class="title-header-row">
             <div class="period-info">
               <span v-if="styleJSON?.showPeriod" class="period">{{ extractIssueNumber(issue.postIssue) }}期:</span>
               <span class="draw-title">精选24码</span>
@@ -238,7 +238,7 @@ watch(
   // font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
-.issue-header {
+.title-header {
   padding: 12px 16px;
   border-radius: 8px 8px 0 0;
   display: flex;
@@ -283,7 +283,7 @@ watch(
   }
 }
 
-.issue-header-row {
+.title-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -347,7 +347,7 @@ watch(
 }
 
 @media (max-width: 768px) {
-  .issue-header-row {
+  .title-header-row {
     // flex-direction: column;
     align-items: flex-start;
     // gap: 8px;
