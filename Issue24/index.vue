@@ -8,8 +8,6 @@ import { useStore } from '@nanostores/vue'
 const gameStoreData = useStore(gameStore)
 
 const IssueList = computed(() => gameStoreData.value.issueList)
-console.log('🚀 ~ IssueList:', IssueList.value)
-
 const gameType = computed(() => gameStoreData.value.gameType)
 
 interface IProps {
@@ -145,25 +143,24 @@ const getNumberColorClass = (color: string) => {
   return colorMap[color as keyof typeof colorMap] || 'number-black'
 }
 
-const fetchIssueList = async (gameType: string) => {
+const fetchIssueList = async (gameType: string, size: number, forumId: string) => {
   const res = await getWebSitePost({
-    page: 1,
-    size: 10,
     gameType: gameType,
-    forumId: 'haocai001'
+    page: 1,
+    size: size || 10,
+    forumId: forumId
   })
   issueListItem.value = res.data.list
 }
 
 onMounted(() => {
-  fetchIssueList(gameType.value)
+  fetchIssueList(gameType.value, props.datas.configParamJson.size, props.datas.configParamJson.forumId)
 })
 
 watch(
-  () => gameType.value,
+  () => [gameType.value, props.datas.configParamJson.size, props.datas.configParamJson.forumId],
   (newVal, oldVal) => {
-    console.log('🚀 ~ newVal:', newVal)
-    fetchIssueList(newVal)
+    fetchIssueList(String(newVal[0]), Number(newVal[1]), String(newVal[2]))
   }
 )
 </script>
@@ -187,8 +184,10 @@ watch(
               <span class="draw-title">精选24码</span>
             </div>
             <div class="status-info">
-              <span v-if="styleJSON?.showStatus" class="status">开{{ issue.resultInfo.shengxiao || '?' }}</span>
-              <span v-if="styleJSON?.showResult" class="result">{{ getHitNumber(issue) }}准</span>
+              <span>开</span>
+              <span v-if="styleJSON?.showStatus" class="status">{{ issue.resultInfo.shengxiao || '?' }}</span>
+              <span v-if="styleJSON?.showResult" class="result">{{ getHitNumber(issue) || '00' }}</span>
+              <span>准</span>
             </div>
           </div>
 
@@ -310,16 +309,12 @@ watch(
 .status-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  font-size: 14px;
 
   .status {
-    font-size: 14px;
-    color: #666;
+    color: #e74c3c;
   }
-
   .result {
-    font-size: 14px;
-    font-weight: bold;
     color: #e74c3c;
   }
 }

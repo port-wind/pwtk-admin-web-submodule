@@ -26,6 +26,8 @@ componentProperties.set('Issue24', {
       title: '澳门好彩',
       subtitle: '【精选24码】',
       enable: true,
+      size: 10,
+      forumId: 'haocai001',
       styleJSON: {
         backgroundColor: '#f8f9fa',
         isGradient: true,
