@@ -13,7 +13,7 @@ const props = defineProps<IProps>()
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
 const GridStyleJSON = computed(() => props.datas.configParamJson.gridStyleJSON)
-const styleJSON = computed(() => props.datas.configParamJson.styleJSON)
+const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
 
 // 获取完整URL的方法
 const getFullUrl = (url: string, baseUrl: string): string => {
@@ -21,26 +21,26 @@ const getFullUrl = (url: string, baseUrl: string): string => {
 }
 
 const titleHeaderStyle = computed(() => {
-  if (styleJSON.value.isGradient) {
+  if (styleHeader.value.isGradient) {
     return {
-      background: `linear-gradient(to right,  ${styleJSON.value.headerBg}, ${styleJSON.value.headerBg2})`
+      background: `linear-gradient(to right,  ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`
     }
   } else {
     return {
-      backgroundColor: styleJSON.value?.headerBgColor || '#4a90e2'
+      backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2'
     }
   }
 })
 
 const mainTitleStyle = computed(() => {
   return {
-    color: styleJSON.value?.titleColor || '#333333'
+    color: styleHeader.value?.titleColor || '#333333'
   }
 })
 
 const subTitleStyle = computed(() => {
   return {
-    color: styleJSON.value?.subTitleColor || '#333333'
+    color: styleHeader.value?.subTitleColor || '#333333'
   }
 })
 

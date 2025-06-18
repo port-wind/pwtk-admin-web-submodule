@@ -7,7 +7,7 @@ export interface ImageGridList {
   subtitle: string
   gameType: string
   gridStyleJSON: GridStyleJSON
-  styleJSON: IStyleJSON
+  styleHeader: IStyleHeader
   // 按彩种分组的图片项数据，key为彩种ID
   [gameTypeId: string]: any
   '2032'?: { gridItems: GridImageItem[] } // 澳彩
@@ -45,7 +45,7 @@ export interface GridStyleJSON {
   showTitle: boolean // 是否显示标题
 }
 
-export interface IStyleJSON {
+export interface IStyleHeader {
   backgroundColor: string
   isGradient: boolean
   headerBgColor: string

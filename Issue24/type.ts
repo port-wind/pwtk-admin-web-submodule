@@ -8,16 +8,18 @@ export interface Issue24 {
   enable: boolean
   size: number
   forumId: string
-  styleJSON: Issue24StyleJSON
+  styleHeader: IStyleHeader
+  styleMain: IStyleMain
 }
-export interface Issue24StyleJSON {
+
+export interface IStyleMain {
   backgroundColor: string
   titleColor: string
   numberSize: number
   numberSpacing: number
-  borderRadius: number
   padding: number
   showPeriod: boolean
+  borderRadius: number
   showStatus: boolean
   showResult: boolean
   isGradient: boolean
@@ -25,4 +27,13 @@ export interface Issue24StyleJSON {
   headerBg: string
   headerBg2: string
   headerTextColor: string
+}
+export interface IStyleHeader {
+  backgroundColor: string
+  isGradient: boolean
+  headerBgColor: string
+  headerBg: string
+  headerBg2: string
+  subTitleColor: string
+  titleColor: string
 }

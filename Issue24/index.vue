@@ -79,13 +79,11 @@ const containerStyle = computed(() => {
 const headerStyle = computed(() => {
   if (styleJSON.value.isGradient) {
     return {
-      background: `linear-gradient(to right,  ${styleJSON.value.headerBg}, ${styleJSON.value.headerBg2})`,
-      color: styleJSON.value?.headerTextColor || '#ffffff'
+      background: `linear-gradient(to right,  ${styleJSON.value.headerBg}, ${styleJSON.value.headerBg2})`
     }
   } else {
     return {
-      backgroundColor: styleJSON.value?.headerBgColor || '#4a90e2',
-      color: styleJSON.value?.headerTextColor || '#ffffff'
+      backgroundColor: styleJSON.value?.headerBgColor || '#4a90e2'
     }
   }
 })

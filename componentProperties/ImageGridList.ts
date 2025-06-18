@@ -138,7 +138,7 @@ componentProperties.set('ImageGridList', {
         hoverEffect: true,
         showTitle: true
       },
-      styleJSON: {
+      styleHeader: {
         backgroundColor: '#f8f9fa',
         isGradient: true,
         headerBgColor: '#4a90e2',
