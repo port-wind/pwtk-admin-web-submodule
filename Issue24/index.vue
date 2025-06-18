@@ -9,7 +9,8 @@ const gameStoreData = useStore(gameStore)
 
 const IssueList = computed(() => gameStoreData.value.issueList)
 const gameType = computed(() => gameStoreData.value.gameType)
-
+const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
+const styleMain = computed(() => props.datas.configParamJson.styleMain)
 interface IProps {
   datas: IDatas
 }
@@ -66,38 +67,18 @@ const processedIssueList = computed(() => {
   })
 })
 
-const styleJSON = computed(() => props.datas.configParamJson.styleJSON)
-
 const containerStyle = computed(() => {
   return {
-    backgroundColor: styleJSON.value?.backgroundColor || '#f8f9fa',
-    borderRadius: `${styleJSON.value?.borderRadius || 0}px`,
-    padding: `${styleJSON.value?.padding || 0}px`
-  }
-})
-
-const headerStyle = computed(() => {
-  if (styleJSON.value.isGradient) {
-    return {
-      background: `linear-gradient(to right,  ${styleJSON.value.headerBg}, ${styleJSON.value.headerBg2})`
-    }
-  } else {
-    return {
-      backgroundColor: styleJSON.value?.headerBgColor || '#4a90e2'
-    }
-  }
-})
-
-const titleStyle = computed(() => {
-  return {
-    color: styleJSON.value?.titleColor || '#333333'
+    // backgroundColor: styleMain.value?.backgroundColor || '#f8f9fa',
+    borderRadius: `${styleMain.value?.borderRadius || 0}px`,
+    padding: `${styleMain.value?.padding || 0}px`
   }
 })
 
 const numberStyle = computed(() => {
   return {
-    fontSize: `${styleJSON.value?.numberSize || 14}px`,
-    margin: `0 ${styleJSON.value?.numberSpacing || 0}px`
+    fontSize: `${styleMain.value?.numberSize || 14}px`,
+    margin: `0 ${styleMain.value?.numberSpacing || 0}px`
   }
 })
 
@@ -161,15 +142,39 @@ watch(
     fetchIssueList(String(newVal[0]), Number(newVal[1]), String(newVal[2]))
   }
 )
+
+const titleHeaderStyle = computed(() => {
+  if (styleHeader.value.isGradient) {
+    return {
+      background: `linear-gradient(to right,  ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`
+    }
+  } else {
+    return {
+      backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2'
+    }
+  }
+})
+
+const mainTitleStyle = computed(() => {
+  return {
+    color: styleHeader.value?.titleColor || '#333333'
+  }
+})
+
+const subTitleStyle = computed(() => {
+  return {
+    color: styleHeader.value?.subTitleColor || '#333333'
+  }
+})
 </script>
 
 <template>
   <div class="Issue24">
     <div class="Issue24-content" :style="containerStyle">
       <!-- 头部标题 -->
-      <div class="title-header" :style="headerStyle">
-        <h2 class="main-title" :style="titleStyle">{{ datas.configParamJson.title }}</h2>
-        <span class="sub-title">{{ datas.configParamJson.subtitle }}</span>
+      <div class="title-header" :style="titleHeaderStyle">
+        <h2 class="main-title" :style="mainTitleStyle">{{ datas.configParamJson.title }}</h2>
+        <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
       </div>
 
       <!-- 开奖信息列表 -->
@@ -178,13 +183,13 @@ watch(
           <!-- 期数和状态行 -->
           <div class="title-header-row">
             <div class="period-info">
-              <span v-if="styleJSON?.showPeriod" class="period">{{ extractIssueNumber(issue.postIssue) }}期:</span>
+              <span v-if="styleMain?.showPeriod" class="period">{{ extractIssueNumber(issue.postIssue) }}期:</span>
               <span class="draw-title">精选24码</span>
             </div>
             <div class="status-info">
               <span>开</span>
-              <span v-if="styleJSON?.showStatus" class="status">{{ issue.resultInfo.shengxiao || '?' }}</span>
-              <span v-if="styleJSON?.showResult" class="result">{{ getHitNumber(issue) || '00' }}</span>
+              <span v-if="styleMain?.showStatus" class="status">{{ issue.resultInfo.shengxiao || '?' }}</span>
+              <span v-if="styleMain?.showResult" class="result">{{ getHitNumber(issue) || '00' }}</span>
               <span>准</span>
             </div>
           </div>

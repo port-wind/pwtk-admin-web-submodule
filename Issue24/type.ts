@@ -13,8 +13,6 @@ export interface Issue24 {
 }
 
 export interface IStyleMain {
-  backgroundColor: string
-  titleColor: string
   numberSize: number
   numberSpacing: number
   padding: number
@@ -22,10 +20,6 @@ export interface IStyleMain {
   borderRadius: number
   showStatus: boolean
   showResult: boolean
-  isGradient: boolean
-  headerBgColor: string
-  headerBg: string
-  headerBg2: string
   headerTextColor: string
 }
 export interface IStyleHeader {

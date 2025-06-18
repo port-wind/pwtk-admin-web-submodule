@@ -28,21 +28,24 @@ componentProperties.set('Issue24', {
       enable: true,
       size: 10,
       forumId: 'haocai001',
-      styleJSON: {
+      styleHeader: {
         backgroundColor: '#f8f9fa',
+        isGradient: true,
+        headerBgColor: '#4a90e2',
         headerBg: '#09663f',
         headerBg2: '#1d9b3f',
-        titleColor: '#FFFFFF',
-        numberSize: 14,
+        subTitleColor: '#ffffff',
+        titleColor: '#FFFFFF'
+      },
+      styleMain: {
         numberSpacing: 4,
-        borderRadius: 8,
+        numberSize: 14,
         padding: 0,
+        borderRadius: 8,
         showPeriod: true,
         showStatus: true,
         showResult: true,
-        headerBgColor: '#4a90e2',
         headerTextColor: '#ffffff',
-        isGradient: true
       }
     }
   }
