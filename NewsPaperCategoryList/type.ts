@@ -36,6 +36,7 @@ export interface CategoryListStyleJSON {
   headerTextColor: string // 标题文字颜色
   activeTabColor: string // 激活标签页颜色
   inactiveTabColor: string // 非激活标签页颜色
+  tabTextDefaultColor: string // 标签页文字默认颜色
   tabTextColor: string // 标签页文字颜色
   itemsPerRow: number // 每行显示的项目数
   itemSpacing: number // 项目间距

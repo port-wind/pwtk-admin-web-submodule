@@ -26,7 +26,6 @@
             activeTabIndex === index
               ? datas.configParamJson.listStyleJSON.activeTabColor
               : datas.configParamJson.listStyleJSON.inactiveTabColor,
-          color: datas.configParamJson.listStyleJSON.tabTextColor,
           border: `1px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`
         }"
         @click="activeTabIndex = index"
@@ -137,7 +136,7 @@ onMounted(() => {
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
   &__header {
     text-align: center;
@@ -152,7 +151,7 @@ onMounted(() => {
 
   &__tabs {
     display: flex;
-    background: #f5f5f5;
+    // background: #f5f5f5;
     border-bottom: 1px solid #e6e6e6;
   }
 
@@ -165,6 +164,7 @@ onMounted(() => {
     font-weight: 500;
     transition: all 0.3s ease;
     border-right: 1px solid #e6e6e6;
+    color: #3ebc40;
 
     &:last-child {
       border-right: none;
@@ -176,6 +176,7 @@ onMounted(() => {
 
     &--active {
       font-weight: bold;
+      color: #fff;
     }
   }
 
@@ -224,6 +225,7 @@ onMounted(() => {
     &__tab {
       padding: 10px 8px;
       font-size: 12px;
+      color: #3ebc40;
     }
   }
 }

@@ -377,22 +377,22 @@ componentProperties.set('NewsPaperCategoryList', {
         }
       ],
       listStyleJSON: {
-        headerBackgroundColor: '#4CAF50', // 绿色背景
-        headerTextColor: '#ffffff',
-        activeTabColor: '#4CAF50', // 激活标签页绿色
-        inactiveTabColor: '#f5f5f5', // 非激活标签页灰色
-        tabTextColor: '#333333',
-        itemsPerRow: 3, // 每行3个
-        itemSpacing: 10,
+        headerBackgroundColor: '#4CAF50',
+        headerTextColor: '#FFFF00',
+        activeTabColor: '#4CAF50',
+        inactiveTabColor: '#f5f5f5',
+        tabTextColor: '#000000',
+        itemsPerRow: 3,
+        itemSpacing: 0,
         itemPadding: 12,
         itemBorderRadius: 4,
-        itemBackgroundColor: '#f5f5f5',
+        itemBackgroundColor: '#FFFFFF',
         itemTextColor: '#333333',
         itemBorderColor: '#d9d9d9',
         itemBorderWidth: 1,
-        moreButtonColor: '#ff6600', // 橙色更多按钮
-        moreButtonTextColor: '#ffffff',
-        containerPadding: 15
+        moreButtonColor: null,
+        moreButtonTextColor: '#FE2D03',
+        containerPadding: 4
       }
     }
   }
