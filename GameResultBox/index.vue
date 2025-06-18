@@ -5,13 +5,15 @@ import { defineEmits } from 'vue'
 import GameResultModel1 from './GameResultModel1.vue'
 import GameResultModel2 from './GameResultModel2.vue'
 import GameResultModel3 from './GameResultModel3.vue'
+import GameResultModel4 from './GameResultModel4.vue'
+import GameResultModel5 from './GameResultModel5.vue'
 import type { IDatas } from './type'
 import service from '../service/index'
 
 export interface GameResultType {
   isLongName: boolean
   isIcon: boolean
-  model: 's1' | 's2' | 's3'
+  model: 's1' | 's2' | 's3' | 's4' | 's5'
   isNextIssue: boolean
   isHistory: boolean
   isIssue: boolean
@@ -43,7 +45,7 @@ const rawTabsData = ref([])
 const rawData = ref<GameResultType>({
   isLongName: false,
   isIcon: true,
-  model: 's3',
+  model: 's4',
   isNextIssue: false,
   isHistory: false,
   isIssue: true,
@@ -314,6 +316,20 @@ const tabsData = ref([
         <!-- Model 3 的渲染内容 -->
         <GameResultModel3
           v-if="props.datas.configParamJson.model === 's3'"
+          :tabsData="rawTabsData"
+          :datas="props.datas"
+        />
+
+        <!-- Model 3 的渲染内容 -->
+        <GameResultModel4
+          v-if="props.datas.configParamJson.model === 's4'"
+          :tabsData="rawTabsData"
+          :datas="props.datas"
+        />
+
+        <!-- Model 3 的渲染内容 -->
+        <GameResultModel5
+          v-if="props.datas.configParamJson.model === 's5'"
           :tabsData="rawTabsData"
           :datas="props.datas"
         />

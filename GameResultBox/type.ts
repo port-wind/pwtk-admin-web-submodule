@@ -2,7 +2,7 @@ import type { ISetStyle } from '../componentProperties/index'
 
 export interface IDatas extends ISetStyle<GameResultBox> {}
 export interface GameResultBox {
-  model: 's1' | 's2' | 's3'
+  model: 's1' | 's2' | 's3' | 's4' | 's5'
   isHistory: boolean
   isNextIssue: boolean
   isIssue: boolean
