@@ -1,5 +1,5 @@
 <script setup lang="ts" name="IssueList">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import type { IDatas } from './type'
 import { getWebSitePost } from '../api'
 
@@ -13,7 +13,7 @@ const props = defineProps<IProps>()
 const displayItems = computed(() => {
   if (!props.datas.configParamJson.enable) return []
 
-  const enabledItems = props.datas.configParamJson.issueItems?.filter((item) => item.enabled) || []
+  const enabledItems = props.datas.configParamJson.issueItems?.filter(item => item.enabled) || []
   const maxCount = props.datas.configParamJson.maxDisplayCount || 30
 
   return enabledItems.slice(0, maxCount)
@@ -26,7 +26,7 @@ const getWebSitePostData = async () => {
     page: 1,
     size: 100,
     forumId: 'haocai001',
-    gameType: '2032'
+    gameType: '2032',
   })
   console.log('🚀 ~ getWebSitePostData ~ res:', res)
 }
@@ -64,7 +64,7 @@ onMounted(() => {
           backgroundColor: datas.configParamJson.listStyleJSON.headerBackgroundColor,
           color: datas.configParamJson.listStyleJSON.headerTextColor,
           padding: `${datas.configParamJson.listStyleJSON.headerPadding}px`,
-          borderRadius: `${datas.configParamJson.listStyleJSON.borderRadius}px ${datas.configParamJson.listStyleJSON.borderRadius}px 0 0`
+          borderRadius: `${datas.configParamJson.listStyleJSON.borderRadius}px ${datas.configParamJson.listStyleJSON.borderRadius}px 0 0`,
         }"
       >
         <h2 class="issue-list__title">{{ datas.configParamJson.title }}</h2>
@@ -76,7 +76,7 @@ onMounted(() => {
         :style="{
           backgroundColor: datas.configParamJson.listStyleJSON.listBackgroundColor,
           padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`,
-          borderRadius: `0 0 ${datas.configParamJson.listStyleJSON.borderRadius}px ${datas.configParamJson.listStyleJSON.borderRadius}px`
+          borderRadius: `0 0 ${datas.configParamJson.listStyleJSON.borderRadius}px ${datas.configParamJson.listStyleJSON.borderRadius}px`,
         }"
       >
         <div class="issue-list__items">
@@ -91,7 +91,7 @@ onMounted(() => {
               borderBottom:
                 index < displayItems.length - 1
                   ? `${datas.configParamJson.listStyleJSON.itemBorderWidth}px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`
-                  : 'none'
+                  : 'none',
             }"
             @click="handleItemClick(item)"
           >

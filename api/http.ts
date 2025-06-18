@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { AxiosInstance, AxiosResponse } from 'axios'
 
-const { VITE_PUBLIC_BIZ_URL } = import.meta.env || 'https://biz-client.pwtk.cc/biz-client/biz'
+const VITE_PUBLIC_BIZ_URL = import.meta.env.VITE_PUBLIC_BIZ_URL || 'https://biz-client.pwtk.cc/biz-client/biz'
 
 const instance = (): AxiosInstance => {
   const https = axios.create({
