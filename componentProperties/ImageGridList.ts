@@ -24,7 +24,7 @@ componentProperties.set('ImageGridList', {
     pageCode: '',
     configParamJson: {
       title: '澳门好彩【热门推荐】',
-      subtitle: '精选彩票资讯图片',
+      subtitle: '',
       gameType: '2032', // 默认选择澳彩
       // 按彩种分组的图片项数据
       '2032': {
