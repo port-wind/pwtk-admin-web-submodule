@@ -240,6 +240,7 @@ componentProperties.set('TextLinkList', {
       title: '澳门好彩【热门推荐】',
       subtitle: '',
       enable: true,
+      size: 20,
       links: [],
       listStyleJSON: {
         itemSpacing: 4,

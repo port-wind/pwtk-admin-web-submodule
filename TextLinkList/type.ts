@@ -7,6 +7,7 @@ export interface TextLinkList {
   subtitle: string
   links: LinkItem[]
   enable: boolean
+  size: number
   listStyleJSON: TextLinkListStyleJSON
   forumId: string
   forumIcon: string

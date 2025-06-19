@@ -1,18 +1,28 @@
 <script setup lang="ts" name="TextLinkList">
 import { computed } from 'vue'
 import type { IDatas } from './type'
-
+import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
+import { gameStore } from '../store'
+import { useStore } from '@nanostores/vue'
 interface IProps {
   datas: IDatas
 }
-
 const props = defineProps<IProps>()
+
+const gameStoreData = useStore(gameStore)
+
+const IssueList = computed(() => gameStoreData.value.issueList)
+const gameType = computed(() => gameStoreData.value.gameType)
+const forum = computed(() => gameStoreData.value.forum)
+
 const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
 const styleMain = computed(() => props.datas.configParamJson.styleMain)
 // 启用的链接项目
 const enabledItems = computed(() => {
   return props.datas.configParamJson.links?.filter((item) => item.enabled) || []
 })
+
+const issueListItem = ref<IGetWebSitePostResponse[]>([])
 
 // 处理项目点击
 const handleItemClick = (item: any) => {
@@ -69,6 +79,28 @@ const containerStyle = computed(() => {
     padding: `${styleMain.value?.padding || 0}px`
   }
 })
+
+const fetchIssueList = async (gameType: string, size: number, forumId: string) => {
+  const res = await getWebSitePost({
+    gameType: gameType,
+    page: 1,
+    size: size || 10,
+    forumId: forumId
+  })
+  issueListItem.value = res.data.list
+  console.log('🚀 ~ fetchIssueList ~ issueListItem:', issueListItem)
+}
+
+onMounted(() => {
+  fetchIssueList(gameType.value, props.datas.configParamJson.size, props.datas.configParamJson.forumId)
+})
+
+watch(
+  () => [gameType.value, props.datas.configParamJson.size, forum.value?.forumId],
+  (newVal, oldVal) => {
+    fetchIssueList(String(newVal[0]), Number(newVal[1]), String(newVal[2]))
+  }
+)
 </script>
 
 <template>
