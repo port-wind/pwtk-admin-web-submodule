@@ -11,7 +11,7 @@ export interface IComponentProperty<T> {
 export interface ISetStyle<V> {
   // 表数据
   componentId: string // component, template, website
-  sketchCodeList: string | string[] // component - 修正为支持数组
+  sketchCodeList: string // component - 修正为支持数组
   templateId: string // template
   pageRenderingSeq: number // template, website
   websiteId: string // website
