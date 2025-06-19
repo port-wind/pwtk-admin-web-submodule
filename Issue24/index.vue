@@ -7,7 +7,6 @@ import { useStore } from '@nanostores/vue'
 
 const gameStoreData = useStore(gameStore)
 
-const IssueList = computed(() => gameStoreData.value.issueList)
 const gameType = computed(() => gameStoreData.value.gameType)
 const forum = computed(() => gameStoreData.value.forum)
 const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
@@ -40,13 +39,13 @@ const processLotteryData = (predictions: any[]) => {
 
 // 根据issue匹配获取开奖信息
 const getIssueResultInfo = (issueNumber: string) => {
-  const matchedIssue = IssueList.value.find((item) => item.issue === issueNumber)
+  const matchedIssue = issueListItem.value.find((item) => item.postIssue === issueNumber)
 
   if (matchedIssue && matchedIssue.numInfo && matchedIssue.numInfo.length > 6) {
     const lastNumInfo = matchedIssue.numInfo[6] // 取最后一个元素（索引6）
     return {
       shengxiao: lastNumInfo.shengxiao || '',
-      teNum: matchedIssue.teNum || '', // 特码号码
+      teNum: lastNumInfo.num?.toString() || '', // 特码号码
       result: matchedIssue.result || ''
     }
   }
@@ -99,12 +98,21 @@ const extractIssueNumber = (postIssue: string) => {
 
 // 获取中奖号码
 const getHitNumber = (issue: any) => {
+  // 优先从numInfo获取特码（通常是第7个元素，即index为7）
+  if (issue.numInfo && issue.numInfo.length > 6) {
+    const specialNum = issue.numInfo[6] // 索引6对应第7个元素
+    if (specialNum && specialNum.num) {
+      return specialNum.num.toString().padStart(2, '0') // 确保是两位数格式
+    }
+  }
+
+  // 备选方案：从预测数据中获取中奖号码
   if (issue.processedPredictions && issue.processedPredictions.length > 0) {
     for (const prediction of issue.processedPredictions) {
       if (prediction.numbers) {
         const hitNumber = prediction.numbers.find((num: any) => num.isHighlight)
         if (hitNumber) {
-          return hitNumber.number // 返回中奖的号码
+          return hitNumber.number.padStart(2, '0') // 返回中奖的号码
         }
       }
     }
@@ -131,6 +139,7 @@ const fetchIssueList = async (gameType: string, size: number, forumId: string) =
     forumId: forumId
   })
   issueListItem.value = res.data.list
+  console.log('🚀 ~ fetchIssueList ~ issueListItem:', issueListItem)
 }
 
 onMounted(() => {

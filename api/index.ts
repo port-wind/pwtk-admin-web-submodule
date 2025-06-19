@@ -75,6 +75,25 @@ export interface IGetWebSitePostParams {
   sortOrder?: 'ASC' | 'DESC' // Sorting order, either ascending or descending (optional)
 }
 
+export interface ILotteryPredictions {
+  name: string // Prediction type name
+  code: string // Prediction code
+  predict: Array<string> // Prediction details
+  hitDetail: string // Hit details ('1' for hit, '0' for not hit)
+  isHit: string // Indicates if the prediction was a hit ('i' for pending, 'y' for hit, 'n' for not hit)
+  predictTitle: string // Prediction title
+}
+
+export interface INumInfo {
+  fiveElements: string // Five elements
+  shengxiao: string // Chinese zodiac
+  size: string // Size (s for small, b for big)
+  color: string // Color (R for red, B for blue, G for green)
+  num: number // Number
+  index: number // Index
+  oddEven: string // Odd or even (o for odd, e for even)
+}
+
 export interface IGetWebSitePostResponse {
   postId: string // Post or comment ID
   bbsId: string // BBS ID
@@ -105,13 +124,9 @@ export interface IGetWebSitePostResponse {
   postTime: string // Post time in format 'yyyy-MM-dd HH:mm:ss'
   forumId: string // Forum ID
   lotteryPredictions: ILotteryPredictions[]
-}
-
-export interface ILotteryPredictions {
-  name: string // Prediction type name
-  predict: Array<string> // Prediction details
-  hitDetail: string // Hit details ('1' for hit, '0' for not hit)
-  isHit: string // Indicates if the prediction was a hit ('i' for pending, 'y' for hit, 'n' for not hit)
+  numInfo: INumInfo[] // Number information array
+  num?: string // Special number (optional)
+  result?: string // Result (optional)
 }
 
 export const getWebSitePost = (data: IGetWebSitePostParams): Promise<IResponse<IGetWebSitePostResponse>> => {
