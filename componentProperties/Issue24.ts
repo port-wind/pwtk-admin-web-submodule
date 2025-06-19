@@ -46,7 +46,12 @@ componentProperties.set('Issue24', {
         showStatus: true,
         showResult: true,
         headerTextColor: '#ffffff',
-      }
+      },
+      forumIcon: '',
+      forumName: '',
+      forumStatus: '',
+      mainboardName: '',
+      mainboardId: ''
     }
   }
 })

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" name="TextLinkList">
 import { computed } from 'vue'
 import type { IDatas } from './type'
 
@@ -7,7 +7,8 @@ interface IProps {
 }
 
 const props = defineProps<IProps>()
-
+const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
+const styleMain = computed(() => props.datas.configParamJson.styleMain)
 // 启用的链接项目
 const enabledItems = computed(() => {
   return props.datas.configParamJson.links?.filter((item) => item.enabled) || []
@@ -36,61 +37,95 @@ const handleMouseLeave = (event: Event) => {
   const target = event.target as HTMLElement
   target.style.backgroundColor = props.datas.configParamJson.listStyleJSON.itemBackgroundColor
 }
+
+const titleHeaderStyle = computed(() => {
+  if (styleHeader.value.isGradient) {
+    return {
+      background: `linear-gradient(to right,  ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`
+    }
+  } else {
+    return {
+      backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2'
+    }
+  }
+})
+
+const mainTitleStyle = computed(() => {
+  return {
+    color: styleHeader.value?.titleColor || '#333333'
+  }
+})
+
+const subTitleStyle = computed(() => {
+  return {
+    color: styleHeader.value?.subTitleColor || '#333333'
+  }
+})
 </script>
 
 <template>
-  <div class="text-link-list" v-if="datas.configParamJson.enable">
-    <slot name="deles" />
+  <div class="TextLinkList">
+    <div class="text-link-list" v-if="datas.configParamJson.enable">
+      <!-- 标题区域 -->
+      <!-- 头部标题 -->
+      <div class="title-header" :style="titleHeaderStyle">
+        <h2 class="main-title" :style="mainTitleStyle">{{ datas.configParamJson.title }}</h2>
+        <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
+      </div>
 
-    <!-- 标题区域 -->
-    <div
-      class="text-link-list__header"
-      :style="{
-        backgroundColor: datas.configParamJson.listStyleJSON.headerBackgroundColor,
-        color: datas.configParamJson.listStyleJSON.headerTextColor,
-        padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`
-      }"
-    >
-      <h2 class="text-link-list__title">{{ datas.configParamJson.title }}</h2>
-    </div>
-
-    <!-- 链接列表区域 -->
-    <div
-      class="text-link-list__content"
-      :style="{
-        padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`
-      }"
-    >
       <div
-        class="text-link-list__items"
+        class="text-link-list__header"
         :style="{
-          gap: `${datas.configParamJson.listStyleJSON.itemSpacing}px`,
-          gridTemplateColumns: `repeat(${datas.configParamJson.listStyleJSON.itemsPerRow}, 1fr)`
+          backgroundColor: datas.configParamJson.listStyleJSON.headerBackgroundColor,
+          color: datas.configParamJson.listStyleJSON.headerTextColor,
+          padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`
+        }"
+      >
+        <h2 class="text-link-list__title">{{ datas.configParamJson.title }}</h2>
+      </div>
+
+      <!-- 链接列表区域 -->
+      <div
+        class="text-link-list__content"
+        :style="{
+          padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`
         }"
       >
         <div
-          v-for="item in enabledItems"
-          :key="item.id"
-          class="text-link-list__item"
+          class="text-link-list__items"
           :style="{
-            backgroundColor: datas.configParamJson.listStyleJSON.itemBackgroundColor,
-            color: datas.configParamJson.listStyleJSON.itemTextColor,
-            padding: `${datas.configParamJson.listStyleJSON.itemPadding}px`,
-            borderRadius: `${datas.configParamJson.listStyleJSON.itemBorderRadius}px`,
-            border: `${datas.configParamJson.listStyleJSON.itemBorderWidth}px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`
+            gap: `${datas.configParamJson.listStyleJSON.itemSpacing}px`,
+            gridTemplateColumns: `repeat(${datas.configParamJson.listStyleJSON.itemsPerRow}, 1fr)`
           }"
-          @click="handleItemClick(item)"
-          @mouseenter="handleMouseEnter"
-          @mouseleave="handleMouseLeave"
         >
-          {{ item.text }}
+          <div
+            v-for="item in enabledItems"
+            :key="item.id"
+            class="text-link-list__item"
+            :style="{
+              backgroundColor: datas.configParamJson.listStyleJSON.itemBackgroundColor,
+              color: datas.configParamJson.listStyleJSON.itemTextColor,
+              padding: `${datas.configParamJson.listStyleJSON.itemPadding}px`,
+              borderRadius: `${datas.configParamJson.listStyleJSON.itemBorderRadius}px`,
+              border: `${datas.configParamJson.listStyleJSON.itemBorderWidth}px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`
+            }"
+            @click="handleItemClick(item)"
+            @mouseenter="handleMouseEnter"
+            @mouseleave="handleMouseLeave"
+          >
+            {{ item.text }}
+          </div>
         </div>
       </div>
     </div>
+    <slot name="deles" />
   </div>
 </template>
 
 <style lang="scss" scoped>
+.TextLinkList {
+  position: relative;
+}
 .text-link-list {
   position: relative;
   width: 100%;

@@ -230,7 +230,51 @@ componentProperties.set('TextLinkList', {
     isView: 'y',
     memo: '文本链接列表组件',
     pageCode: '',
-    configParamJson: TextLinkListData
+    configParamJson: {
+      forumId: 'haocai001',
+      forumIcon: '',
+      forumName: '',
+      forumStatus: '',
+      mainboardName: '',
+      mainboardId: '',
+      listStyleJSON: {
+        itemSpacing: 4,
+        itemPadding: 9,
+        itemsPerRow: 1,
+        itemBorderWidth: 1,
+        containerPadding: 4,
+        itemBorderRadius: 5,
+        itemBackgroundColor: '#FCFCFC',
+        itemBorderColor: '#DDDDDD',
+        itemHoverColor: '',
+        itemTextColor: '#000000',
+        headerBackgroundColor: '#E76B6B',
+        headerTextColor: '#F5F5F5'
+      },
+      title: '澳门好彩【热门推荐】',
+      description: '热门推荐文本链接列表',
+      enable: true,
+      links: [],
+      styleHeader: {
+        backgroundColor: '#f8f9fa',
+        isGradient: true,
+        headerBgColor: '#4a90e2',
+        headerBg: '#09663f',
+        headerBg2: '#1d9b3f',
+        subTitleColor: '#ffffff',
+        titleColor: '#FFFFFF'
+      },
+      styleMain: {
+        numberSpacing: 4,
+        numberSize: 14,
+        padding: 0,
+        borderRadius: 8,
+        showPeriod: true,
+        showStatus: true,
+        showResult: true,
+        headerTextColor: '#ffffff'
+      }
+    }
   }
 })
 
