@@ -61,27 +61,24 @@ const subTitleStyle = computed(() => {
     color: styleHeader.value?.subTitleColor || '#333333'
   }
 })
+
+const containerStyle = computed(() => {
+  return {
+    // backgroundColor: styleMain.value?.backgroundColor || '#f8f9fa',
+    borderRadius: `${styleMain.value?.borderRadius || 0}px`,
+    padding: `${styleMain.value?.padding || 0}px`
+  }
+})
 </script>
 
 <template>
   <div class="TextLinkList">
-    <div class="text-link-list" v-if="datas.configParamJson.enable">
+    <div class="text-link-list" :style="containerStyle">
       <!-- 标题区域 -->
       <!-- 头部标题 -->
       <div class="title-header" :style="titleHeaderStyle">
         <h2 class="main-title" :style="mainTitleStyle">{{ datas.configParamJson.title }}</h2>
         <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
-      </div>
-
-      <div
-        class="text-link-list__header"
-        :style="{
-          backgroundColor: datas.configParamJson.listStyleJSON.headerBackgroundColor,
-          color: datas.configParamJson.listStyleJSON.headerTextColor,
-          padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`
-        }"
-      >
-        <h2 class="text-link-list__title">{{ datas.configParamJson.title }}</h2>
       </div>
 
       <!-- 链接列表区域 -->
@@ -126,14 +123,27 @@ const subTitleStyle = computed(() => {
 .TextLinkList {
   position: relative;
 }
-.text-link-list {
-  position: relative;
-  width: 100%;
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
+.title-header {
+  padding: 12px 16px;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .main-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .sub-title {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+}
+
+.text-link-list {
   &__header {
     text-align: center;
     border-bottom: 1px solid #e6e6e6;

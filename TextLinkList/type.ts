@@ -4,7 +4,7 @@ export interface IDatas extends ISetStyle<TextLinkList> {}
 
 export interface TextLinkList {
   title: string
-  description: string
+  subtitle: string
   links: LinkItem[]
   enable: boolean
   listStyleJSON: TextLinkListStyleJSON

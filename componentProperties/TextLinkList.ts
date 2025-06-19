@@ -237,6 +237,10 @@ componentProperties.set('TextLinkList', {
       forumStatus: '',
       mainboardName: '',
       mainboardId: '',
+      title: '澳门好彩【热门推荐】',
+      subtitle: '',
+      enable: true,
+      links: [],
       listStyleJSON: {
         itemSpacing: 4,
         itemPadding: 9,
@@ -251,10 +255,6 @@ componentProperties.set('TextLinkList', {
         headerBackgroundColor: '#E76B6B',
         headerTextColor: '#F5F5F5'
       },
-      title: '澳门好彩【热门推荐】',
-      description: '热门推荐文本链接列表',
-      enable: true,
-      links: [],
       styleHeader: {
         backgroundColor: '#f8f9fa',
         isGradient: true,
