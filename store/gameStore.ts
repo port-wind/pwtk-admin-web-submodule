@@ -1,6 +1,7 @@
 // src/stores/counter.js
 import { atom } from 'nanostores'
 import service from '../service/index'
+import type { IGetBBsForumIdByIdData } from '@/api/bss/forumManagement/types'
 
 interface IGameStore {
   year: number
@@ -10,6 +11,7 @@ interface IGameStore {
   gameTypeList: IGameType[]
   numInfo: any[]
   issueList: any[]
+  forum: IGetBBsForumIdByIdData | null
 }
 
 export const gameStore = atom<IGameStore>({
@@ -31,7 +33,8 @@ export const gameStore = atom<IGameStore>({
   },
   numInfo: [],
   gameTypeList: [],
-  issueList: [] //https://ocs.ai4funs.com/pwtk/gr/a6/history/2025
+  issueList: [], //https://ocs.ai4funs.com/pwtk/gr/a6/history/2025
+  forum: null
 })
 
 export function changeGameType(_gameType: string) {
@@ -82,6 +85,13 @@ export async function getGameTypeList() {
       gameTypeList: res[0].data
     })
   }
+}
+
+export async function updateForum(forum: IGetBBsForumIdByIdData) {
+  gameStore.set({
+    ...gameStore.get(),
+    forum
+  })
 }
 
 getNumInfo()

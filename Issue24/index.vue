@@ -9,6 +9,7 @@ const gameStoreData = useStore(gameStore)
 
 const IssueList = computed(() => gameStoreData.value.issueList)
 const gameType = computed(() => gameStoreData.value.gameType)
+const forum = computed(() => gameStoreData.value.forum)
 const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
 const styleMain = computed(() => props.datas.configParamJson.styleMain)
 interface IProps {
@@ -137,7 +138,7 @@ onMounted(() => {
 })
 
 watch(
-  () => [gameType.value, props.datas.configParamJson.size, props.datas.configParamJson.forumId],
+  () => [gameType.value, props.datas.configParamJson.size, forum.value?.forumId],
   (newVal, oldVal) => {
     fetchIssueList(String(newVal[0]), Number(newVal[1]), String(newVal[2]))
   }
