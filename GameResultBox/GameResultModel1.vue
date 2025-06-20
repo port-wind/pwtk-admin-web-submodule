@@ -3,7 +3,7 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import dayjs from 'dayjs'
 import LotteryBallDisplayNoAdd from './LotteryBallDisplayNoAdd.vue'
-import { changeGameType } from '../store/index'
+import { changeGameType, getGameTypeList } from '../store/index'
 import { Button as VanButton, Image as VanImage } from 'vant'
 import type { GameIconKeys, IDatas } from './type'
 
@@ -65,38 +65,11 @@ const tabsData = computed(() => {
     props.datas.configParamJson.showArray?.some((gameType) => gameType === item.gameType)
   )
 })
-// console.log('GAME_DATA_ALL', GAME_DATA_ALL);
-// console.log('tabsData', tabsData.value);
-// const selectedTab = ref(0);
-const tabIndex = ref(0)
 
+const tabIndex = ref(0)
 function selectGameType(currentGame: IGameType, index) {
   tabIndex.value = index
-  changeGameType(currentGame.gameType, currentGame.gameTypeCode)
-}
-
-function selectTab(index: number) {
-  // console.log('index', index);
-  tabIndex.value = index
-  changeGameType(props.tabsData[index].gameType, props.tabsData[index].gameTypeCode)
-  // gameDataStore.set({
-  //   tabIndex: index,
-  //   gameType: props.tabsData[index].gameType,
-  //   gameTypeCode: props.tabsData[index].gameTypeCode
-  // })
-  // window.myGlobalProxy.tabIndex = index;
-  // window.myGlobalProxy.gameType = tabsData.value[index].gameType;
-  // window.myGlobalProxy.gameTypeCode = tabsData.value[index].gameTypeCode;
-  // console.log('window.myGlobalProxy', window.myGlobalProxy);
-  // utils.setSession(constants.sessionStorageKeys.TAB_INDEX, index);
-  // utils.setSession(constants.sessionStorageKeys.GAME_TYPE_CODE, tabsData.value[index].gameTypeCode);
-  // utils.setSession(constants.sessionStorageKeys.GAME_TYPE, tabsData.value[index].gameType);
-}
-
-const handleUpdate = () => {
-  // TODO: 刷新 后面补上这个功能
-  // emits('update-issue')
-  // window.location.reload();
+  changeGameType(currentGame)
 }
 
 function getGameOpenTime(tab: IGameType) {
@@ -105,6 +78,10 @@ function getGameOpenTime(tab: IGameType) {
     props.datas.configParamJson.showArray?.some((gameType) => gameType === item.gameType)
   )
   return dayjs(dd.currentOpenTime).format('MM月DD日')
+}
+
+const handleUpdate = () => {
+  getGameTypeList()
 }
 </script>
 

@@ -10,9 +10,11 @@ export interface GameResultBox {
   isLongName: boolean
   isIcon: boolean
   isOpenTime: boolean
+  imageUrl: string
   showArray: string[]
   noTab: boolean
   gameStyle: IGameStyle
+
 }
 
 export interface IGameStyle {

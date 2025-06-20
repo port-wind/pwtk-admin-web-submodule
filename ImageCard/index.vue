@@ -1,6 +1,7 @@
 <script setup lang="ts" name="ImageCard">
 import { computed } from 'vue'
 import type { IDatas } from './type'
+import { getFullUrl, PUBLIC_CDN_URL } from '../utils'
 
 interface IProps {
   datas: IDatas
@@ -21,11 +22,6 @@ const handleLink = () => {
   if (link) {
     window.open(link, '_blank')
   }
-}
-const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
-// 定义 props 接收父组件传入的数据
-const getFullUrl = (url: string, baseUrl: string): string => {
-  return /^https?:\/\//.test(url) ? url : `${baseUrl}${url}`
 }
 </script>
 

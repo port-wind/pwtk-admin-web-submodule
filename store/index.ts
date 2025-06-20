@@ -1,3 +1,3 @@
-import { gameStore, changeGameType, changeYear, updateForum } from './gameStore'
+import { gameStore, changeGameType, changeYear, updateForum, getGameTypeList } from './gameStore'
 
-export { gameStore, changeGameType, changeYear, updateForum }
+export { gameStore, changeGameType, changeYear, updateForum, getGameTypeList }

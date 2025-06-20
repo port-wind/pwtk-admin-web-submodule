@@ -37,16 +37,13 @@ export const gameStore = atom<IGameStore>({
   forum: null
 })
 
-export function changeGameType(_gameType: string) {
-  const obj = gameStore.get().gameTypeList.find((item) => item.gameType === _gameType)
-  if (obj) {
-    gameStore.set({
-      ...gameStore.get(),
-      gameType: obj.gameType,
-      gameTypeCode: obj.gameTypeCode,
-      currentGame: obj
-    })
-  }
+export function changeGameType(game: IGameType) {
+  gameStore.set({
+    ...gameStore.get(),
+    gameType: game.gameType,
+    gameTypeCode: game.gameTypeCode,
+    currentGame: game
+  })
 }
 
 export function changeYear(year: number) {

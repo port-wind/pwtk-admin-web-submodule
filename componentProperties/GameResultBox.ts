@@ -10,7 +10,7 @@ componentProperties.set('GameResultBox', {
   style: 'GameResultBoxStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',
@@ -23,6 +23,14 @@ componentProperties.set('GameResultBox', {
     memo: '',
     pageCode: '',
     configParamJson: {
+      imageUrl: '',
+      gameStyle: {
+        isOpenTime: true,
+        isNextIssue: true,
+        isIssue: true,
+        isGifAd: false
+      },
+      isOpenTime: true,
       model: 's1',
       isHistory: true,
       isNextIssue: true,
