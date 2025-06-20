@@ -6,7 +6,7 @@ import LotteryBallDisplayNoAdd4 from './LotteryBallDisplayNoAdd4.vue'
 import { changeGameType } from '../store/index'
 import { Image as VanImage } from 'vant'
 import type { GameIconKeys, IDatas } from './type'
-
+import { getFullUrl, PUBLIC_CDN_URL } from '../utils'
 import am from '../assets/country/am.png'
 import tw from '../assets/country/tw-96.png'
 import xg from '../assets/country/xg.png'
@@ -32,6 +32,12 @@ const GAME_ICONS = {
   '5': display ? am.src : am,
   '6': display ? kl8.src : kl8
 }
+
+const img = computed(() => {
+  const imgUrl = props.datas.configParamJson.imageUrl
+
+  return display ? imgUrl.src : imgUrl
+})
 
 const truncateString = (str: string): string => {
   let newStr = str.toString()
@@ -132,7 +138,7 @@ onMounted(() => {
           <h3>{{ nowTime }}</h3>
         </div>
         <div>
-          <a href="https://macao-jc.com/"><img :src="display ? tabGif.src : tabGif" /></a>
+          <a href="https://macao-jc.com/"><img :src="getFullUrl(img, PUBLIC_CDN_URL)" /></a>
         </div>
       </div>
       <LotteryBallDisplayNoAdd4 :currentResult="tabsData[tabIndex].currentResult" />
