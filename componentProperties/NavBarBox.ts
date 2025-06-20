@@ -27,7 +27,7 @@ componentProperties.set('NavBarBox', {
   style: 'NavBarBoxStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

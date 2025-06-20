@@ -16,7 +16,7 @@ componentProperties.set('richtext', {
   style: 'richtextstyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

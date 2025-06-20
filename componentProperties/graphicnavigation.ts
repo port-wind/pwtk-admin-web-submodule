@@ -24,7 +24,7 @@ componentProperties.set('graphicnavigation', {
   style: 'graphicnavigationstyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

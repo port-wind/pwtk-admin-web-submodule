@@ -22,7 +22,7 @@ componentProperties.set('tabbar', {
   style: 'tabbarstyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

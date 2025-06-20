@@ -32,7 +32,7 @@ componentProperties.set('Storenotecard', {
   style: 'StorenotecardStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

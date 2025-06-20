@@ -21,7 +21,7 @@ componentProperties.set('pictureads', {
   style: 'pictureadsstyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

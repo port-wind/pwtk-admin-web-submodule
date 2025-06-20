@@ -18,7 +18,7 @@ componentProperties.set('follow', {
   style: 'followStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

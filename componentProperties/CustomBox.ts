@@ -18,7 +18,7 @@ componentProperties.set('CustomBox', {
   style: 'CustomBoxStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

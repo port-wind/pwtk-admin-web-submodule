@@ -25,7 +25,7 @@ componentProperties.set('HomePopNoticeBox', {
   style: 'HomePopNoticeBoxStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

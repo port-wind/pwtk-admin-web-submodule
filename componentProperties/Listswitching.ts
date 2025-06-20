@@ -39,7 +39,7 @@ componentProperties.set('Listswitching', {
   style: 'ListswitchingStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

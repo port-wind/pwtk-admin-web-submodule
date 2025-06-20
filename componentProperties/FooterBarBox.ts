@@ -28,7 +28,7 @@ componentProperties.set('FooterBarBox', {
   style: 'FooterBarBoxStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

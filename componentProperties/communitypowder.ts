@@ -25,7 +25,7 @@ componentProperties.set('communitypowder', {
   style: 'communitypowderstyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

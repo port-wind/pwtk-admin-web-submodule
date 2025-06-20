@@ -22,7 +22,7 @@ componentProperties.set('WebAdBox', {
   style: 'WebAdBoxStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

@@ -26,7 +26,7 @@ componentProperties.set('suspension', {
   style: 'suspensionstyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

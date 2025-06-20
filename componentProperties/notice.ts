@@ -17,7 +17,7 @@ componentProperties.set('notice', {
   style: 'noticestyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

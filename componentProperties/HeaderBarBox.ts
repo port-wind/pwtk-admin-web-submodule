@@ -31,7 +31,7 @@ componentProperties.set('HeaderBarBox', {
   style: 'HeaderBarBoxStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

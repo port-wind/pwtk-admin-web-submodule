@@ -23,7 +23,7 @@ componentProperties.set('PostDetailsBox', {
   style: 'PostDetailsBoxStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

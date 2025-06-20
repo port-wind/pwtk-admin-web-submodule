@@ -19,7 +19,7 @@ componentProperties.set('auxiliarysegmentation', {
   style: 'auxiliarysegmentationstyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

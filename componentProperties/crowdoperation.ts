@@ -32,7 +32,7 @@ componentProperties.set('crowdoperation', {
   style: 'crowdoperationstyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

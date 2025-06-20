@@ -19,7 +19,7 @@ componentProperties.set('storeinformation', {
   style: 'storeinformationstyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

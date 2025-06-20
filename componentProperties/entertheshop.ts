@@ -19,7 +19,7 @@ componentProperties.set('entertheshop', {
   style: 'entertheshopstyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

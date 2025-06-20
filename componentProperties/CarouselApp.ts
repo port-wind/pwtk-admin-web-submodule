@@ -11,7 +11,7 @@ componentProperties.set('CarouselApp', {
   style: 'CarouselAppStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

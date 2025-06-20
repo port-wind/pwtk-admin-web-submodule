@@ -17,7 +17,7 @@ componentProperties.set('videoss', {
   style: 'videostyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

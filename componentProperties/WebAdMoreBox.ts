@@ -18,7 +18,7 @@ componentProperties.set('WebAdMoreBox', {
   style: 'WebAdMoreBoxStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

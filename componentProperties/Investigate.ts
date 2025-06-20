@@ -18,7 +18,7 @@ componentProperties.set('Investigate', {
   style: 'InvestigateStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

@@ -29,7 +29,7 @@ componentProperties.set('personalizedrecommendation', {
   style: 'personalizedrecommendationstyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

@@ -28,7 +28,7 @@ componentProperties.set('commoditysearch', {
   style: 'commoditysearchstyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',

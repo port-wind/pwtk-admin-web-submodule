@@ -20,7 +20,7 @@ componentProperties.set('NavBBSListBox', {
   style: 'navBBSListBoxStyle',
   setStyle: {
     componentId: '',
-    sketchCodeList: [],
+    sketchCodeList: '',
     templateId: '',
     pageRenderingSeq: 0,
     websiteId: '',
