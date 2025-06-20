@@ -1,7 +1,6 @@
 <script setup lang="ts">
 //   import { ref } from 'vue'
-import IconText from './IconText.vue'
-// import { Icon } from 'vant';
+// import IconText from './IconText.vue';
 const FiveElements = {
   j: '金',
   m: '木',
@@ -37,7 +36,8 @@ const props = defineProps<{
 
 <template>
   <div class="tab-content-middle">
-    <IconText
+    <div
+      class="tab-content-middle-item"
       v-for="(item, i) in currentResult.sort((a: any, b: any) => {
         if (props.sortType === 'asc') {
           return a.num - b.num;
@@ -47,14 +47,17 @@ const props = defineProps<{
         return 0;
       })"
       :key="i"
-      :bgColor="ColorCode[item.color]"
-      :number="padZero(item.num)"
-      :description="
-        noFiveElements
-          ? item.shengxiao
-          : item.shengxiao + '/' + FiveElements[item.fiveElements as keyof typeof FiveElements]
-      "
-    />
+      :style="{ backgroundColor: ColorCode[item.color] }"
+    >
+      <h4>{{ padZero(item.num) }}</h4>
+      <p>
+        {{
+          noFiveElements
+            ? item.shengxiao
+            : item.shengxiao + '/' + FiveElements[item.fiveElements as keyof typeof FiveElements]
+        }}
+      </p>
+    </div>
   </div>
 </template>
 
@@ -63,9 +66,24 @@ const props = defineProps<{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.4rem;
-}
-@media screen and (max-width: 650px) {
-  gap: 0.1rem;
+  gap: 0.25rem;
+  .tab-content-middle-item {
+    flex: 1; // 每个元素占据容器的1/7
+    // max-width: calc(100% / 7); // 确保每个元素的最大宽度为容器的1/7
+    text-align: center;
+    border-radius: 0.25rem;
+    padding: 0.2rem 0.3rem;
+    h4 {
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.6rem;
+    }
+    p {
+      background-color: #fff;
+      text-align: center;
+      font-size: 0.8rem;
+      border-radius: 0.2rem;
+    }
+  }
 }
 </style>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
 import LotteryBallDisplayNoAdd4 from './LotteryBallDisplayNoAdd4.vue'
 import { changeGameType } from '../store/index'
 import { Image as VanImage } from 'vant'
@@ -11,12 +12,15 @@ import tw from '../assets/country/tw-96.png'
 import xg from '../assets/country/xg.png'
 import xjp from '../assets/country/xjp-96.png'
 import kl8 from '../assets/country/kl8.png'
+import tabGif from '../assets/gfkj.gif'
+
 const display = import.meta.env.PUBLIC_DISPLAY
 
 interface IProps {
   datas: IDatas
   tabsData: Record<string, any>
 }
+
 const props = defineProps<IProps>()
 
 // 彩种图标 特殊处理 display 为 true 时，使用 src 属性，否则使用图片路径
@@ -37,8 +41,7 @@ const truncateString = (str: string): string => {
   return newStr
 }
 
-// const GameData = ref([]);
-
+// const tabsData = ref<GAME_DATA_ALL[]>(GAME_DATA_ALL);
 const tabsData = computed(() => {
   const baseData = props.tabsData
 
@@ -51,17 +54,37 @@ const tabsData = computed(() => {
   )
 })
 
-const nowTime = ref(dayjs().format('HH:mm:ss'))
+const convertDataFormat = (data: string) => {
+  // 设置中文本地化
+  dayjs.locale('zh-cn')
+  const date = dayjs(data)
+
+  // 格式化为：06月20日 星期五 21点32分
+  const month = date.format('MM')
+  const day = date.format('DD')
+  const weekday = date.format('dddd')
+  const hour = date.format('HH')
+  const minute = date.format('mm')
+
+  return `${month}月${day}日 ${weekday} ${hour}点${minute}分`
+}
+
+const nowTime = ref(dayjs().format(' HH:mm:ss'))
+// console.log('GAME_DATA_ALL', GAME_DATA_ALL);
+// console.log('tabsData', tabsData.value);
+// const selectedTab = ref(0);
 
 const tabIndex = ref(0)
 function selectTab(index: number) {
+  // console.log('index', index);
   tabIndex.value = index
-
   changeGameType(props.tabsData[index].gameType, props.tabsData[index].gameTypeCode)
+  // gameDataStore.set({
+  //   tabIndex: index,
+  //   gameType: props.tabsData[index].gameType,
+  //   gameTypeCode: props.tabsData[index].gameTypeCode
+  // })
 }
-
-const currentTime = ref('')
-
 onMounted(() => {
   const interval = setInterval(() => {
     nowTime.value = dayjs().format('HH:mm:ss')
@@ -71,6 +94,10 @@ onMounted(() => {
     clearInterval(interval)
   })
 })
+
+// watch([() => props.tabIndex], ([newIndex]) => {
+//   selectedTab.value = newIndex;
+// });
 </script>
 <template>
   <div class="tabs">
@@ -95,29 +122,34 @@ onMounted(() => {
       <div class="tab-content-top">
         <div>
           <p>
+            {{ tabsData[tabIndex].gameTypeLongName }}
             第
-            <span>{{ truncateString(tabsData[tabIndex].currentIssue) }}</span>
-            期开奖结果
+            <span class="issue-number">{{ truncateString(tabsData[tabIndex].currentIssue) }}</span>
+            期
           </p>
         </div>
-
-        <div class="tab-content-top-time">
-          <h5>{{ nowTime }}</h5>
+        <div>
+          <h3>{{ nowTime }}</h3>
+        </div>
+        <div>
+          <a href="https://macao-jc.com/"><img :src="display ? tabGif.src : tabGif" /></a>
         </div>
       </div>
       <LotteryBallDisplayNoAdd4 :currentResult="tabsData[tabIndex].currentResult" />
-      <div v-if="props.datas.configParamJson.isHistory" class="tab-content-bottom">
-        <p v-if="props.datas.configParamJson.isNextIssue">{{ tabsData[tabIndex].nextIssue }}</p>
-        <a v-if="props.datas.configParamJson.isHistory" href="/lottery">历史记录</a>
+      <div class="tab-content-bottom">
+        <p v-if="props.datas.configParamJson.isNextIssue">
+          第
+          <span class="issue-number">{{ tabsData[tabIndex].nextShortIssue }}</span>
+          期:
+          {{ convertDataFormat(tabsData[tabIndex].nextOpenTime) }}
+        </p>
+        <a class="history-record" v-if="props.datas.configParamJson.isHistory" href="/lottery">历史记录</a>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-a {
-  color: var(--theme-color);
-}
 .tabs {
   margin: 0.1rem 0;
   background-color: #eee;
@@ -160,29 +192,23 @@ a {
 }
 
 .tab-content {
-  padding: 5px;
+  padding: 0.3rem;
   background-image: none;
   border: 0.02rem solid var(--theme-color);
-  background-color: #f5f5f5;
+  background-color: #fff;
   box-shadow: 0.04rem 0.04rem 0.1rem #eee;
-  // border-radius: 10px;
+  border-radius: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   .tab-content-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 0.5rem;
     div > h5 {
       font-size: 1.2rem;
-      background: var(--theme-color);
-      color: #fff;
-      padding: 0.1rem 0.5rem;
-      border-radius: 5px;
     }
-    div > p > span {
-      color: var(--theme-color);
-    }
+
     div > a > img {
       height: 1.5rem;
     }
@@ -208,13 +234,17 @@ a {
     justify-content: space-between;
     align-items: center;
     font-size: 0.8rem;
-    p {
-      color: var(--theme-color);
-    }
+    // p {
+    //   color: var(--theme-color);
+    // }
   }
 }
 
-.tab-content-top-time {
-  color: var(--theme-color);
+.issue-number {
+  color: red;
+}
+
+.history-record {
+  color: red;
 }
 </style>
