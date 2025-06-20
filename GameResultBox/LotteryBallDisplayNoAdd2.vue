@@ -21,7 +21,6 @@ const ColorCode: { [key: string]: BackgroundType } = {
  * @returns {string} - 转换后的字符串
  */
 const padZero = (num: number): string => {
-  console.log('🚀 ~ padZero ~ num:', num)
   return num < 10 ? `${num}` : `${num}`
 }
 

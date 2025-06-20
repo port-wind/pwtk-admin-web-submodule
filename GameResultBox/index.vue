@@ -38,8 +38,6 @@ const emits = defineEmits(['update-issue'])
 const rawTabsData = ref([])
 
 onMounted(async () => {
-  console.log('props', props)
-
   // let tabsData = []
   try {
     const response = await service.kv().getGamePlatform().do()
