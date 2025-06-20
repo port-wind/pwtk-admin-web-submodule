@@ -8,9 +8,12 @@ import { useStore } from '@nanostores/vue'
 const gameStoreData = useStore(gameStore)
 
 const gameType = computed(() => gameStoreData.value.gameType)
-const forum = computed(() => gameStoreData.value.forum)
+
+const forum = computed(() => props.datas.configParamJson.forumId)
+
 const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
 const styleMain = computed(() => props.datas.configParamJson.styleMain)
+
 interface IProps {
   datas: IDatas
 }
@@ -139,7 +142,6 @@ const fetchIssueList = async (gameType: string, size: number, forumId: string) =
     forumId: forumId
   })
   issueListItem.value = res.data.list
-  console.log('🚀 ~ fetchIssueList ~ issueListItem:', issueListItem)
 }
 
 onMounted(() => {
@@ -147,7 +149,7 @@ onMounted(() => {
 })
 
 watch(
-  () => [gameType.value, props.datas.configParamJson.size, forum.value?.forumId],
+  () => [gameType.value, props.datas.configParamJson.size, props.datas.configParamJson.forumId],
   (newVal, oldVal) => {
     fetchIssueList(String(newVal[0]), Number(newVal[1]), String(newVal[2]))
   }

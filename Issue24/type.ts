@@ -8,11 +8,11 @@ export interface Issue24 {
   enable: boolean
   size: number
   forumId: string
-  forumIcon: string
   forumName: string
-  forumStatus: string
   mainboardName: string
   mainboardId: string
+  forumIcon?: string
+  forumStatus?: string
   styleHeader: IStyleHeader
   styleMain: IStyleMain
 }
