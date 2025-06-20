@@ -1,5 +1,5 @@
 <script setup lang="ts" name="GameResultBox">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { defineEmits } from 'vue'
 import GameResultModel1 from './GameResultModel1.vue'
 import GameResultModel2 from './GameResultModel2.vue'
@@ -52,7 +52,7 @@ onMounted(async () => {
 
     rawTabsData.value = response[0].data.map((item: any, index: number) => ({
       ...item,
-      ...res[index]
+      ...res[index],
     }))
   } catch (error) {
     console.error('请求失败:', error)
