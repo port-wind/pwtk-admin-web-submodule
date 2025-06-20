@@ -13,6 +13,7 @@ import { useStore } from '@nanostores/vue'
 
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
+const currentGame = computed(() => gameStoreData.value.currentGame)
 
 export interface GameResultType {
   isLongName: boolean
@@ -52,7 +53,7 @@ onMounted(async () => {
 
     rawTabsData.value = response[0].data.map((item: any, index: number) => ({
       ...item,
-      ...res[index],
+      ...res[index]
     }))
   } catch (error) {
     console.error('请求失败:', error)

@@ -9,8 +9,14 @@ export interface GameResultBox {
   isGifAd: boolean
   isLongName: boolean
   isIcon: boolean
+  isOpenTime: boolean
   showArray: string[]
   noTab: boolean
+  gameStyle: IGameStyle
+}
+
+export interface IGameStyle {
+  
 }
 
 // model

@@ -7,11 +7,20 @@ import { changeGameType } from '../store/index'
 import { Button as VanButton, Image as VanImage } from 'vant'
 import type { GameIconKeys, IDatas } from './type'
 
+import { gameStore } from '../store/index'
+import { useStore } from '@nanostores/vue'
+
+const gameStoreData = useStore(gameStore)
+const gameType = computed(() => gameStoreData.value.gameType)
+const currentGame = computed(() => gameStoreData.value.currentGame)
+const gameTypeList = computed(() => gameStoreData.value.gameTypeList)
+
 import am from '../assets/country/am.png'
 import tw from '../assets/country/tw-96.png'
 import xg from '../assets/country/xg.png'
 import xjp from '../assets/country/xjp-96.png'
 import kl8 from '../assets/country/kl8.png'
+import type { IGameType } from '../store/gameStore'
 
 const display = import.meta.env.PUBLIC_DISPLAY
 
@@ -47,6 +56,7 @@ const emits = defineEmits(['update-issue'])
 
 const tabsData = computed(() => {
   const baseData = props.tabsData
+  console.log('🚀 ~ tabsData ~ baseData:', baseData)
 
   if (!props.datas.configParamJson.showArray?.length) {
     return baseData
@@ -60,6 +70,12 @@ const tabsData = computed(() => {
 // console.log('tabsData', tabsData.value);
 // const selectedTab = ref(0);
 const tabIndex = ref(0)
+
+function selectGameType(currentGame: IGameType, index) {
+  tabIndex.value = index
+  changeGameType(currentGame.gameType, currentGame.gameTypeCode)
+}
+
 function selectTab(index: number) {
   // console.log('index', index);
   tabIndex.value = index
@@ -83,16 +99,26 @@ const handleUpdate = () => {
   // emits('update-issue')
   // window.location.reload();
 }
+
+function getGameOpenTime(tab: IGameType) {
+  const baseData = props.tabsData
+  const dd = baseData.find((item: any) =>
+    props.datas.configParamJson.showArray?.some((gameType) => gameType === item.gameType)
+  )
+  console.log('🚀 ~ getGameOpenTime ~ dd:', dd)
+  return dayjs(dd.currentOpenTime).format('MM月DD日')
+}
 </script>
 
 <template>
   <div class="tabs">
     <div class="tab-headers">
       <div
-        v-for="(tab, index) in tabsData"
-        :key="index"
-        :class="['tab-header', { active: tabIndex === index }]"
-        @click="selectTab(index)"
+        v-if="tabsData.length > 0"
+        v-for="(tab, index) in gameTypeList"
+        :key="tab.gameType"
+        :class="['tab-header', { active: currentGame?.gameType === tab.gameType }]"
+        @click="selectGameType(tab, index)"
       >
         <h4>
           <van-image
@@ -102,7 +128,9 @@ const handleUpdate = () => {
           />
           {{ props.datas.configParamJson.isLongName ? tab.gameTypeLongName : tab.gameTypeShortName }}
         </h4>
-        <p>{{ dayjs(tab.currentOpenTime).format('MM月DD日') }}</p>
+        <p v-if="props.datas.configParamJson.isOpenTime">
+          {{ getGameOpenTime(tab) }}
+        </p>
       </div>
     </div>
     <div class="tab-content" v-if="tabsData[tabIndex]">
