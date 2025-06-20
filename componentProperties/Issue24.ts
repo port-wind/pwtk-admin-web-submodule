@@ -23,11 +23,16 @@ componentProperties.set('Issue24', {
     memo: '',
     pageCode: '',
     configParamJson: {
-      title: '澳门好彩',
-      subtitle: '【精选24码】',
+      title: '澳门好彩【精选24码】',
+      subtitle: '',
       enable: true,
       size: 10,
-      forumId: 'haocai001',
+      forumId: '',
+      forumIcon: '',
+      forumName: '',
+      forumStatus: '',
+      mainboardName: '',
+      mainboardId: '',
       styleHeader: {
         backgroundColor: '#f8f9fa',
         isGradient: true,
@@ -47,11 +52,7 @@ componentProperties.set('Issue24', {
         showResult: true,
         headerTextColor: '#ffffff',
       },
-      forumIcon: '',
-      forumName: '',
-      forumStatus: '',
-      mainboardName: '',
-      mainboardId: ''
+      
     }
   }
 })

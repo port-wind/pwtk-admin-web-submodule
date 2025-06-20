@@ -4,15 +4,26 @@ import type { IDatas } from './type'
 import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
 import { gameStore } from '../store'
 import { useStore } from '@nanostores/vue'
+import { useIssueList } from '../hooks/issueList'
 interface IProps {
   datas: IDatas
 }
 const props = defineProps<IProps>()
 
-const gameStoreData = useStore(gameStore)
-
 const IssueList = computed(() => gameStoreData.value.issueList)
+
+const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
+// 使用 hooks
+const { processedIssueList, isLoading, hasError, extractIssueNumber, getHitNumber, getNumberColorClass } = useIssueList(
+  {
+    gameType: gameType.value,
+    size: props.datas.configParamJson.size,
+    forumId: props.datas.configParamJson.forumId,
+    autoFetch: true // 自动获取数据
+  }
+)
+
 const forum = computed(() => gameStoreData.value.forum)
 
 const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
