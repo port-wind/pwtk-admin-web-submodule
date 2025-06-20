@@ -53,9 +53,11 @@ const emits = defineEmits(['update-issue'])
 // const GAME_DATA_ALL = JSON.parse(utils.getSession(constants.sessionStorageKeys.GAME_DATA_ALL) || '[]');
 
 // const tabsData = ref<GAME_DATA_ALL[]>(GAME_DATA_ALL);
+const tabIndex = ref(0)
 
 const tabsData = computed(() => {
   const baseData = props.tabsData
+  console.log('🚀 ~ tabsData ~ baseData:', baseData)
 
   if (!props.datas.configParamJson.showArray?.length) {
     return baseData
@@ -66,7 +68,6 @@ const tabsData = computed(() => {
   )
 })
 
-const tabIndex = ref(0)
 function selectGameType(currentGame: IGameType, index) {
   tabIndex.value = index
   changeGameType(currentGame)
@@ -77,21 +78,34 @@ function getGameOpenTime(tab: IGameType) {
   const dd = baseData.find((item: any) =>
     props.datas.configParamJson.showArray?.some((gameType) => gameType === item.gameType)
   )
-  return dayjs(dd.currentOpenTime).format('MM月DD日')
+  if (dd?.currentOpenTime) {
+    return dayjs(dd.currentOpenTime).format('MM月DD日')
+  } else {
+    return ''
+  }
 }
 
 const handleUpdate = () => {
   getGameTypeList()
 }
+
+watch(
+  () => gameStoreData.value.gameType,
+  (newVal) => {
+    const index = gameTypeList.value.findIndex((item) => item.gameType === newVal)
+    if (index !== -1) {
+      tabIndex.value = index
+    }
+  }
+)
 </script>
 
 <template>
   <div class="tabs">
     <div class="tab-headers">
       <div
-        v-if="tabsData.length > 0"
         v-for="(tab, index) in gameTypeList"
-        :key="tab.gameType"
+        :key="index"
         :class="['tab-header', { active: currentGame?.gameType === tab.gameType }]"
         @click="selectGameType(tab, index)"
       >
