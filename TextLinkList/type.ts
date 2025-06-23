@@ -15,6 +15,8 @@ export interface TextLinkList {
 export interface ILinkItem {
   id: string
   text: string
+  stag: string
+  tag: string
   link: string
   enabled: boolean
   textColor?: string
@@ -56,4 +58,4 @@ export interface IStyleHeader {
   headerBg2: string
   subTitleColor: string
   titleColor: string
-} 
+}

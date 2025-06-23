@@ -31,14 +31,18 @@ componentProperties.set('TextLinkList', {
           id: 'link1',
           text: '示例链接1',
           link: 'https://www.example.com',
+          tag: '标签1',
+          stag: '标签2',
           enabled: true,
           textColor: '#333333',
           backgroundColor: '#f5f5f5'
         },
         {
           id: 'link2',
-          text: '示例链接2',
+          text: '示例链接2',  
           link: 'https://www.example2.com',
+          tag: '标签1',
+          stag: '标签2',
           enabled: true,
           textColor: '#333333',
           backgroundColor: '#f5f5f5'
@@ -47,6 +51,8 @@ componentProperties.set('TextLinkList', {
           id: 'link3',
           text: '示例链接3',
           link: 'https://www.example3.com',
+          tag: '标签1',
+          stag: '标签2',
           enabled: true,
           textColor: '#333333',
           backgroundColor: '#f5f5f5'
