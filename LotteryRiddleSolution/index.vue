@@ -92,16 +92,20 @@ const getRiddleContent = (item: any) => {
   return item.postContent || ''
 }
 
-const getSpecialZodiacPrediction = (item: any) => {
-  // 从 lotteryPredictions 中找到特肖预测
-  const specialPrediction = item.lotteryPredictions?.find((pred: any) => pred.name === '特肖' || pred.code === '8002')
-  return specialPrediction?.predict || []
+const getHitDetail = (item: ILinkItem) => {
+  // 1第一组 如果isHit为y 则返回hitDetail
+  // hitDetail: "00000"
+  // isHit: "n"
+  // name: "特肖"
+  // predict: ["鼠", "牛", "虎", "兔", "龙"]
+}
+
+const getSpecialZodiacPrediction = (item: ILinkItem) => {
+  return item.lotteryPredictions[0].predict || []
 }
 
 const getSizePrediction = (item: any) => {
-  // 从 lotteryPredictions 中找到大小数预测
-  const sizePrediction = item.lotteryPredictions?.find((pred: any) => pred.name === '大小数' || pred.code === '8003')
-  return sizePrediction?.predict?.[0] || ''
+  return item.lotteryPredictions[1].predict?.[0] || ''
 }
 
 const getOpenResult = (item: any) => {
@@ -133,7 +137,6 @@ const isNextIssue = (item: any) => {
           {{ datas.configParamJson.subtitle }}
         </span>
       </div>
-
       <!-- 内容区域 -->
       <div
         class="lottery-riddle-solution__content"
@@ -180,7 +183,17 @@ const isNextIssue = (item: any) => {
               {{ getRiddleContent(item) }}
             </div>
             <div class="answer-text" :style="{ color: datas.configParamJson.listStyleJSON.answerTextColor }">
-              本期谜底：（{{ getSpecialZodiacPrediction(item).join('') }}）送：{{ getSizePrediction(item) }}
+              <div class="special-zodiac-prediction">
+                本期谜底:（
+                <span v-for="(i, index) in getSpecialZodiacPrediction(item)" :key="index">
+                  {{ i }}
+                </span>
+                ）
+              </div>
+              <div class="size-prediction">
+                送:
+                <span :class="{ active: getHitDetail(item) }">{{ getSizePrediction(item) }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -264,6 +277,7 @@ const isNextIssue = (item: any) => {
     font-size: 16px;
     line-height: 1.4;
     font-weight: bold;
+    display: flex;
   }
 }
 
