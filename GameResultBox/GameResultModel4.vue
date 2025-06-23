@@ -22,7 +22,7 @@ const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
 const currentGame = computed(() => gameStoreData.value.currentGame)
 const gameTypeList = computed(() => gameStoreData.value.gameTypeList)
-console.log('🚀 ~ props.datas.configParamJson.imageUrl:', props.datas.configParamJson.imageUrl)
+
 const img = computed(() => {
   const imgUrl = props.datas.configParamJson.imageUrl
   return display ? imgUrl.src : imgUrl

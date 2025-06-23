@@ -2,10 +2,9 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import dayjs from 'dayjs'
 import LotteryBallDisplayNoAdd5 from './LotteryBallDisplayNoAdd5.vue'
-import { changeGameType } from '../store/index'
+import { changeGameType, getGameTypeList } from '../store/index'
 import { Image as VanImage } from 'vant'
 import type { GameIconKeys, IDatas } from './type'
-
 import type { IGameType } from '../store/gameStore'
 import { gameStore } from '../store/index'
 import { useStore } from '@nanostores/vue'
@@ -56,6 +55,9 @@ function getGameOpenTime(tab: IGameType) {
     return ''
   }
 }
+const handleUpdate = () => {
+  getGameTypeList()
+}
 
 onMounted(() => {
   const interval = setInterval(() => {
@@ -91,22 +93,26 @@ onMounted(() => {
     </div>
     <div class="tab-content" v-if="tabsData[tabIndex]">
       <div class="tab-content-top">
-        <div>
+        <div class="tab-content-top-p" v-if="props.datas.configParamJson.isIssue">
           <p>
-            第
-            <span>{{ truncateString(tabsData[tabIndex].currentIssue) }}</span>
-            期开奖结果
+            {{ tabsData[tabIndex].gameTypeShortName }}
+            <br />
+            <span class="issue-number">{{ truncateString(tabsData[tabIndex].currentIssue) }}</span>
+            期
           </p>
+          <van-button type="danger" size="mini" @click="handleUpdate">刷新</van-button>
         </div>
-
-        <div class="tab-content-top-time">
-          <h5>{{ nowTime }}</h5>
-        </div>
+        <LotteryBallDisplayNoAdd5 :currentResult="tabsData[tabIndex].currentResult" />
       </div>
-      <LotteryBallDisplayNoAdd5 :currentResult="tabsData[tabIndex].currentResult" />
       <div v-if="props.datas.configParamJson.isHistory" class="tab-content-bottom">
-        <p v-if="props.datas.configParamJson.isNextIssue">{{ tabsData[tabIndex].nextIssue }}</p>
-        <a v-if="props.datas.configParamJson.isHistory" href="/lottery">历史记录</a>
+        <!-- <p v-if="props.datas.configParamJson.isNextIssue">{{ tabsData[tabIndex].nextIssue }}</p> -->
+        <p v-if="props.datas.configParamJson.isNextIssue">
+          第
+          <span class="issue-number">{{ tabsData[tabIndex].nextShortIssue }}</span>
+          期:
+          {{ convertDataFormat(tabsData[tabIndex].nextOpenTime) }}
+        </p>
+        <a class="history-record" v-if="props.datas.configParamJson.isHistory" href="/lottery">历史记录</a>
       </div>
     </div>
   </div>
@@ -118,7 +124,9 @@ a {
 }
 .tabs {
   margin: 0.1rem 0;
-  background-color: #eee;
+
+  // background-color: #eee;
+
   display: flex;
   flex-direction: column;
 }
@@ -126,6 +134,10 @@ a {
   display: flex;
   cursor: pointer;
   justify-content: space-evenly;
+  overflow: hidden;
+  // background-color: var(--theme-color);
+  border-top-right-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
 }
 .tab-header {
   padding: 3px 0;
@@ -134,10 +146,10 @@ a {
   align-items: center;
   flex-direction: column;
   /* border-bottom: 2px solid transparent; */
-  border-top-right-radius: 0.5rem;
-  border-top-left-radius: 0.5rem;
+
   background-color: #fff;
   flex: 1;
+
   h4 {
     display: flex;
     align-items: center;
@@ -158,39 +170,40 @@ a {
 }
 
 .tab-content {
-  padding: 5px;
+  padding: 0 0.2rem;
   background-image: none;
   border: 0.02rem solid var(--theme-color);
-  background-color: #f5f5f5;
+  background-color: #fff;
   box-shadow: 0.04rem 0.04rem 0.1rem #eee;
-  // border-radius: 10px;
+  border-radius: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   .tab-content-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 5px;
-    div > h5 {
-      font-size: 1.2rem;
-      background: var(--theme-color);
-      color: #fff;
-      padding: 0.1rem 0.5rem;
-      border-radius: 5px;
+
+    // img {
+    //   height: 1.5rem;
+    // }
+    .tab-content-top-p {
+      flex: 1;
+      font-size: 0.8rem;
+      text-align: center;
     }
-    div > p > span {
-      color: var(--theme-color);
-    }
-    div > a > img {
-      height: 1.5rem;
+    p > span {
+      // color: var(--theme-color);
     }
   }
   .tab-content-middle {
+    flex: 6;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     .tab-content-middle-left {
       display: flex;
+      column-gap: 5px;
     }
     .tab-content-middle-center {
       display: flex;
@@ -200,6 +213,7 @@ a {
       display: flex;
     }
   }
+
   .tab-content-bottom {
     margin-top: 0.5rem;
     display: flex;
@@ -207,12 +221,16 @@ a {
     align-items: center;
     font-size: 0.8rem;
     p {
-      color: var(--theme-color);
+      // color: var(--theme-color);
     }
   }
 }
 
-.tab-content-top-time {
-  color: var(--theme-color);
+.issue-number {
+  color: red;
+}
+
+.history-record {
+  color: red;
 }
 </style>
