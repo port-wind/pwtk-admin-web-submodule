@@ -6,23 +6,14 @@ import LotteryBallDisplayNoAdd from './LotteryBallDisplayNoAdd.vue'
 import { changeGameType, getGameTypeList } from '../store/index'
 import { Button as VanButton, Image as VanImage } from 'vant'
 import type { GameIconKeys, IDatas } from './type'
-
-import { gameStore } from '../store/index'
-import { useStore } from '@nanostores/vue'
-
-const gameStoreData = useStore(gameStore)
-const gameType = computed(() => gameStoreData.value.gameType)
-const currentGame = computed(() => gameStoreData.value.currentGame)
-const gameTypeList = computed(() => gameStoreData.value.gameTypeList)
-
 import am from '../assets/country/am.png'
 import tw from '../assets/country/tw-96.png'
 import xg from '../assets/country/xg.png'
 import xjp from '../assets/country/xjp-96.png'
 import kl8 from '../assets/country/kl8.png'
 import type { IGameType } from '../store/gameStore'
-
-const display = import.meta.env.PUBLIC_DISPLAY
+import { gameStore } from '../store/index'
+import { useStore } from '@nanostores/vue'
 
 interface IProps {
   datas: IDatas
@@ -30,6 +21,13 @@ interface IProps {
 }
 
 const props = defineProps<IProps>()
+
+const gameStoreData = useStore(gameStore)
+const gameType = computed(() => gameStoreData.value.gameType)
+const currentGame = computed(() => gameStoreData.value.currentGame)
+const gameTypeList = computed(() => gameStoreData.value.gameTypeList)
+
+const display = import.meta.env.PUBLIC_DISPLAY
 
 // 彩种图标 特殊处理 display 为 true 时，使用 src 属性，否则使用图片路径
 const GAME_ICONS = {
