@@ -22,6 +22,7 @@ export interface TextLinkList {
 
 export interface ILinkItem extends IProcessedIssueItem {
   link: string
+  _title: string //默认title
 }
 
 // 样式配置类型

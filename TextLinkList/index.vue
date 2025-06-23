@@ -45,11 +45,11 @@ watch(
     if (newVal.length > 0) {
       props.datas.configParamJson.links = newVal.map((item) => {
         const currentLink = tempLinks.find((link) => link.postId === item.postId)
-        console.log('🚀 ~ props.datas.configParamJson.links=newVal.map ~ currentLink:', currentLink)
-
         if (currentLink) {
           return {
             ...item,
+            title: currentLink.title,
+            _title: item.title,
             link: currentLink.link
           }
         } else {
@@ -152,8 +152,9 @@ const containerStyle = computed(() => {
             gridTemplateColumns: `repeat(${datas.configParamJson.listStyleJSON.itemsPerRow}, 1fr)`
           }"
         >
+          <!-- v-for="item in processedIssueList" -->
           <div
-            v-for="item in processedIssueList"
+            v-for="item in props.datas.configParamJson.links"
             :key="item.postId"
             class="text-link-list__item"
             :style="{
