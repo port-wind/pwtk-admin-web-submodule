@@ -26,13 +26,13 @@ componentProperties.set('Issue24', {
       title: '澳门好彩【精选24码】',
       subtitle: '',
       enable: true,
-      size: 10,
-      mainboardId: '',
-      forumId: '',
-      forumIcon: '',
-      forumName: '',
-      forumStatus: '',
-      mainboardName: '',
+      size: 2,
+      mainboardId: 'tiantianhaocai',
+      forumId: 'tiantianhaocai1',
+      forumIcon: 'dev/bbs/forum/icon/3187e4e98b574bd8bf8022652ee23576.jpeg',
+      forumName: '澳门好彩【精选24码】',
+      forumStatus: 'y',
+      mainboardName: '天天好彩',
       styleHeader: {
         backgroundColor: '#f8f9fa',
         isGradient: true,
@@ -50,9 +50,8 @@ componentProperties.set('Issue24', {
         showPeriod: true,
         showStatus: true,
         showResult: true,
-        headerTextColor: '#ffffff',
-      },
-      
+        headerTextColor: '#ffffff'
+      }
     }
   }
 })
