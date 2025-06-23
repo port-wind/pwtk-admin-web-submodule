@@ -1,107 +1,107 @@
 <script setup lang="ts" name="LotteryRiddleSolution">
-import type { IDatas } from './type'
-import service from '../service/index'
-import { onMounted, ref, computed, watch } from 'vue'
+import type { IDatas, ILinkItem, IRiddleItem } from './type'
+import { useIssueList, type IProcessedIssueItem } from '../hooks/issueList'
+import { onMounted, ref, computed, watch, reactive } from 'vue'
 import { useStore } from '@nanostores/vue'
 import { gameStore } from '../store/index'
-import { debounce } from 'lodash-es' // 引入防抖函数
+import service from '../service/index'
 
 interface IProps {
   datas: IDatas
 }
-const props = withDefaults(defineProps<IProps>(), {})
+const props = defineProps<IProps>()
 const gameStoreData = useStore(gameStore)
+const gameType = computed(() => gameStoreData.value.gameType)
+
+// 创建响应式参数对象
+const issueParams = reactive({
+  gameType: gameType.value,
+  size: Number(props.datas.configParamJson.size),
+  forumId: String(props.datas.configParamJson.forumId)
+})
+
+// 使用 hooks
+const { processedIssueList, isLoading, hasError, extractIssueNumber, getHitNumber, getNumberColorClass } =
+  useIssueList(issueParams)
+
+// 监听 props 变化，更新响应式参数
+watch(
+  () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
+  ([newSize, newForumId], [oldSize, oldForumId]) => {
+    console.log('🚀 ~ 参数变化:', [newSize, newForumId])
+    issueParams.size = Number(newSize)
+    issueParams.forumId = String(newForumId)
+    issueParams.gameType = gameType.value
+  }
+)
+
+watch(
+  () => processedIssueList.value,
+  (newVal) => {
+    props.datas.configParamJson.links = newVal as ILinkItem[]
+    // const tempLinks = props.datas.configParamJson.links
+    // if (newVal.length > 0) {
+    //   props.datas.configParamJson.links = newVal.map((item) => {
+    //     const currentLink = tempLinks.find((link) => link.postId === item.postId)
+    //     if (currentLink) {
+    //       return {
+    //         ...item,
+    //         title: currentLink.title,
+    //         _title: item.title,
+    //         link: currentLink.link
+    //       }
+    //     } else {
+    //       return {
+    //         ...item,
+    //         _title: item.title,
+    //         link: '/detail/' + item.postUserId
+    //       }
+    //     }
+    //   })
+    // }
+  },
+  { immediate: true }
+)
 
 const gameTypeCode = computed(() => gameStoreData.value.gameTypeCode)
 const year = computed(() => gameStoreData.value.year)
 
 const getIssueNumber = computed(() => props.datas?.configParamJson?.getIssueNumber || 5)
 
-// 用于存储合并后的数据
-const mergedList = ref<any[]>([])
-const isLoading = ref(false) // 添加加载状态
+// 样式计算属性
+const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
+const styleMain = computed(() => props.datas.configParamJson.styleMain)
 
-const fetchData = async () => {
-  // 确保有必要的参数才执行请求
-  if (!gameTypeCode.value || !year.value) {
-    console.warn('gameType or year is not available')
-    return
+const titleHeaderStyle = computed(() => {
+  if (styleHeader.value.isGradient) {
+    return {
+      background: `linear-gradient(to right, ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`
+    }
+  } else {
+    return {
+      backgroundColor: styleHeader.value?.headerBgColor || '#4caf50'
+    }
   }
-
-  if (isLoading.value) {
-    console.log('正在加载中，跳过重复请求')
-    return
-  }
-
-  isLoading.value = true
-  try {
-    const res2: any[] = await service.kv().getRecentYearsIssueList(gameTypeCode.value).getRequest()
-    const res3: any[] = await service.kv().getGameResultHistory(gameTypeCode.value, String(year.value)).getRequest()
-    console.log('🚀 ~ fetchData ~ res3:', res3)
-
-    // 1. 找到当前 year 的 issues
-    const yearItem = res2.find((item: any) => item.year === year.value)
-    const res2List: any[] = yearItem?.issues?.slice(0, getIssueNumber.value) || []
-
-    // 2. res3.data 直接用
-    const res3List = res3[1] || []
-
-    // 3. 合并逻辑
-    mergedList.value = res2List.map((item2: any) => {
-      if (item2.type === 'next') {
-        return item2
-      } else {
-        // 注意类型转换，res2的issue是数字，res3的issue是字符串
-        const match = res3List.find((item3: any) => String(item3.issue) === String(item2.issue))
-        return match ? { ...item2, ...match } : item2
-      }
-    })
-
-    // mergedList.value 就是你要用的数据
-    console.log('mergedList', mergedList.value)
-  } catch (error) {
-    console.error('fetchData error:', error)
-  } finally {
-    isLoading.value = false
-  }
-}
-
-// 创建防抖函数
-const debouncedFetchData = debounce(fetchData, 300) // 300ms 防抖
-
-onMounted(() => {
-  fetchData()
 })
 
-// 监听关键参数变化，重新获取数据
-watch(
-  gameTypeCode,
-  (newVal, oldVal) => {
-    // 避免相同值的重复请求
-    if (newVal === oldVal) {
-      console.log('gameTypeCode 值未发生变化，跳过请求')
-      return
-    }
+const mainTitleStyle = computed(() => {
+  return {
+    color: styleHeader.value?.titleColor || '#ffffff'
+  }
+})
 
-    console.log('🚀 ~ gameTypeCode ~ newVal:', gameStoreData.value)
-    // 使用防抖函数，避免频繁切换
-    debouncedFetchData()
-  },
-  { immediate: false }
-)
+const subTitleStyle = computed(() => {
+  return {
+    color: styleHeader.value?.subTitleColor || '#ffffff'
+  }
+})
 
-const isHighlighted = (zodiac: string, item: any) => {
-  return item.highlightZodiacs.includes(zodiac)
-}
-
-// 辅助函数
-const getResultColor = (item: any) => {
-  // 根据开奖颜色返回对应的样式类
-  if (item.color === 'R') return 'red'
-  if (item.color === 'G') return 'green'
-  if (item.color === 'B') return 'blue'
-  return 'red'
-}
+const containerStyle = computed(() => {
+  return {
+    borderRadius: `${styleMain.value?.borderRadius || 0}px`,
+    padding: `${styleMain.value?.padding || 0}px`
+  }
+})
 
 const getRiddleText = (item: any) => {
   // 164 ≤丈夫双泪不轻弹,带着铃铛去做贼≥
@@ -113,17 +113,17 @@ const getRiddleText = (item: any) => {
 
   switch (String(item.issue)) {
     case year.value + '164':
-      return '≤丈夫双泪不轻弹,带着铃铛去做贼≥'
+      return '丈夫双泪不轻弹,带着铃铛去做贼'
     case year.value + '163':
-      return '≤看见八钱散发打,七九相连三一走≥'
+      return '看见八钱散发打,七九相连三一走'
     case year.value + '162':
-      return '≤船到桥头自会直,摇头不算点头算≥'
+      return '船到桥头自会直,摇头不算点头算'
     case year.value + '160':
-      return '≤四头连旺暴今期,得饶人处且饶人≥'
+      return '四头连旺暴今期,得饶人处且饶人'
     case year.value + '159':
-      return '≤一唱雄鸡天下白,白手起家從零起≥'
+      return '一唱雄鸡天下白,白手起家從零起'
     case year.value + '158':
-      return '≤真金不怕火来烧,不见棺材不落泪≥'
+      return '真金不怕火来烧,不见棺材不落泪'
     default:
       return ''
   }
@@ -139,37 +139,77 @@ const getZodiacFromTeNum = (item: any) => {
   return teNumInfo ? teNumInfo.shengxiao : ''
 }
 
-const getSizeText = (size: string) => {
+const getSizeText = (size: string | undefined) => {
+  if (!size) return ''
   return size === 'b' ? '大数' : '小数'
 }
 </script>
 
 <template>
   <div class="LotteryRiddleSolution">
-    <div class="solution-wrapper">
-      <div class="header">
-        <span class="main-title">{{ datas.configParamJson.mainTitle }}</span>
-        <span class="sub-title">【{{ datas.configParamJson.subTitle }}】</span>
+    <div class="lottery-riddle-solution" :style="containerStyle">
+      <!-- 标题区域 -->
+      <div class="title-header" :style="titleHeaderStyle">
+        <h2 class="main-title" :style="mainTitleStyle">
+          {{ datas.configParamJson.title }}
+        </h2>
+        <span class="sub-title" :style="subTitleStyle">
+          {{ datas.configParamJson.subtitle }}
+        </span>
       </div>
-      <div class="content-extends">
-        <div v-for="(item, index) in mergedList" :key="index" class="item">
-          <div class="item-header">
-            <span>{{ item.issueShort || item.issue }}期: {{ datas.configParamJson.subTitle }}</span>
-            <span v-if="item.type === 'next'" class="result-text">
-              开
-              <span class="red">? 00</span>
-              准
-            </span>
-            <span v-else-if="item.result" :class="`result-text`">
-              开
-              <span class="red">{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}</span>
-              准
-            </span>
-          </div>
-          <div class="riddle-text">≤{{ getRiddleText(item) }}≥</div>
-          <div class="answer-text">
-            <!--  -->
-            本期谜底：（{{ getZodiacFromTeNum(item) }}）送：{{ getSizeText(item.totalSize) }}
+
+      <!-- 内容区域 -->
+      <div
+        class="lottery-riddle-solution__content"
+        :style="{
+          padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`
+        }"
+      >
+        <div class="lottery-riddle-solution__items">
+          {{ props.datas.configParamJson.links }}
+          <div
+            v-for="(item, index) in props.datas.configParamJson.links"
+            :key="index"
+            class="lottery-riddle-solution__item"
+            :style="{
+              backgroundColor: datas.configParamJson.listStyleJSON.itemBackgroundColor,
+              color: datas.configParamJson.listStyleJSON.itemTextColor,
+              padding: `${datas.configParamJson.listStyleJSON.itemPadding}px`,
+              borderRadius: `${datas.configParamJson.listStyleJSON.itemBorderRadius}px`,
+              border: `${datas.configParamJson.listStyleJSON.itemBorderWidth}px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`,
+              marginBottom: `${datas.configParamJson.listStyleJSON.itemSpacing}px`
+            }"
+          >
+            <div class="item-header">
+              <span>
+                {{ item.issueShort || item.issue }}期:
+                {{ datas.configParamJson.subTitle || datas.configParamJson.subtitle }}
+              </span>
+              <span
+                v-if="item.type === 'next'"
+                class="result-text"
+                :style="{ color: datas.configParamJson.listStyleJSON.resultTextColor }"
+              >
+                开
+                <span class="result-number">? 00</span>
+                准
+              </span>
+              <span
+                v-else-if="item.result"
+                class="result-text"
+                :style="{ color: datas.configParamJson.listStyleJSON.resultTextColor }"
+              >
+                开
+                <span class="result-number">{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}</span>
+                准
+              </span>
+            </div>
+            <div class="riddle-text" :style="{ color: datas.configParamJson.listStyleJSON.riddleTextColor }">
+              ≤{{ getRiddleText(item) }}≥
+            </div>
+            <div class="answer-text" :style="{ color: datas.configParamJson.listStyleJSON.answerTextColor }">
+              本期谜底：（{{ getZodiacFromTeNum(item) }}）送：{{ getSizeText(item.totalSize) }}
+            </div>
           </div>
         </div>
       </div>
@@ -183,67 +223,116 @@ const getSizeText = (size: string) => {
   position: relative;
 }
 
-.solution-wrapper {
-  border: 1px solid #4caf50;
-  // border-radius: 8px;
+.lottery-riddle-solution {
   overflow: hidden;
   font-family: 'SimSun', '宋体', sans-serif;
   position: relative;
 }
 
-.header {
-  background-color: #4caf50;
-  color: white;
-  padding: 3px 15px;
-  font-size: 20px;
-  font-weight: bold;
-}
+.title-header {
+  padding: 12px 16px;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-.content {
-  padding: 0 15px;
-  background-color: #f0f9eb;
-}
+  .main-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
 
-.content-extends {
-  padding: 0;
-  background-color: #fff;
-  border-bottom: 1px solid #c8e6c9;
-}
-
-.item {
-  padding: 5px 10px;
-  border-bottom: 1px dashed #c8e6c9;
-  &:last-child {
-    border-bottom: none;
+  .sub-title {
+    font-size: 14px;
+    opacity: 0.9;
   }
 }
 
-.item-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 16px;
-  color: #333;
+.lottery-riddle-solution__content {
+  background: #fff;
+  min-height: 20px;
+}
 
-  .result-text {
-    font-weight: bold;
-    .red {
-      color: #f44336;
+.lottery-riddle-solution__items {
+  width: 100%;
+}
+
+.lottery-riddle-solution__item {
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 8px;
+
+    .result-text {
+      font-weight: bold;
+
+      .result-number {
+        color: #f44336;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .riddle-text {
+    font-size: 16px;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .answer-text {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .lottery-riddle-solution__item {
+    .item-header {
+      font-size: 14px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .riddle-text,
+    .answer-text {
+      font-size: 14px;
     }
   }
 }
 
-.riddle-text {
-  color: green;
-  font-size: 16px;
-}
+@media (max-width: 480px) {
+  .title-header {
+    padding: 8px 12px;
 
-.answer-text {
-  color: blue;
-  font-size: 16px;
-}
+    .main-title {
+      font-size: 16px;
+    }
 
-.highlight {
-  background-color: yellow;
+    .sub-title {
+      font-size: 12px;
+    }
+  }
+
+  .lottery-riddle-solution__item {
+    .item-header {
+      font-size: 13px;
+    }
+
+    .riddle-text,
+    .answer-text {
+      font-size: 13px;
+    }
+  }
 }
 </style>

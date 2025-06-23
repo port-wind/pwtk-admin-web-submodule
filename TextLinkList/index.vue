@@ -11,7 +11,6 @@ interface IProps {
   datas: IDatas
 }
 const props = defineProps<IProps>()
-console.log('🚀 ~ datas textlink list:', props.datas)
 
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
@@ -55,6 +54,7 @@ watch(
         } else {
           return {
             ...item,
+            _title: item.title,
             link: '/detail/' + item.postUserId
           }
         }
