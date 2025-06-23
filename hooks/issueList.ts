@@ -214,9 +214,16 @@ export function useIssueList(params: IUseIssueListParams) {
 
   /**
    * 刷新数据
+   * @param newGameType 新的游戏类型，如果不传则使用原有参数
+   * @param newSize 新的数据条数，如果不传则使用原有参数
+   * @param newForumId 新的论坛ID，如果不传则使用原有参数
    */
-  const refreshData = () => {
-    fetchIssueList(params.gameType, params.size, params.forumId)
+  const refreshData = (newGameType?: string, newSize?: number, newForumId?: string) => {
+    fetchIssueList(
+      newGameType || params.gameType, 
+      newSize || params.size, 
+      newForumId || params.forumId
+    )
   }
 
   /**
