@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import dayjs from 'dayjs'
 import LotteryBallDisplayNoAdd5 from './LotteryBallDisplayNoAdd5.vue'
 import { changeGameType, getGameTypeList } from '../store/index'
@@ -68,6 +68,16 @@ onMounted(() => {
     clearInterval(interval)
   })
 })
+
+watch(
+  () => gameStoreData.value.gameType,
+  (newVal) => {
+    const index = gameTypeList.value.findIndex((item) => item.gameType === newVal)
+    if (index !== -1) {
+      tabIndex.value = index
+    }
+  }
+)
 </script>
 <template>
   <div class="tabs">

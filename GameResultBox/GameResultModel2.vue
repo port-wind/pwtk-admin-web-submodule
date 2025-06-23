@@ -68,6 +68,16 @@ onMounted(() => {
     clearInterval(interval)
   })
 })
+
+watch(
+  () => gameStoreData.value.gameType,
+  (newVal) => {
+    const index = gameTypeList.value.findIndex((item) => item.gameType === newVal)
+    if (index !== -1) {
+      tabIndex.value = index
+    }
+  }
+)
 </script>
 <template>
   <div class="tabs">
