@@ -12,7 +12,6 @@ import tw from '../assets/country/tw-96.png'
 import xg from '../assets/country/xg.png'
 import xjp from '../assets/country/xjp-96.png'
 import kl8 from '../assets/country/kl8.png'
-import tabGif from '../assets/gfkj.gif'
 
 const display = import.meta.env.PUBLIC_DISPLAY
 
@@ -35,7 +34,6 @@ const GAME_ICONS = {
 
 const img = computed(() => {
   const imgUrl = props.datas.configParamJson.imageUrl
-
   return display ? imgUrl.src : imgUrl
 })
 
@@ -100,10 +98,6 @@ onMounted(() => {
     clearInterval(interval)
   })
 })
-
-// watch([() => props.tabIndex], ([newIndex]) => {
-//   selectedTab.value = newIndex;
-// });
 </script>
 <template>
   <div class="tabs">

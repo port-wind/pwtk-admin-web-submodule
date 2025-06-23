@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import dayjs from 'dayjs'
 import LotteryBallDisplayNoAdd2 from './LotteryBallDisplayNoAdd2.vue'
 import { changeGameType } from '../store/index'
@@ -78,10 +78,6 @@ onMounted(() => {
     clearInterval(interval)
   })
 })
-
-// watch([() => props.tabIndex], ([newIndex]) => {
-//   selectedTab.value = newIndex;
-// });
 </script>
 <template>
   <div class="tabs">

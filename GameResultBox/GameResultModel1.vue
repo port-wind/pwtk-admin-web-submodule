@@ -1,19 +1,15 @@
 <script setup lang="ts">
 // ! CSR
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import dayjs from 'dayjs'
 import LotteryBallDisplayNoAdd from './LotteryBallDisplayNoAdd.vue'
 import { changeGameType, getGameTypeList } from '../store/index'
 import { Button as VanButton, Image as VanImage } from 'vant'
 import type { GameIconKeys, IDatas } from './type'
-import am from '../assets/country/am.png'
-import tw from '../assets/country/tw-96.png'
-import xg from '../assets/country/xg.png'
-import xjp from '../assets/country/xjp-96.png'
-import kl8 from '../assets/country/kl8.png'
 import type { IGameType } from '../store/gameStore'
 import { gameStore } from '../store/index'
 import { useStore } from '@nanostores/vue'
+import { GAME_ICONS, truncateString, convertDataFormat } from './data'
 
 interface IProps {
   datas: IDatas
@@ -27,36 +23,12 @@ const gameType = computed(() => gameStoreData.value.gameType)
 const currentGame = computed(() => gameStoreData.value.currentGame)
 const gameTypeList = computed(() => gameStoreData.value.gameTypeList)
 
-const display = import.meta.env.PUBLIC_DISPLAY
-
-// 彩种图标 特殊处理 display 为 true 时，使用 src 属性，否则使用图片路径
-const GAME_ICONS = {
-  '3995': display ? xjp.src : xjp,
-  '2032': display ? am.src : am,
-  '1': display ? xg.src : xg,
-  '84': display ? tw.src : tw,
-  '5': display ? am.src : am,
-  '6': display ? kl8.src : kl8
-}
-
-const truncateString = (str: string): string => {
-  let newStr = str.toString()
-  if (newStr.length > 4) {
-    return newStr.slice(4)
-  }
-  return newStr
-}
-
 const emits = defineEmits(['update-issue'])
-// const GAME_DATA_ALL = JSON.parse(utils.getSession(constants.sessionStorageKeys.GAME_DATA_ALL) || '[]');
 
-// const tabsData = ref<GAME_DATA_ALL[]>(GAME_DATA_ALL);
 const tabIndex = ref(0)
 
 const tabsData = computed(() => {
   const baseData = props.tabsData
-  console.log('🚀 ~ tabsData ~ baseData:', baseData)
-
   if (!props.datas.configParamJson.showArray?.length) {
     return baseData
   }
