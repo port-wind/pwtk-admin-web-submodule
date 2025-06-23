@@ -39,34 +39,12 @@ watch(
   () => processedIssueList.value,
   (newVal) => {
     props.datas.configParamJson.links = newVal as ILinkItem[]
-    // const tempLinks = props.datas.configParamJson.links
-    // if (newVal.length > 0) {
-    //   props.datas.configParamJson.links = newVal.map((item) => {
-    //     const currentLink = tempLinks.find((link) => link.postId === item.postId)
-    //     if (currentLink) {
-    //       return {
-    //         ...item,
-    //         title: currentLink.title,
-    //         _title: item.title,
-    //         link: currentLink.link
-    //       }
-    //     } else {
-    //       return {
-    //         ...item,
-    //         _title: item.title,
-    //         link: '/detail/' + item.postUserId
-    //       }
-    //     }
-    //   })
-    // }
   },
   { immediate: true }
 )
 
 const gameTypeCode = computed(() => gameStoreData.value.gameTypeCode)
 const year = computed(() => gameStoreData.value.year)
-
-const getIssueNumber = computed(() => props.datas?.configParamJson?.getIssueNumber || 5)
 
 // 样式计算属性
 const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
@@ -103,45 +81,43 @@ const containerStyle = computed(() => {
   }
 })
 
-const getRiddleText = (item: any) => {
-  // 164 ≤丈夫双泪不轻弹,带着铃铛去做贼≥
-  // 163 ≤看见八钱散发打,七九相连三一走≥
-  // 162 ≤船到桥头自会直,摇头不算点头算≥
-  // 160 ≤四头连旺暴今期,得饶人处且饶人≥
-  // 159 ≤一唱雄鸡天下白,白手起家從零起≥
-  // 158 ≤真金不怕火来烧,不见棺材不落泪≥
+// 辅助函数
+const extractIssueShort = (postIssue: string) => {
+  // 从 "2025171" 提取 "171"
+  return postIssue.slice(-3)
+}
 
-  switch (String(item.issue)) {
-    case year.value + '164':
-      return '丈夫双泪不轻弹,带着铃铛去做贼'
-    case year.value + '163':
-      return '看见八钱散发打,七九相连三一走'
-    case year.value + '162':
-      return '船到桥头自会直,摇头不算点头算'
-    case year.value + '160':
-      return '四头连旺暴今期,得饶人处且饶人'
-    case year.value + '159':
-      return '一唱雄鸡天下白,白手起家從零起'
-    case year.value + '158':
-      return '真金不怕火来烧,不见棺材不落泪'
-    default:
-      return ''
+const getRiddleContent = (item: any) => {
+  // 从 postContent 中提取谜语内容
+  return item.postContent || ''
+}
+
+const getSpecialZodiacPrediction = (item: any) => {
+  // 从 lotteryPredictions 中找到特肖预测
+  const specialPrediction = item.lotteryPredictions?.find((pred: any) => pred.name === '特肖' || pred.code === '8002')
+  return specialPrediction?.predict || []
+}
+
+const getSizePrediction = (item: any) => {
+  // 从 lotteryPredictions 中找到大小数预测
+  const sizePrediction = item.lotteryPredictions?.find((pred: any) => pred.name === '大小数' || pred.code === '8003')
+  return sizePrediction?.predict?.[0] || ''
+}
+
+const getOpenResult = (item: any) => {
+  // 获取开奖结果
+  if (item.resultInfo) {
+    return {
+      zodiac: item.resultInfo.shengxiao,
+      number: item.resultInfo.teNum
+    }
   }
+  return null
 }
 
-const getZodiacFromTeNum = (item: any) => {
-  // 从numInfo中找到特码对应的生肖
-  if (!item.numInfo || !item.teNum) return ''
-
-  const teNumStr = String(item.teNum).padStart(2, '0')
-  const teNumInfo = item.numInfo.find((info: any) => info.num === teNumStr)
-
-  return teNumInfo ? teNumInfo.shengxiao : ''
-}
-
-const getSizeText = (size: string | undefined) => {
-  if (!size) return ''
-  return size === 'b' ? '大数' : '小数'
+const isNextIssue = (item: any) => {
+  // 判断是否是下一期（未开奖）
+  return !item.resultInfo || !item.resultInfo.teNum
 }
 </script>
 
@@ -166,10 +142,9 @@ const getSizeText = (size: string | undefined) => {
         }"
       >
         <div class="lottery-riddle-solution__items">
-          {{ props.datas.configParamJson.links }}
           <div
             v-for="(item, index) in props.datas.configParamJson.links"
-            :key="index"
+            :key="item.postId || index"
             class="lottery-riddle-solution__item"
             :style="{
               backgroundColor: datas.configParamJson.listStyleJSON.itemBackgroundColor,
@@ -181,12 +156,9 @@ const getSizeText = (size: string | undefined) => {
             }"
           >
             <div class="item-header">
-              <span>
-                {{ item.issueShort || item.issue }}期:
-                {{ datas.configParamJson.subTitle || datas.configParamJson.subtitle }}
-              </span>
+              <span>{{ extractIssueShort(item.postIssue) }}期: {{ item.title }}</span>
               <span
-                v-if="item.type === 'next'"
+                v-if="isNextIssue(item)"
                 class="result-text"
                 :style="{ color: datas.configParamJson.listStyleJSON.resultTextColor }"
               >
@@ -195,20 +167,20 @@ const getSizeText = (size: string | undefined) => {
                 准
               </span>
               <span
-                v-else-if="item.result"
+                v-else-if="getOpenResult(item)"
                 class="result-text"
                 :style="{ color: datas.configParamJson.listStyleJSON.resultTextColor }"
               >
                 开
-                <span class="result-number">{{ getZodiacFromTeNum(item) }}{{ item.result.split(',')[6] }}</span>
+                <span class="result-number">{{ getOpenResult(item)?.zodiac }}{{ getOpenResult(item)?.number }}</span>
                 准
               </span>
             </div>
             <div class="riddle-text" :style="{ color: datas.configParamJson.listStyleJSON.riddleTextColor }">
-              ≤{{ getRiddleText(item) }}≥
+              {{ getRiddleContent(item) }}
             </div>
             <div class="answer-text" :style="{ color: datas.configParamJson.listStyleJSON.answerTextColor }">
-              本期谜底：（{{ getZodiacFromTeNum(item) }}）送：{{ getSizeText(item.totalSize) }}
+              本期谜底：（{{ getSpecialZodiacPrediction(item).join('') }}）送：{{ getSizePrediction(item) }}
             </div>
           </div>
         </div>
@@ -286,11 +258,13 @@ const getSizeText = (size: string | undefined) => {
     font-size: 16px;
     margin-bottom: 6px;
     line-height: 1.4;
+    font-weight: bold;
   }
 
   .answer-text {
     font-size: 16px;
     line-height: 1.4;
+    font-weight: bold;
   }
 }
 
