@@ -1,6 +1,5 @@
 import { ref, computed, watch } from 'vue'
 import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
-import { ElMessage } from 'element-plus'
 
 /**
  * 期数列表 hooks 参数接口
@@ -205,7 +204,6 @@ export function useIssueList(params: IUseIssueListParams) {
     } catch (error) {
       hasError.value = true
       errorMessage.value = error instanceof Error ? error.message : '获取期数列表失败'
-      ElMessage.error(errorMessage.value)
       console.error('fetchIssueList error:', error)
     } finally {
       isLoading.value = false
