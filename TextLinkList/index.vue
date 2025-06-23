@@ -4,23 +4,33 @@ import type { IDatas } from './type'
 import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
 import { gameStore } from '../store'
 import { useStore } from '@nanostores/vue'
-import { useIssueList } from '../hooks/issueList'
+import { useIssueList, type IProcessedIssueItem } from '../hooks/issueList'
 interface IProps {
   datas: IDatas
 }
 const props = defineProps<IProps>()
-
-const IssueList = computed(() => gameStoreData.value.issueList)
-
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
+
+// 创建响应式参数对象
+const issueParams = reactive({
+  gameType: gameType.value,
+  size: Number(props.datas.configParamJson.size),
+  forumId: String(props.datas.configParamJson.forumId)
+})
+
 // 使用 hooks
-const { processedIssueList, isLoading, hasError, extractIssueNumber, getHitNumber, getNumberColorClass } = useIssueList(
-  {
-    gameType: gameType.value,
-    size: props.datas.configParamJson.size,
-    forumId: props.datas.configParamJson.forumId,
-    autoFetch: true // 自动获取数据
+const { processedIssueList, isLoading, hasError, extractIssueNumber, getHitNumber, getNumberColorClass } =
+  useIssueList(issueParams)
+
+// 监听 props 变化，更新响应式参数
+watch(
+  () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
+  ([newSize, newForumId], [oldSize, oldForumId]) => {
+    console.log('🚀 ~ 参数变化:', [newSize, newForumId])
+    issueParams.size = Number(newSize)
+    issueParams.forumId = String(newForumId)
+    issueParams.gameType = gameType.value
   }
 )
 
@@ -36,19 +46,18 @@ const enabledItems = computed(() => {
 const issueListItem = ref<IGetWebSitePostResponse[]>([])
 
 // 处理项目点击
-const handleItemClick = (item: any) => {
-  if (item.link) {
-    // 判断是否为外部链接
-    if (item.link.startsWith('http://') || item.link.startsWith('https://')) {
-      window.open(item.link, '_blank')
-    } else {
-      // 内部路由跳转
-      window.location.href = item.link
-    }
-  }
+const handleItemClick = (item: IProcessedIssueItem) => {
+  // if (item.link) {
+  // 判断是否为外部链接
+  // if (item.link.startsWith('http://') || item.link.startsWith('https://')) {
+  window.open('/detail/' + item.postId, '_blank')
+  // } else {
+  // 内部路由跳转
+  // window.location.href = item.link
+  // }
+  // }
 }
 
-// 处理鼠标悬停效果
 const handleMouseEnter = (event: Event) => {
   const target = event.target as HTMLElement
   target.style.backgroundColor = props.datas.configParamJson.listStyleJSON.itemHoverColor
@@ -90,28 +99,6 @@ const containerStyle = computed(() => {
     padding: `${styleMain.value?.padding || 0}px`
   }
 })
-
-const fetchIssueList = async (gameType: string, size: number, forumId: string) => {
-  const res = await getWebSitePost({
-    gameType: gameType,
-    page: 1,
-    size: size || 10,
-    forumId: forumId
-  })
-  issueListItem.value = res.data.list
-  console.log('🚀 ~ fetchIssueList ~ issueListItem:', issueListItem)
-}
-
-onMounted(() => {
-  fetchIssueList(gameType.value, props.datas.configParamJson.size, props.datas.configParamJson.forumId)
-})
-
-watch(
-  () => [gameType.value, props.datas.configParamJson.size, forum.value?.forumId],
-  (newVal, oldVal) => {
-    fetchIssueList(String(newVal[0]), Number(newVal[1]), String(newVal[2]))
-  }
-)
 </script>
 
 <template>
@@ -139,8 +126,8 @@ watch(
           }"
         >
           <div
-            v-for="item in enabledItems"
-            :key="item.id"
+            v-for="item in processedIssueList"
+            :key="item.postId"
             class="text-link-list__item"
             :style="{
               backgroundColor: datas.configParamJson.listStyleJSON.itemBackgroundColor,
@@ -153,7 +140,8 @@ watch(
             @mouseenter="handleMouseEnter"
             @mouseleave="handleMouseLeave"
           >
-            {{ item.text }}
+            <span class="post-issue">{{ item.postIssue }}</span>
+            <span class="post-title">{{ item.title }}</span>
           </div>
         </div>
       </div>

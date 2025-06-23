@@ -10,9 +10,9 @@ export interface TextLinkList {
   size: number
   listStyleJSON: TextLinkListStyleJSON
   forumId: string
-  forumIcon: string
+  forumIcon?: string
   forumName: string
-  forumStatus: string
+  forumStatus?: string
   mainboardName: string
   mainboardId: string
   styleHeader: IStyleHeader
