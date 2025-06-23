@@ -27,12 +27,12 @@ componentProperties.set('Issue24', {
       subtitle: '',
       enable: true,
       size: 10,
+      mainboardId: '',
       forumId: '',
       forumIcon: '',
       forumName: '',
       forumStatus: '',
       mainboardName: '',
-      mainboardId: '',
       styleHeader: {
         backgroundColor: '#f8f9fa',
         isGradient: true,
