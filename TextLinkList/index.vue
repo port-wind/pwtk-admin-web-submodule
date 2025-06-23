@@ -1,12 +1,10 @@
 <script setup lang="ts" name="TextLinkList">
-import { computed } from 'vue'
+import { computed, reactive } from 'vue'
 import type { IDatas, ILinkItem } from './type'
 import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
 import { gameStore } from '../store'
 import { useStore } from '@nanostores/vue'
 import { useIssueList, type IProcessedIssueItem } from '../hooks/issueList'
-import { useRouter } from 'vue-router'
-const router = useRouter()
 interface IProps {
   datas: IDatas
 }
@@ -19,7 +17,7 @@ const gameType = computed(() => gameStoreData.value.gameType)
 const issueParams = reactive({
   gameType: gameType.value,
   size: Number(props.datas.configParamJson.size),
-  forumId: String(props.datas.configParamJson.forumId)
+  forumId: String(props.datas.configParamJson.forumId),
 })
 
 // 使用 hooks
@@ -39,23 +37,23 @@ watch(
 
 watch(
   () => processedIssueList.value,
-  (newVal) => {
+  newVal => {
     const tempLinks = props.datas.configParamJson.links
     if (newVal.length > 0) {
-      props.datas.configParamJson.links = newVal.map((item) => {
-        const currentLink = tempLinks.find((link) => link.postId === item.postId)
+      props.datas.configParamJson.links = newVal.map(item => {
+        const currentLink = tempLinks.find(link => link.postId === item.postId)
         if (currentLink) {
           return {
             ...item,
             title: currentLink.title,
             _title: item.title,
-            link: currentLink.link
+            link: currentLink.link,
           }
         } else {
           return {
             ...item,
             _title: item.title,
-            link: '/detail/' + item.postUserId
+            link: '/detail/' + item.postUserId,
           }
         }
       })
@@ -70,7 +68,7 @@ const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
 const styleMain = computed(() => props.datas.configParamJson.styleMain)
 // 启用的链接项目
 const enabledItems = computed(() => {
-  return props.datas.configParamJson.links?.filter((item) => item.enabled) || []
+  return props.datas.configParamJson.links?.filter(item => item.enabled) || []
 })
 
 const issueListItem = ref<IGetWebSitePostResponse[]>([])
@@ -98,24 +96,24 @@ const handleMouseLeave = (event: Event) => {
 const titleHeaderStyle = computed(() => {
   if (styleHeader.value.isGradient) {
     return {
-      background: `linear-gradient(to right,  ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`
+      background: `linear-gradient(to right,  ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`,
     }
   } else {
     return {
-      backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2'
+      backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2',
     }
   }
 })
 
 const mainTitleStyle = computed(() => {
   return {
-    color: styleHeader.value?.titleColor || '#333333'
+    color: styleHeader.value?.titleColor || '#333333',
   }
 })
 
 const subTitleStyle = computed(() => {
   return {
-    color: styleHeader.value?.subTitleColor || '#333333'
+    color: styleHeader.value?.subTitleColor || '#333333',
   }
 })
 
@@ -123,7 +121,7 @@ const containerStyle = computed(() => {
   return {
     // backgroundColor: styleMain.value?.backgroundColor || '#f8f9fa',
     borderRadius: `${styleMain.value?.borderRadius || 0}px`,
-    padding: `${styleMain.value?.padding || 0}px`
+    padding: `${styleMain.value?.padding || 0}px`,
   }
 })
 </script>
@@ -142,14 +140,14 @@ const containerStyle = computed(() => {
       <div
         class="text-link-list__content"
         :style="{
-          padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`
+          padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`,
         }"
       >
         <div
           class="text-link-list__items"
           :style="{
             gap: `${datas.configParamJson.listStyleJSON.itemSpacing}px`,
-            gridTemplateColumns: `repeat(${datas.configParamJson.listStyleJSON.itemsPerRow}, 1fr)`
+            gridTemplateColumns: `repeat(${datas.configParamJson.listStyleJSON.itemsPerRow}, 1fr)`,
           }"
         >
           <!-- v-for="item in processedIssueList" -->
@@ -162,7 +160,7 @@ const containerStyle = computed(() => {
               color: datas.configParamJson.listStyleJSON.itemTextColor,
               padding: `${datas.configParamJson.listStyleJSON.itemPadding}px`,
               borderRadius: `${datas.configParamJson.listStyleJSON.itemBorderRadius}px`,
-              border: `${datas.configParamJson.listStyleJSON.itemBorderWidth}px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`
+              border: `${datas.configParamJson.listStyleJSON.itemBorderWidth}px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`,
             }"
             @click="handleItemClick(item)"
             @mouseenter="handleMouseEnter"
