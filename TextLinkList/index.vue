@@ -11,6 +11,8 @@ interface IProps {
   datas: IDatas
 }
 const props = defineProps<IProps>()
+console.log('🚀 ~ datas textlink list:', props.datas)
+
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
 
@@ -39,10 +41,25 @@ watch(
 watch(
   () => processedIssueList.value,
   (newVal) => {
-    props.datas.configParamJson.links = newVal.map((item) => ({
-      ...item,
-      link: item.link || '/detail/' + item.postUserId
-    }))
+    const tempLinks = props.datas.configParamJson.links
+    if (newVal.length > 0) {
+      props.datas.configParamJson.links = newVal.map((item) => {
+        const currentLink = tempLinks.find((link) => link.postId === item.postId)
+        console.log('🚀 ~ props.datas.configParamJson.links=newVal.map ~ currentLink:', currentLink)
+
+        if (currentLink) {
+          return {
+            ...item,
+            link: currentLink.link
+          }
+        } else {
+          return {
+            ...item,
+            link: '/detail/' + item.postUserId
+          }
+        }
+      })
+    }
   },
   { immediate: true }
 )
