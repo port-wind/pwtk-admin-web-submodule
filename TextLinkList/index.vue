@@ -1,10 +1,12 @@
 <script setup lang="ts" name="TextLinkList">
 import { computed } from 'vue'
-import type { IDatas } from './type'
+import type { IDatas, ILinkItem } from './type'
 import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
 import { gameStore } from '../store'
 import { useStore } from '@nanostores/vue'
 import { useIssueList, type IProcessedIssueItem } from '../hooks/issueList'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 interface IProps {
   datas: IDatas
 }
@@ -37,7 +39,10 @@ watch(
 watch(
   () => processedIssueList.value,
   (newVal) => {
-    props.datas.configParamJson.links = newVal
+    props.datas.configParamJson.links = newVal.map((item) => ({
+      ...item,
+      link: '/detail/' + item.postUserId
+    }))
   },
   { immediate: true }
 )
@@ -54,16 +59,13 @@ const enabledItems = computed(() => {
 const issueListItem = ref<IGetWebSitePostResponse[]>([])
 
 // 处理项目点击
-const handleItemClick = (item: IProcessedIssueItem) => {
-  // if (item.link) {
-  // 判断是否为外部链接
-  // if (item.link.startsWith('http://') || item.link.startsWith('https://')) {
-  window.open('/detail/' + item.postUserId, '_blank')
-  // } else {
-  // 内部路由跳转
-  // window.location.href = item.link
-  // }
-  // }
+const handleItemClick = (item: ILinkItem) => {
+  if (!item.link) return
+  if (item.link.startsWith('http://') || item.link.startsWith('https://')) {
+    window.open(item.link, '_blank')
+  } else {
+    window.location.href = item.link
+  }
 }
 
 const handleMouseEnter = (event: Event) => {
