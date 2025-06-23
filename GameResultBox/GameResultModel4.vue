@@ -22,7 +22,7 @@ const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
 const currentGame = computed(() => gameStoreData.value.currentGame)
 const gameTypeList = computed(() => gameStoreData.value.gameTypeList)
-
+console.log('🚀 ~ props.datas.configParamJson.imageUrl:', props.datas.configParamJson.imageUrl)
 const img = computed(() => {
   const imgUrl = props.datas.configParamJson.imageUrl
   return display ? imgUrl.src : imgUrl
@@ -108,7 +108,9 @@ onMounted(() => {
           <h3>{{ nowTime }}</h3>
         </div>
         <div>
-          <a href="https://macao-jc.com/"><img :src="getFullUrl(img, PUBLIC_CDN_URL)" /></a>
+          <a href="https://macao-jc.com/">
+            <img :src="getFullUrl(img, PUBLIC_CDN_URL)" />
+          </a>
         </div>
       </div>
       <LotteryBallDisplayNoAdd4 :currentResult="tabsData[tabIndex].currentResult" />
