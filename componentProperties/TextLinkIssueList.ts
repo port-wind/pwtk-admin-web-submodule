@@ -1,13 +1,13 @@
-import type { TextLinkList } from '../TextLinkList/type'
+import type { TextLinkIssueList } from '../TextLinkIssueList/type'
 import type { IComponentProperty, ISetStyle } from './index'
 
 // 创建 Map 并导出
-const componentProperties = new Map<string, IComponentProperty<ISetStyle<TextLinkList>>>()
-componentProperties.set('TextLinkList', {
-  component: 'TextLinkList', // 中间预览组件名称
+const componentProperties = new Map<string, IComponentProperty<ISetStyle<TextLinkIssueList>>>()
+componentProperties.set('TextLinkIssueList', {
+  component: 'TextLinkIssueList', // 中间预览组件名称
   text: '文本链接列表', // 显示名称
   active: true, // 是否可编辑
-  style: 'TextLinkListStyle', // 右侧配置组件名称
+  style: 'TextLinkIssueListStyle', // 右侧配置组件名称
   setStyle: {
     componentId: '',
     sketchCodeList: '',
@@ -16,7 +16,7 @@ componentProperties.set('TextLinkList', {
     websiteId: '',
     componentRef: '',
     componentName: '文本链接列表',
-    componentType: 'TextLinkList',
+    componentType: 'TextLinkIssueList',
     componentSort: '',
     status: 'y',
     isView: 'y',

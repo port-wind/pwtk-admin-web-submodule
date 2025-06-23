@@ -1,15 +1,15 @@
 import type { ISetStyle } from '../componentProperties/index'
 import type { IProcessedIssueItem } from '../hooks/issueList'
 
-export interface IDatas extends ISetStyle<TextLinkList> {}
+export interface IDatas extends ISetStyle<TextLinkIssueList> {}
 
-export interface TextLinkList {
+export interface TextLinkIssueList {
   title: string
   subtitle: string
   links: ILinkItem[]
   enable: boolean
   size: number
-  listStyleJSON: TextLinkListStyleJSON
+  listStyleJSON: TextLinkIssueListStyleJSON
   forumId: string
   forumIcon?: string
   forumName: string
@@ -26,7 +26,7 @@ export interface ILinkItem extends IProcessedIssueItem {
 }
 
 // 样式配置类型
-export interface TextLinkListStyleJSON {
+export interface TextLinkIssueListStyleJSON {
   headerBackgroundColor: string // 标题背景颜色
   headerTextColor: string // 标题文字颜色
   itemsPerRow: number // 每行显示的项目数

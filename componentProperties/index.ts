@@ -73,7 +73,7 @@ import LotteryRiddleSolutionProperties from './LotteryRiddleSolution'
 import CarouselAppProperties from './CarouselApp'
 import ImageGridListProperties from './ImageGridList'
 import componentProperties from './NewsPaperCategoryList'
-import TextLinkListProperties from './TextLinkList'
+import TextLinkIssueListProperties from './TextLinkIssueList'
 import IssueListProperties from './IssueList'
 import Issue24Properties from './Issue24'
 
@@ -261,7 +261,7 @@ HeaderBarBoxProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
-TextLinkListProperties.forEach((value, key) => {
+TextLinkIssueListProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
