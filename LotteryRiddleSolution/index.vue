@@ -248,7 +248,6 @@ const isNextIssue = (item: any) => {
       font-weight: bold;
 
       .result-number {
-        // color: #f44336;
         font-weight: bold;
       }
     }
