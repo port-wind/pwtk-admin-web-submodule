@@ -29,8 +29,15 @@ componentProperties.set('LotteryRiddleSolution', {
       subTitle: '最新谜语',
       gameType: '',
       year: new Date().getFullYear(),
-      getIssueNumber: 5,
       enable: true,
+      forumId: '',
+      forumName: '',
+      forumIcon: '',
+      forumStatus: '',
+      mainboardId: '',
+      mainboardName: '',
+      size: 20,
+      links: [],
       listStyleJSON: {
         headerBackgroundColor: '#4caf50',
         headerTextColor: '#ffffff',
@@ -66,7 +73,7 @@ componentProperties.set('LotteryRiddleSolution', {
         headerTextColor: '#ffffff'
       }
     }
-  },
+  }
 })
 
 export default componentProperties

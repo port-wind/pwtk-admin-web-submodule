@@ -33,11 +33,7 @@ componentProperties.set('TextLinkList', {
       mainboardId: 'tiantianhaocai',
       enable: true,
       size: 20,
-      links: [
-        {
-          postUserId: ''
-        }
-      ],
+      links: [],
       listStyleJSON: {
         itemSpacing: 4,
         itemPadding: 9,

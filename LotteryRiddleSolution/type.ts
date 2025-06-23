@@ -12,8 +12,12 @@ export interface LotteryRiddleSolution {
   gameType: string
   year: number
   forumId: string
+  forumName: string
+  mainboardId: string
+  mainboardName: string
+  forumIcon?: string
+  forumStatus?: string
   size: number
-  getIssueNumber: number
   enable: boolean
   links: ILinkItem[]
   listStyleJSON: LotteryRiddleSolutionStyleJSON
