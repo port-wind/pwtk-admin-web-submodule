@@ -41,7 +41,7 @@ watch(
   (newVal) => {
     props.datas.configParamJson.links = newVal.map((item) => ({
       ...item,
-      link: '/detail/' + item.postUserId
+      link: item.link || '/detail/' + item.postUserId
     }))
   },
   { immediate: true }
