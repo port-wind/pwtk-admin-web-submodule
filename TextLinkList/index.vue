@@ -1,5 +1,5 @@
 <script setup lang="ts" name="TextLinkList">
-import { computed, reactive } from 'vue'
+import { computed, reactive, watch, ref } from 'vue'
 import type { IDatas, ILinkItem } from './type'
 import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
 import { gameStore } from '../store'
