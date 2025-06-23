@@ -92,12 +92,26 @@ const getRiddleContent = (item: any) => {
   return item.postContent || ''
 }
 
-const getHitDetail = (item: ILinkItem) => {
-  // 1第一组 如果isHit为y 则返回hitDetail
-  // hitDetail: "00000"
-  // isHit: "n"
-  // name: "特肖"
-  // predict: ["鼠", "牛", "虎", "兔", "龙"]
+const getHitDetail = (item: ILinkItem, zodiac: string, pIndex?: number) => {
+  switch (zodiac) {
+    case '生肖':
+      if (item.lotteryPredictions[0].isHit === 'y') {
+        const index = item.lotteryPredictions[0].hitDetail.split('').findIndex((i: string) => i === '1')
+        if (index === pIndex) {
+          return true
+        }
+      } else {
+        return false
+      }
+    case '大小数':
+      if (item.lotteryPredictions[1].isHit === 'y') {
+        return true
+      } else {
+        return false
+      }
+    default:
+      return false
+  }
 }
 
 const getSpecialZodiacPrediction = (item: ILinkItem) => {
@@ -154,28 +168,24 @@ const isNextIssue = (item: any) => {
               color: datas.configParamJson.listStyleJSON.itemTextColor,
               padding: `${datas.configParamJson.listStyleJSON.itemPadding}px`,
               borderRadius: `${datas.configParamJson.listStyleJSON.itemBorderRadius}px`,
-              border: `${datas.configParamJson.listStyleJSON.itemBorderWidth}px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`,
+              // border: `${datas.configParamJson.listStyleJSON.itemBorderWidth}px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`,
               marginBottom: `${datas.configParamJson.listStyleJSON.itemSpacing}px`
             }"
           >
             <div class="item-header">
               <span>{{ extractIssueShort(item.postIssue) }}期: {{ item.title }}</span>
-              <span
-                v-if="isNextIssue(item)"
-                class="result-text"
-                :style="{ color: datas.configParamJson.listStyleJSON.resultTextColor }"
-              >
+              <span v-if="isNextIssue(item)" class="result-text">
                 开
-                <span class="result-number">? 00</span>
+                <span class="result-number" :style="{ color: datas.configParamJson.listStyleJSON.resultTextColor }">
+                  ? 00
+                </span>
                 准
               </span>
-              <span
-                v-else-if="getOpenResult(item)"
-                class="result-text"
-                :style="{ color: datas.configParamJson.listStyleJSON.resultTextColor }"
-              >
+              <span v-else-if="getOpenResult(item)" class="result-text">
                 开
-                <span class="result-number">{{ getOpenResult(item)?.zodiac }}{{ getOpenResult(item)?.number }}</span>
+                <span class="result-number" :style="{ color: datas.configParamJson.listStyleJSON.resultTextColor }">
+                  {{ getOpenResult(item)?.zodiac }}{{ getOpenResult(item)?.number }}
+                </span>
                 准
               </span>
             </div>
@@ -185,14 +195,18 @@ const isNextIssue = (item: any) => {
             <div class="answer-text" :style="{ color: datas.configParamJson.listStyleJSON.answerTextColor }">
               <div class="special-zodiac-prediction">
                 本期谜底:（
-                <span v-for="(i, index) in getSpecialZodiacPrediction(item)" :key="index">
+                <span
+                  :class="{ active: getHitDetail(item, '生肖', pIndex) }"
+                  v-for="(i, pIndex) in getSpecialZodiacPrediction(item)"
+                  :key="pIndex"
+                >
                   {{ i }}
                 </span>
                 ）
               </div>
               <div class="size-prediction">
                 送:
-                <span :class="{ active: getHitDetail(item) }">{{ getSizePrediction(item) }}</span>
+                <span :class="{ active: getHitDetail(item, '大小数') }">{{ getSizePrediction(item) }}</span>
               </div>
             </div>
           </div>
@@ -240,6 +254,16 @@ const isNextIssue = (item: any) => {
 
 .lottery-riddle-solution__items {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  > div {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  > div:last-child {
+    border-bottom: none;
+  }
 }
 
 .lottery-riddle-solution__item {
@@ -319,6 +343,22 @@ const isNextIssue = (item: any) => {
     .riddle-text,
     .answer-text {
       font-size: 13px;
+    }
+  }
+}
+
+.special-zodiac-prediction {
+  span {
+    &.active {
+      background-color: yellow;
+    }
+  }
+}
+
+.size-prediction {
+  span {
+    &.active {
+      background-color: yellow;
     }
   }
 }
