@@ -4,13 +4,11 @@ import type { IDatas } from './type'
 import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
 import { gameStore } from '../store'
 import { useStore } from '@nanostores/vue'
+import { useIssueList } from '../hooks/issueList'
 
 const gameStoreData = useStore(gameStore)
-
 const gameType = computed(() => gameStoreData.value.gameType)
-
 const forum = computed(() => props.datas.configParamJson.forumId)
-
 const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
 const styleMain = computed(() => props.datas.configParamJson.styleMain)
 
@@ -19,56 +17,153 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 
-const issueListItem = ref<IGetWebSitePostResponse[]>([])
+// const issueListItem = ref<IGetWebSitePostResponse[]>([])
 
-// 处理彩票预测数据的函数
-const processLotteryData = (predictions: any[]) => {
-  if (!predictions || predictions.length === 0) return []
+const {
+  issueListItem,
+  isLoading,
+  hasError,
+  errorMessage,
+  processLotteryData,
+  getIssueResultInfo,
+  getHitNumber,
+  getNumberColorClass,
+  extractIssueNumber,
+  processedIssueList,
+  refreshData
+} = useIssueList({
+  gameType: gameType.value,
+  size: props.datas.configParamJson.size,
+  forumId: props.datas.configParamJson.forumId
+})
 
-  return predictions.map((prediction) => {
-    const { predict, hitDetail } = prediction
-    if (!predict || !hitDetail) return { numbers: [] }
+watch(
+  () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId],
+  (newVal, oldVal) => {
+    console.log('🚀 ~ newVal:', newVal)
+    refreshData()
+  }
+)
 
-    // 根据hitDetail判断哪些号码需要高亮
-    const numbers = predict.map((number: string, index: number) => ({
-      number,
-      color: 'blue', // 默认颜色
-      isHighlight: hitDetail[index] === '1' // hitDetail中"1"表示中奖需要高亮
-    }))
+// gameType.value, props.datas.configParamJson.size, props.datas.configParamJson.forumId
+// // 处理彩票预测数据的函数
+// const processLotteryData = (predictions: any[]) => {
+//   if (!predictions || predictions.length === 0) return []
 
-    return { numbers }
-  })
-}
+//   return predictions.map((prediction) => {
+//     const { predict, hitDetail } = prediction
+//     if (!predict || !hitDetail) return { numbers: [] }
+
+//     // 根据hitDetail判断哪些号码需要高亮
+//     const numbers = predict.map((number: string, index: number) => ({
+//       number,
+//       color: 'blue', // 默认颜色
+//       isHighlight: hitDetail[index] === '1' // hitDetail中"1"表示中奖需要高亮
+//     }))
+
+//     return { numbers }
+//   })
+// }
 
 // 根据issue匹配获取开奖信息
-const getIssueResultInfo = (issueNumber: string) => {
-  const matchedIssue = issueListItem.value.find((item) => item.postIssue === issueNumber)
+// const getIssueResultInfo = (issueNumber: string) => {
+//   const matchedIssue = issueListItem.value.find((item) => item.postIssue === issueNumber)
 
-  if (matchedIssue && matchedIssue.numInfo && matchedIssue.numInfo.length > 6) {
-    const lastNumInfo = matchedIssue.numInfo[6] // 取最后一个元素（索引6）
-    return {
-      shengxiao: lastNumInfo.shengxiao || '',
-      teNum: lastNumInfo.num?.toString() || '', // 特码号码
-      result: matchedIssue.result || ''
-    }
-  }
-  return { shengxiao: '', teNum: '', result: '' }
-}
+//   if (matchedIssue && matchedIssue.numInfo && matchedIssue.numInfo.length > 6) {
+//     const lastNumInfo = matchedIssue.numInfo[6] // 取最后一个元素（索引6）
+//     return {
+//       shengxiao: lastNumInfo.shengxiao || '',
+//       teNum: lastNumInfo.num?.toString() || '', // 特码号码
+//       result: matchedIssue.result || ''
+//     }
+//   }
+//   return { shengxiao: '', teNum: '', result: '' }
+// }
 
 // 计算处理后的期数数据
-const processedIssueList = computed(() => {
-  return issueListItem.value.map((issue) => {
-    const processedPredictions = processLotteryData(issue.lotteryPredictions || [])
-    // 通过postIssue匹配获取开奖信息
-    const resultInfo = getIssueResultInfo(issue.postIssue)
+// const processedIssueList = computed(() => {
+//   return issueListItem.value.map((issue) => {
+//     const processedPredictions = processLotteryData(issue.lotteryPredictions || [])
+//     // 通过postIssue匹配获取开奖信息
+//     const resultInfo = getIssueResultInfo(issue.postIssue)
 
-    return {
-      ...issue,
-      processedPredictions,
-      resultInfo
-    }
-  })
-})
+//     return {
+//       ...issue,
+//       processedPredictions,
+//       resultInfo
+//     }
+//   })
+// })
+
+// 从postIssue中提取期数，例如 "2025141" -> "141"
+// const extractIssueNumber = (postIssue: string) => {
+//   if (!postIssue) return ''
+//   // 从postIssue字符串中提取后面的数字部分作为期数
+//   // 例如: "2025141" -> "141"
+//   const match = postIssue.match(/(\d+)$/)
+//   if (match) {
+//     const fullNumber = match[1]
+//     // 如果是7位数，取后3位；如果是其他位数，取后3位或全部
+//     return fullNumber.length >= 3 ? fullNumber.slice(-3) : fullNumber
+//   }
+//   return postIssue
+// }
+
+// // 获取中奖号码
+// const getHitNumber = (issue: any) => {
+//   // 优先从numInfo获取特码（通常是第7个元素，即index为7）
+//   if (issue.numInfo && issue.numInfo.length > 6) {
+//     const specialNum = issue.numInfo[6] // 索引6对应第7个元素
+//     if (specialNum && specialNum.num) {
+//       return specialNum.num.toString().padStart(2, '0') // 确保是两位数格式
+//     }
+//   }
+
+//   // 备选方案：从预测数据中获取中奖号码
+//   if (issue.processedPredictions && issue.processedPredictions.length > 0) {
+//     for (const prediction of issue.processedPredictions) {
+//       if (prediction.numbers) {
+//         const hitNumber = prediction.numbers.find((num: any) => num.isHighlight)
+//         if (hitNumber) {
+//           return hitNumber.number.padStart(2, '0') // 返回中奖的号码
+//         }
+//       }
+//     }
+//   }
+//   return '00' // 如果没有中奖号码，返回00
+// }
+
+// const getNumberColorClass = (color: string) => {
+//   const colorMap = {
+//     red: 'number-red',
+//     blue: 'number-blue',
+//     green: 'number-green',
+//     black: 'number-black',
+//     yellow: 'number-yellow'
+//   }
+//   return colorMap[color as keyof typeof colorMap] || 'number-black'
+// }
+
+// const fetchIssueList = async (gameType: string, size: number, forumId: string) => {
+//   const res = await getWebSitePost({
+//     gameType: gameType,
+//     page: 1,
+//     size: size || 10,
+//     forumId: forumId
+//   })
+//   issueListItem.value = res.data.list
+// }
+
+// onMounted(() => {
+//   fetchIssueList(gameType.value, props.datas.configParamJson.size, props.datas.configParamJson.forumId)
+// })
+
+// watch(
+//   () => [gameType.value, props.datas.configParamJson.size, props.datas.configParamJson.forumId],
+//   (newVal, oldVal) => {
+//     fetchIssueList(String(newVal[0]), Number(newVal[1]), String(newVal[2]))
+//   }
+// )
 
 const containerStyle = computed(() => {
   return {
@@ -84,76 +179,6 @@ const numberStyle = computed(() => {
     margin: `0 ${styleMain.value?.numberSpacing || 0}px`
   }
 })
-
-// 从postIssue中提取期数，例如 "2025141" -> "141"
-const extractIssueNumber = (postIssue: string) => {
-  if (!postIssue) return ''
-  // 从postIssue字符串中提取后面的数字部分作为期数
-  // 例如: "2025141" -> "141"
-  const match = postIssue.match(/(\d+)$/)
-  if (match) {
-    const fullNumber = match[1]
-    // 如果是7位数，取后3位；如果是其他位数，取后3位或全部
-    return fullNumber.length >= 3 ? fullNumber.slice(-3) : fullNumber
-  }
-  return postIssue
-}
-
-// 获取中奖号码
-const getHitNumber = (issue: any) => {
-  // 优先从numInfo获取特码（通常是第7个元素，即index为7）
-  if (issue.numInfo && issue.numInfo.length > 6) {
-    const specialNum = issue.numInfo[6] // 索引6对应第7个元素
-    if (specialNum && specialNum.num) {
-      return specialNum.num.toString().padStart(2, '0') // 确保是两位数格式
-    }
-  }
-
-  // 备选方案：从预测数据中获取中奖号码
-  if (issue.processedPredictions && issue.processedPredictions.length > 0) {
-    for (const prediction of issue.processedPredictions) {
-      if (prediction.numbers) {
-        const hitNumber = prediction.numbers.find((num: any) => num.isHighlight)
-        if (hitNumber) {
-          return hitNumber.number.padStart(2, '0') // 返回中奖的号码
-        }
-      }
-    }
-  }
-  return '00' // 如果没有中奖号码，返回00
-}
-
-const getNumberColorClass = (color: string) => {
-  const colorMap = {
-    red: 'number-red',
-    blue: 'number-blue',
-    green: 'number-green',
-    black: 'number-black',
-    yellow: 'number-yellow'
-  }
-  return colorMap[color as keyof typeof colorMap] || 'number-black'
-}
-
-const fetchIssueList = async (gameType: string, size: number, forumId: string) => {
-  const res = await getWebSitePost({
-    gameType: gameType,
-    page: 1,
-    size: size || 10,
-    forumId: forumId
-  })
-  issueListItem.value = res.data.list
-}
-
-onMounted(() => {
-  fetchIssueList(gameType.value, props.datas.configParamJson.size, props.datas.configParamJson.forumId)
-})
-
-watch(
-  () => [gameType.value, props.datas.configParamJson.size, props.datas.configParamJson.forumId],
-  (newVal, oldVal) => {
-    fetchIssueList(String(newVal[0]), Number(newVal[1]), String(newVal[2]))
-  }
-)
 
 const titleHeaderStyle = computed(() => {
   if (styleHeader.value.isGradient) {

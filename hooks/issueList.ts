@@ -197,11 +197,11 @@ export function useIssueList(params: IUseIssueListParams) {
         forumId: forumId
       })
 
-             if (res.success && res.data) {
-         issueListItem.value = res.data.list || []
-       } else {
-         throw new Error(res.errMessage || '获取数据失败')
-       }
+      if (res.success && res.data) {
+        issueListItem.value = res.data.list || []
+      } else {
+        throw new Error(res.errMessage || '获取数据失败')
+      }
     } catch (error) {
       hasError.value = true
       errorMessage.value = error instanceof Error ? error.message : '获取期数列表失败'
@@ -232,11 +232,7 @@ export function useIssueList(params: IUseIssueListParams) {
   watch(
     () => [params.gameType, params.size, params.forumId],
     ([newGameType, newSize, newForumId], [oldGameType, oldSize, oldForumId]) => {
-      if (
-        newGameType !== oldGameType ||
-        newSize !== oldSize ||
-        newForumId !== oldForumId
-      ) {
+      if (newGameType !== oldGameType || newSize !== oldSize || newForumId !== oldForumId) {
         fetchIssueList(String(newGameType), Number(newSize), String(newForumId))
       }
     },
@@ -255,7 +251,7 @@ export function useIssueList(params: IUseIssueListParams) {
     isLoading,
     hasError,
     errorMessage,
-    
+
     // 方法
     fetchIssueList,
     refreshData,
