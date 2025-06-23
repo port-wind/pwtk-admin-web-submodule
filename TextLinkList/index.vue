@@ -34,6 +34,14 @@ watch(
   }
 )
 
+watch(
+  () => processedIssueList.value,
+  (newVal) => {
+    props.datas.configParamJson.links = newVal
+  },
+  { immediate: true }
+)
+
 const forum = computed(() => gameStoreData.value.forum)
 
 const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
@@ -50,7 +58,7 @@ const handleItemClick = (item: IProcessedIssueItem) => {
   // if (item.link) {
   // 判断是否为外部链接
   // if (item.link.startsWith('http://') || item.link.startsWith('https://')) {
-  window.open('/detail/' + item.postId, '_blank')
+  window.open('/detail/' + item.postUserId, '_blank')
   // } else {
   // 内部路由跳转
   // window.location.href = item.link
@@ -188,7 +196,7 @@ const containerStyle = computed(() => {
 
   &__content {
     background: #fff;
-    min-height: 120px;
+    min-height: 20px;
   }
 
   &__items {

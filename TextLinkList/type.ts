@@ -1,11 +1,12 @@
 import type { ISetStyle } from '../componentProperties/index'
+import type { IProcessedIssueItem } from '../hooks/issueList'
 
 export interface IDatas extends ISetStyle<TextLinkList> {}
 
 export interface TextLinkList {
   title: string
   subtitle: string
-  links: LinkItem[]
+  links: ILinkItem[]
   enable: boolean
   size: number
   listStyleJSON: TextLinkListStyleJSON
@@ -19,14 +20,8 @@ export interface TextLinkList {
   styleMain: IStyleMain
 }
 
-// 单个链接项类型
-export interface LinkItem {
-  id: string
-  text: string
+export interface ILinkItem extends IProcessedIssueItem {
   link: string
-  enabled: boolean
-  textColor: string // 文字颜色
-  backgroundColor: string // 背景颜色
 }
 
 // 样式配置类型
