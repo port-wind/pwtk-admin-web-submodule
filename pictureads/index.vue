@@ -10,18 +10,22 @@
       v-if="imageList[0] && swiperType === 0"
       class="type0"
       :style="{
-        'padding-left': datas.pageMargin + 'px',
-        'padding-right': datas.pageMargin + 'px'
+        'padding-left': datas.configParamJson.pageMargin + 'px',
+        'padding-right': datas.configParamJson.pageMargin + 'px'
       }"
     >
       <div
         v-for="(item, index) in imageList"
         :key="index"
         class="imgLis"
-        :style="{ 'margin-bottom': datas.imageMargin + 'px' }"
+        :style="{ 'margin-bottom': datas.configParamJson.imageMargin + 'px' }"
       >
         <!-- 图片 -->
-        <img :src="item.src" draggable="false" :style="{ 'border-radius': datas.borderRadius + 'px' }" />
+        <img
+          :src="item.src"
+          draggable="false"
+          :style="{ 'border-radius': datas.configParamJson.borderRadius + 'px' }"
+        />
         <!-- 图片标题 -->
         <p class="title" v-show="item.text ? true : false">{{ item.text }}</p>
       </div>
@@ -35,7 +39,12 @@
       <div :class="swiperType === 3 && imageList[0] ? 'type3 type1 swiper-wrapper type3H' : 'swiper-wrapper type1'">
         <div class="swiper-slide" v-for="(item, index) in imageList" :key="index">
           <!-- 图片 -->
-          <img :src="item.src" alt="" draggable="false" :style="{ 'border-radius': datas.borderRadius + 'px' }" />
+          <img
+            :src="item.src"
+            alt=""
+            draggable="false"
+            :style="{ 'border-radius': datas.configParamJson.borderRadius + 'px' }"
+          />
           <!-- 图片标题 -->
           <p class="title" v-show="item.text ? true : false">{{ item.text }}</p>
         </div>
@@ -50,109 +59,112 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts" name="PictureADs">
+import { ref, computed, watch, nextTick } from 'vue'
 import Swiper from 'swiper'
 import 'swiper/css/swiper.min.css'
+import type { IDatas } from './type'
 
-export default {
-  name: 'PictureADs',
-  props: {
-    datas: Object
-  },
-  data() {
-    return {
-      mySwiper: null
-    }
-  },
-  computed: {
-    /* 类型切换 */
-    swiperType() {
-      console.log(this.datas.swiperType, '----------------轮播类型')
-      this.addSwiper()
-      return this.datas.swiperType
-    },
-    /* 图片删除或者增加 */
-    imageList() {
-      this.addSwiper()
-      console.log(this.datas.imageList.length, '-------轮播数量')
-      return this.datas.imageList
-    },
-    /* 分页器类型切换 */
-    pagingType() {
-      this.addSwiper()
-      return this.datas.pagingType
-    },
-    /* 一行个数 */
-    rowindividual() {
-      this.addSwiper()
-      if (this.datas.swiperType === 1) {
-        return 1
-      } else {
-        return this.datas.rowindividual
-      }
-    },
-    /* 图片间距 */
-    imageMargin() {
-      this.addSwiper()
-      if (this.datas.swiperType === 1) {
-        return 0
-      } else {
-        return this.datas.imageMargin
-      }
-    }
-  },
-  watch: {
-    pagingType() {},
-    rowindividual() {},
-    imageMargin() {}
-  },
-  methods: {
-    /* 创建轮播对象 */
-    addSwiper() {
-      this.$nextTick(() => {
-        if (this.datas.swiperType !== 0 && this.datas.imageList[0]) {
-          if (this.mySwiper instanceof Array) {
-            this.mySwiper.forEach((element) => {
-              element.destroy()
-            })
-          } else if (this.mySwiper instanceof Object) {
-            // 每次重新创建swiper前都要销毁之前存在的轮播   不然轮播会重复
-            this.mySwiper.destroy()
-          }
-
-          let params = {
-            loop: true,
-            autoplay: true,
-            pagination: {
-              el: '.swiper-pagination',
-              type: this.pagingType
-            }
-          }
-
-          if (this.datas.swiperType === 1 || this.datas.swiperType === 2) {
-            params.slidesPerView = this.rowindividual
-            params.spaceBetween = this.imageMargin
-          } else if (this.datas.swiperType === 3) {
-            params.slidesPerView = 1.3
-            params.centeredSlides = true
-          }
-
-          this.mySwiper = new Swiper('.swiper-container', params)
-        } else {
-          if (this.mySwiper instanceof Array) {
-            this.mySwiper.forEach((element) => {
-              element.destroy()
-            })
-          }
-          // 每次重新创建swiper前都要销毁之前存在的轮播   不然轮播会重复
-          if (this.mySwiper instanceof Object) {
-            this.mySwiper.destroy()
-          }
-        }
-      })
-    }
-  }
+interface IProps {
+  datas: IDatas
 }
+
+const props = defineProps<IProps>()
+
+// 响应式状态
+const mySwiper = ref<any>(null)
+
+// 计算属性
+/* 类型切换 */
+const swiperType = computed(() => {
+  console.log(props.datas.configParamJson.swiperType, '----------------轮播类型')
+  addSwiper()
+  return props.datas.configParamJson.swiperType
+})
+
+/* 图片删除或者增加 */
+const imageList = computed(() => {
+  addSwiper()
+  console.log(props.datas.configParamJson.imageList?.length || 0, '-------轮播数量')
+  return props.datas.configParamJson.imageList
+})
+
+/* 分页器类型切换 */
+const pagingType = computed(() => {
+  addSwiper()
+  return props.datas.configParamJson.pagingType
+})
+
+/* 一行个数 */
+const rowindividual = computed(() => {
+  addSwiper()
+  if (props.datas.configParamJson.swiperType === 1) {
+    return 1
+  } else {
+    return props.datas.configParamJson.rowindividual || 0
+  }
+})
+
+/* 图片间距 */
+const imageMargin = computed(() => {
+  addSwiper()
+  if (props.datas.configParamJson.swiperType === 1) {
+    return 0
+  } else {
+    return props.datas.configParamJson.imageMargin || 0
+  }
+})
+
+// 方法定义
+/* 创建轮播对象 */
+const addSwiper = () => {
+  nextTick(() => {
+    if (props.datas.configParamJson.swiperType !== 0 && props.datas.configParamJson.imageList?.[0]) {
+      if (mySwiper.value instanceof Array) {
+        mySwiper.value.forEach((element: any) => {
+          element.destroy()
+        })
+      } else if (mySwiper.value instanceof Object) {
+        // 每次重新创建swiper前都要销毁之前存在的轮播   不然轮播会重复
+        mySwiper.value.destroy()
+      }
+
+      let params: any = {
+        loop: true,
+        autoplay: true,
+        pagination: {
+          el: '.swiper-pagination',
+          type: pagingType.value
+        }
+      }
+
+      if (props.datas.configParamJson.swiperType === 1 || props.datas.configParamJson.swiperType === 2) {
+        params.slidesPerView = rowindividual.value
+        params.spaceBetween = imageMargin.value
+      } else if (props.datas.configParamJson.swiperType === 3) {
+        params.slidesPerView = 1.3
+        params.centeredSlides = true
+      }
+
+      mySwiper.value = new Swiper('.swiper-container', params)
+    } else {
+      if (mySwiper.value instanceof Array) {
+        mySwiper.value.forEach((element: any) => {
+          element.destroy()
+        })
+      }
+      // 每次重新创建swiper前都要销毁之前存在的轮播   不然轮播会重复
+      if (mySwiper.value instanceof Object) {
+        mySwiper.value.destroy()
+      }
+    }
+  })
+}
+
+// 监听器
+watch(pagingType, () => {})
+watch(rowindividual, () => {})
+watch(imageMargin, () => {})
 </script>
 
 <style scoped lang="scss">
