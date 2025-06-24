@@ -95,7 +95,7 @@ const getRiddleContent = (item: any) => {
 const getHitDetail = (item: ILinkItem, zodiac: string, pIndex?: number) => {
   switch (zodiac) {
     case '生肖':
-      if (item.lotteryPredictions[0].isHit === 'y') {
+      if (item.lotteryPredictions && item.lotteryPredictions[0] && item.lotteryPredictions[0].isHit === 'y') {
         const index = item.lotteryPredictions[0].hitDetail.split('').findIndex((i: string) => i === '1')
         if (index === pIndex) {
           return true
@@ -104,7 +104,7 @@ const getHitDetail = (item: ILinkItem, zodiac: string, pIndex?: number) => {
         return false
       }
     case '大小数':
-      if (item.lotteryPredictions[1].isHit === 'y') {
+      if (item.lotteryPredictions && item.lotteryPredictions[1] && item.lotteryPredictions[1].isHit === 'y') {
         return true
       } else {
         return false
@@ -115,11 +115,11 @@ const getHitDetail = (item: ILinkItem, zodiac: string, pIndex?: number) => {
 }
 
 const getSpecialZodiacPrediction = (item: ILinkItem) => {
-  return item.lotteryPredictions[0].predict || []
+  return (item.lotteryPredictions && item.lotteryPredictions[0] && item.lotteryPredictions[0].predict) || []
 }
 
 const getSizePrediction = (item: any) => {
-  return item.lotteryPredictions[1].predict?.[0] || ''
+  return (item.lotteryPredictions && item.lotteryPredictions[1] && item.lotteryPredictions[1].predict?.[0]) || ''
 }
 
 const getOpenResult = (item: any) => {

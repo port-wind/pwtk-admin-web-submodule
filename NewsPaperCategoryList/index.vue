@@ -1,75 +1,76 @@
 <template>
-  <div class="newspaper-category-list" v-if="datas.configParamJson.enable">
-    <slot name="deles" />
-
-    <!-- 标题区域 -->
-    <div
-      class="newspaper-category-list__header"
-      :style="{
-        backgroundColor: datas.configParamJson.listStyleJSON.headerBackgroundColor,
-        color: datas.configParamJson.listStyleJSON.headerTextColor,
-        padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`
-      }"
-    >
-      <h2 class="newspaper-category-list__title">{{ datas.configParamJson.title }}</h2>
-    </div>
-
-    <!-- 标签页区域 -->
-    <div class="newspaper-category-list__tabs">
+  <div class="NewsPaperCategoryList">
+    <div class="newspaper-category-list" v-if="datas.configParamJson.enable">
+      <!-- 标题区域 -->
       <div
-        v-for="(category, index) in enabledCategories"
-        :key="category.id"
-        class="newspaper-category-list__tab"
-        :class="{ 'newspaper-category-list__tab--active': activeTabIndex === index }"
+        class="newspaper-category-list__header"
         :style="{
-          backgroundColor:
-            activeTabIndex === index
-              ? datas.configParamJson.listStyleJSON.activeTabColor
-              : datas.configParamJson.listStyleJSON.inactiveTabColor,
-          border: `1px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`
+          backgroundColor: datas.configParamJson.listStyleJSON.headerBackgroundColor,
+          color: datas.configParamJson.listStyleJSON.headerTextColor,
+          padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`
         }"
-        @click="activeTabIndex = index"
       >
-        {{ category.name }}
+        <h2 class="newspaper-category-list__title">{{ datas.configParamJson.title }}</h2>
       </div>
-    </div>
 
-    <!-- 内容区域 -->
-    <div
-      class="newspaper-category-list__content"
-      :style="{
-        padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`
-      }"
-    >
+      <!-- 标签页区域 -->
+      <div class="newspaper-category-list__tabs">
+        <div
+          v-for="(category, index) in enabledCategories"
+          :key="category.id"
+          class="newspaper-category-list__tab"
+          :class="{ 'newspaper-category-list__tab--active': activeTabIndex === index }"
+          :style="{
+            backgroundColor:
+              activeTabIndex === index
+                ? datas.configParamJson.listStyleJSON.activeTabColor
+                : datas.configParamJson.listStyleJSON.inactiveTabColor,
+            border: `1px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`
+          }"
+          @click="activeTabIndex = index"
+        >
+          {{ category.name }}
+        </div>
+      </div>
+
+      <!-- 内容区域 -->
       <div
-        v-if="activeCategory"
-        class="newspaper-category-list__items"
+        class="newspaper-category-list__content"
         :style="{
-          gap: `${datas.configParamJson.listStyleJSON.itemSpacing}px`,
-          gridTemplateColumns: `repeat(${datas.configParamJson.listStyleJSON.itemsPerRow}, 1fr)`
+          padding: `${datas.configParamJson.listStyleJSON.containerPadding}px`
         }"
       >
         <div
-          v-for="item in enabledItems"
-          :key="item.id"
-          class="newspaper-category-list__item"
+          v-if="activeCategory"
+          class="newspaper-category-list__items"
           :style="{
-            backgroundColor: item.isMoreButton
-              ? datas.configParamJson.listStyleJSON.moreButtonColor
-              : datas.configParamJson.listStyleJSON.itemBackgroundColor,
-            color: item.isMoreButton
-              ? datas.configParamJson.listStyleJSON.moreButtonTextColor
-              : datas.configParamJson.listStyleJSON.itemTextColor,
-            padding: `${datas.configParamJson.listStyleJSON.itemPadding}px`,
-            borderRadius: `${datas.configParamJson.listStyleJSON.itemBorderRadius}px`,
-            border: `${datas.configParamJson.listStyleJSON.itemBorderWidth}px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`
+            gap: `${datas.configParamJson.listStyleJSON.itemSpacing}px`,
+            gridTemplateColumns: `repeat(${datas.configParamJson.listStyleJSON.itemsPerRow}, 1fr)`
           }"
-          @click="handleItemClick(item)"
         >
-          {{ item.text }}
+          <div
+            v-for="item in enabledItems"
+            :key="item.id"
+            class="newspaper-category-list__item"
+            :style="{
+              backgroundColor: item.isMoreButton
+                ? datas.configParamJson.listStyleJSON.moreButtonColor
+                : datas.configParamJson.listStyleJSON.itemBackgroundColor,
+              color: item.isMoreButton
+                ? datas.configParamJson.listStyleJSON.moreButtonTextColor
+                : datas.configParamJson.listStyleJSON.itemTextColor,
+              padding: `${datas.configParamJson.listStyleJSON.itemPadding}px`,
+              borderRadius: `${datas.configParamJson.listStyleJSON.itemBorderRadius}px`,
+              border: `${datas.configParamJson.listStyleJSON.itemBorderWidth}px solid ${datas.configParamJson.listStyleJSON.itemBorderColor}`
+            }"
+            @click="handleItemClick(item)"
+          >
+            {{ item.text }}
+          </div>
         </div>
       </div>
     </div>
+    <slot name="deles" />
   </div>
 </template>
 
