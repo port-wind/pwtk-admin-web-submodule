@@ -109,6 +109,8 @@ const subTitleStyle = computed(() => {
             @mouseleave="handleMouseLeave"
           >
             <span class="link-text">{{ item.text }}</span>
+            <span class="link-tag">{{ item.tag }}</span>
+            <span class="link-stag">{{ item.stag }}</span>
           </div>
         </div>
       </div>
@@ -165,6 +167,10 @@ const subTitleStyle = computed(() => {
     overflow: hidden;
     text-overflow: ellipsis;
     user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 
     &:hover {
       transform: translateY(-2px);
@@ -173,6 +179,24 @@ const subTitleStyle = computed(() => {
 
     &:active {
       transform: translateY(0);
+    }
+
+    .link-tag {
+      background-color: rgb(255, 210, 150);
+      color: #000;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    .link-stag {
+      background-color: #0b7882;
+      color: #fff;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    .link-text {
+      color: #333;
     }
   }
 }
