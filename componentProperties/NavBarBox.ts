@@ -1,24 +1,8 @@
 import type { IComponentProperty, ISetStyle } from './index'
-
+import type { NavBarBox } from '../NavBarBox/type'
 // 导航菜单组件配置类型
-export interface NavBarBoxConfigType {
-  model: string
-  backgroundColor: string
-  textColor: string
-  activeColor: string
-  showLogo: boolean
-  logoSrc: string
-  menuItems: Array<{
-    text: string
-    url: string
-    icon?: string
-    active: boolean
-  }>
-  layout: 'horizontal' | 'vertical'
-  sticky: boolean
-}
 
-const componentProperties = new Map<String, IComponentProperty<ISetStyle<NavBarBoxConfigType>>>()
+const componentProperties = new Map<String, IComponentProperty<ISetStyle<NavBarBox>>>()
 
 componentProperties.set('NavBarBox', {
   component: 'NavBarBox',
@@ -53,7 +37,15 @@ componentProperties.set('NavBarBox', {
         { text: '关于', url: '/about', active: false }
       ],
       layout: 'horizontal',
-      sticky: false
+      sticky: false,
+      onTabChange: (tab: any) => {},
+      scrollOffset: 0,
+      tabsAttr: {
+        sticky: false,
+        offsetTop: 0
+      },
+      itemData: [],
+      bgColor: ''
     }
   }
 })

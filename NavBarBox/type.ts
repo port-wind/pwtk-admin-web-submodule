@@ -14,6 +14,17 @@ export interface NavBarBox {
   model: 's1' | 's2' | 's3'
   scrollOffset: number
   onTabChange: (tab: any) => void
+  backgroundColor: string
+  textColor: string
+  activeColor: string
+  showLogo: boolean
+  logoSrc: string
+  menuItems: Array<{
+    text: string
+    url: string
+    icon?: string
+    active: boolean
+  }>
+  layout: 'horizontal' | 'vertical'
+  sticky: boolean
 }
-
-
