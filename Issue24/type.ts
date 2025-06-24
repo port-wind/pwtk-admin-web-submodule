@@ -3,6 +3,7 @@ import type { ISetStyle } from '../componentProperties/index'
 export interface IDatas extends ISetStyle<Issue24> {}
 
 export interface Issue24 {
+  model: string // 24码风格  ”24“
   title: string
   subtitle: string
   enable: boolean

@@ -1,14 +1,15 @@
 <script setup lang="ts" name="Issue24">
-import { computed, ref, onMounted, watch, defineEmits, defineProps, reactive } from 'vue'
+import { computed, defineProps } from 'vue'
 import type { IDatas } from './type'
-import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
-import { gameStore } from '../store'
-import { useStore } from '@nanostores/vue'
-import { useIssueList } from '../hooks/issueList'
+// import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
+import Result24 from './result24.vue'
+// import { gameStore } from '../store'
+// import { useStore } from '@nanostores/vue'
+// import { useIssueList } from '../hooks/issueList'
 
-const gameStoreData = useStore(gameStore)
-const gameType = computed(() => gameStoreData.value.gameType)
-const forum = computed(() => props.datas.configParamJson.forumId)
+// const gameStoreData = useStore(gameStore)
+// const gameType = computed(() => gameStoreData.value.gameType)
+// const forum = computed(() => props.datas.configParamJson.forumId)
 const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
 const styleMain = computed(() => props.datas.configParamJson.styleMain)
 
@@ -19,37 +20,37 @@ const props = defineProps<IProps>()
 
 // const issueListItem = ref<IGetWebSitePostResponse[]>([])
 
-// 创建响应式参数对象
-const issueParams = reactive({
-  gameType: gameType.value,
-  size: Number(props.datas.configParamJson.size),
-  forumId: String(props.datas.configParamJson.forumId)
-})
+// // 创建响应式参数对象
+// const issueParams = reactive({
+//   gameType: gameType.value,
+//   size: Number(props.datas.configParamJson.size),
+//   forumId: String(props.datas.configParamJson.forumId)
+// })
 
-const {
-  issueListItem,
-  isLoading,
-  hasError,
-  errorMessage,
-  processLotteryData,
-  getIssueResultInfo,
-  getHitNumber,
-  getNumberColorClass,
-  extractIssueNumber,
-  processedIssueList,
-  refreshData
-} = useIssueList(issueParams)
+// const {
+//   issueListItem,
+//   isLoading,
+//   hasError,
+//   errorMessage,
+//   processLotteryData,
+//   getIssueResultInfo,
+//   getHitNumber,
+//   getNumberColorClass,
+//   extractIssueNumber,
+//   processedIssueList,
+//   refreshData
+// } = useIssueList(issueParams)
 
-// 监听 props 变化，更新响应式参数
-watch(
-  () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
-  ([newSize, newForumId], [oldSize, oldForumId]) => {
-    console.log('🚀 ~ 参数变化:', [newSize, newForumId])
-    issueParams.size = Number(newSize)
-    issueParams.forumId = String(newForumId)
-    issueParams.gameType = gameType.value
-  }
-)
+// // 监听 props 变化，更新响应式参数
+// watch(
+//   () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
+//   ([newSize, newForumId], [oldSize, oldForumId]) => {
+//     console.log('🚀 ~ 参数变化:', [newSize, newForumId])
+//     issueParams.size = Number(newSize)
+//     issueParams.forumId = String(newForumId)
+//     issueParams.gameType = gameType.value
+//   }
+// )
 
 // style 样式
 const containerStyle = computed(() => {
@@ -60,12 +61,12 @@ const containerStyle = computed(() => {
   }
 })
 
-const numberStyle = computed(() => {
-  return {
-    fontSize: `${styleMain.value?.numberSize || 14}px`,
-    margin: `0 ${styleMain.value?.numberSpacing || 0}px`
-  }
-})
+// const numberStyle = computed(() => {
+//   return {
+//     fontSize: `${styleMain.value?.numberSize || 14}px`,
+//     margin: `0 ${styleMain.value?.numberSpacing || 0}px`
+//   }
+// })
 
 const titleHeaderStyle = computed(() => {
   if (styleHeader.value.isGradient) {
@@ -100,56 +101,8 @@ const subTitleStyle = computed(() => {
         <h2 class="main-title" :style="mainTitleStyle">{{ datas.configParamJson.title }}</h2>
         <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
       </div>
-
-      <!-- 开奖信息列表 -->
-      <div class="issue-list" v-if="datas.configParamJson.enable">
-        <div v-for="(issue, issueIndex) in processedIssueList" :key="issue.postId" class="issue-item">
-          <!-- 期数和状态行 -->
-          <div class="title-header-row">
-            <div class="period-info">
-              <span v-if="styleMain?.showPeriod" class="period">{{ extractIssueNumber(issue.postIssue) }}期:</span>
-              <span class="draw-title">精选24码</span>
-            </div>
-            <div class="status-info">
-              <span>开</span>
-              <span v-if="styleMain?.showStatus" class="status">{{ issue.resultInfo.shengxiao || '?' }}</span>
-              <span v-if="styleMain?.showResult" class="result">{{ getHitNumber(issue) || '00' }}</span>
-              <span>准</span>
-            </div>
-          </div>
-
-          <!-- 预测号码显示 -->
-          <div
-            v-for="(prediction, predIndex) in issue.processedPredictions"
-            :key="`pred-${issueIndex}-${predIndex}`"
-            class="prediction-block"
-          >
-            <div class="numbers-rows">
-              <!-- 分两行显示号码，每行12个 -->
-              <div class="number-row">
-                <span
-                  v-for="(num, index) in prediction.numbers.slice(0, 12)"
-                  :key="`${issue.postId}-${predIndex}-${index}`"
-                  :class="['number-item', getNumberColorClass(num.color), { highlight: num.isHighlight }]"
-                  :style="numberStyle"
-                >
-                  {{ num.number }}
-                </span>
-              </div>
-              <div class="number-row" v-if="prediction.numbers.length > 12">
-                <span
-                  v-for="(num, index) in prediction.numbers.slice(12)"
-                  :key="`${issue.postId}-${predIndex}-${index + 12}`"
-                  :class="['number-item', getNumberColorClass(num.color), { highlight: num.isHighlight }]"
-                  :style="numberStyle"
-                >
-                  {{ num.number }}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- 开奖信息列表 24码风格 -->
+      <Result24 :datas="datas" v-if="datas.configParamJson.model === '24'" />
     </div>
     <slot name="deles" />
   </div>
@@ -158,11 +111,6 @@ const subTitleStyle = computed(() => {
 <style scoped lang="scss">
 .Issue24 {
   position: relative;
-}
-
-.Issue24-content {
-  // border: 1px solid #e1e5e9;
-  // font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 .title-header {
@@ -181,113 +129,6 @@ const subTitleStyle = computed(() => {
   .sub-title {
     font-size: 14px;
     opacity: 0.9;
-  }
-}
-
-.issue-list {
-  padding: 0;
-}
-
-.issue-item {
-  padding: 10px;
-  // padding: 16px;
-  border-bottom: 1px solid #e8eaed;
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-.prediction-block {
-  margin-bottom: 16px;
-  // padding: 12px;
-  background-color: rgba(248, 249, 250, 0.5);
-  border-radius: 8px;
-  // border: 2px solid #ff4444;
-  color: blue;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.period-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  .period {
-    font-size: 16px;
-    color: #333;
-  }
-
-  .draw-title {
-    font-size: 16px;
-    color: #333;
-  }
-}
-
-.status-info {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-
-  .status {
-    color: #e74c3c;
-  }
-  .result {
-    color: #e74c3c;
-  }
-}
-
-.numbers-rows {
-  display: flex;
-  flex-direction: column;
-  // gap: 8px;
-}
-
-.number-row {
-  display: flex;
-  // gap: 4px;
-}
-
-.number-item {
-  display: inline-block;
-  font-weight: 500;
-  font-size: 12px;
-  // min-width: 24px;
-  text-align: center;
-  transition: all 0.2s ease;
-  font-variant: tabular-nums;
-
-  &.highlight {
-    background-color: #ffeb3b !important;
-    color: #333 !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-}
-
-@media (max-width: 768px) {
-  .title-header-row {
-    // flex-direction: column;
-    align-items: flex-start;
-    // gap: 8px;
-  }
-
-  .status-info {
-    align-self: flex-end;
-  }
-
-  .number-item {
-    font-size: 12px;
-    padding: 0px;
-    min-width: 20px;
   }
 }
 </style>

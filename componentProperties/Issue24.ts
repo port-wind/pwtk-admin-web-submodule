@@ -26,6 +26,7 @@ componentProperties.set('Issue24', {
       title: '澳门好彩【精选24码】',
       subtitle: '',
       enable: true,
+      model: '24',
       size: 2,
       mainboardId: 'tiantianhaocai',
       forumId: 'tiantianhaocai1',
