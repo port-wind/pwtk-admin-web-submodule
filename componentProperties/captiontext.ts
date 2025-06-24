@@ -1,36 +1,14 @@
 import type { IComponentProperty, ISetStyle } from './index'
+import type { CaptionTextConfig } from '../CaptionText/type'
 
-// 标题文字组件配置类型
-export interface CaptiontextConfigType {
-  text: string
-  name: string // 标题内容
-  description: string // 描述内容
-  wordSize: number // 标题大小
-  descriptionSize: number // 描述大小
-  wordWeight: number // 标题粗细
-  positions: 'left' | 'center' // 显示位置
-  descriptionWeight: number // 描述粗细
-  wordColor: string // 标题颜色
-  descriptionColor: string // 描述颜色
-  backColor: string // 背景颜色
-  borderBott: boolean // 底部分割线
-  wordHeight: number // 框体高度
-  more: {
-    show: boolean // 是否显示查看更多
-    type: number // 样式选择
-    text: string // 自定义文字
-    httpType: number // 链接类型
-    http: string // 链接
-  }
-}
+const componentProperties = new Map<String, IComponentProperty<ISetStyle<CaptionTextConfig>>>()
 
-const componentProperties = new Map<String, IComponentProperty<ISetStyle<CaptiontextConfigType>>>()
-
-componentProperties.set('captiontext', {
-  component: 'captiontext',
+// 预设值
+componentProperties.set('CaptionText', {
+  component: 'CaptionText',
   text: '标题文字',
   active: false,
-  style: 'captiontextsstyle',
+  style: 'CaptionTextsstyle',
   setStyle: {
     componentId: '',
     sketchCodeList: '',
@@ -39,24 +17,27 @@ componentProperties.set('captiontext', {
     websiteId: '',
     componentRef: '',
     componentName: '标题文字',
-    componentType: 'captiontext',
+    componentType: 'CaptionText',
     componentSort: '',
-    status: '',
-    isView: '',
-    memo: '',
+    status: 'y',
+    isView: 'y',
+    memo: '标题文字组件',
     pageCode: '',
     configParamJson: {
       text: '标题文字',
+      title: '',
+      subtitle: '',
+      enable: true,
       name: '标题文字',
-      description: '',
+      description: '这是一个标题文字组件的描述内容',
       wordSize: 16,
       descriptionSize: 12,
       wordWeight: 400,
       positions: 'left',
       descriptionWeight: 200,
-      wordColor: 'rgba(50, 50, 51, 10)',
-      descriptionColor: 'rgba(150, 151, 153, 10)',
-      backColor: 'rgba(255, 255, 255, 10)',
+      wordColor: '#323233',
+      descriptionColor: '#969799',
+      backColor: '#ffffff',
       borderBott: false,
       wordHeight: 24,
       more: {
@@ -65,6 +46,22 @@ componentProperties.set('captiontext', {
         text: '查看更多',
         httpType: 10,
         http: ''
+      },
+      styleHeader: {
+        backgroundColor: '#4a90e2',
+        isGradient: false,
+        headerBgColor: '#4a90e2',
+        headerBg: '#4a90e2',
+        headerBg2: '#66bb6a',
+        subTitleColor: '#ffffff',
+        titleColor: '#ffffff'
+      },
+      styleMain: {
+        containerPadding: 0,
+        backgroundColor: '#ffffff',
+        borderRadius: 0,
+        margin: 0,
+        boxShadow: 'none'
       }
     }
   }

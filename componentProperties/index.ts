@@ -31,7 +31,7 @@ export interface ISetStyle<V> {
 // 导入分组件属性配置
 import AdBarBoxProperties from './AdBarBox'
 import CustomBarAdBoxProperties from './CustomBarAdBox'
-import CaptiontextProperties from './captiontext'
+import CaptionTextProperties from './CaptionText'
 import ListswitchingProperties from './Listswitching'
 import PictureadsProperties from './pictureads'
 import NoticeProperties from './notice'
@@ -94,7 +94,7 @@ CustomBarAdBoxProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
-CaptiontextProperties.forEach((value, key) => {
+CaptionTextProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
