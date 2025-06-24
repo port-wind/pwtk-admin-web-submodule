@@ -15,10 +15,8 @@
 </template>
 
 <script setup lang="ts" name="CustomBox">
-// import { PUBLIC_CDN_URL } from '@/consts'
 import BoxTitle from './BoxTitle.vue'
-
-const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
+import { PUBLIC_CDN_URL } from '../utils'
 
 const getFullUrl = (url: string, baseUrl: string): string => {
   return /^https?:\/\//.test(url) ? url : `${baseUrl}${url}`

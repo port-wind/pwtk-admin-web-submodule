@@ -4,7 +4,7 @@ import type { IDatas } from './type'
 import { getLatestIssue, getLatestIssues } from '../api'
 import { useStore } from '@nanostores/vue'
 import { gameStore } from '../store/index'
-const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
+import { PUBLIC_CDN_URL } from '../utils'
 
 interface IProps {
   datas: IDatas

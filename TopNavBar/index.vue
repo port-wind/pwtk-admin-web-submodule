@@ -3,13 +3,13 @@ import { defineProps, computed } from 'vue'
 import { NavBar, Image, Icon, Sticky } from 'vant'
 import TopImage from '../assets/images/top.png'
 import type { IDatas } from './type'
+import { PUBLIC_CDN_URL } from '../utils'
 const display = import.meta.env.PUBLIC_DISPLAY
-console.log('🚀 ~ display:', display)
 
 interface IProps {
   datas: IDatas
 }
-const props = defineProps<IProps>()
+defineProps<IProps>()
 
 const onClickLeft = () => history.back()
 const onClickRight = () => {
@@ -22,7 +22,6 @@ const onClickRight = () => {
     })
   }
 }
-const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
 
 // 定义 props 接收父组件传入的数据
 const getFullUrl = (url: string, baseUrl: string): string => {

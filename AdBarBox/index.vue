@@ -24,10 +24,9 @@
 <script setup lang="ts" name="AdBarBox">
 import { computed } from 'vue'
 import { Image as VanImage } from 'vant'
-// import { PUBLIC_CDN_URL } from '@/consts'
+import { PUBLIC_CDN_URL } from '../utils'
 import EmptyImage from '@/assets/images/hjwz.gif'
 
-const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
 // 定义 props 接收父组件传入的数据
 const getFullUrl = (url: string, baseUrl: string): string => {
   return /^https?:\/\//.test(url) ? url : `${baseUrl}${url}`

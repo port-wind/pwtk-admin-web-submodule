@@ -102,13 +102,12 @@
 <script setup lang="ts" name="CarouselApp">
 import { ref } from 'vue'
 import type { IDatas } from './type'
+import { PUBLIC_CDN_URL } from '../utils'
 import AppleSvg from '../assets/svg/apple-fill.svg'
 import AndroidSvg from '../assets/svg/android.svg'
 import DesktopSvg from '../assets/svg/desktop.svg'
 
 const display = import.meta.env.PUBLIC_DISPLAY
-
-const PUBLIC_CDN_URL = 'https://stt.pwtk.cc/'
 
 const getFullUrl = (url: string, baseUrl: string): string => {
   return /^https?:\/\//.test(url) ? url : `${baseUrl}${url}`
