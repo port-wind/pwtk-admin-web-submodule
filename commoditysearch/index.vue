@@ -146,12 +146,10 @@ const enabledHotwords = computed(() => {
 
 .title-header {
   padding: 12px 16px;
-  border-radius: 8px 8px 0 0;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
-
   .main-title {
     margin: 0;
     font-size: 18px;

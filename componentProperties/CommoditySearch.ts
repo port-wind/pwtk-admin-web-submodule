@@ -21,7 +21,7 @@ export interface CommoditySearchConfigType {
 }
 
 const componentProperties = new Map<string, IComponentProperty<ISetStyle<CommoditySearchConfig>>>()
-
+// 预设值
 componentProperties.set('CommoditySearch', {
   component: 'CommoditySearch',
   text: '商品搜索',
@@ -43,8 +43,8 @@ componentProperties.set('CommoditySearch', {
     pageCode: '',
     configParamJson: {
       text: '商品搜索',
-      title: '商品搜索',
-      subtitle: '快速找到您需要的商品',
+      title: '',
+      subtitle: '',
       enable: true,
       heights: 40,
       position: 0,
@@ -84,7 +84,7 @@ componentProperties.set('CommoditySearch', {
         inputBorderWidth: 1,
         inputHeight: 40,
         inputPadding: 12,
-        showScanButton: true,
+        showScanButton: false,
         scanButtonText: '扫一扫',
         scanButtonColor: '#666666'
       },
