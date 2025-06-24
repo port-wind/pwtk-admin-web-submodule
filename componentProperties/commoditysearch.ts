@@ -1,7 +1,8 @@
+import type { CommoditySearchConfig } from '../CommoditySearch/type'
 import type { IComponentProperty, ISetStyle } from './index'
 
 // 商品搜索组件配置类型
-export interface CommoditysearchConfigType {
+export interface CommoditySearchConfigType {
   text: string
   heights: number // 搜索栏高度
   position: number // 显示位置
@@ -19,13 +20,13 @@ export interface CommoditysearchConfigType {
   }
 }
 
-const componentProperties = new Map<String, IComponentProperty<ISetStyle<CommoditysearchConfigType>>>()
+const componentProperties = new Map<string, IComponentProperty<ISetStyle<CommoditySearchConfig>>>()
 
-componentProperties.set('commoditysearch', {
-  component: 'commoditysearch',
+componentProperties.set('CommoditySearch', {
+  component: 'CommoditySearch',
   text: '商品搜索',
-  active: false,
-  style: 'commoditysearchstyle',
+  active: true,
+  style: 'CommoditySearchStyle',
   setStyle: {
     componentId: '',
     sketchCodeList: '',
@@ -34,27 +35,74 @@ componentProperties.set('commoditysearch', {
     websiteId: '',
     componentRef: '',
     componentName: '商品搜索',
-    componentType: 'commoditysearch',
+    componentType: 'CommoditySearch',
     componentSort: '',
-    status: '',
-    isView: '',
-    memo: '',
+    status: 'y',
+    isView: 'y',
+    memo: '商品搜索组件',
     pageCode: '',
     configParamJson: {
       text: '商品搜索',
-      heights: 28,
+      title: '商品搜索',
+      subtitle: '快速找到您需要的商品',
+      enable: true,
+      heights: 40,
       position: 0,
-      sweep: false,
-      borderRadius: 0,
+      sweep: true,
+      borderRadius: 8,
       textPosition: 0,
-      backgroundColor: 'rgb(249, 249, 249)',
-      borderColor: 'rgb(255, 255, 255)',
-      textColor: 'rgb(150, 151, 153)',
-      hotords: [],
-      conf: {
-        text: '商品搜索',
-        heights: 28,
-        position: 0
+      backgroundColor: '#f8f9fa',
+      borderColor: '#ffffff',
+      textColor: '#666666',
+      hotwords: [
+        {
+          id: 'hot1',
+          text: '热销商品',
+          enabled: true,
+          order: 1
+        },
+        {
+          id: 'hot2',
+          text: '新品上市',
+          enabled: true,
+          order: 2
+        },
+        {
+          id: 'hot3',
+          text: '限时优惠',
+          enabled: true,
+          order: 3
+        }
+      ],
+      searchStyle: {
+        showIcon: true,
+        iconColor: '#999999',
+        placeholder: '搜索商品',
+        placeholderColor: '#999999',
+        inputBackground: '#ffffff',
+        inputBorderColor: '#e0e0e0',
+        inputBorderWidth: 1,
+        inputHeight: 40,
+        inputPadding: 12,
+        showScanButton: true,
+        scanButtonText: '扫一扫',
+        scanButtonColor: '#666666'
+      },
+      styleHeader: {
+        backgroundColor: '#4a90e2',
+        isGradient: true,
+        headerBgColor: '#4a90e2',
+        headerBg: '#4a90e2',
+        headerBg2: '#66bb6a',
+        subTitleColor: '#ffffff',
+        titleColor: '#ffffff'
+      },
+      styleMain: {
+        containerPadding: 12,
+        backgroundColor: '#f8f9fa',
+        borderRadius: 8,
+        margin: 5,
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
       }
     }
   }

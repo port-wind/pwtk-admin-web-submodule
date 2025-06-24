@@ -44,7 +44,7 @@ import CustommoduleProperties from './custommodule'
 import CustomBoxProperties from './CustomBox'
 import SwipeBoxProperties from './SwipeBox'
 import AuxiliarysegmentationProperties from './auxiliarysegmentation'
-import CommoditysearchProperties from './commoditysearch'
+import CommoditySearchProperties from './CommoditySearch'
 import StoreinformationProperties from './storeinformation'
 import EntertheshopProperties from './entertheshop'
 import GameResultBoxProperties from './GameResultBox'
@@ -146,7 +146,7 @@ AuxiliarysegmentationProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
-CommoditysearchProperties.forEach((value, key) => {
+CommoditySearchProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
