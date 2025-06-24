@@ -9,7 +9,7 @@
     </h3>
     <van-grid :column-num="3" square icon-size="10">
       <van-grid-item v-for="(item, index) in bbs_content.attachments" @click="showPreview(index)" :key="index">
-        <van-image class="Img" :src="PUBLIC_CDN_URL + item.url" fit="cover" />
+        <van-image class="Img" :src="PUBLIC_CDN_URL_2 + item.url" fit="cover" />
       </van-grid-item>
     </van-grid>
   </div>
@@ -18,8 +18,8 @@
 <script setup lang="ts">
 import type { PostData, PostDetail } from '../NavBBSListBox'
 import { Image as VanImage, Grid as VanGrid, GridItem as VanGridItem, showImagePreview } from 'vant'
-// import { PUBLIC_CDN_URL } from '@/consts'
-const PUBLIC_CDN_URL = 'https://tk2cdn.ai4funs.com/'
+import { PUBLIC_CDN_URL_2 } from '../../utils'
+
 //展示多张图片
 const props = defineProps({
   bbs_content: {
@@ -36,7 +36,7 @@ function getBackgroundStyle(data: PostDetail): string {
   if (data.titleBgImg) {
     // return `url(${PUBLIC_CDN_URL}${data.titleBgImg})` // 使用背景图片
     const isAbsoluteUrl = data.titleBgImg.startsWith('http') || data.titleBgImg.startsWith('https')
-    return `url(${isAbsoluteUrl ? data.titleBgImg : `${PUBLIC_CDN_URL}${data.titleBgImg}`})` // 使用背景图片
+    return `url(${isAbsoluteUrl ? data.titleBgImg : `${PUBLIC_CDN_URL_2}${data.titleBgImg}`})` // 使用背景图片
   }
   return data.titleBg || 'var(--theme-color)' // 否则使用背景颜色
 }
@@ -44,7 +44,7 @@ function getBackgroundStyle(data: PostDetail): string {
 // console.log('推荐', props.data)
 const showPreview = (startPosition: number) => {
   showImagePreview({
-    images: props.bbs_content.attachments?.map((item) => PUBLIC_CDN_URL + item.url) || [],
+    images: props.bbs_content.attachments?.map((item) => PUBLIC_CDN_URL_2 + item.url) || [],
     startPosition,
     closeable: true,
     overlayClass: 'custom-overlay'

@@ -7,14 +7,14 @@
     >
       {{ data.title ?? bbs_content.title }}
     </h3>
-    <img :src="PUBLIC_CDN_URL + bbs_content.attachments?.[0]?.url" fit="cover" />
+    <img :src="PUBLIC_CDN_URL_2 + bbs_content.attachments?.[0]?.url" fit="cover" />
   </div>
 </template>
 
 <script setup lang="ts">
 import type { PostData, PostDetail } from '../NavBBSListBox'
-// import { PUBLIC_CDN_URL } from '@/consts'
-const PUBLIC_CDN_URL = 'https://tk2cdn.ai4funs.com/'
+import { PUBLIC_CDN_URL_2 } from '../../utils'
+
 //只展示一张图片
 const props = defineProps({
   bbs_content: {
@@ -32,7 +32,7 @@ const props = defineProps({
 function getBackgroundStyle(data: PostDetail): string {
   if (data.titleBgImg) {
     const isAbsoluteUrl = data.titleBgImg.startsWith('http') || data.titleBgImg.startsWith('https')
-    return `url(${isAbsoluteUrl ? data.titleBgImg : `${PUBLIC_CDN_URL}${data.titleBgImg}`})` // 使用背景图片
+    return `url(${isAbsoluteUrl ? data.titleBgImg : `${PUBLIC_CDN_URL_2}${data.titleBgImg}`})` // 使用背景图片
   }
   return data.titleBg || 'var(--theme-color)' // 否则使用背景颜色
 }

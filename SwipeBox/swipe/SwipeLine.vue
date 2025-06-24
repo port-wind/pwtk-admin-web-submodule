@@ -5,7 +5,7 @@
         <div class="swipe-item" v-for="(item, index) in group" :key="index">
           <div class="swipe-item-image" v-if="item">
             <a :href="item.link">
-              <van-image :src="getFullUrl(item.image, PUBLIC_CDN_URL)" :alt="item.alt ?? 'image'" />
+              <van-image :src="getFullUrl(item.image, PUBLIC_CDN_URL_2)" :alt="item.alt ?? 'image'" />
             </a>
           </div>
           <div v-else>
@@ -22,11 +22,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Swipe as vanSwipe, SwipeItem as vanSwipeItem, Image as vanImage } from 'vant'
-// import { PUBLIC_CDN_URL } from '@/consts'
 import type { SwipeModelTwo } from '../Swipe-type'
 import EmptyImage from '@/assets/images/hjwz.gif'
+import { PUBLIC_CDN_URL_2 } from '../../utils'
 // 使用 defineProps 接收父组件传入的 componentData
-const PUBLIC_CDN_URL = 'https://tk2cdn.ai4funs.com/'
 const props = defineProps<{
   data: SwipeModelTwo
 }>()

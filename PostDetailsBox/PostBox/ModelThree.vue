@@ -13,8 +13,7 @@
 
 <script setup lang="ts">
 import type { PostData } from '../NavBBSListBox'
-// import { PUBLIC_CDN_URL } from '@/consts'
-const PUBLIC_CDN_URL = 'https://tk2cdn.ai4funs.com/'
+import { PUBLIC_CDN_URL_2 } from '../../utils'
 const props = defineProps({
   bbs_content: {
     type: Object as () => Partial<PostData>,
@@ -29,7 +28,7 @@ const props = defineProps({
 function getBackgroundStyle(data: any): string {
   if (data.titleBgImg) {
     const isAbsoluteUrl = data.titleBgImg.startsWith('http') || data.titleBgImg.startsWith('https')
-    return `url(${isAbsoluteUrl ? data.titleBgImg : `${PUBLIC_CDN_URL}${data.titleBgImg}`})` // 使用背景图片
+    return `url(${isAbsoluteUrl ? data.titleBgImg : `${PUBLIC_CDN_URL_2}${data.titleBgImg}`})` // 使用背景图片
   }
   return data.titleBg || 'var(--theme-color)' // 否则使用背景颜色
 }
