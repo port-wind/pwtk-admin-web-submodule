@@ -3,6 +3,9 @@ import { computed, defineProps } from 'vue'
 import type { IDatas } from './type'
 // import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
 import Result24 from './result24.vue'
+import Result2 from './result2.vue'
+import Result1 from './result1.vue'
+import { EModel } from './type'
 // import { gameStore } from '../store'
 // import { useStore } from '@nanostores/vue'
 // import { useIssueList } from '../hooks/issueList'
@@ -102,7 +105,11 @@ const subTitleStyle = computed(() => {
         <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
       </div>
       <!-- 开奖信息列表 24码风格 -->
-      <Result24 :datas="datas" v-if="datas.configParamJson.model === '24'" />
+      <Result24 :datas="datas" v-if="datas.configParamJson.model === EModel['24码']" />
+      <!-- 胆大胆小 2码风格 -->
+      <Result2 :datas="datas" v-if="datas.configParamJson.model === EModel['胆大胆小']" />
+      <!-- 色波 -->
+      <Result1 :datas="datas" v-if="datas.configParamJson.model === EModel['色波']" />
     </div>
     <slot name="deles" />
   </div>

@@ -1,4 +1,4 @@
-import type { Issue24 } from '../Issue24/type'
+import { EModel, type Issue24 } from '../Issue24/type'
 import type { IComponentProperty, ISetStyle } from './index'
 
 const componentProperties = new Map<string, IComponentProperty<ISetStyle<Issue24>>>()
@@ -26,7 +26,7 @@ componentProperties.set('Issue24', {
       title: '澳门好彩【精选24码】',
       subtitle: '',
       enable: true,
-      model: '24',
+      model: EModel['24码'],
       size: 2,
       mainboardId: 'tiantianhaocai',
       forumId: 'tiantianhaocai1',
