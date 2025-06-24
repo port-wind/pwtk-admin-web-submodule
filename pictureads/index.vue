@@ -1,5 +1,5 @@
 <template>
-  <div class="pictureads">
+  <div class="PictureADs">
     <!-- 无图片 -->
     <div class="upload" v-if="!imageList[0]">
       <i class="iconfont icon-lunbotu"></i>
@@ -55,7 +55,7 @@ import Swiper from 'swiper'
 import 'swiper/css/swiper.min.css'
 
 export default {
-  name: 'pictureads',
+  name: 'PictureADs',
   props: {
     datas: Object
   },
@@ -155,8 +155,8 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
-.pictureads {
+<style scoped lang="scss">
+.PictureADs {
   position: relative;
 
   /* 无图片 */

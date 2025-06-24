@@ -1,13 +1,13 @@
-import type { PictureadsConfigType } from '../PictureADs/type'
+import type { PictureADsConfigType } from '../PictureADs/type'
 import type { IComponentProperty, ISetStyle } from './index'
 
-const componentProperties = new Map<String, IComponentProperty<ISetStyle<PictureadsConfigType>>>()
+const componentProperties = new Map<String, IComponentProperty<ISetStyle<PictureADsConfigType>>>()
 
-componentProperties.set('pictureads', {
-  component: 'pictureads',
+componentProperties.set('PictureADs', {
+  component: 'PictureADs',
   text: '图片广告',
   active: false,
-  style: 'pictureadsstyle',
+  style: 'PictureADsStyle',
   setStyle: {
     componentId: '',
     sketchCodeList: '',
@@ -16,7 +16,7 @@ componentProperties.set('pictureads', {
     websiteId: '',
     componentRef: '',
     componentName: '图片广告',
-    componentType: 'pictureads',
+    componentType: 'PictureADs',
     componentSort: '',
     status: '',
     isView: '',

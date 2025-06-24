@@ -1,10 +1,10 @@
 import type { ISetStyle } from '../componentProperties/index'
 
 // 组件在 WebVision 中的完整数据结构
-export interface IDatas extends ISetStyle<PictureadsConfigType> {}
+export interface IDatas extends ISetStyle<PictureADsConfigType> {}
 
 // 图片广告组件配置类型
-export interface PictureadsConfigType {
+export interface PictureADsConfigType {
   text: string
   swiperType: number // 选择模板
   borderRadius: number // 图片倒角
