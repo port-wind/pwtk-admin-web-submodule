@@ -1,16 +1,13 @@
 <template>
   <div class="navbar-box">
     <!-- 模式1: 标准选项卡模式 -->
-    <section v-if="datas.configParamJson.model === 's1'" class="navbar-box__mode-standard">
-      <van-sticky
-        v-if="datas.configParamJson.tabsAttr.sticky"
-        :offset-top="datas.configParamJson.tabsAttr.offsetTop || 0"
-      >
+    <section v-if="datas.model === 's1'" class="navbar-box__mode-standard">
+      <van-sticky v-if="datas.tabsAttr.sticky" :offset-top="datas.tabsAttr.offsetTop || 0">
         <van-tabs
           v-bind="computedTabsAttr"
           v-model="activeTab"
           @click-tab="handleTabClick"
-          :class="['navbar-box__tabs', `navbar-box__tabs--${datas.configParamJson.model}`]"
+          :class="['navbar-box__tabs', `navbar-box__tabs--${datas.model}`]"
         >
           <van-tab v-for="tab in validTabs" :name="tab.id" :key="tab.id" :title="tab.name" :disabled="tab.disabled" />
         </van-tabs>
@@ -20,7 +17,7 @@
           v-bind="computedTabsAttr"
           v-model="activeTab"
           @click-tab="handleTabClick"
-          :class="['navbar-box__tabs', `navbar-box__tabs--${datas.configParamJson.model}`]"
+          :class="['navbar-box__tabs', `navbar-box__tabs--${datas.model}`]"
         >
           <van-tab v-for="tab in validTabs" :name="tab.id" :key="tab.id" :title="tab.name" :disabled="tab.disabled" />
         </van-tabs>
@@ -28,11 +25,8 @@
     </section>
 
     <!-- 模式2: 胶囊式选项卡模式 -->
-    <section v-else-if="datas.configParamJson.model === 's2'" class="navbar-box__mode-capsule">
-      <van-sticky
-        v-if="datas.configParamJson.tabsAttr.sticky"
-        :offset-top="datas.configParamJson.tabsAttr.offsetTop || 0"
-      >
+    <section v-else-if="datas.model === 's2'" class="navbar-box__mode-capsule">
+      <van-sticky v-if="datas.tabsAttr.sticky" :offset-top="datas.tabsAttr.offsetTop || 0">
         <div class="navbar-box__capsule-wrapper">
           <div
             v-for="tab in validTabs"
@@ -65,11 +59,8 @@
     </section>
 
     <!-- 模式3: 按钮组模式 -->
-    <section v-else-if="datas.configParamJson.model === 's3'" class="navbar-box__mode-button">
-      <van-sticky
-        v-if="datas.configParamJson.tabsAttr.sticky"
-        :offset-top="datas.configParamJson.tabsAttr.offsetTop || 0"
-      >
+    <section v-else-if="datas.model === 's3'" class="navbar-box__mode-button">
+      <van-sticky v-if="datas.tabsAttr.sticky" :offset-top="datas.tabsAttr.offsetTop || 0">
         <div class="navbar-box__button-wrapper">
           <div
             v-for="tab in validTabs"
@@ -103,171 +94,36 @@
 
     <!-- 未知模式处理 -->
     <section v-else class="navbar-box__mode-unknown">
-      <div class="navbar-box__error">不支持的导航栏模式: {{ datas.configParamJson.model }}</div>
+      <div class="navbar-box__error">不支持的导航栏模式: {{ datas.model }}</div>
     </section>
   </div>
 </template>
 
 <script setup lang="ts" name="NavBarBox">
-import { computed, ref, watch, onMounted, nextTick } from 'vue'
 import { Tabs as VanTabs, Tab as VanTab, Sticky as VanSticky } from 'vant'
 import type { IDatas } from './type'
-// Props 定义
-interface IProps {
+
+const props = defineProps<{
   datas: IDatas
-}
+}>()
 
-const props = defineProps<IProps>()
-
-// 事件定义
-const emit = defineEmits(['tabChange', 'tabClick'])
-
-// 响应式状态
-const activeTab = ref<string>('')
-const isScrolling = ref(false)
-
-// 计算属性
+const activeTab = ref('')
 const validTabs = computed(() => {
-  return props.datas?.configParamJson?.itemData?.filter((tab) => tab.id && tab.name) || []
+  return props.datas.configParamJson.itemData.filter((tab) => !tab.disabled)
 })
-
-const computedTabsAttr = computed(() => {
-  const defaultAttrs = {
-    animated: true,
-    swipeable: false,
-    scrollspy: false,
-    color: '#155bd4',
-    background: 'transparent',
-    duration: 0.3,
-    lineWidth: 20,
-    lineHeight: 3
-  }
-
-  return {
-    ...defaultAttrs,
-    ...props.datas?.configParamJson?.tabsAttr
-  }
-})
-
 const backgroundStyle = computed(() => {
-  if (props.datas?.configParamJson?.bgColor) {
-    return { background: props.datas.configParamJson.bgColor }
-  }
-  return {
-    background: `linear-gradient(
-      var(--gradient-direction, 0deg),
-      var(--second-color, #f0f0f0),
-      var(--theme-color, #155bd4)
-    )`
-  }
+  return { background: props.datas.configParamJson.bgColor }
 })
-
-// 初始化激活选项卡
-const initActiveTab = () => {
-  if (validTabs.value.length > 0) {
-    const firstValidTab = validTabs.value.find((tab) => !tab.disabled)
-    activeTab.value = firstValidTab?.id || validTabs.value[0].id
+const handleTabClick = (name: string) => {}
+const handleButtonClick = (tab: any) => {}
+const handleCapsuleClick = (tab: any) => {}
+const computedTabsAttr = computed(() => {
+  return {
+    animated: props.datas.configParamJson.tabsAttr.animated,
+    swipeable: props.datas.configParamJson.tabsAttr.swipeable,
+    lineWidth: props.datas.configParamJson.tabsAttr.lineWidth,
+    lineHeight: props.datas.configParamJson.tabsAttr.lineHeight
   }
-}
-
-// 防抖函数
-const debounce = (func: Function, wait: number) => {
-  let timeout: ReturnType<typeof setTimeout>
-  return function executedFunction(...args: any[]) {
-    const later = () => {
-      clearTimeout(timeout)
-      func(...args)
-    }
-    clearTimeout(timeout)
-    timeout = setTimeout(later, wait)
-  }
-}
-
-// 滚动到目标元素
-const scrollToElement = debounce((elementId: string) => {
-  const element = document.getElementById(elementId)
-  if (element && !isScrolling.value) {
-    isScrolling.value = true
-
-    const offset = props.datas?.configParamJson?.scrollOffset || 0
-    const elementTop = element.offsetTop - offset
-
-    window.scrollTo({
-      top: elementTop,
-      behavior: 'smooth'
-    })
-
-    // 重置滚动状态
-    setTimeout(() => {
-      isScrolling.value = false
-    }, 500)
-  }
-}, 100)
-
-// 事件处理器
-const handleTabClick = (obj: any) => {
-  const tab = validTabs.value.find((t) => t.id === obj.name)
-  if (!tab || tab.disabled) return
-
-  activeTab.value = obj.name
-
-  // 触发自定义事件
-  emit('tabClick', tab)
-  emit('tabChange', tab)
-
-  // 执行自定义回调
-  if (props.datas?.configParamJson?.onTabChange) {
-    props.datas.configParamJson.onTabChange(tab)
-  }
-
-  // 滚动到对应锚点
-  scrollToElement(obj.name)
-}
-
-const handleCapsuleClick = (tab) => {
-  if (tab.disabled) return
-
-  activeTab.value = tab.id
-
-  emit('tabClick', tab)
-  emit('tabChange', tab)
-
-  if (props.datas?.configParamJson?.onTabChange) {
-    props.datas.configParamJson.onTabChange(tab)
-  }
-
-  scrollToElement(tab.id)
-}
-
-const handleButtonClick = (tab) => {
-  if (tab.disabled) return
-
-  activeTab.value = tab.id
-
-  emit('tabClick', tab)
-  emit('tabChange', tab)
-
-  if (props.datas?.configParamJson?.onTabChange) {
-    props.datas.configParamJson.onTabChange(tab)
-  }
-
-  scrollToElement(tab.id)
-}
-
-// 监听数据变化
-watch(
-  () => props.datas?.configParamJson?.itemData,
-  () => {
-    nextTick(() => {
-      initActiveTab()
-    })
-  },
-  { deep: true, immediate: true }
-)
-
-// 生命周期
-onMounted(() => {
-  initActiveTab()
 })
 </script>
 

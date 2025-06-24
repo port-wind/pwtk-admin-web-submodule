@@ -42,7 +42,11 @@ componentProperties.set('NavBarBox', {
       scrollOffset: 0,
       tabsAttr: {
         sticky: false,
-        offsetTop: 0
+        offsetTop: 0,
+        animated: false,
+        swipeable: false,
+        lineWidth: 0,
+        lineHeight: 0
       },
       itemData: [],
       bgColor: ''

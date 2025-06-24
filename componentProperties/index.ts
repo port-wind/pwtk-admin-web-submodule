@@ -33,7 +33,7 @@ import AdBarBoxProperties from './AdBarBox'
 import CustomBarAdBoxProperties from './CustomBarAdBox'
 import CaptionTextProperties from './CaptionText'
 import ListswitchingProperties from './Listswitching'
-import PictureadsProperties from './pictureads'
+import PictureADsProperties from './PictureADs'
 import NoticeProperties from './notice'
 import TabbarProperties from './tabbar'
 import GraphicnavigationProperties from './graphicnavigation'
@@ -102,7 +102,7 @@ ListswitchingProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
-PictureadsProperties.forEach((value, key) => {
+PictureADsProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
