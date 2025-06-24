@@ -9,6 +9,7 @@ export interface NavBarBox {
     swipeable: boolean
     lineWidth: number
     lineHeight: number
+    color: string
   }
   bgColor: string
   model: 's1' | 's2' | 's3'

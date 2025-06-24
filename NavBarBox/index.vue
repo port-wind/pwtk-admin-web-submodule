@@ -1,39 +1,55 @@
 <template>
-  <div class="navbar-box">
-    <!-- 模式1: 标准选项卡模式 -->
-    <section v-if="datas.configParamJson.model === 's1'" class="navbar-box__mode-standard">
-      <van-sticky
-        v-if="datas.configParamJson.tabsAttr.sticky"
-        :offset-top="datas.configParamJson.tabsAttr.offsetTop || 0"
-      >
-        <van-tabs
-          v-bind="computedTabsAttr"
-          v-model="activeTab"
-          @click-tab="handleTabClick"
-          :class="['navbar-box__tabs', `navbar-box__tabs--${datas.configParamJson.model}`]"
+  <div class="NavBarBox">
+    <div class="navbar-box">
+      <!-- 模式1: 标准选项卡模式 -->
+      <section v-if="datas.configParamJson.model === 's1'" class="navbar-box__mode-standard">
+        <van-sticky
+          v-if="datas.configParamJson.tabsAttr.sticky"
+          :offset-top="datas.configParamJson.tabsAttr.offsetTop || 0"
         >
-          <van-tab v-for="tab in validTabs" :name="tab.id" :key="tab.id" :title="tab.name" :disabled="tab.disabled" />
-        </van-tabs>
-      </van-sticky>
-      <div v-else>
-        <van-tabs
-          v-bind="computedTabsAttr"
-          v-model="activeTab"
-          @click-tab="handleTabClick"
-          :class="['navbar-box__tabs', `navbar-box__tabs--${datas.configParamJson.model}`]"
-        >
-          <van-tab v-for="tab in validTabs" :name="tab.id" :key="tab.id" :title="tab.name" :disabled="tab.disabled" />
-        </van-tabs>
-      </div>
-    </section>
+          <van-tabs
+            v-bind="computedTabsAttr"
+            v-model="activeTab"
+            @click-tab="handleTabClick"
+            :class="['navbar-box__tabs', `navbar-box__tabs--${datas.configParamJson.model}`]"
+          >
+            <van-tab v-for="tab in validTabs" :name="tab.id" :key="tab.id" :title="tab.name" :disabled="tab.disabled" />
+          </van-tabs>
+        </van-sticky>
+        <div v-else>
+          <van-tabs
+            v-bind="computedTabsAttr"
+            v-model="activeTab"
+            @click-tab="handleTabClick"
+            :class="['navbar-box__tabs', `navbar-box__tabs--${datas.configParamJson.model}`]"
+          >
+            <van-tab v-for="tab in validTabs" :name="tab.id" :key="tab.id" :title="tab.name" :disabled="tab.disabled" />
+          </van-tabs>
+        </div>
+      </section>
 
-    <!-- 模式2: 胶囊式选项卡模式 -->
-    <section v-else-if="datas.configParamJson.model === 's2'" class="navbar-box__mode-capsule">
-      <van-sticky
-        v-if="datas.configParamJson.tabsAttr.sticky"
-        :offset-top="datas.configParamJson.tabsAttr.offsetTop || 0"
-      >
-        <div class="navbar-box__capsule-wrapper">
+      <!-- 模式2: 胶囊式选项卡模式 -->
+      <section v-else-if="datas.configParamJson.model === 's2'" class="navbar-box__mode-capsule">
+        <van-sticky
+          v-if="datas.configParamJson.tabsAttr.sticky"
+          :offset-top="datas.configParamJson.tabsAttr.offsetTop || 0"
+        >
+          <div class="navbar-box__capsule-wrapper">
+            <div
+              v-for="tab in validTabs"
+              :key="tab.id"
+              :class="[
+                'navbar-box__capsule-item',
+                { 'navbar-box__capsule-item--active': activeTab === tab.id },
+                { 'navbar-box__capsule-item--disabled': tab.disabled }
+              ]"
+              @click="handleCapsuleClick(tab)"
+            >
+              {{ tab.name }}
+            </div>
+          </div>
+        </van-sticky>
+        <div v-else class="navbar-box__capsule-wrapper">
           <div
             v-for="tab in validTabs"
             :key="tab.id"
@@ -47,30 +63,30 @@
             {{ tab.name }}
           </div>
         </div>
-      </van-sticky>
-      <div v-else class="navbar-box__capsule-wrapper">
-        <div
-          v-for="tab in validTabs"
-          :key="tab.id"
-          :class="[
-            'navbar-box__capsule-item',
-            { 'navbar-box__capsule-item--active': activeTab === tab.id },
-            { 'navbar-box__capsule-item--disabled': tab.disabled }
-          ]"
-          @click="handleCapsuleClick(tab)"
-        >
-          {{ tab.name }}
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 模式3: 按钮组模式 -->
-    <section v-else-if="datas.configParamJson.model === 's3'" class="navbar-box__mode-button">
-      <van-sticky
-        v-if="datas.configParamJson.tabsAttr.sticky"
-        :offset-top="datas.configParamJson.tabsAttr.offsetTop || 0"
-      >
-        <div class="navbar-box__button-wrapper">
+      <!-- 模式3: 按钮组模式 -->
+      <section v-else-if="datas.configParamJson.model === 's3'" class="navbar-box__mode-button">
+        <van-sticky
+          v-if="datas.configParamJson.tabsAttr.sticky"
+          :offset-top="datas.configParamJson.tabsAttr.offsetTop || 0"
+        >
+          <div class="navbar-box__button-wrapper">
+            <div
+              v-for="tab in validTabs"
+              :key="tab.id"
+              :class="[
+                'navbar-box__button-item',
+                { 'navbar-box__button-item--active': activeTab === tab.id },
+                { 'navbar-box__button-item--disabled': tab.disabled }
+              ]"
+              @click="handleButtonClick(tab)"
+            >
+              {{ tab.name }}
+            </div>
+          </div>
+        </van-sticky>
+        <div v-else class="navbar-box__button-wrapper">
           <div
             v-for="tab in validTabs"
             :key="tab.id"
@@ -84,27 +100,14 @@
             {{ tab.name }}
           </div>
         </div>
-      </van-sticky>
-      <div v-else class="navbar-box__button-wrapper">
-        <div
-          v-for="tab in validTabs"
-          :key="tab.id"
-          :class="[
-            'navbar-box__button-item',
-            { 'navbar-box__button-item--active': activeTab === tab.id },
-            { 'navbar-box__button-item--disabled': tab.disabled }
-          ]"
-          @click="handleButtonClick(tab)"
-        >
-          {{ tab.name }}
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 未知模式处理 -->
-    <section v-else class="navbar-box__mode-unknown">
-      <div class="navbar-box__error">不支持的导航栏模式: {{ datas.configParamJson.model }}</div>
-    </section>
+      <!-- 未知模式处理 -->
+      <section v-else class="navbar-box__mode-unknown">
+        <div class="navbar-box__error">不支持的导航栏模式: {{ datas.configParamJson.model }}</div>
+      </section>
+    </div>
+    <slot name="deles" />
   </div>
 </template>
 
@@ -263,6 +266,10 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.NavBarBox {
+  position: relative;
+}
+
 .navbar-box {
   width: 100%;
 

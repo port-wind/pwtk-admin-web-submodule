@@ -46,7 +46,8 @@ componentProperties.set('NavBarBox', {
         animated: false,
         swipeable: false,
         lineWidth: 0,
-        lineHeight: 0
+        lineHeight: 0,
+        color: '#007aff'
       },
       itemData: [],
       bgColor: ''
