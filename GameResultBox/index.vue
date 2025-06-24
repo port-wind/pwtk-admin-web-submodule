@@ -1,6 +1,7 @@
 <script setup lang="ts" name="GameResultBox">
 import { ref, onMounted, computed } from 'vue'
 import { defineEmits } from 'vue'
+import { Sticky } from 'vant'
 import GameResultModel1 from './GameResultModel1.vue'
 import GameResultModel2 from './GameResultModel2.vue'
 import GameResultModel3 from './GameResultModel3.vue'
@@ -62,42 +63,44 @@ onMounted(async () => {
 <template>
   <div class="gameresultbox">
     <div class="gameresultbox-content">
-      <div class="game-result" data-id="game-result">
-        <!-- Model 1 的渲染内容 -->
-        <GameResultModel1
-          v-if="props.datas.configParamJson.model === 's1'"
-          :tabsData="rawTabsData"
-          :datas="props.datas"
-        />
+      <Sticky :offset-top="44">
+        <div class="game-result" data-id="game-result">
+          <!-- Model 1 的渲染内容 -->
+          <GameResultModel1
+            v-if="props.datas.configParamJson.model === 's1'"
+            :tabsData="rawTabsData"
+            :datas="props.datas"
+          />
 
-        <!-- Model 2 的渲染内容 -->
-        <GameResultModel2
-          v-else-if="props.datas.configParamJson.model === 's2'"
-          :tabsData="rawTabsData"
-          :datas="props.datas"
-        />
+          <!-- Model 2 的渲染内容 -->
+          <GameResultModel2
+            v-else-if="props.datas.configParamJson.model === 's2'"
+            :tabsData="rawTabsData"
+            :datas="props.datas"
+          />
 
-        <!-- Model 3 的渲染内容 -->
-        <GameResultModel3
-          v-if="props.datas.configParamJson.model === 's3'"
-          :tabsData="rawTabsData"
-          :datas="props.datas"
-        />
+          <!-- Model 3 的渲染内容 -->
+          <GameResultModel3
+            v-if="props.datas.configParamJson.model === 's3'"
+            :tabsData="rawTabsData"
+            :datas="props.datas"
+          />
 
-        <!-- Model 3 的渲染内容 -->
-        <GameResultModel4
-          v-if="props.datas.configParamJson.model === 's4'"
-          :tabsData="rawTabsData"
-          :datas="props.datas"
-        />
+          <!-- Model 3 的渲染内容 -->
+          <GameResultModel4
+            v-if="props.datas.configParamJson.model === 's4'"
+            :tabsData="rawTabsData"
+            :datas="props.datas"
+          />
 
-        <!-- Model 3 的渲染内容 -->
-        <GameResultModel5
-          v-if="props.datas.configParamJson.model === 's5'"
-          :tabsData="rawTabsData"
-          :datas="props.datas"
-        />
-      </div>
+          <!-- Model 3 的渲染内容 -->
+          <GameResultModel5
+            v-if="props.datas.configParamJson.model === 's5'"
+            :tabsData="rawTabsData"
+            :datas="props.datas"
+          />
+        </div>
+      </Sticky>
     </div>
     <slot name="deles" />
   </div>
