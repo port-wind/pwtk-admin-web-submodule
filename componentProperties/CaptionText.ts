@@ -8,7 +8,7 @@ componentProperties.set('CaptionText', {
   component: 'CaptionText',
   text: '标题文字',
   active: false,
-  style: 'CaptionTextsstyle',
+  style: 'CaptionTextStyle',
   setStyle: {
     componentId: '',
     sketchCodeList: '',
