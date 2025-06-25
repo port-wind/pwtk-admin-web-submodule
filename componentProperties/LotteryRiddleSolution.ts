@@ -6,7 +6,7 @@ const componentProperties = new Map<string, IComponentProperty<ISetStyle<Lottery
 componentProperties.set('LotteryRiddleSolution', {
   component: 'LotteryRiddleSolution',
   text: '彩票谜语解答',
-  active: true,
+  active: false,
   style: 'LotteryRiddleSolutionStyle',
   setStyle: {
     componentId: '',

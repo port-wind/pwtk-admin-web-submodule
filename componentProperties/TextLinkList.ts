@@ -6,7 +6,7 @@ const componentProperties = new Map<string, IComponentProperty<ISetStyle<TextLin
 componentProperties.set('TextLinkList', {
   component: 'TextLinkList', // 中间预览组件名称
   text: '文本链接列表', // 显示名称
-  active: true, // 是否可编辑
+  active: false, // 是否可编辑
   style: 'TextLinkListStyle', // 右侧配置组件名称
   setStyle: {
     componentId: '',

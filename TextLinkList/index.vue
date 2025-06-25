@@ -109,8 +109,8 @@ const subTitleStyle = computed(() => {
             @mouseleave="handleMouseLeave"
           >
             <span class="link-text">{{ item.text }}</span>
-            <span class="link-tag">{{ item.tag }}</span>
-            <span class="link-stag">{{ item.stag }}</span>
+            <span class="link-tag" v-if="item.tag">{{ item.tag }}</span>
+            <span class="link-stag" v-if="item.stag">{{ item.stag }}</span>
           </div>
         </div>
       </div>
@@ -129,7 +129,7 @@ const subTitleStyle = computed(() => {
 }
 
 .title-header {
-  padding: 12px 16px;
+  padding: 8px;
   border-radius: 8px 8px 0 0;
   display: flex;
   align-items: center;

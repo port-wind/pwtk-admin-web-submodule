@@ -8,7 +8,7 @@ const componentProperties = new Map<string, IComponentProperty<ISetStyle<NewsPap
 componentProperties.set('NewsPaperCategoryList', {
   component: 'NewsPaperCategoryList', // 中间预览组件名称
   text: '分类图纸列表', // 显示名称
-  active: true, // 是否可编辑
+  active: false, // 是否可编辑
   style: 'NewsPaperCategoryListStyle', // 右侧配置组件名称
   setStyle: {
     componentId: '',

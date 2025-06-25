@@ -25,7 +25,7 @@ const componentProperties = new Map<string, IComponentProperty<ISetStyle<Commodi
 componentProperties.set('CommoditySearch', {
   component: 'CommoditySearch',
   text: '商品搜索',
-  active: true,
+  active: false,
   style: 'CommoditySearchStyle',
   setStyle: {
     componentId: '',
