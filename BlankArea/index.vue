@@ -13,15 +13,10 @@
 import { computed } from 'vue'
 import type { IDatas } from './type'
 
-interface Props {
+interface IProps {
   datas: IDatas
-  pageModel?: 'websiteMode' | 'templateMode' | 'componentMode'
 }
-
-const props = withDefaults(defineProps<Props>(), {
-  pageModel: 'websiteMode'
-})
-
+const props = defineProps<IProps>()
 // 容器样式
 const containerStyle = computed(() => {
   return {

@@ -1,6 +1,6 @@
 import type { ISetStyle } from '../componentProperties/index'
 
-export interface BlankAreaConfig {
+export interface MyTestComponentConfig {
   backgroundColor: string // 背景颜色
   text: string // 显示文本内容
   textColor: string // 文字颜色
@@ -12,4 +12,4 @@ export interface BlankAreaConfig {
   fontWeight: number // 字体粗细
 }
 
-export interface IDatas extends ISetStyle<BlankAreaConfig> {}
+export interface IDatas extends ISetStyle<MyTestComponentConfig> {}

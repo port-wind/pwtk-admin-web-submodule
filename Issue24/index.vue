@@ -1,44 +1,34 @@
 <script setup lang="ts" name="Issue24">
 import { computed, defineProps } from 'vue'
 import type { IDatas } from './type'
-// import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
 import Result24 from './result24.vue'
 import Result2 from './result2.vue'
 import Result1 from './result1.vue'
 import { EModel } from './type'
-const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
-const styleMain = computed(() => props.datas.configParamJson.styleMain)
 
 interface IProps {
   datas: IDatas
 }
 const props = defineProps<IProps>()
+const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
+const styleMain = computed(() => props.datas.configParamJson.styleMain)
 
 // style 样式
 const containerStyle = computed(() => {
   return {
-    // backgroundColor: styleMain.value?.backgroundColor || '#f8f9fa',
     borderRadius: `${styleMain.value?.borderRadius || 0}px`,
     padding: `${styleMain.value?.padding || 0}px`
   }
 })
-
-// const numberStyle = computed(() => {
-//   return {
-//     fontSize: `${styleMain.value?.numberSize || 14}px`,
-//     margin: `0 ${styleMain.value?.numberSpacing || 0}px`
-//   }
-// })
 
 const titleHeaderStyle = computed(() => {
   if (styleHeader.value.isGradient) {
     return {
       background: `linear-gradient(to right,  ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`
     }
-  } else {
-    return {
-      backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2'
-    }
+  }
+  return {
+    backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2'
   }
 })
 
