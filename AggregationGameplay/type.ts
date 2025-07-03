@@ -1,16 +1,5 @@
 import type { ISetStyle } from '../componentProperties/index'
 
-export interface IDatas extends ISetStyle<AggregationGameplay> {}
-
-export interface AggregationGameplay {
-  title: string
-  subtitle: string
-  content: string
-  enable: boolean
-  styleHeader: IStyleHeader
-  styleMain: IStyleMain
-}
-
 export interface IStyleMain {
   padding: number
   borderRadius: number
@@ -30,3 +19,13 @@ export interface IStyleHeader {
   subTitleColor: string
   titleColor: string
 }
+export interface AggregationGameplay {
+  title: string
+  subtitle: string
+  content: string
+  enable: boolean
+  styleHeader: IStyleHeader
+  styleMain: IStyleMain
+}
+
+export interface IDatas extends ISetStyle<AggregationGameplay> {}
