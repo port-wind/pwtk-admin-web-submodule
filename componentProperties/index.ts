@@ -79,6 +79,7 @@ import BlankAreaProperties from './BlankArea'
 import EmptyCardProperties from './EmptyCard'
 import MyTestComponentProperties from './MyTestComponent'
 import Test2ComProperties from './Test2Com'
+import AggregationGameplayProperties from './AggregationGameplay'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -285,6 +286,10 @@ MyTestComponentProperties.forEach((value, key) => {
 })
 
 Test2ComProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+AggregationGameplayProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
