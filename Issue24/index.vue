@@ -6,13 +6,6 @@ import Result24 from './result24.vue'
 import Result2 from './result2.vue'
 import Result1 from './result1.vue'
 import { EModel } from './type'
-// import { gameStore } from '../store'
-// import { useStore } from '@nanostores/vue'
-// import { useIssueList } from '../hooks/issueList'
-
-// const gameStoreData = useStore(gameStore)
-// const gameType = computed(() => gameStoreData.value.gameType)
-// const forum = computed(() => props.datas.configParamJson.forumId)
 const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
 const styleMain = computed(() => props.datas.configParamJson.styleMain)
 
@@ -20,40 +13,6 @@ interface IProps {
   datas: IDatas
 }
 const props = defineProps<IProps>()
-
-// const issueListItem = ref<IGetWebSitePostResponse[]>([])
-
-// // 创建响应式参数对象
-// const issueParams = reactive({
-//   gameType: gameType.value,
-//   size: Number(props.datas.configParamJson.size),
-//   forumId: String(props.datas.configParamJson.forumId)
-// })
-
-// const {
-//   issueListItem,
-//   isLoading,
-//   hasError,
-//   errorMessage,
-//   processLotteryData,
-//   getIssueResultInfo,
-//   getHitNumber,
-//   getNumberColorClass,
-//   extractIssueNumber,
-//   processedIssueList,
-//   refreshData
-// } = useIssueList(issueParams)
-
-// // 监听 props 变化，更新响应式参数
-// watch(
-//   () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
-//   ([newSize, newForumId], [oldSize, oldForumId]) => {
-//     console.log('🚀 ~ 参数变化:', [newSize, newForumId])
-//     issueParams.size = Number(newSize)
-//     issueParams.forumId = String(newForumId)
-//     issueParams.gameType = gameType.value
-//   }
-// )
 
 // style 样式
 const containerStyle = computed(() => {
