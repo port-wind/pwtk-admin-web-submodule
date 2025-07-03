@@ -76,7 +76,9 @@ import TextLinkListProperties from './TextLinkList'
 import IssueListProperties from './IssueList'
 import Issue24Properties from './Issue24'
 import BlankAreaProperties from './BlankArea'
+import EmptyCardProperties from './EmptyCard'
 import MyTestComponentProperties from './MyTestComponent'
+import Test2ComProperties from './Test2Com'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -274,7 +276,15 @@ BlankAreaProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
+EmptyCardProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
 MyTestComponentProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+Test2ComProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
