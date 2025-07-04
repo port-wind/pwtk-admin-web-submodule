@@ -23,7 +23,7 @@ componentProperties.set('Issue24', {
     memo: '',
     pageCode: '',
     configParamJson: {
-      title: '澳门好彩【精选24码】',
+      title: '好彩【精选24码】',
       subtitle: '',
       enable: true,
       model: EModel['24码'],

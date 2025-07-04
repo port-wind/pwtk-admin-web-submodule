@@ -1,10 +1,14 @@
 <script setup lang="ts" name="Issue24">
+import { useStore } from '@nanostores/vue'
+
 import { computed, defineProps } from 'vue'
 import type { IDatas } from './type'
 import Result24 from './result24.vue'
 import Result2 from './result2.vue'
 import Result1 from './result1.vue'
 import { EModel } from './type'
+import { gameStore } from '../store'
+import { getGameName } from '../store/gameStore'
 
 interface IProps {
   datas: IDatas
@@ -12,7 +16,7 @@ interface IProps {
 const props = defineProps<IProps>()
 const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
 const styleMain = computed(() => props.datas.configParamJson.styleMain)
-
+const gameStoreData = useStore(gameStore)
 // style 样式
 const containerStyle = computed(() => {
   return {
@@ -50,7 +54,9 @@ const subTitleStyle = computed(() => {
     <div class="Issue24-content" :style="containerStyle">
       <!-- 头部标题 -->
       <div class="title-header" :style="titleHeaderStyle">
-        <h2 class="main-title" :style="mainTitleStyle">{{ datas.configParamJson.title }}</h2>
+        <h2 class="main-title" :style="mainTitleStyle">
+          {{ getGameName(gameStoreData.gameType) }}{{ datas.configParamJson.title }}
+        </h2>
         <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
       </div>
       <!-- 开奖信息列表 24码风格 -->

@@ -12,6 +12,7 @@ interface IGameStore {
   numInfo: any[]
   issueList: any[]
   forum: IGetBBsForumIdByIdData | null
+  gameNameMap: Map<string, string>
 }
 
 export const gameStore = atom<IGameStore>({
@@ -31,6 +32,7 @@ export const gameStore = atom<IGameStore>({
     updateTime: 0,
     status: 'y'
   },
+  gameNameMap: new Map<string, string>(),
   numInfo: [],
   gameTypeList: [],
   issueList: [], //https://ocs.ai4funs.com/pwtk/gr/a6/history/2025
@@ -81,6 +83,9 @@ export async function getGameTypeList() {
       ...gameStore.get(),
       gameTypeList: res[0].data
     })
+    gameStore.get().gameTypeList.forEach((item) => {
+      gameStore.get().gameNameMap.set(item.gameType, item.gameTypeLongName.replace('六合彩', ''))
+    })
   }
 }
 
@@ -89,6 +94,10 @@ export async function updateForum(forum: IGetBBsForumIdByIdData) {
     ...gameStore.get(),
     forum
   })
+}
+
+export function getGameName(gameType: string) {
+  return gameStore.get().gameNameMap.get(gameType)
 }
 
 getNumInfo()
