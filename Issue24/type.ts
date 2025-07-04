@@ -30,7 +30,8 @@ export enum EModel {
   '三炮中特',
   '一句赢钱',
   '平特2肖',
-  '绝杀区'
+  '绝杀区',
+  '中特码段'
 }
 
 export interface IStyleMain {

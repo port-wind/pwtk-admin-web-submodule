@@ -63,6 +63,8 @@ const subTitleStyle = computed(() => {
       <PingTe2Xiao :datas="datas" v-if="datas.configParamJson.model === EModel['平特2肖']" />
       <!-- 绝杀区 -->
       <OverKill :datas="datas" v-if="datas.configParamJson.model === EModel['绝杀区']" />
+      <!-- 中间号码范围 -->
+      <MiddlesNumberRange :datas="datas" v-if="datas.configParamJson.model === EModel['中间号码范围']" />
     </div>
     <slot name="deles" />
   </div>
