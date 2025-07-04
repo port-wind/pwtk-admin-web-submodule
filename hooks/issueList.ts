@@ -61,7 +61,7 @@ export function useIssueList(params: IUseIssueListParams) {
 
     return predictions.map((prediction) => {
       const { predict, hitDetail } = prediction
-      if (!predict || !hitDetail) return { numbers: [] }
+      if (!predict) return { numbers: [] }
 
       // 根据hitDetail判断哪些号码需要高亮
       const numbers = predict.map((number: string, index: number) => ({

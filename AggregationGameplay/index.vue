@@ -18,28 +18,17 @@ const containerStyle = computed(() => {
   }
 })
 
-const titleHeaderStyle = computed(() => {
-  if (styleHeader.value.isGradient) {
-    return {
-      background: `linear-gradient(to right,  ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`
-    }
-  }
-  return {
-    backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2'
-  }
-})
-
 const mainTitleStyle = computed(() => {
   return {
     color: styleHeader.value?.titleColor || '#333333'
   }
 })
 
-const subTitleStyle = computed(() => {
-  return {
-    color: styleHeader.value?.subTitleColor || '#333333'
-  }
-})
+// const subTitleStyle = computed(() => {
+//   return {
+//     color: styleHeader.value?.subTitleColor || '#333333'
+//   }
+// })
 
 const contentStyle = computed(() => {
   return {
@@ -49,20 +38,30 @@ const contentStyle = computed(() => {
     textAlign: styleMain.value?.textAlign || 'center'
   }
 })
+const titleHeaderStyle = computed(() => {
+  if (styleHeader.value.isGradient) {
+    return {
+      background: `linear-gradient(to right,  ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`,
+      ...contentStyle.value
+    }
+  }
+  return {
+    backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2',
+    ...contentStyle.value
+  }
+})
 </script>
 
 <template>
   <div class="AggregationGameplay">
     <div class="AggregationGameplay-content" :style="containerStyle">
       <!-- 头部标题 -->
-      <div class="title-header" :style="titleHeaderStyle">
-        <h2 class="main-title" :style="mainTitleStyle">{{ datas.configParamJson.title }}</h2>
-        <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
+      <div class="title-header" :style="titleHeaderStyle" style="display: flex; align-items: center">
+        <span class="main-title" :style="mainTitleStyle">{{ datas.configParamJson.title }}</span>
       </div>
       <!-- 内容区域 -->
-      <div class="content-area" :style="contentStyle">
-        {{ datas.configParamJson.content }}
-      </div>
+      <MultiAggregation :datas="datas" />
+      <!-- <div class="content-area" :style="contentStyle"></div> -->
     </div>
     <slot name="deles" />
   </div>
@@ -78,7 +77,7 @@ const contentStyle = computed(() => {
   border-radius: 8px 8px 0 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 
   .main-title {
     margin: 0;
