@@ -35,34 +35,17 @@ const mainTitleStyle = computed(() => {
   }
 })
 
-const subTitleStyle = computed(() => {
-  return {
-    color: styleHeader.value?.subTitleColor || '#333333'
-  }
-})
-
-const contentStyle = computed(() => {
-  return {
-    color: styleMain.value?.textColor || '#333333',
-    fontSize: `${styleMain.value?.fontSize || 14}px`,
-    fontWeight: styleMain.value?.fontWeight || 400,
-    textAlign: styleMain.value?.textAlign || 'center'
-  }
-})
 </script>
 
 <template>
   <div class="HotRecommendations">
     <div class="HotRecommendations-content" :style="containerStyle">
       <!-- 头部标题 -->
-      <div class="title-header" :style="titleHeaderStyle">
+      <div class="title-header" :style="titleHeaderStyle" style="display: flex; align-items: center">
         <h2 class="main-title" :style="mainTitleStyle">{{ datas.configParamJson.title }}</h2>
-        <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
       </div>
       <!-- 内容区域 -->
-      <div class="content-area" :style="contentStyle">
-        {{ datas.configParamJson.content }}
-      </div>
+      <NormalRec :datas="datas" />
     </div>
     <slot name="deles" />
   </div>
@@ -78,12 +61,14 @@ const contentStyle = computed(() => {
   border-radius: 8px 8px 0 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  text-align: center;
+  justify-content: center;
 
   .main-title {
     margin: 0;
     font-size: 18px;
     font-weight: bold;
+    text-align: center;
   }
 
   .sub-title {
