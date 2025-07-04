@@ -59,6 +59,8 @@ const subTitleStyle = computed(() => {
       <Result2 :datas="datas" v-if="datas.configParamJson.model === EModel['胆大胆小']" />
       <!-- 色波 -->
       <Result1 :datas="datas" v-if="datas.configParamJson.model === EModel['色波']" />
+      <!-- 平特2肖 -->
+      <PingTe2Xiao :datas="datas" v-if="datas.configParamJson.model === EModel['平特2肖']" />
     </div>
     <slot name="deles" />
   </div>
