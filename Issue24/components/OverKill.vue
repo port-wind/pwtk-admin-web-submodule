@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, watch } from 'vue'
+import { defineProps, watch, computed, reactive } from 'vue'
 import { useStore } from '@nanostores/vue'
 
 import type { IDatas } from '../type'
@@ -13,8 +13,6 @@ const props = defineProps<IProps>()
 
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
-// const forum = computed(() => props.datas.configParamJson.forumId)
-// const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
 
 // 创建响应式参数对象
 const issueParams = reactive({
@@ -24,6 +22,18 @@ const issueParams = reactive({
 })
 
 const { extractIssueNumber, processedIssueList } = useIssueList(issueParams)
+
+// 添加调试输出
+watch(
+  () => processedIssueList.value,
+  (newList) => {
+    console.log('🚀 ~ OverKill processedIssueList:', newList)
+    if (newList.length > 0) {
+      console.log('🚀 ~ OverKill sample issue:', newList[0])
+    }
+  },
+  { immediate: true }
+)
 
 watch(
   () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
@@ -36,113 +46,217 @@ watch(
   }
 )
 
-// 获取平特二肖的中奖数量
-const getPingTe2XiaoHitCount = (issue: any) => {
-  if (!issue.processedPredictions || issue.processedPredictions.length === 0) return 0
+// 获取杀肖数据
+const getKillAnimal = (issue: any) => {
+  if (!issue.lotteryPredictions || issue.lotteryPredictions.length === 0) return '-'
 
-  // 计算前两个预测动物中有多少个高亮（中奖）
-  const prediction = issue.processedPredictions[0]
-  if (!prediction || !prediction.numbers || prediction.numbers.length < 2) return 0
+  // 查找杀特肖预测 (code: "8153")
+  const killAnimalPrediction = issue.lotteryPredictions.find(
+    (pred: any) => pred.code === '8153' || pred.name === '杀特肖'
+  )
+  if (!killAnimalPrediction || !killAnimalPrediction.predict || killAnimalPrediction.predict.length === 0) return '-'
 
-  const hitCount = prediction.numbers.slice(0, 2).filter((num) => num.isHighlight).length
-  return hitCount
+  return killAnimalPrediction.predict[0]
 }
 
-// 获取预测的两个动物
-const getPredictedAnimals = (issue: any) => {
-  if (!issue.processedPredictions || issue.processedPredictions.length === 0) return []
+// 获取杀波数据
+const getKillWave = (issue: any) => {
+  if (!issue.lotteryPredictions || issue.lotteryPredictions.length === 0) return '-'
 
-  const prediction = issue.processedPredictions[0]
-  if (!prediction || !prediction.numbers || prediction.numbers.length < 2) return []
+  // 查找绝杀半波预测 (code: "8161")
+  const killWavePrediction = issue.lotteryPredictions.find(
+    (pred: any) => pred.code === '8161' || pred.name === '绝杀半波'
+  )
+  if (!killWavePrediction || !killWavePrediction.predict || killWavePrediction.predict.length === 0) return '-'
 
-  return prediction.numbers.slice(0, 2)
+  return killWavePrediction.predict[0]
+}
+
+// 获取杀行数据
+const getKillRow = (issue: any) => {
+  if (!issue.lotteryPredictions || issue.lotteryPredictions.length === 0) return '-'
+
+  // 查找杀行预测 (code: "8162")
+  const killRowPrediction = issue.lotteryPredictions.find((pred: any) => pred.code === '8162' || pred.name === '杀行')
+  if (!killRowPrediction || !killRowPrediction.predict || killRowPrediction.predict.length === 0) return '-'
+
+  return killRowPrediction.predict[0]
+}
+
+// 获取开奖结果
+const getLotteryResult = (issue: any) => {
+  if (!issue.numInfo || issue.numInfo.length === 0) return '? 00'
+
+  // 查找特码 (index: 7 或最后一个)
+  const specialNumber = issue.numInfo.find((info: any) => info.index === 7) || issue.numInfo[issue.numInfo.length - 1]
+  if (!specialNumber) return '? 00'
+
+  const { shengxiao = '', num = '00' } = specialNumber
+
+  return `${shengxiao}${num}`
+}
+
+// 判断是否为当前期（未开奖）
+const isCurrentPeriod = (issue: any) => {
+  // 如果没有numInfo或numInfo为空，则是当前期
+  if (!issue.numInfo || issue.numInfo.length === 0) return true
+
+  // 如果有预测且isHit为"i"（incomplete），则是当前期
+  if (issue.lotteryPredictions && issue.lotteryPredictions.length > 0) {
+    const hasIncomplete = issue.lotteryPredictions.some((pred: any) => pred.isHit === 'i')
+    return hasIncomplete
+  }
+
+  return false
 }
 </script>
 
 <template>
-  <div class="issue-list" v-if="datas.configParamJson.enable">
-    <div v-for="(issue, issueIndex) in processedIssueList" :key="issue.postId" class="issue-item">
-      <!-- 平特二肖显示格式：期数期:平特二肖《动物1》《动物2》中:X肖 -->
-      <div class="pingte-item">
-        <span class="period">{{ extractIssueNumber(issue.postIssue) }}期:</span>
-        <span class="title">平特二肖</span>
-        <template
-          v-for="(animal, animalIndex) in getPredictedAnimals(issue)"
-          :key="`animal-${issueIndex}-${animalIndex}`"
-        >
-          <span :class="['animal', { 'animal-highlight': animal.isHighlight }]">《{{ animal.number }}》</span>
-        </template>
-        <span class="hit-result">中:{{ getPingTe2XiaoHitCount(issue) }}肖</span>
-      </div>
+  <div class="overkill-table" v-if="datas.configParamJson.enable">
+    <div class="table-container">
+      <table class="lottery-table">
+        <thead>
+          <tr>
+            <th>期数</th>
+            <th>杀肖</th>
+            <th>杀波</th>
+            <th>杀行</th>
+            <th>开奖</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(issue, issueIndex) in processedIssueList" :key="issue.postId" class="table-row">
+            <td class="period-cell">{{ extractIssueNumber(issue.postIssue) }}期</td>
+            <td class="kill-animal-cell">{{ getKillAnimal(issue) }}</td>
+            <td class="kill-wave-cell">{{ getKillWave(issue) }}</td>
+            <td class="kill-row-cell">{{ getKillRow(issue) }}</td>
+            <td class="lottery-result-cell" :class="{ 'current-period': isCurrentPeriod(issue) }">
+              {{ getLotteryResult(issue) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.issue-list {
-  padding: 0;
+.overkill-table {
+  width: 100%;
   background-color: #ffffff;
 }
 
-.issue-item {
-  padding: 8px 12px;
-  border-bottom: 1px solid #e8eaed;
-  background-color: #ffffff;
-
-  &:last-child {
-    border-bottom: none;
-  }
+.table-container {
+  width: 100%;
+  overflow-x: auto;
 }
 
-.pingte-item {
-  display: flex;
-  align-items: center;
-  gap: 2px;
+.lottery-table {
+  width: 100%;
+  border-collapse: collapse;
   font-size: 14px;
   line-height: 1.5;
-  color: #333;
-  justify-content: center;
-  text-align: center;
-  padding: 4px 0;
-}
+  border: 1px solid #68a690;
 
-.period {
-  color: #333;
-  font-weight: 500;
-}
+  th,
+  td {
+    padding: 8px 12px;
+    text-align: center;
+    border: 1px solid #68a690;
+    font-weight: 500;
+  }
 
-.title {
-  color: #333;
-  font-weight: 500;
-}
+  thead {
+    background-color: #68a690;
 
-.animal {
-  color: #e74c3c;
-  font-weight: 500;
-  margin: 0 1px;
+    th {
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 14px;
+    }
+  }
 
-  &.animal-highlight {
-    background-color: #ffeb3b;
-    color: #333;
-    border-radius: 2px;
-    padding: 0 2px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  tbody {
+    tr {
+      background-color: #ffffff;
+
+      &:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      &:hover {
+        background-color: #e8f4f0;
+      }
+    }
+
+    td {
+      color: #333333;
+      font-size: 13px;
+    }
   }
 }
 
-.hit-result {
-  color: #333;
+.period-cell {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.kill-animal-cell {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.kill-wave-cell {
+  color: #3498db;
   font-weight: 500;
+}
+
+.kill-row-cell {
+  color: #f39c12;
+  font-weight: 500;
+}
+
+.lottery-result-cell {
+  color: #27ae60;
+  font-weight: 600;
+
+  &.current-period {
+    color: #95a5a6;
+    font-style: italic;
+  }
 }
 
 @media (max-width: 768px) {
-  .pingte-item {
+  .lottery-table {
     font-size: 12px;
-    gap: 1px;
+
+    th,
+    td {
+      padding: 6px 8px;
+      font-size: 12px;
+    }
+
+    thead th {
+      font-size: 12px;
+    }
   }
 
-  .issue-item {
-    padding: 6px 8px;
+  .period-cell,
+  .kill-animal-cell,
+  .lottery-result-cell {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lottery-table {
+    font-size: 11px;
+
+    th,
+    td {
+      padding: 4px 6px;
+      font-size: 11px;
+    }
   }
 }
 </style>
