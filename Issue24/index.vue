@@ -71,6 +71,8 @@ const subTitleStyle = computed(() => {
       <SumOddEven :datas="datas" v-if="datas.configParamJson.model === EModel['合数单双']" />
       <!-- 无敌八尾 -->
       <InvincibleEightTail :datas="datas" v-if="datas.configParamJson.model === EModel['无敌八尾']" />
+      <!-- 复式平码 -->
+      <DuplexFlatCode :datas="datas" v-if="datas.configParamJson.model === EModel['复式平码']" />
     </div>
     <slot name="deles" />
   </div>
