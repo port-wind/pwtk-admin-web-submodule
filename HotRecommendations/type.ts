@@ -1,16 +1,5 @@
 import type { ISetStyle } from '../componentProperties/index'
 
-export interface IDatas extends ISetStyle<HotRecommendations> {}
-
-export interface HotRecommendations {
-  title: string
-  subtitle: string
-  content: string
-  enable: boolean
-  styleHeader: IStyleHeader
-  styleMain: IStyleMain
-}
-
 export interface IStyleMain {
   padding: number
   borderRadius: number
@@ -30,3 +19,14 @@ export interface IStyleHeader {
   subTitleColor: string
   titleColor: string
 }
+
+export interface HotRecommendations {
+  title: string
+  subtitle: string
+  content: string
+  enable: boolean
+  styleHeader: IStyleHeader
+  styleMain: IStyleMain
+}
+
+export interface IDatas extends ISetStyle<HotRecommendations> {}
