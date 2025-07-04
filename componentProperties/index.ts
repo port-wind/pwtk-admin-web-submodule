@@ -80,6 +80,7 @@ import EmptyCardProperties from './EmptyCard'
 import MyTestComponentProperties from './MyTestComponent'
 import Test2ComProperties from './Test2Com'
 import AggregationGameplayProperties from './AggregationGameplay'
+import HotRecommendationsProperties from './HotRecommendations'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -290,6 +291,10 @@ Test2ComProperties.forEach((value, key) => {
 })
 
 AggregationGameplayProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+HotRecommendationsProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
