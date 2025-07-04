@@ -65,6 +65,8 @@ const subTitleStyle = computed(() => {
       <OverKill :datas="datas" v-if="datas.configParamJson.model === EModel['绝杀区']" />
       <!-- 中间号码范围 -->
       <MiddlesNumberRange :datas="datas" v-if="datas.configParamJson.model === EModel['中特码段']" />
+      <!-- 天地生肖 -->
+      <HavenEarthZodiac :datas="datas" v-if="datas.configParamJson.model === EModel['天地生肖']" />
     </div>
     <slot name="deles" />
   </div>

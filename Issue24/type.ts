@@ -31,7 +31,8 @@ export enum EModel {
   '一句赢钱',
   '平特2肖',
   '绝杀区',
-  '中特码段'
+  '中特码段',
+  '天地生肖'
 }
 
 export interface IStyleMain {
