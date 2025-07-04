@@ -35,7 +35,8 @@ export enum EModel {
   '天地生肖',
   '合数单双',
   '无敌八尾',
-  '复式平码'
+  '复式平码',
+  '一句解特码'
 }
 
 export interface IStyleMain {

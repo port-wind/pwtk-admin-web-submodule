@@ -73,6 +73,8 @@ const subTitleStyle = computed(() => {
       <InvincibleEightTail :datas="datas" v-if="datas.configParamJson.model === EModel['无敌八尾']" />
       <!-- 复式平码 -->
       <DuplexFlatCode :datas="datas" v-if="datas.configParamJson.model === EModel['复式平码']" />
+      <!-- 一句解特码 -->
+      <OneSentenceDecipher :datas="datas" v-if="datas.configParamJson.model === EModel['一句解特码']" />
     </div>
     <slot name="deles" />
   </div>
