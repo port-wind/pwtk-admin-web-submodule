@@ -32,7 +32,8 @@ export enum EModel {
   '平特2肖',
   '绝杀区',
   '中特码段',
-  '天地生肖'
+  '天地生肖',
+  '合数单双'
 }
 
 export interface IStyleMain {

@@ -67,6 +67,8 @@ const subTitleStyle = computed(() => {
       <MiddlesNumberRange :datas="datas" v-if="datas.configParamJson.model === EModel['中特码段']" />
       <!-- 天地生肖 -->
       <HavenEarthZodiac :datas="datas" v-if="datas.configParamJson.model === EModel['天地生肖']" />
+      <!-- 合数单双 -->
+      <SumOddEven :datas="datas" v-if="datas.configParamJson.model === EModel['合数单双']" />
     </div>
     <slot name="deles" />
   </div>
