@@ -33,7 +33,8 @@ export enum EModel {
   '绝杀区',
   '中特码段',
   '天地生肖',
-  '合数单双'
+  '合数单双',
+  '无敌八尾'
 }
 
 export interface IStyleMain {

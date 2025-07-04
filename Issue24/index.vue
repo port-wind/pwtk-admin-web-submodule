@@ -69,6 +69,8 @@ const subTitleStyle = computed(() => {
       <HavenEarthZodiac :datas="datas" v-if="datas.configParamJson.model === EModel['天地生肖']" />
       <!-- 合数单双 -->
       <SumOddEven :datas="datas" v-if="datas.configParamJson.model === EModel['合数单双']" />
+      <!-- 无敌八尾 -->
+      <InvincibleEightTail :datas="datas" v-if="datas.configParamJson.model === EModel['无敌八尾']" />
     </div>
     <slot name="deles" />
   </div>
