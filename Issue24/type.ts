@@ -29,7 +29,8 @@ export enum EModel {
   '买啥中啥',
   '三炮中特',
   '一句赢钱',
-  '平特2肖'
+  '平特2肖',
+  '绝杀区'
 }
 
 export interface IStyleMain {
