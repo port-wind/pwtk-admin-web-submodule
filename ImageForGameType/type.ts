@@ -1,21 +1,5 @@
 import type { ISetStyle } from '../componentProperties/index'
 
-export interface IDatas extends ISetStyle<ImageForGameTypeConfig> {}
-
-export interface ImageForGameTypeConfig {
-  title: string
-  subtitle: string
-  content: string
-  enable: boolean
-  showGameType: boolean
-  gameType: string
-  gameTypeCode: string
-  forumId: string
-  size: number
-  styleHeader: IStyleHeader
-  styleMain: IStyleMain
-}
-
 export interface IStyleMain {
   padding: number
   borderRadius: number
@@ -35,3 +19,31 @@ export interface IStyleHeader {
   subTitleColor: string
   titleColor: string
 }
+
+// 🎮 动态彩种配置字段类型
+export interface GameTypeFieldConfig {
+  gameTypeName: string
+  gameTypeCode: string
+  gameTypeLongName: string
+  gameTypeShortName: string
+  enabled: boolean
+  customData: Record<string, any>
+}
+
+export interface ImageForGameTypeConfig {
+  title: string
+  subtitle: string
+  content: string
+  enable: boolean
+  showGameType: boolean
+  gameType: string
+  gameTypeCode: string
+  forumId: string
+  size: number
+  styleHeader: IStyleHeader
+  styleMain: IStyleMain
+  // 🎮 动态彩种字段 - 支持基于 gameType 的动态配置
+  [gameTypeId: string]: any
+}
+
+export interface IDatas extends ISetStyle<ImageForGameTypeConfig> {}
