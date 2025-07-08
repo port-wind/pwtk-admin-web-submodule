@@ -12,13 +12,26 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 const datas = computed(() => props.datas)
-const { currentGameTypeImageUrl } = useGameTypeFields(datas.value)
+const { currentGameTypeImageUrl, turnToUrl } = useGameTypeFields(datas.value)
 // 🎮 gameType Store 集成 - 动态组件必需
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
 const currentGame = computed(() => gameStoreData.value.currentGame)
 const currentGameName = computed(() => currentGame.value?.gameTypeLongName || '未知游戏')
 
+const styleMain = computed(() => {
+  return {
+    backgroundColor: datas.value.configParamJson.styleMain.backgroundColor,
+    textAlign: datas.value.configParamJson.styleMain.textAlign
+  }
+})
+const styleTitle = computed(() => {
+  return {
+    color: datas.value.configParamJson.styleMain.textColor,
+    fontSize: `${datas.value.configParamJson.styleMain.fontSize}px`,
+    fontWeight: datas.value.configParamJson.styleMain.fontWeight
+  }
+})
 // 🔄 响应式参数对象，与配置同步
 const componentParams = reactive({
   gameType: props.datas.configParamJson.gameType || gameType.value,
@@ -66,9 +79,9 @@ const fetchGameData = async (gType: string | number) => {
   }
 }
 const handleLink = () => {
-  const { link } = datas.value.configParamJson[gameType.value].customData
-  if (link) {
-    window.open(link, '_blank')
+  console.log('turnToUrl', turnToUrl.value)
+  if (turnToUrl.value) {
+    window.open(turnToUrl.value, '_blank')
   }
 }
 // 🎯 监听游戏类型变化 - 全局store变化
@@ -117,8 +130,8 @@ onMounted(() => {
 <template>
   <div class="ImageCard">
     <div class="ImageCard-content">
-      <div class="ImageCard-container" @click="handleLink">
-        <div :style="imageStyle">
+      <div class="ImageCard-container">
+        <div :style="imageStyle" @click="handleLink">
           <img
             :src="getFullUrl(currentGameTypeImageUrl, PUBLIC_CDN_URL)"
             :alt="props.datas.configParamJson.title"
@@ -126,8 +139,8 @@ onMounted(() => {
             draggable="false"
           />
         </div>
-        <div class="card-content" v-if="props.datas.configParamJson.enable">
-          <h3 class="card-title">{{ props.datas.configParamJson.title }}</h3>
+        <div class="card-content" v-if="props.datas.configParamJson.enable" :style="styleMain">
+          <h3 class="card-title" :style="styleTitle">{{ props.datas.configParamJson.title }}</h3>
           <p class="card-description">{{ props.datas.configParamJson.description }}</p>
         </div>
       </div>
@@ -169,9 +182,6 @@ onMounted(() => {
 
 .card-title {
   margin: 0 0 8px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
 }
 
 .card-description {
