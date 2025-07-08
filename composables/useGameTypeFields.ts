@@ -1,7 +1,7 @@
 import { computed, onMounted, watch } from 'vue'
 import { useStore } from '@nanostores/vue'
-import { gameStore } from '@/views/WebVision/components/componentsbiz/store/index'
-import type { IDatas } from '@/views/WebVision/components/componentsbiz/ImageForGameType/type'
+import { gameStore } from '../store/index'
+import type { IDatas } from '../ImageForGameType/type'
 
 /**
  * 🎮 GameType Fields Composable
