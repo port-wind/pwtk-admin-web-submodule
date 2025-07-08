@@ -81,6 +81,7 @@ import MyTestComponentProperties from './MyTestComponent'
 import Test2ComProperties from './Test2Com'
 import AggregationGameplayProperties from './AggregationGameplay'
 import HotRecommendationsProperties from './HotRecommendations'
+import ImageGameTypeCardsProperties from './ImageGameTypeCards'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -295,6 +296,10 @@ AggregationGameplayProperties.forEach((value, key) => {
 })
 
 HotRecommendationsProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+ImageGameTypeCardsProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
