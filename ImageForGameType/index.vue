@@ -5,7 +5,7 @@ import { getFullUrl, PUBLIC_CDN_URL } from '../utils'
 import { gameStore } from '../store/index'
 import type { IDatas } from './type'
 import type { IGameType } from '../store/gameStore'
-import { useGameTypeFields } from '../../rightslider/composables/useGameTypeFields'
+import { useGameTypeFields } from '../composables/useGameTypeFields'
 
 interface IProps {
   datas: IDatas
