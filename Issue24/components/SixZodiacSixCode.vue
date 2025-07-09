@@ -273,6 +273,40 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
           </div>
         </div>
 
+        <!-- 三肖行 -->
+        <div class="zodiac-row">
+          <div class="row-label">{{ activeIssueData.postIssue.slice(-3) }}期三肖</div>
+          <div class="content-area">
+            <template v-if="!isAllMissed(activeIssueData)">
+              <div class="content-items">
+                <span
+                  v-for="(item, idx) in getSixZodiacSixCodeData(activeIssueData).zodiacs.slice(0, 3)"
+                  :key="`zodiac-3-${idx}`"
+                  :class="['item', { highlight: item.isHighlight }]"
+                >
+                  {{ item.zodiac }}
+                </span>
+              </div>
+            </template>
+            <template v-else>
+              <div class="advertisement-area">
+                <span
+                  class="ad-content"
+                  :style="{
+                    color: getRowConfig(activeIssueData, '三肖').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '三肖').advertisementFontSize + 'px'
+                  }"
+                >
+                  {{ formatAdvertisement(activeIssueData, '三肖') }}
+                </span>
+              </div>
+            </template>
+          </div>
+          <div class="hit-status">
+            开:{{ getHitCount(activeIssueData) > 0 ? getHitCount(activeIssueData) : '?' }} 00
+          </div>
+        </div>
+
         <!-- 二肖行 -->
         <div class="zodiac-row">
           <div class="row-label">{{ activeIssueData.postIssue.slice(-3) }}期二肖</div>

@@ -7,6 +7,7 @@ export type SixZodiacRowType =
   | '六肖'
   | '五肖'
   | '四肖'
+  | '三肖'
   | '二肖'
   | '一肖'
   | '内幕消息'
