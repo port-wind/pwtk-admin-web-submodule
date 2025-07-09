@@ -12,7 +12,9 @@ export function useGameTypeFields(datas: IDatas) {
   const gameStoreData = useStore(gameStore)
   const gameType = computed(() => gameStoreData.value.gameType)
   const gList = computed(() => gameStoreData.value.gameTypeList)
-
+  const getItem = () => {
+    return { imageUrl: 'https://img.yzcdn.cn/vant/cat.jpeg', url: '', show: true }
+  }
   // 🎮 动态生成基于彩种的配置字段
   const generateGameTypeFields = () => {
     const fields: Record<string, any> = {}
@@ -27,7 +29,7 @@ export function useGameTypeFields(datas: IDatas) {
             gameTypeLongName: gameItem.gameTypeLongName,
             gameTypeShortName: gameItem.gameTypeShortName,
             enabled: existing?.enabled ?? true,
-            customData: existing?.customData ?? { imageUrl: '', url: '' }
+            customData: existing?.customData ?? getItem()
           }
         }
       })
@@ -53,7 +55,7 @@ export function useGameTypeFields(datas: IDatas) {
   // 🔧 创建彩种自定义数据字段的通用函数
   const createGameTypeCustomDataField = (
     fieldName: keyof (typeof datas.configParamJson)[string]['customData'],
-    defaultValue = ''
+    defaultValue: any = ''
   ) => {
     return computed({
       get: () => {
@@ -61,13 +63,15 @@ export function useGameTypeFields(datas: IDatas) {
         if (!currentGameType || !datas.configParamJson[currentGameType]) {
           return defaultValue
         }
-        return datas.configParamJson[currentGameType].customData?.[fieldName] || defaultValue
+        console.log(datas.configParamJson[currentGameType].customData)
+
+        return datas.configParamJson[currentGameType].customData?.[fieldName] ?? defaultValue
       },
       set: (value: string) => {
         const currentGameType = gameType.value
         if (currentGameType && datas.configParamJson[currentGameType]) {
           if (!datas.configParamJson[currentGameType].customData) {
-            datas.configParamJson[currentGameType].customData = { imageUrl: '', url: '' }
+            datas.configParamJson[currentGameType].customData = getItem()
           }
           datas.configParamJson[currentGameType].customData[fieldName] = value
         }
@@ -80,6 +84,8 @@ export function useGameTypeFields(datas: IDatas) {
 
   // 🔗 当前彩种跳转URL的双向绑定
   const currentGameTypeUrl = createGameTypeCustomDataField('url', '')
+
+  const showOrNotByGameType = createGameTypeCustomDataField('show', true)
 
   // 🚀 在组件挂载时初始化彩种字段
   onMounted(() => {
@@ -107,6 +113,7 @@ export function useGameTypeFields(datas: IDatas) {
     gList,
     currentGameTypeImageUrl,
     turnToUrl: currentGameTypeUrl,
+    show: showOrNotByGameType,
     generateGameTypeFields,
     initializeGameTypeFields
   }

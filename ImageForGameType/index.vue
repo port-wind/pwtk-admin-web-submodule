@@ -12,13 +12,16 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 const datas = computed(() => props.datas)
-const { currentGameTypeImageUrl, turnToUrl } = useGameTypeFields(datas.value)
+const { currentGameTypeImageUrl, turnToUrl, show } = useGameTypeFields(datas.value)
+watch(show, (newVal) => {
+  console.log(newVal)
+})
 // 🎮 gameType Store 集成 - 动态组件必需
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
 const currentGame = computed(() => gameStoreData.value.currentGame)
 const currentGameName = computed(() => currentGame.value?.gameTypeLongName || '未知游戏')
-
+// const show = computed(() => datas.value.configParamJson[gameType.value]?.customData?.show)
 const styleMain = computed(() => {
   return {
     backgroundColor: datas.value.configParamJson.styleMain.backgroundColor,
@@ -128,7 +131,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="ImageCard">
+  <div class="ImageCard" v-if="show">
     <div class="ImageCard-content">
       <div class="ImageCard-container">
         <div :style="imageStyle" @click="handleLink">
