@@ -5,6 +5,7 @@ export interface IDatas extends ISetStyle<Issue24> {}
 export interface Issue24 {
   model: EModel // 24码风格  ”24“
   title: string
+  titlePrefix: string
   subtitle: string
   enable: boolean
   size: number
@@ -36,7 +37,8 @@ export enum EModel {
   '合数单双',
   '无敌八尾',
   '复式平码',
-  '一句解特码'
+  '一句解特码',
+  '横扫黑庄'
 }
 
 export interface IStyleMain {

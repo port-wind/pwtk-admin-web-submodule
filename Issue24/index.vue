@@ -64,7 +64,8 @@ const subTitleStyle = computed(() => {
       <!-- 头部标题 -->
       <div class="title-header" :style="titleHeaderStyle">
         <h2 class="main-title" :style="mainTitleStyle">
-          {{ getGameName(gameStoreData.gameType) }}{{ datas.configParamJson.title }}
+          {{ datas.configParamJson.titlePrefix }}{{ getGameName(gameStoreData.gameType)
+          }}{{ datas.configParamJson.title }}
         </h2>
         <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
       </div>
@@ -90,6 +91,8 @@ const subTitleStyle = computed(() => {
       <DuplexFlatCode :datas="datas" v-if="datas.configParamJson.model === EModel['复式平码']" />
       <!-- 一句解特码 -->
       <OneSentenceDecipher :datas="datas" v-if="datas.configParamJson.model === EModel['一句解特码']" />
+      <!-- 横扫黑庄 -->
+      <SweepBlackBank :datas="datas" v-if="datas.configParamJson.model === EModel['横扫黑庄']" />
     </div>
     <slot name="deles" />
   </div>

@@ -24,6 +24,7 @@ componentProperties.set('Issue24', {
     pageCode: '',
     configParamJson: {
       title: '好彩【精选24码】',
+      titlePrefix: '',
       subtitle: '',
       enable: true,
       model: EModel['24码'],
