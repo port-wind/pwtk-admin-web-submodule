@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { defineProps, watch, computed, reactive, ref } from 'vue'
+import { defineProps, watch, computed, reactive } from 'vue'
 import { useStore } from '@nanostores/vue'
 
 import type { IDatas, SixZodiacRowType } from '../type'
 import { useIssueList } from '../../hooks/issueList'
-import { gameStore } from '../../store'
+import { gameStore, setActiveTabIndex } from '../../store'
 
 interface IProps {
   datas: IDatas
@@ -23,8 +23,8 @@ const issueParams = reactive({
 
 const { extractIssueNumber, processedIssueList } = useIssueList(issueParams)
 
-// 当前活跃的tab
-const activeTab = ref(0)
+// 使用共享的活跃tab状态
+const activeTab = computed(() => gameStoreData.value.activeTabIndex)
 
 // 生肖映射 (removed as not used in current implementation)
 
@@ -170,7 +170,7 @@ const contentItemsGap = computed(() => {
         v-for="(issue, index) in processedIssueList"
         :key="issue.postId"
         :class="['tab-item', { active: activeTab === index }]"
-        @mouseenter="activeTab = index"
+        @mouseenter="setActiveTabIndex(index)"
       >
         {{ getTabTitle(issue) }}
       </div>

@@ -13,6 +13,7 @@ interface IGameStore {
   issueList: any[]
   forum: IGetBBsForumIdByIdData | null
   gameNameMap: Map<string, string>
+  activeTabIndex: number // 用于六肖六码组件的tab同步
 }
 
 export const gameStore = atom<IGameStore>({
@@ -36,7 +37,8 @@ export const gameStore = atom<IGameStore>({
   numInfo: [],
   gameTypeList: [],
   issueList: [], //https://ocs.ai4funs.com/pwtk/gr/a6/history/2025
-  forum: null
+  forum: null,
+  activeTabIndex: 0
 })
 
 export function changeGameType(game: IGameType) {
@@ -44,7 +46,8 @@ export function changeGameType(game: IGameType) {
     ...gameStore.get(),
     gameType: game.gameType,
     gameTypeCode: game.gameTypeCode,
-    currentGame: game
+    currentGame: game,
+    activeTabIndex: 0 // 重置tab索引
   })
 }
 
@@ -52,6 +55,13 @@ export function changeYear(year: number) {
   gameStore.set({
     ...gameStore.get(),
     year
+  })
+}
+
+export function setActiveTabIndex(index: number) {
+  gameStore.set({
+    ...gameStore.get(),
+    activeTabIndex: index
   })
 }
 
