@@ -44,7 +44,7 @@ const getPingTe2XiaoHitCount = (issue: any) => {
   const prediction = issue.processedPredictions[0]
   if (!prediction || !prediction.numbers || prediction.numbers.length < 2) return 0
 
-  const hitCount = prediction.numbers.slice(0, 2).filter((num) => num.isHighlight).length
+  const hitCount = prediction.numbers.slice(0, 2).filter((num: { isHighlight: any }) => num.isHighlight).length
   return hitCount
 }
 
