@@ -94,6 +94,7 @@ export async function updateForum(forum: IGetBBsForumIdByIdData) {
     ...gameStore.get(),
     forum
   })
+  console.log(gameStore.get().forum)
 }
 
 export function getGameName(gameType: string) {

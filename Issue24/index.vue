@@ -74,8 +74,8 @@ const subTitleStyle = computed(() => {
       <Result2 :datas="datas" v-if="datas.configParamJson.model === EModel['胆大胆小']" />
       <!-- 色波 -->
       <Result1 :datas="datas" v-if="datas.configParamJson.model === EModel['色波']" />
-      <!-- 平特2肖 -->
-      <PingTe2Xiao :datas="datas" v-if="datas.configParamJson.model === EModel['平特2肖']" />
+      <!-- 平特二肖 -->
+      <PingTe2Xiao :datas="datas" v-if="datas.configParamJson.model === EModel['平特二肖']" />
       <!-- 绝杀区 -->
       <OverKill :datas="datas" v-if="datas.configParamJson.model === EModel['绝杀区']" />
       <!-- 中间号码范围 -->
