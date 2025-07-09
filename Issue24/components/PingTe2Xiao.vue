@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, watch } from 'vue'
+import { defineProps, watch, computed, reactive } from 'vue'
 import { useStore } from '@nanostores/vue'
 
 import type { IDatas } from '../type'

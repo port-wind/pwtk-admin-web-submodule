@@ -50,10 +50,9 @@ const titleHeaderStyle = computed(() => {
     return {
       background: `linear-gradient(to right, ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`
     }
-  } else {
-    return {
-      backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2'
-    }
+  }
+  return {
+    backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2'
   }
 })
 
