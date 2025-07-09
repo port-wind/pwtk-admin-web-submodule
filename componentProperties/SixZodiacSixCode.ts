@@ -58,7 +58,13 @@ componentProperties.set('SixZodiacSixCode', {
       advertisementContent: '兴云播雨隐苍穹',
       advertisementTextColor: '#ffeb3b',
       advertisementFontSize: 14,
-      itemBackgroundColor: '#333333'
+      itemBackgroundColor: '#333333',
+      // 六肖六码组件新增配置
+      sixZodiacSixCodeConfig: {
+        itemBackgroundColor: '#333333',
+        contentAreaBackgroundColor: '#000000',
+        issueConfigs: {}
+      }
     }
   }
 })

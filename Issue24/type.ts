@@ -2,6 +2,42 @@ import type { ISetStyle } from '../componentProperties/index'
 
 export interface IDatas extends ISetStyle<Issue24> {}
 
+// 六肖六码行类型
+export type SixZodiacRowType =
+  | '六肖'
+  | '五肖'
+  | '四肖'
+  | '二肖'
+  | '一肖'
+  | '内幕消息'
+  | '②码中时'
+  | '③码中时'
+  | '⑤码中时'
+  | '⑥码中时'
+
+// 六肖六码行配置
+export interface SixZodiacRowConfig {
+  advertisementContent?: string
+  advertisementTextColor?: string
+  advertisementFontSize?: number
+}
+
+// 六肖六码期数配置
+export interface SixZodiacIssueConfig {
+  rowConfigs?: {
+    [K in SixZodiacRowType]?: SixZodiacRowConfig
+  }
+}
+
+// 六肖六码组件配置
+export interface SixZodiacSixCodeConfig {
+  itemBackgroundColor?: string // 全局设置 - 单个生肖项的背景色
+  contentAreaBackgroundColor?: string // 全局设置 - 整个内容区域的背景色
+  issueConfigs?: {
+    [issueId: string]: SixZodiacIssueConfig
+  }
+}
+
 export interface Issue24 {
   model: EModel // 24码风格  "24"
   title: string
@@ -17,7 +53,9 @@ export interface Issue24 {
   forumStatus?: string
   styleHeader: IStyleHeader
   styleMain: IStyleMain
-  // 六肖六码组件专用属性
+  // 六肖六码组件专用属性 - 重构为更细化的配置
+  sixZodiacSixCodeConfig?: SixZodiacSixCodeConfig
+  // 向下兼容的废弃属性
   advertisementContent?: string
   advertisementTextColor?: string
   advertisementFontSize?: number

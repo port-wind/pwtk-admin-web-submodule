@@ -2,7 +2,7 @@
 import { defineProps, watch, computed, reactive, ref } from 'vue'
 import { useStore } from '@nanostores/vue'
 
-import type { IDatas } from '../type'
+import type { IDatas, SixZodiacRowType } from '../type'
 import { useIssueList } from '../../hooks/issueList'
 import { gameStore } from '../../store'
 
@@ -64,7 +64,7 @@ const getSixZodiacSixCodeData = (issue: any) => {
   }
 
   // 假设前6个是生肖，后6个是码
-  const numbers = prediction.numbers
+  const { numbers } = prediction
   const zodiacs = numbers.slice(0, 6).map((item: any) => ({
     zodiac: zodiacMap[item.number] || item.number,
     isHighlight: item.isHighlight
@@ -106,10 +106,23 @@ const activeIssueData = computed(() => {
   return processedIssueList.value[activeTab.value]
 })
 
+// 获取指定行的配置
+const getRowConfig = (issue: any, rowType: SixZodiacRowType) => {
+  const { sixZodiacSixCodeConfig: config } = props.datas.configParamJson
+  const issueConfig = config?.issueConfigs?.[issue.postId]
+  const rowConfig = issueConfig?.rowConfigs?.[rowType]
+
+  return {
+    advertisementContent: rowConfig?.advertisementContent || '兴云播雨隐苍穹',
+    advertisementTextColor: rowConfig?.advertisementTextColor || '#333333',
+    advertisementFontSize: rowConfig?.advertisementFontSize || 14
+  }
+}
+
 // 格式化广告内容
-const formatAdvertisement = (content: string) => {
-  if (!content) return '兴云播雨隐苍穹'
-  return content
+const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
+  const config = getRowConfig(issue, rowType)
+  return config.advertisementContent
 }
 </script>
 
@@ -147,8 +160,14 @@ const formatAdvertisement = (content: string) => {
             </template>
             <template v-else>
               <div class="advertisement-area">
-                <span class="ad-content">
-                  {{ formatAdvertisement(datas.configParamJson.advertisementContent) }}
+                <span
+                  class="ad-content"
+                  :style="{
+                    color: getRowConfig(activeIssueData, '六肖').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '六肖').advertisementFontSize + 'px'
+                  }"
+                >
+                  {{ formatAdvertisement(activeIssueData, '六肖') }}
                 </span>
               </div>
             </template>
@@ -175,8 +194,14 @@ const formatAdvertisement = (content: string) => {
             </template>
             <template v-else>
               <div class="advertisement-area">
-                <span class="ad-content">
-                  {{ formatAdvertisement(datas.configParamJson.advertisementContent) }}
+                <span
+                  class="ad-content"
+                  :style="{
+                    color: getRowConfig(activeIssueData, '五肖').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '五肖').advertisementFontSize + 'px'
+                  }"
+                >
+                  {{ formatAdvertisement(activeIssueData, '五肖') }}
                 </span>
               </div>
             </template>
@@ -203,8 +228,14 @@ const formatAdvertisement = (content: string) => {
             </template>
             <template v-else>
               <div class="advertisement-area">
-                <span class="ad-content">
-                  {{ formatAdvertisement(datas.configParamJson.advertisementContent) }}
+                <span
+                  class="ad-content"
+                  :style="{
+                    color: getRowConfig(activeIssueData, '四肖').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '四肖').advertisementFontSize + 'px'
+                  }"
+                >
+                  {{ formatAdvertisement(activeIssueData, '四肖') }}
                 </span>
               </div>
             </template>
@@ -231,8 +262,14 @@ const formatAdvertisement = (content: string) => {
             </template>
             <template v-else>
               <div class="advertisement-area">
-                <span class="ad-content">
-                  {{ formatAdvertisement(datas.configParamJson.advertisementContent) }}
+                <span
+                  class="ad-content"
+                  :style="{
+                    color: getRowConfig(activeIssueData, '二肖').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '二肖').advertisementFontSize + 'px'
+                  }"
+                >
+                  {{ formatAdvertisement(activeIssueData, '二肖') }}
                 </span>
               </div>
             </template>
@@ -260,8 +297,14 @@ const formatAdvertisement = (content: string) => {
             </template>
             <template v-else>
               <div class="advertisement-area">
-                <span class="ad-content">
-                  {{ formatAdvertisement(datas.configParamJson.advertisementContent) }}
+                <span
+                  class="ad-content"
+                  :style="{
+                    color: getRowConfig(activeIssueData, '一肖').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '一肖').advertisementFontSize + 'px'
+                  }"
+                >
+                  {{ formatAdvertisement(activeIssueData, '一肖') }}
                 </span>
               </div>
             </template>
@@ -276,8 +319,14 @@ const formatAdvertisement = (content: string) => {
           <div class="row-label">内幕消息</div>
           <div class="content-area">
             <div class="advertisement-area">
-              <span class="ad-content ad-special">
-                {{ formatAdvertisement(datas.configParamJson.advertisementContent) }}
+              <span
+                class="ad-content ad-special"
+                :style="{
+                  color: getRowConfig(activeIssueData, '内幕消息').advertisementTextColor,
+                  fontSize: getRowConfig(activeIssueData, '内幕消息').advertisementFontSize + 'px'
+                }"
+              >
+                {{ formatAdvertisement(activeIssueData, '内幕消息') }}
               </span>
             </div>
           </div>
@@ -303,8 +352,14 @@ const formatAdvertisement = (content: string) => {
             </template>
             <template v-else>
               <div class="advertisement-area">
-                <span class="ad-content">
-                  {{ formatAdvertisement(datas.configParamJson.advertisementContent) }}
+                <span
+                  class="ad-content"
+                  :style="{
+                    color: getRowConfig(activeIssueData, '②码中时').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '②码中时').advertisementFontSize + 'px'
+                  }"
+                >
+                  {{ formatAdvertisement(activeIssueData, '②码中时') }}
                 </span>
               </div>
             </template>
@@ -331,8 +386,14 @@ const formatAdvertisement = (content: string) => {
             </template>
             <template v-else>
               <div class="advertisement-area">
-                <span class="ad-content">
-                  {{ formatAdvertisement(datas.configParamJson.advertisementContent) }}
+                <span
+                  class="ad-content"
+                  :style="{
+                    color: getRowConfig(activeIssueData, '③码中时').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '③码中时').advertisementFontSize + 'px'
+                  }"
+                >
+                  {{ formatAdvertisement(activeIssueData, '③码中时') }}
                 </span>
               </div>
             </template>
@@ -359,8 +420,14 @@ const formatAdvertisement = (content: string) => {
             </template>
             <template v-else>
               <div class="advertisement-area">
-                <span class="ad-content">
-                  {{ formatAdvertisement(datas.configParamJson.advertisementContent) }}
+                <span
+                  class="ad-content"
+                  :style="{
+                    color: getRowConfig(activeIssueData, '⑤码中时').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '⑤码中时').advertisementFontSize + 'px'
+                  }"
+                >
+                  {{ formatAdvertisement(activeIssueData, '⑤码中时') }}
                 </span>
               </div>
             </template>
@@ -387,8 +454,14 @@ const formatAdvertisement = (content: string) => {
             </template>
             <template v-else>
               <div class="advertisement-area">
-                <span class="ad-content">
-                  {{ formatAdvertisement(datas.configParamJson.advertisementContent) }}
+                <span
+                  class="ad-content"
+                  :style="{
+                    color: getRowConfig(activeIssueData, '⑥码中时').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '⑥码中时').advertisementFontSize + 'px'
+                  }"
+                >
+                  {{ formatAdvertisement(activeIssueData, '⑥码中时') }}
                 </span>
               </div>
             </template>
@@ -471,7 +544,7 @@ const formatAdvertisement = (content: string) => {
 .content-area {
   display: table-cell;
   padding: 8px 12px;
-  background: #000;
+  background: v-bind('datas.configParamJson.sixZodiacSixCodeConfig?.contentAreaBackgroundColor || "#000"');
   border: 1px solid #e0e0e0;
   border-left: none;
   vertical-align: middle;
@@ -502,7 +575,7 @@ const formatAdvertisement = (content: string) => {
 .item {
   display: inline-block;
   padding: 2px 6px;
-  background: v-bind('datas.configParamJson.itemBackgroundColor || "#333"');
+  background: v-bind('datas.configParamJson.sixZodiacSixCodeConfig?.itemBackgroundColor || "#333"');
   color: #fff;
   border-radius: 4px;
   font-size: 14px;
@@ -532,8 +605,6 @@ const formatAdvertisement = (content: string) => {
 }
 
 .ad-content {
-  color: v-bind('datas.configParamJson.advertisementTextColor || "#ffeb3b"');
-  font-size: v-bind('datas.configParamJson.advertisementFontSize || 14') + 'px';
   font-weight: 500;
   text-align: center;
 
