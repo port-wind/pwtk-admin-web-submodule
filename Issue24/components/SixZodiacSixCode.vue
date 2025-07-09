@@ -26,21 +26,7 @@ const { extractIssueNumber, processedIssueList } = useIssueList(issueParams)
 // 当前活跃的tab
 const activeTab = ref(0)
 
-// 生肖映射
-const zodiacMap = {
-  '1': '鼠',
-  '2': '牛',
-  '3': '虎',
-  '4': '兔',
-  '5': '龙',
-  '6': '蛇',
-  '7': '马',
-  '8': '羊',
-  '9': '猴',
-  '10': '鸡',
-  '11': '狗',
-  '12': '猪'
-}
+// 生肖映射 (removed as not used in current implementation)
 
 watch(
   () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
@@ -54,38 +40,80 @@ watch(
 
 // 获取六肖六码预测数据
 const getSixZodiacSixCodeData = (issue: any) => {
-  if (!issue.processedPredictions || issue.processedPredictions.length === 0) {
+  if (!issue.lotteryPredictions || issue.lotteryPredictions.length === 0) {
     return { zodiacs: [], codes: [] }
   }
 
-  const prediction = issue.processedPredictions[0]
-  if (!prediction || !prediction.numbers) {
-    return { zodiacs: [], codes: [] }
-  }
+  // 获取特肖预测 (生肖)
+  const zodiacPrediction = issue.lotteryPredictions.find(
+    (pred: any) => pred.code === '8002' && pred.name === '特肖' && pred.predict?.length === 6
+  )
 
-  // 假设前6个是生肖，后6个是码
-  const { numbers } = prediction
-  const zodiacs = numbers.slice(0, 6).map((item: any) => ({
-    zodiac: zodiacMap[item.number] || item.number,
-    isHighlight: item.isHighlight
-  }))
+  const zodiacs = zodiacPrediction
+    ? zodiacPrediction.predict.map((zodiac: string, index: number) => ({
+        zodiac,
+        isHighlight: zodiacPrediction.hitDetail?.[index] === '1'
+      }))
+    : []
 
-  const codes = numbers.slice(6, 12).map((item: any) => ({
-    code: item.number,
-    isHighlight: item.isHighlight
-  }))
+  // 获取特码预测 (码) - 使用6码预测
+  const codePrediction = issue.lotteryPredictions.find(
+    (pred: any) => pred.code === '8001' && pred.name === '特码' && pred.predict?.length === 6
+  )
+
+  const codes = codePrediction
+    ? codePrediction.predict.map((code: string, index: number) => ({
+        code,
+        isHighlight: codePrediction.hitDetail?.[index] === '1'
+      }))
+    : []
 
   return { zodiacs, codes }
 }
 
+// 获取指定长度的特码预测
+const getCodePredictionByLength = (issue: any, length: number) => {
+  if (!issue.lotteryPredictions || issue.lotteryPredictions.length === 0) {
+    return []
+  }
+
+  const codePrediction = issue.lotteryPredictions.find(
+    (pred: any) => pred.code === '8001' && pred.name === '特码' && pred.predict?.length === length
+  )
+
+  return codePrediction
+    ? codePrediction.predict.map((code: string, index: number) => ({
+        code,
+        isHighlight: codePrediction.hitDetail?.[index] === '1'
+      }))
+    : []
+}
+
 // 获取中奖数量
 const getHitCount = (issue: any) => {
-  if (!issue.processedPredictions || issue.processedPredictions.length === 0) return 0
+  if (!issue.lotteryPredictions || issue.lotteryPredictions.length === 0) return 0
 
-  const prediction = issue.processedPredictions[0]
-  if (!prediction || !prediction.numbers) return 0
+  // 检查特肖是否中奖
+  const zodiacPrediction = issue.lotteryPredictions.find(
+    (pred: any) => pred.code === '8002' && pred.name === '特肖' && pred.isHit === 'y'
+  )
 
-  return prediction.numbers.filter((num: any) => num.isHighlight).length
+  // 检查特码是否中奖
+  const codePrediction = issue.lotteryPredictions.find(
+    (pred: any) => pred.code === '8001' && pred.name === '特码' && pred.isHit === 'y'
+  )
+
+  let hitCount = 0
+
+  if (zodiacPrediction && zodiacPrediction.hitDetail) {
+    hitCount += zodiacPrediction.hitDetail.split('').filter((hit: string) => hit === '1').length
+  }
+
+  if (codePrediction && codePrediction.hitDetail) {
+    hitCount += codePrediction.hitDetail.split('').filter((hit: string) => hit === '1').length
+  }
+
+  return hitCount
 }
 
 // 检查是否全部未中奖
@@ -335,14 +363,14 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
           </div>
         </div>
 
-        <!-- 码中时行 -->
+        <!-- 码中特行 -->
         <div class="code-row">
-          <div class="row-label">②码中时</div>
+          <div class="row-label">②码中特</div>
           <div class="content-area">
             <template v-if="!isAllMissed(activeIssueData)">
               <div class="content-items">
                 <span
-                  v-for="(item, idx) in getSixZodiacSixCodeData(activeIssueData).codes.slice(0, 2)"
+                  v-for="(item, idx) in getCodePredictionByLength(activeIssueData, 2)"
                   :key="`code-2-${idx}`"
                   :class="['item', { highlight: item.isHighlight }]"
                 >
@@ -355,11 +383,11 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
                 <span
                   class="ad-content"
                   :style="{
-                    color: getRowConfig(activeIssueData, '②码中时').advertisementTextColor,
-                    fontSize: getRowConfig(activeIssueData, '②码中时').advertisementFontSize + 'px'
+                    color: getRowConfig(activeIssueData, '②码中特').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '②码中特').advertisementFontSize + 'px'
                   }"
                 >
-                  {{ formatAdvertisement(activeIssueData, '②码中时') }}
+                  {{ formatAdvertisement(activeIssueData, '②码中特') }}
                 </span>
               </div>
             </template>
@@ -369,14 +397,14 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
           </div>
         </div>
 
-        <!-- 其他码中时行 -->
+        <!-- 其他码中特行 -->
         <div class="code-row">
-          <div class="row-label">③码中时</div>
+          <div class="row-label">③码中特</div>
           <div class="content-area">
             <template v-if="!isAllMissed(activeIssueData)">
               <div class="content-items">
                 <span
-                  v-for="(item, idx) in getSixZodiacSixCodeData(activeIssueData).codes.slice(0, 3)"
+                  v-for="(item, idx) in getCodePredictionByLength(activeIssueData, 3)"
                   :key="`code-3-${idx}`"
                   :class="['item', { highlight: item.isHighlight }]"
                 >
@@ -389,11 +417,11 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
                 <span
                   class="ad-content"
                   :style="{
-                    color: getRowConfig(activeIssueData, '③码中时').advertisementTextColor,
-                    fontSize: getRowConfig(activeIssueData, '③码中时').advertisementFontSize + 'px'
+                    color: getRowConfig(activeIssueData, '③码中特').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '③码中特').advertisementFontSize + 'px'
                   }"
                 >
-                  {{ formatAdvertisement(activeIssueData, '③码中时') }}
+                  {{ formatAdvertisement(activeIssueData, '③码中特') }}
                 </span>
               </div>
             </template>
@@ -403,14 +431,14 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
           </div>
         </div>
 
-        <!-- 五码中时行 -->
+        <!-- 五码中特行 -->
         <div class="code-row">
-          <div class="row-label">⑤码中时</div>
+          <div class="row-label">⑤码中特</div>
           <div class="content-area">
             <template v-if="!isAllMissed(activeIssueData)">
               <div class="content-items">
                 <span
-                  v-for="(item, idx) in getSixZodiacSixCodeData(activeIssueData).codes.slice(0, 5)"
+                  v-for="(item, idx) in getCodePredictionByLength(activeIssueData, 5)"
                   :key="`code-5-${idx}`"
                   :class="['item', { highlight: item.isHighlight }]"
                 >
@@ -423,11 +451,11 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
                 <span
                   class="ad-content"
                   :style="{
-                    color: getRowConfig(activeIssueData, '⑤码中时').advertisementTextColor,
-                    fontSize: getRowConfig(activeIssueData, '⑤码中时').advertisementFontSize + 'px'
+                    color: getRowConfig(activeIssueData, '⑤码中特').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '⑤码中特').advertisementFontSize + 'px'
                   }"
                 >
-                  {{ formatAdvertisement(activeIssueData, '⑤码中时') }}
+                  {{ formatAdvertisement(activeIssueData, '⑤码中特') }}
                 </span>
               </div>
             </template>
@@ -437,14 +465,14 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
           </div>
         </div>
 
-        <!-- 六码中时行 -->
+        <!-- 六码中特行 -->
         <div class="code-row">
-          <div class="row-label">⑥码中时</div>
+          <div class="row-label">⑥码中特</div>
           <div class="content-area">
             <template v-if="!isAllMissed(activeIssueData)">
               <div class="content-items">
                 <span
-                  v-for="(item, idx) in getSixZodiacSixCodeData(activeIssueData).codes"
+                  v-for="(item, idx) in getCodePredictionByLength(activeIssueData, 6)"
                   :key="`code-6-${idx}`"
                   :class="['item', { highlight: item.isHighlight }]"
                 >
@@ -457,11 +485,11 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
                 <span
                   class="ad-content"
                   :style="{
-                    color: getRowConfig(activeIssueData, '⑥码中时').advertisementTextColor,
-                    fontSize: getRowConfig(activeIssueData, '⑥码中时').advertisementFontSize + 'px'
+                    color: getRowConfig(activeIssueData, '⑥码中特').advertisementTextColor,
+                    fontSize: getRowConfig(activeIssueData, '⑥码中特').advertisementFontSize + 'px'
                   }"
                 >
-                  {{ formatAdvertisement(activeIssueData, '⑥码中时') }}
+                  {{ formatAdvertisement(activeIssueData, '⑥码中特') }}
                 </span>
               </div>
             </template>

@@ -10,10 +10,10 @@ export type SixZodiacRowType =
   | '二肖'
   | '一肖'
   | '内幕消息'
-  | '②码中时'
-  | '③码中时'
-  | '⑤码中时'
-  | '⑥码中时'
+  | '②码中特'
+  | '③码中特'
+  | '⑤码中特'
+  | '⑥码中特'
 
 // 六肖六码行配置
 export interface SixZodiacRowConfig {
