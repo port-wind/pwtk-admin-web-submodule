@@ -83,6 +83,7 @@ import AggregationGameplayProperties from './AggregationGameplay'
 import HotRecommendationsProperties from './HotRecommendations'
 import ImageGameTypeCardsProperties from './ImageGameTypeCards'
 import ImageForGameTypeProperties from './ImageForGameType'
+import SixZodiacSixCodeProperties from './SixZodiacSixCode'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -273,6 +274,10 @@ IssueListProperties.forEach((value, key) => {
 })
 
 Issue24Properties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+SixZodiacSixCodeProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 

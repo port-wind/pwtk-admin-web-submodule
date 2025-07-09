@@ -93,6 +93,8 @@ const subTitleStyle = computed(() => {
       <OneSentenceDecipher :datas="datas" v-if="datas.configParamJson.model === EModel['一句解特码']" />
       <!-- 横扫黑庄 -->
       <SweepBlackBank :datas="datas" v-if="datas.configParamJson.model === EModel['横扫黑庄']" />
+      <!-- 六肖六码 -->
+      <SixZodiacSixCode :datas="datas" v-if="datas.configParamJson.model === EModel['六肖六码']" />
     </div>
     <slot name="deles" />
   </div>

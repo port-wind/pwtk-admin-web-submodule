@@ -3,7 +3,7 @@ import type { ISetStyle } from '../componentProperties/index'
 export interface IDatas extends ISetStyle<Issue24> {}
 
 export interface Issue24 {
-  model: EModel // 24码风格  ”24“
+  model: EModel // 24码风格  "24"
   title: string
   titlePrefix: string
   subtitle: string
@@ -17,6 +17,11 @@ export interface Issue24 {
   forumStatus?: string
   styleHeader: IStyleHeader
   styleMain: IStyleMain
+  // 六肖六码组件专用属性
+  advertisementContent?: string
+  advertisementTextColor?: string
+  advertisementFontSize?: number
+  itemBackgroundColor?: string
 }
 
 export enum EModel {
@@ -38,7 +43,8 @@ export enum EModel {
   '无敌八尾',
   '复式平码',
   '一句解特码',
-  '横扫黑庄'
+  '横扫黑庄',
+  '六肖六码'
 }
 
 export interface IStyleMain {
