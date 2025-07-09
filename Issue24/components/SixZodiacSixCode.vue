@@ -152,6 +152,14 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
   const config = getRowConfig(issue, rowType)
   return config.advertisementContent
 }
+
+// 样式主配置
+const styleMain = computed(() => props.datas.configParamJson.styleMain)
+
+// 内容项间距
+const contentItemsGap = computed(() => {
+  return `${styleMain.value?.numberSpacing || 8}px`
+})
 </script>
 
 <template>
@@ -630,17 +638,17 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: v-bind('contentItemsGap');
   flex-wrap: wrap;
 }
 
 .item {
   display: inline-block;
-  padding: 2px 6px;
+  padding: v-bind('(styleMain?.padding || 2) + "px"');
   background: v-bind('datas.configParamJson.sixZodiacSixCodeConfig?.itemBackgroundColor || "#333"');
   color: #fff;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: v-bind('(styleMain?.borderRadius || 4) + "px"');
+  font-size: v-bind('(styleMain?.numberSize || 14) + "px"');
   font-weight: 500;
   text-align: center;
   min-width: 24px;
@@ -654,9 +662,9 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
 
 .special-text {
   color: #00bcd4;
-  font-size: 14px;
+  font-size: v-bind('(styleMain?.numberSize || 14) + "px"');
   font-weight: 500;
-  margin-left: 8px;
+  margin-left: v-bind('contentItemsGap');
 }
 
 .advertisement-area {
@@ -700,12 +708,12 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
   }
 
   .item {
-    font-size: 12px;
-    padding: 1px 4px;
+    font-size: v-bind('Math.max((styleMain?.numberSize || 14) - 2, 12) + "px"');
+    padding: v-bind('Math.max((styleMain?.padding || 2) - 1, 1) + "px"');
   }
 
   .ad-content {
-    font-size: 12px;
+    font-size: v-bind('Math.max((styleMain?.numberSize || 14) - 2, 12) + "px"');
   }
 }
 </style>
