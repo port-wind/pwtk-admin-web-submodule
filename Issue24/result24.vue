@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { defineProps, watch } from 'vue'
+import { useStore } from '@nanostores/vue'
+
+import { defineProps, watch, computed, reactive } from 'vue'
 import type { IDatas } from './type'
 import { gameStore } from '../store'
-import { useStore } from '@nanostores/vue'
 import { useIssueList } from '../hooks/issueList'
 
 interface IProps {
@@ -12,8 +13,6 @@ const props = defineProps<IProps>()
 
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
-const forum = computed(() => props.datas.configParamJson.forumId)
-const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
 const styleMain = computed(() => props.datas.configParamJson.styleMain)
 
 // 创建响应式参数对象
@@ -23,24 +22,12 @@ const issueParams = reactive({
   forumId: String(props.datas.configParamJson.forumId)
 })
 
-const {
-  issueListItem,
-  isLoading,
-  hasError,
-  errorMessage,
-  processLotteryData,
-  getIssueResultInfo,
-  getHitNumber,
-  getNumberColorClass,
-  extractIssueNumber,
-  processedIssueList,
-  refreshData
-} = useIssueList(issueParams)
+const { getHitNumber, getNumberColorClass, extractIssueNumber, processedIssueList } = useIssueList(issueParams)
 
 watch(
   () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
   ([newSize, newForumId], [oldSize, oldForumId]) => {
-    console.log('🚀 ~ 参数变化:', [newSize, newForumId])
+    console.log('🚀 ~ 参数变化:', [newSize, newForumId], [oldSize, oldForumId])
     issueParams.size = Number(newSize)
     issueParams.forumId = String(newForumId)
     issueParams.gameType = gameType.value
