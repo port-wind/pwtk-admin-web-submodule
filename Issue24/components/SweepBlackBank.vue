@@ -23,6 +23,17 @@ const issueParams = reactive({
   forumId: String(props.datas.configParamJson.forumId) || '10'
 })
 
+// 🎨 Style Configuration from Right Panel
+const styleConfig = computed(() => ({
+  numberSize: props.datas.configParamJson.styleMain?.numberSize || 14,
+  numberSpacing: props.datas.configParamJson.styleMain?.numberSpacing || 4,
+  borderRadius: props.datas.configParamJson.styleMain?.borderRadius || 8,
+  padding: props.datas.configParamJson.styleMain?.padding || 0,
+  showPeriod: props.datas.configParamJson.styleMain?.showPeriod !== false,
+  showStatus: props.datas.configParamJson.styleMain?.showStatus !== false,
+  showResult: props.datas.configParamJson.styleMain?.showResult !== false
+}))
+
 const { extractIssueNumber, processedIssueList } = useIssueList(issueParams)
 
 // 🎯 Monitor Game Type Changes
@@ -45,6 +56,17 @@ watch(
     issueParams.forumId = String(newForumId) || '10'
     issueParams.gameType = String(newGameType)
   }
+)
+
+// 🎨 Monitor Style Configuration Changes
+watch(
+  () => props.datas.configParamJson.styleMain,
+  (newStyleMain) => {
+    if (newStyleMain) {
+      console.log('🎨 Style configuration updated:', newStyleMain)
+    }
+  },
+  { deep: true }
 )
 
 // 🔍 Zodiac animals mapping
@@ -197,13 +219,37 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="sweep-black-bank" v-if="datas.configParamJson.enable">
+  <div
+    class="sweep-black-bank"
+    v-if="datas.configParamJson.enable"
+    :style="{
+      borderRadius: styleConfig.borderRadius + 'px',
+      padding: styleConfig.padding + 'px'
+    }"
+  >
     <!-- Issue list -->
     <div class="issue-list">
-      <div v-for="(issue, issueIndex) in processedIssueList" :key="issue.postId" class="issue-item">
-        <div class="issue-display">
-          <span class="period">{{ extractIssueNumber(issue.postIssue) }}期:</span>
-          <span class="prediction-content">
+      <div
+        v-for="(issue, issueIndex) in processedIssueList"
+        :key="issue.postId"
+        class="issue-item"
+        :style="{
+          borderRadius: Math.max(0, styleConfig.borderRadius - 2) + 'px',
+          padding: Math.max(0, styleConfig.padding + 8) + 'px'
+        }"
+      >
+        <div class="issue-display" :style="{ gap: styleConfig.numberSpacing + 'px' }">
+          <span v-if="styleConfig.showPeriod" class="period" :style="{ fontSize: styleConfig.numberSize + 'px' }">
+            {{ extractIssueNumber(issue.postIssue) }}期:
+          </span>
+          <span
+            class="prediction-content"
+            :style="{
+              fontSize: styleConfig.numberSize + 'px',
+              marginLeft: styleConfig.numberSpacing + 'px',
+              marginRight: styleConfig.numberSpacing + 'px'
+            }"
+          >
             【
             <template
               v-for="(animal, animalIndex) in getAnimalsWithHitStatus(issue)"
@@ -213,8 +259,16 @@ onMounted(() => {
             </template>
             】
           </span>
-          <span class="result">开:{{ getLotteryResult(issue) }}</span>
-          <span class="status" v-if="isHit(issue)">准</span>
+          <span v-if="styleConfig.showResult" class="result" :style="{ fontSize: styleConfig.numberSize + 'px' }">
+            开:{{ getLotteryResult(issue) }}
+          </span>
+          <span
+            v-if="styleConfig.showStatus && isHit(issue)"
+            class="status"
+            :style="{ fontSize: styleConfig.numberSize + 'px' }"
+          >
+            准
+          </span>
         </div>
       </div>
     </div>
@@ -252,20 +306,20 @@ onMounted(() => {
     .issue-display {
       display: flex;
       align-items: center;
-      gap: 4px;
-      font-size: 14px;
       line-height: 1.5;
       color: #333;
+      min-height: 1.5em;
 
       .period {
         color: #333;
         font-weight: 500;
+        flex-shrink: 0;
       }
 
       .prediction-content {
         color: #1976d2;
         font-weight: 600;
-        margin: 0 2px;
+        flex-shrink: 0;
 
         .animal {
           color: inherit;
@@ -284,12 +338,13 @@ onMounted(() => {
         color: #333;
         font-weight: 500;
         margin-left: auto;
+        flex-shrink: 0;
       }
 
       .status {
         color: #4caf50;
         font-weight: bold;
-        margin-left: 4px;
+        flex-shrink: 0;
       }
     }
   }
@@ -305,12 +360,19 @@ onMounted(() => {
 
 // Responsive design
 @media (max-width: 768px) {
-  .issue-list .issue-item {
-    padding: 6px 12px;
+  .sweep-black-bank {
+    .issue-list .issue-item {
+      // Reduce padding on mobile
+      padding: 6px 12px !important;
 
-    .issue-display {
-      font-size: 12px;
-      gap: 2px;
+      .issue-display {
+        // Reduce spacing on mobile
+        gap: 2px !important;
+
+        // Note: font-size is controlled by inline styles from styleConfig
+        // Mobile responsive sizing should be handled by the configuration
+        min-height: 1.2em;
+      }
     }
   }
 }
