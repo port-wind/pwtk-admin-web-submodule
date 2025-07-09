@@ -162,7 +162,7 @@ const formatAdvertisement = (issue: any, rowType: SixZodiacRowType) => {
         v-for="(issue, index) in processedIssueList"
         :key="issue.postId"
         :class="['tab-item', { active: activeTab === index }]"
-        @click="activeTab = index"
+        @mouseenter="activeTab = index"
       >
         {{ getTabTitle(issue) }}
       </div>
