@@ -5,11 +5,16 @@ import { useStore } from '@nanostores/vue'
 import type { IDatas, SixZodiacRowType } from '../type'
 import { useIssueList } from '../../hooks/issueList'
 import { gameStore, setActiveTabIndex } from '../../store'
+import { useGameTypeFields } from '../../composables/useGameTypeFields'
 
 interface IProps {
   datas: IDatas
 }
 const props = defineProps<IProps>()
+
+// 🎮 使用 GameType Fields Composable 处理per-gameType show/hide
+const datas = computed(() => props.datas)
+const { show } = useGameTypeFields(datas.value)
 
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
@@ -163,7 +168,7 @@ const contentItemsGap = computed(() => {
 </script>
 
 <template>
-  <div class="six-zodiac-six-code" v-if="datas.configParamJson.enable">
+  <div class="six-zodiac-six-code" v-if="datas.configParamJson.enable && show">
     <!-- 标签页导航 -->
     <div class="tab-navigation">
       <div

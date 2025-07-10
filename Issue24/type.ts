@@ -2,6 +2,16 @@ import type { ISetStyle } from '../componentProperties/index'
 
 export interface IDatas extends ISetStyle<Issue24> {}
 
+// 🎮 动态彩种配置字段类型
+export interface GameTypeFieldConfig {
+  gameTypeName: string
+  gameTypeCode: string
+  gameTypeLongName: string
+  gameTypeShortName: string
+  enabled: boolean
+  customData: Record<string, any>
+}
+
 // 六肖六码行类型
 export type SixZodiacRowType =
   | '六肖'
@@ -61,6 +71,8 @@ export interface Issue24 {
   advertisementTextColor?: string
   advertisementFontSize?: number
   itemBackgroundColor?: string
+  // 🎮 动态彩种字段 - 支持基于 gameType 的动态配置
+  [gameTypeId: string]: any
 }
 
 export enum EModel {

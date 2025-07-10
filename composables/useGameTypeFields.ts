@@ -1,13 +1,12 @@
 import { computed, onMounted, watch } from 'vue'
 import { useStore } from '@nanostores/vue'
 import { gameStore } from '../store/index'
-import type { IDatas } from '../ImageForGameType/type'
 
 /**
  * 🎮 GameType Fields Composable
  * 处理动态彩种字段的生成、初始化和管理
  */
-export function useGameTypeFields(datas: IDatas) {
+export function useGameTypeFields(datas: any) {
   // 🎯 Store 集成
   const gameStoreData = useStore(gameStore)
   const gameType = computed(() => gameStoreData.value.gameType)
