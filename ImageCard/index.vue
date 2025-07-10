@@ -17,6 +17,20 @@ const imageStyle = computed(() => {
   }
 })
 
+const imgStyle = computed(() => {
+  if (styleJSON.value?.enableHeight) {
+    return {
+      objectFit: 'cover',
+      height: '100%'
+    }
+  } else {
+    return {
+      objectFit: 'contain',
+      height: 'auto'
+    }
+  }
+})
+
 const handleLink = () => {
   const link = props.datas.configParamJson.link
   if (link) {
@@ -35,6 +49,7 @@ const handleLink = () => {
             :alt="props.datas.configParamJson.title"
             class="card-image"
             draggable="false"
+            :style="imgStyle"
           />
         </div>
         <div class="card-content" v-if="props.datas.configParamJson.enable">
