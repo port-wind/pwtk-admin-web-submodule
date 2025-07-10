@@ -37,7 +37,7 @@ componentProperties.set('HotRecommendations', {
         titleColor: '#ffffff'
       },
       styleMain: {
-        padding: 16,
+        padding: 0,
         borderRadius: 8,
         backgroundColor: '#ffffff',
         textAlign: 'center',
