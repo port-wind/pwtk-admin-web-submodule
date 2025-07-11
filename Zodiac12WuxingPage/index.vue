@@ -1,8 +1,6 @@
 <script setup lang="ts" name="Zodiac12WuxingPage">
-import { computed, ref, watch, onMounted, reactive } from 'vue'
-import { useStore } from '@nanostores/vue'
-import { Loading } from '@element-plus/icons-vue'
-import { gameStore } from '../store/index'
+import { computed, onMounted } from 'vue'
+import { mockData } from '@/views/WebVision/components/rightslider/Zodiac12WuxingPageStyle/mockData'
 import type { IDatas } from './type'
 
 interface IProps {
@@ -10,32 +8,53 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 
-// 🎮 gameType Store 集成 - 动态组件必需
-const gameStoreData = useStore(gameStore)
-const gameType = computed(() => gameStoreData.value.gameType)
-const currentGame = computed(() => gameStoreData.value.currentGame)
-const currentGameName = computed(() => currentGame.value?.gameTypeLongName || '未知游戏')
+// 🎯 生肖数据映射
+const { shengXiaoToNumber, playTypes } = mockData
+const waveColorData = playTypes.find((item) => item.code === '8007')?.options || {}
 
-// 🔄 响应式参数对象，与配置同步
-const componentParams = reactive({
-  gameType: props.datas.configParamJson.gameType || gameType.value,
-  size: props.datas.configParamJson.size || 10,
-  forumId: props.datas.configParamJson.forumId || '10'
+// 🎨 颜色映射 - 创建数字到颜色的映射
+const numberToColorMap = new Map<string, string>()
+const colorMapping = {
+  红波: '#ff6b6b',
+  蓝波: '#4dabf7',
+  绿波: '#51cf66'
+}
+
+// 初始化颜色映射
+Object.entries(waveColorData).forEach(([colorKey, numbers]) => {
+  const color = colorMapping[colorKey as keyof typeof colorMapping]
+  if (color && Array.isArray(numbers)) {
+    numbers.forEach((num) => {
+      numberToColorMap.set(num, color)
+    })
+  }
 })
 
-// 组件状态
-const loading = ref(false)
-const gameData = ref<any[]>([])
-const error = ref(null)
+// 🐲 生肖配置 - 按布局顺序排列
+const zodiacConfig = [
+  { name: '蛇', pinyin: 'she', displayName: '蛇[冲 猪]' },
+  { name: '龙', pinyin: 'long', displayName: '龙[冲 狗]' },
+  { name: '兔', pinyin: 'tu', displayName: '兔[冲 鸡]' },
+  { name: '虎', pinyin: 'hu', displayName: '虎[冲 猴]' },
+  { name: '牛', pinyin: 'niu', displayName: '牛[冲 羊]' },
+  { name: '鼠', pinyin: 'shu', displayName: '鼠[冲 马]' },
+  { name: '猪', pinyin: 'zhu', displayName: '猪[冲 蛇]' },
+  { name: '狗', pinyin: 'gou', displayName: '狗[冲 龙]' },
+  { name: '鸡', pinyin: 'ji', displayName: '鸡[冲 兔]' },
+  { name: '猴', pinyin: 'hou', displayName: '猴[冲 虎]' },
+  { name: '羊', pinyin: 'yang', displayName: '羊[冲 牛]' },
+  { name: '马', pinyin: 'ma', displayName: '马[冲 鼠]' }
+]
 
-// 样式计算
+// 🎨 样式计算
 const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
 const styleMain = computed(() => props.datas.configParamJson.styleMain)
 
 const containerStyle = computed(() => ({
-  backgroundColor: styleMain.value?.backgroundColor || '#ffffff',
-  borderRadius: `${styleMain.value?.borderRadius || 0}px`,
-  padding: `${styleMain.value?.padding || 16}px`
+  backgroundColor: styleMain.value?.backgroundColor || '#f8f9fa',
+  borderRadius: `${styleMain.value?.borderRadius || 8}px`,
+  padding: `${styleMain.value?.padding || 16}px`,
+  fontFamily: 'Arial, sans-serif'
 }))
 
 const titleHeaderStyle = computed(() => {
@@ -45,125 +64,97 @@ const titleHeaderStyle = computed(() => {
     }
   }
   return {
-    backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2'
+    backgroundColor: styleHeader.value?.headerBgColor || '#2c3e50'
   }
 })
 
 const mainTitleStyle = computed(() => ({
-  color: styleHeader.value?.titleColor || '#ffffff'
+  color: styleHeader.value?.titleColor || '#ffffff',
+  fontSize: '24px',
+  fontWeight: 'bold',
+  textAlign: 'center' as const
 }))
 
 const subTitleStyle = computed(() => ({
-  color: styleHeader.value?.subTitleColor || '#ffffff'
+  color: styleHeader.value?.subTitleColor || '#ecf0f1',
+  fontSize: '14px',
+  textAlign: 'center' as const
 }))
 
-const contentStyle = computed(() => ({
-  color: styleMain.value?.textColor || '#333333',
-  fontSize: `${styleMain.value?.fontSize || 14}px`,
-  fontWeight: styleMain.value?.fontWeight || 400,
-  textAlign: styleMain.value?.textAlign || 'center',
-  lineHeight: '1.5'
-}))
+// 🔢 获取生肖对应的数字按钮
+const getZodiacNumbers = (zodiacName: string) => {
+  const numbers = shengXiaoToNumber[zodiacName] || []
+  return numbers.map((num) => ({
+    number: num,
+    color: numberToColorMap.get(num) || '#6c757d'
+  }))
+}
 
-// 🎮 游戏相关数据获取
-const fetchGameData = async (gType: string) => {
-  if (!gType) return
-
-  loading.value = true
-  error.value = null
-
+// 🖼️ 获取生肖图片路径
+const getZodiacImagePath = (pinyin: string) => {
   try {
-    // TODO: 根据具体需求实现数据获取逻辑
-    console.log(`🎮 获取游戏数据: ${gType}`)
-
-    // 模拟API调用
-    // const response = await fetchSpecificGameData(gameType)
-    // gameData.value = response.data || []
-
-    // 临时数据
-    gameData.value = []
-  } catch (err) {
-    error.value = err as any
-    console.error('获取游戏数据失败:', err)
-  } finally {
-    loading.value = false
+    return new URL(`./shengxiao/${pinyin}.gif`, import.meta.url).href
+  } catch (error) {
+    console.warn(`生肖图片 ${pinyin}.gif 未找到`)
+    return ''
   }
 }
 
-// 🎯 监听游戏类型变化 - 全局store变化
-watch(
-  gameType,
-  (newGameType) => {
-    if (newGameType) {
-      componentParams.gameType = newGameType
-      console.log(`🎮 全局游戏类型变化: ${newGameType}`)
-      fetchGameData(newGameType)
-    }
-  },
-  { immediate: true }
-)
-
-// 📊 监听组件配置变化
-watch(
-  () => [props.datas.configParamJson.gameType, props.datas.configParamJson.size, props.datas.configParamJson.forumId],
-  ([newGameType, newSize, newForumId]) => {
-    if (newGameType) componentParams.gameType = String(newGameType)
-    if (newSize) componentParams.size = Number(newSize)
-    if (newForumId) componentParams.forumId = String(newForumId)
-
-    // 当配置的gameType变化时，重新获取数据
-    if (newGameType && newGameType !== componentParams.gameType) {
-      fetchGameData(String(newGameType))
-    }
-  },
-  { deep: true }
-)
-
-// 🎮 游戏切换监听
-watch(currentGame, (newGame) => {
-  if (newGame) {
-    fetchGameData(newGame.gameType || String(gameType.value))
-  }
+// 📱 导出颜色映射供其他组件使用
+defineExpose({
+  numberToColorMap,
+  getNumberColor: (num: string) => numberToColorMap.get(num) || '#6c757d'
 })
 
 onMounted(() => {
-  if (gameType.value) {
-    fetchGameData(gameType.value)
-  }
+  console.log('🎨 生肖颜色映射已初始化:', numberToColorMap)
 })
 </script>
 
 <template>
   <div class="Zodiac12WuxingPage">
     <div class="zodiac12wuxingpage-content" :style="containerStyle" v-if="datas.configParamJson.enable">
-      <!-- 标题区域 - 支持动态游戏名称 -->
-      <div v-if="datas.configParamJson.title" class="title-header" :style="titleHeaderStyle">
-        <h2 class="main-title" :style="mainTitleStyle">{{ datas.configParamJson.title }} - {{ currentGameName }}</h2>
-        <span v-if="datas.configParamJson.subtitle" class="sub-title" :style="subTitleStyle">
+      <!-- 标题区域 -->
+      <div class="title-header" :style="titleHeaderStyle">
+        <h2 class="main-title" :style="mainTitleStyle">
+          {{ datas.configParamJson.title || '2025蛇年（十二生肖号码对照）' }}
+        </h2>
+        <div v-if="datas.configParamJson.subtitle" class="sub-title" :style="subTitleStyle">
           {{ datas.configParamJson.subtitle }}
-        </span>
+        </div>
       </div>
 
-      <!-- 动态内容区域 -->
-      <div class="content-area" :style="contentStyle">
-        <!-- 加载状态 -->
-        <div v-if="loading" class="loading-state">
-          <el-icon class="is-loading"><Loading /></el-icon>
-          <span>正在加载{{ currentGameName }}数据...</span>
-        </div>
+      <!-- 生肖网格布局 -->
+      <div class="zodiac-grid">
+        <div
+          v-for="(zodiac, index) in zodiacConfig"
+          :key="zodiac.name"
+          class="zodiac-card"
+          :class="`zodiac-${zodiac.pinyin}`"
+        >
+          <!-- 生肖图片和名称 -->
+          <div class="zodiac-header">
+            <img :src="getZodiacImagePath(zodiac.pinyin)" :alt="zodiac.name" class="zodiac-image" draggable="false" />
+            <div class="zodiac-name">{{ zodiac.displayName }}</div>
+          </div>
 
-        <!-- 数据展示 -->
-        <div v-else-if="gameData && gameData.length > 0" class="game-data-list">
-          <div v-for="(item, index) in gameData" :key="item.id || index" class="game-data-item">
-            <div class="item-title">{{ item.title }}</div>
-            <div class="item-content">{{ item.content }}</div>
+          <!-- 数字按钮组 -->
+          <div class="number-buttons">
+            <button
+              v-for="numberInfo in getZodiacNumbers(zodiac.name)"
+              :key="numberInfo.number"
+              class="number-button"
+              :style="{ backgroundColor: numberInfo.color }"
+            >
+              {{ numberInfo.number }}
+            </button>
           </div>
         </div>
+      </div>
 
-        <!-- 空状态 -->
-        <div v-else class="empty-state">
-          <el-empty :description="`暂无${currentGameName}数据`" />
-        </div>
+      <!-- 底部说明 -->
+      <div v-if="datas.configParamJson.content" class="content-description">
+        {{ datas.configParamJson.content }}
       </div>
     </div>
 
@@ -175,94 +166,181 @@ onMounted(() => {
 <style scoped lang="scss">
 .Zodiac12WuxingPage {
   position: relative;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   .zodiac12wuxingpage-content {
-    // 动态样式通过 computed 属性控制
+    background: #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   }
 
   .title-header {
-    padding: 12px 16px;
-    border-radius: 8px 8px 0 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    text-align: center;
+    position: relative;
 
     .main-title {
-      margin: 0;
-      font-size: 18px;
+      margin: 0 0 8px 0;
+      font-size: 24px;
       font-weight: bold;
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .sub-title {
+      margin: 0;
       font-size: 14px;
-      opacity: 0.9;
+      color: rgba(255, 255, 255, 0.9);
     }
   }
 
-  .content-area {
-    padding: 16px;
-    min-height: 120px;
+  .zodiac-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 16px;
+    padding: 20px;
+    background: white;
+  }
 
-    .loading-state {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 40px;
-      color: #666;
+  .zodiac-card {
+    background: white;
+    border-radius: 12px;
+    border: 2px solid #e9ecef;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      border-color: #4dabf7;
     }
 
-    .game-data-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    .zodiac-header {
+      margin-bottom: 12px;
 
-      .game-data-item {
-        padding: 12px;
-        border: 1px solid #e0e0e0;
-        border-radius: 6px;
-        transition: all 0.3s ease;
+      .zodiac-image {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 8px;
+        border-radius: 50%;
+        background: #f8f9fa;
+        padding: 4px;
+        border: 2px solid #e9ecef;
+      }
+
+      .zodiac-name {
+        font-size: 14px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 4px;
+      }
+    }
+
+    .number-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+
+      .number-button {
+        width: 32px;
+        height: 28px;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 
         &:hover {
-          border-color: #4a90e2;
-          box-shadow: 0 2px 8px rgba(74, 144, 226, 0.1);
+          transform: scale(1.1);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         }
 
-        .item-title {
-          font-weight: 600;
-          color: #333;
-          margin-bottom: 4px;
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+    }
+  }
+
+  .content-description {
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    font-size: 14px;
+    color: #6c757d;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  // 响应式布局
+  @media (max-width: 768px) {
+    .zodiac-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(6, 1fr);
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .zodiac-card {
+      padding: 12px;
+
+      .zodiac-header {
+        .zodiac-image {
+          width: 40px;
+          height: 40px;
         }
 
-        .item-content {
-          color: #666;
-          font-size: 14px;
+        .zodiac-name {
+          font-size: 12px;
+        }
+      }
+
+      .number-buttons {
+        gap: 4px;
+
+        .number-button {
+          width: 28px;
+          height: 24px;
+          font-size: 10px;
         }
       }
     }
 
-    .empty-state {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
+    .title-header {
+      padding: 16px;
+
+      .main-title {
+        font-size: 20px;
+      }
+
+      .sub-title {
+        font-size: 12px;
+      }
     }
   }
 
-  // 响应式设计
-  @media (max-width: 768px) {
-    .title-header {
-      padding: 8px 12px;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
+  @media (max-width: 480px) {
+    .zodiac-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(12, 1fr);
     }
 
-    .content-area {
-      padding: 12px;
-
-      .game-data-item {
-        padding: 8px;
+    .zodiac-card {
+      .number-buttons {
+        .number-button {
+          width: 24px;
+          height: 20px;
+          font-size: 9px;
+        }
       }
     }
   }
