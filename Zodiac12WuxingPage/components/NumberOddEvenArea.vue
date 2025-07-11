@@ -1,6 +1,6 @@
 <script setup lang="ts" name="NumberOddEvenArea">
 import { computed, onMounted } from 'vue'
-import { mockData } from '@/views/WebVision/components/rightslider/Zodiac12WuxingPageStyle/mockData'
+import { getPlayTypes } from '../../store/gameStore'
 import type { Zodiac12WuxingPageConfig } from '../type'
 
 interface IProps {
@@ -8,14 +8,15 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 
-// 🔢 从 mockData 获取合数单双数据
-const numberOddEvenData = mockData.playTypes.find((item) => item.code === '8018')?.options || {}
+// 🔢 从 gameStore 获取合数单双数据
+const playTypes = computed(() => getPlayTypes())
+const numberOddEvenData = computed(() => playTypes.value.find((item) => item.code === '8018')?.options || {})
 
 // 🔢 合数单双数据配置（按照图片中的顺序：合数单、合数双）
-const numberOddEvenElements = [
-  { name: '合数单', color: '#3742fa', numbers: numberOddEvenData['合数单'] || [] },
-  { name: '合数双', color: '#ff4757', numbers: numberOddEvenData['合数双'] || [] }
-]
+const numberOddEvenElements = computed(() => [
+  { name: '合数单', color: '#ff6b6b', numbers: numberOddEvenData.value['合数单'] || [] },
+  { name: '合数双', color: '#4ecdc4', numbers: numberOddEvenData.value['合数双'] || [] }
+])
 
 // 🎨 样式计算
 const numberOddEvenAreaStyle = computed(() => ({
@@ -46,29 +47,19 @@ const numberOddEvenRowStyle = computed(() => ({
 const numberOddEvenNameStyle = computed(() => ({
   fontSize: `${props.config.numberOddEvenElementStyle?.nameSize || 16}px`,
   fontWeight: '600',
-  minWidth: '50px',
+  minWidth: '60px',
   marginRight: '12px',
   textAlign: 'center' as const
 }))
 
-// 获取数字颜色（使用生肖区域的颜色映射）
-const getNumberColor = (num: string) => {
-  const customColors = props.config?.customColorMapping
-  if (customColors) {
-    const numValue = parseInt(num, 10)
-    if (numValue >= 1 && numValue <= 16) {
-      return customColors.redWave || '#ff4757'
-    }
-    if (numValue >= 17 && numValue <= 32) {
-      return customColors.blueWave || '#3742fa'
-    }
-    return customColors.greenWave || '#2ed573'
-  }
-  return '#6c757d'
+// 获取数字颜色（使用合数单双自身的颜色）
+const getNumberColor = (numberOddEvenName: string) => {
+  const element = numberOddEvenElements.value.find((el) => el.name === numberOddEvenName)
+  return element?.color || '#6c757d'
 }
 
-const getNumberButtonStyle = (number: string) => ({
-  backgroundColor: getNumberColor(number),
+const getNumberButtonStyle = (number: string, elementName: string) => ({
+  backgroundColor: getNumberColor(elementName),
   color: 'white',
   border: 'none',
   borderRadius: `${props.config.numberOddEvenElementStyle?.numberBorderRadius || 3}px`,
@@ -90,7 +81,7 @@ defineExpose({
 })
 
 onMounted(() => {
-  console.log('🔢 NumberOddEvenArea 组件已挂载，合数单双数据:', numberOddEvenData)
+  console.log('🔢 NumberOddEvenArea 组件已挂载，合数单双数据:', numberOddEvenData.value)
 })
 </script>
 
@@ -103,35 +94,32 @@ onMounted(() => {
 
     <!-- 合数单双行布局 -->
     <div class="number-odd-even-rows">
-      <div 
-        v-for="element in numberOddEvenElements" 
+      <div
+        v-for="element in numberOddEvenElements"
         :key="element.name"
         class="number-odd-even-row"
         :style="numberOddEvenRowStyle"
       >
         <!-- 合数单双名称 -->
-        <div 
-          class="number-odd-even-name" 
-          :style="{ ...numberOddEvenNameStyle, color: element.color }"
-        >
+        <div class="number-odd-even-name" :style="{ ...numberOddEvenNameStyle, color: element.color }">
           {{ element.name }}
         </div>
-        
+
         <!-- 数字按钮容器 -->
-        <div 
+        <div
           class="number-odd-even-numbers"
-          :style="{ 
-            display: 'flex', 
-            flexWrap: 'wrap', 
-            flex: 1, 
-            gap: `${config.numberOddEvenElementStyle?.numberGap || 3}px` 
+          :style="{
+            display: 'flex',
+            flexWrap: 'wrap',
+            flex: 1,
+            gap: `${config.numberOddEvenElementStyle?.numberGap || 3}px`
           }"
         >
           <span
             v-for="number in element.numbers"
             :key="number"
             class="number-button"
-            :style="getNumberButtonStyle(number)"
+            :style="getNumberButtonStyle(number, element.name)"
           >
             {{ number }}
           </span>
@@ -162,7 +150,7 @@ onMounted(() => {
     .number-odd-even-row {
       flex-direction: column;
       align-items: flex-start !important;
-      
+
       .number-odd-even-name {
         margin-bottom: 6px !important;
         margin-right: 0 !important;
@@ -176,4 +164,4 @@ onMounted(() => {
     }
   }
 }
-</style> 
+</style>

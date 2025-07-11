@@ -3,6 +3,19 @@ import { atom } from 'nanostores'
 import service from '../service/index'
 import type { IGetBBsForumIdByIdData } from '@/api/bss/forumManagement/types'
 
+export interface IGameType {
+  areaCode: string
+  classifier: string
+  createTime: number
+  gameType: string
+  gameTypeCode: string
+  gameTypeLongName: string
+  gameTypeName: string
+  gameTypeShortName: string
+  sortNum: number
+  status: string
+  updateTime: number
+}
 interface IGameStore {
   year: number
   gameType: string
@@ -14,6 +27,7 @@ interface IGameStore {
   forum: IGetBBsForumIdByIdData | null
   gameNameMap: Map<string, string>
   activeTabIndex: number // 用于六肖六码组件的tab同步
+  playRules: any | null // 玩法规则数据
 }
 
 export const gameStore = atom<IGameStore>({
@@ -38,7 +52,8 @@ export const gameStore = atom<IGameStore>({
   gameTypeList: [],
   issueList: [], //https://ocs.ai4funs.com/pwtk/gr/a6/history/2025
   forum: null,
-  activeTabIndex: 0
+  activeTabIndex: 0,
+  playRules: null
 })
 
 export function changeGameType(game: IGameType) {
@@ -71,6 +86,27 @@ async function getNumInfo() {
     gameStore.set({
       ...gameStore.get(),
       numInfo: res[0]
+    })
+  }
+}
+
+async function getPlayRules() {
+  try {
+    const res: any = await service.kv().getPlayRules().do()
+    if (res && res.length > 0) {
+      gameStore.set({
+        ...gameStore.get(),
+        playRules: res[0]
+      })
+    }
+  } catch (error) {
+    console.error('Failed to fetch play rules:', error)
+    // 如果 API 失败，使用 mockData 作为降级方案
+    import('@/views/WebVision/components/rightslider/Zodiac12WuxingPageStyle/mockData').then(({ mockData }) => {
+      gameStore.set({
+        ...gameStore.get(),
+        playRules: mockData
+      })
     })
   }
 }
@@ -111,20 +147,36 @@ export function getGameName(gameType: string) {
   return gameStore.get().gameNameMap.get(gameType)
 }
 
+// 获取玩法规则数据的便捷方法
+export function getPlayRulesData() {
+  return gameStore.get().playRules
+}
+
+// 获取生肖到数字的映射
+export function getShengXiaoToNumber() {
+  const { playRules } = gameStore.get()
+  return playRules?.shengXiaoToNumber || {}
+}
+
+// 获取五行到数字的映射
+export function getWuXingToNumber() {
+  const { playRules } = gameStore.get()
+  return playRules?.wuXingToNumber || {}
+}
+
+// 获取玩法类型数组
+export function getPlayTypes() {
+  const { playRules } = gameStore.get()
+  return playRules?.playTypes || []
+}
+
+// 根据代码获取特定玩法类型
+export function getPlayTypeByCode(code: string) {
+  const playTypes = getPlayTypes()
+  return playTypes.find((playType: any) => playType.code === code)
+}
+
 getNumInfo()
 getGameTypeList()
 getIssueList()
-
-export interface IGameType {
-  areaCode: string
-  classifier: string
-  createTime: number
-  gameType: string
-  gameTypeCode: string
-  gameTypeLongName: string
-  gameTypeName: string
-  gameTypeShortName: string
-  sortNum: number
-  status: string
-  updateTime: number
-}
+getPlayRules() // 初始化玩法规则数据

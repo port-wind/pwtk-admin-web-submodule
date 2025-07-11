@@ -1,6 +1,6 @@
 <script setup lang="ts" name="ZodiacGridArea">
 import { computed, onMounted, defineComponent, h, watch } from 'vue'
-import { mockData } from '@/views/WebVision/components/rightslider/Zodiac12WuxingPageStyle/mockData'
+import { getShengXiaoToNumber, getPlayTypes } from '../../store/gameStore'
 import type {
   IZodiacCardStyle,
   IZodiacImageStyle,
@@ -16,9 +16,10 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 
-// 🎯 从mockData获取生肖数据
-const { shengXiaoToNumber, playTypes } = mockData
-const waveColorData = playTypes.find((item) => item.code === '8007')?.options || {}
+// 🎯 从gameStore获取生肖数据
+const shengXiaoToNumber = computed(() => getShengXiaoToNumber())
+const playTypes = computed(() => getPlayTypes())
+const waveColorData = computed(() => playTypes.value.find((item) => item.code === '8007')?.options || {})
 
 // 🎨 动态颜色映射 - 支持自定义配置
 const numberToColorMap = new Map<string, string>()
@@ -40,10 +41,10 @@ const initializeColorMapping = () => {
   console.log('🎨 初始化颜色映射:', {
     customColors: props.config?.customColorMapping,
     colorMapping,
-    waveColorData: Object.keys(waveColorData)
+    waveColorData: Object.keys(waveColorData.value)
   })
 
-  Object.entries(waveColorData).forEach(([colorKey, numbers]) => {
+  Object.entries(waveColorData.value).forEach(([colorKey, numbers]) => {
     const color = colorMapping[colorKey as keyof typeof colorMapping]
     if (color && Array.isArray(numbers)) {
       numbers.forEach((num) => {
@@ -111,7 +112,7 @@ const zodiacConfig = computed(() => {
       name: zodiacName,
       pinyin: zodiacPinyinMap[zodiacName],
       displayName: showClash ? `${zodiacName}[冲 ${clashWith}]` : zodiacName,
-      numbers: shengXiaoToNumber[zodiacName] || []
+      numbers: shengXiaoToNumber.value[zodiacName] || []
     }
   })
 })
@@ -240,17 +241,17 @@ const reactiveColorMapping = computed(() => {
   console.log('🎨 响应式颜色映射重新计算:', {
     hasCustomColors: !!customColors,
     customColors,
-    waveDataKeys: Object.keys(waveColorData)
+    waveDataKeys: Object.keys(waveColorData.value)
   })
 
-  if (customColors && Object.keys(waveColorData).length > 0) {
+  if (customColors && Object.keys(waveColorData.value).length > 0) {
     const colorMapping = {
       红波: customColors.redWave || '#ff4757',
       蓝波: customColors.blueWave || '#3742fa',
       绿波: customColors.greenWave || '#2ed573'
     }
 
-    Object.entries(waveColorData).forEach(([colorKey, numbers]) => {
+    Object.entries(waveColorData.value).forEach(([colorKey, numbers]) => {
       const color = colorMapping[colorKey as keyof typeof colorMapping]
       if (color && Array.isArray(numbers)) {
         numbers.forEach((num) => {

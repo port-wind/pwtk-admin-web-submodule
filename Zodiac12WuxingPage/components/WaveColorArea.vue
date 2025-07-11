@@ -1,6 +1,6 @@
 <script setup lang="ts" name="WaveColorArea">
 import { computed, onMounted } from 'vue'
-import { mockData } from '@/views/WebVision/components/rightslider/Zodiac12WuxingPageStyle/mockData'
+import { getPlayTypes } from '../../store/gameStore'
 import type { Zodiac12WuxingPageConfig } from '../type'
 
 interface IProps {
@@ -8,15 +8,16 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 
-// 🌈 从 mockData 获取波色数据
-const waveColorData = mockData.playTypes.find((item) => item.code === '8007')?.options || {}
+// 🌈 从 gameStore 获取波色数据
+const playTypes = computed(() => getPlayTypes())
+const waveColorData = computed(() => playTypes.value.find((item) => item.code === '8007')?.options || {})
 
 // 🌈 波色数据配置（按照图片中的顺序：红波、蓝波、绿波）
-const waveColorElements = [
-  { name: '红波', color: '#ff4757', numbers: waveColorData['红波'] || [] },
-  { name: '蓝波', color: '#3742fa', numbers: waveColorData['蓝波'] || [] },
-  { name: '绿波', color: '#2ed573', numbers: waveColorData['绿波'] || [] }
-]
+const waveColorElements = computed(() => [
+  { name: '红波', color: '#ff4757', numbers: waveColorData.value['红波'] || [] },
+  { name: '蓝波', color: '#3742fa', numbers: waveColorData.value['蓝波'] || [] },
+  { name: '绿波', color: '#2ed573', numbers: waveColorData.value['绿波'] || [] }
+])
 
 // 🎨 样式计算
 const waveColorAreaStyle = computed(() => ({
@@ -54,7 +55,7 @@ const waveColorNameStyle = computed(() => ({
 
 // 获取数字颜色（使用波色自身的颜色）
 const getNumberColor = (waveColorName: string) => {
-  const element = waveColorElements.find((el) => el.name === waveColorName)
+  const element = waveColorElements.value.find((el) => el.name === waveColorName)
   return element?.color || '#6c757d'
 }
 
@@ -81,7 +82,7 @@ defineExpose({
 })
 
 onMounted(() => {
-  console.log('🌈 WaveColorArea 组件已挂载，波色数据:', waveColorData)
+  console.log('🌈 WaveColorArea 组件已挂载，波色数据:', waveColorData.value)
 })
 </script>
 

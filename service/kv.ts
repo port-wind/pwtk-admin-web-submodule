@@ -6,15 +6,11 @@ const PUBLIC_KV_URL = 'https://ocs.ai4funs.com/pwtk'
 
 const instance = axios.create({})
 
-interface IAllNumInfo {
-  allNumInfo: any[]
-}
-
 // const WEBSITE = JSON.parse(utils.getSession(constants.sessionStorageKeys.WEBSITE) || '');
 // const WEBSITE_DOMAIN = JSON.parse(utils.getSession(constants.sessionStorageKeys.WEBSITE_DOMAIN) || '');
 // https://ocs.ai4funs.com/pwtk/tk/a6/issueList
 export default () => {
-  let init: string[] = []
+  const init: string[] = []
 
   const api = {
     getAllNumInfo: () => {
@@ -110,14 +106,20 @@ export default () => {
       init.push(`bbs/${manageSiteId}/bbsList`)
       return api
     },
+    getPlayRules: () => {
+      init.push(`gr/website/playRules`)
+      return api
+    },
     /**
      * @description 获取页面组件数据
      */
     getPageComponent: (websiteId: string, pageCode?: string) => {
       // console.log(websiteId, pageCode, WEBSITE, WEBSITE_DOMAIN);
-      pageCode
-        ? init.push(`wm/website/${websiteId}/${pageCode}/components`)
-        : init.push(`wm/website/${websiteId}/components`)
+      if (pageCode) {
+        init.push(`wm/website/${websiteId}/${pageCode}/components`)
+      } else {
+        init.push(`wm/website/${websiteId}/components`)
+      }
       return api
     },
 

@@ -1,6 +1,7 @@
 <script setup lang="ts" name="WuxingArea">
 import { computed, onMounted } from 'vue'
-import { mockData } from '@/views/WebVision/components/rightslider/Zodiac12WuxingPageStyle/mockData'
+import { useStore } from '@nanostores/vue'
+import { gameStore, getWuXingToNumber } from '../../store/gameStore'
 import type { Zodiac12WuxingPageConfig } from '../type'
 
 interface IProps {
@@ -8,17 +9,20 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 
-// 🌟 从 mockData 获取五行数据
-const { wuXingToNumber } = mockData
+// 使用 nanostores
+const $gameStore = useStore(gameStore)
+
+// 🌟 从 gameStore 获取五行数据
+const wuXingToNumber = computed(() => getWuXingToNumber())
 
 // 🌟 五行数据配置（按照图片中的顺序：金、木、水、火、土）
-const wuxingElements = [
-  { name: '金', color: '#FFD700', numbers: wuXingToNumber.金 || [] },
-  { name: '木', color: '#228B22', numbers: wuXingToNumber.木 || [] },
-  { name: '水', color: '#4169E1', numbers: wuXingToNumber.水 || [] },
-  { name: '火', color: '#FF6347', numbers: wuXingToNumber.火 || [] },
-  { name: '土', color: '#8B4513', numbers: wuXingToNumber.土 || [] }
-]
+const wuxingElements = computed(() => [
+  { name: '金', color: '#FFD700', numbers: wuXingToNumber.value.金 || [] },
+  { name: '木', color: '#228B22', numbers: wuXingToNumber.value.木 || [] },
+  { name: '水', color: '#4169E1', numbers: wuXingToNumber.value.水 || [] },
+  { name: '火', color: '#FF6347', numbers: wuXingToNumber.value.火 || [] },
+  { name: '土', color: '#8B4513', numbers: wuXingToNumber.value.土 || [] }
+])
 
 // 🎨 样式计算
 const wuxingAreaStyle = computed(() => ({
@@ -93,7 +97,7 @@ defineExpose({
 })
 
 onMounted(() => {
-  console.log('🌟 WuxingArea 组件已挂载，五行数据:', wuXingToNumber)
+  console.log('🌟 WuxingArea 组件已挂载，五行数据:', wuXingToNumber.value)
 })
 </script>
 
@@ -165,7 +169,7 @@ onMounted(() => {
     }
   }
 
-    @media (max-width: 480px) {
+  @media (max-width: 480px) {
     .wuxing-numbers {
       gap: 2px !important;
     }
