@@ -8,16 +8,16 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 
-// 🎯 生肖数据映射
+// 🎯 从mockData获取生肖数据
 const { shengXiaoToNumber, playTypes } = mockData
 const waveColorData = playTypes.find((item) => item.code === '8007')?.options || {}
 
-// 🎨 颜色映射 - 创建数字到颜色的映射
+// 🎨 颜色映射 - 使用真实的波色数据
 const numberToColorMap = new Map<string, string>()
 const colorMapping = {
-  红波: '#ff6b6b',
-  蓝波: '#4dabf7',
-  绿波: '#51cf66'
+  红波: '#ff4757',
+  蓝波: '#3742fa',
+  绿波: '#2ed573'
 }
 
 // 初始化颜色映射
@@ -30,21 +30,51 @@ Object.entries(waveColorData).forEach(([colorKey, numbers]) => {
   }
 })
 
-// 🐲 生肖配置 - 按布局顺序排列
-const zodiacConfig = [
-  { name: '蛇', pinyin: 'she', displayName: '蛇[冲 猪]' },
-  { name: '龙', pinyin: 'long', displayName: '龙[冲 狗]' },
-  { name: '兔', pinyin: 'tu', displayName: '兔[冲 鸡]' },
-  { name: '虎', pinyin: 'hu', displayName: '虎[冲 猴]' },
-  { name: '牛', pinyin: 'niu', displayName: '牛[冲 羊]' },
-  { name: '鼠', pinyin: 'shu', displayName: '鼠[冲 马]' },
-  { name: '猪', pinyin: 'zhu', displayName: '猪[冲 蛇]' },
-  { name: '狗', pinyin: 'gou', displayName: '狗[冲 龙]' },
-  { name: '鸡', pinyin: 'ji', displayName: '鸡[冲 兔]' },
-  { name: '猴', pinyin: 'hou', displayName: '猴[冲 虎]' },
-  { name: '羊', pinyin: 'yang', displayName: '羊[冲 牛]' },
-  { name: '马', pinyin: 'ma', displayName: '马[冲 鼠]' }
-]
+// 🐲 生肖冲克关系映射 - 使用真实数据而非硬编码
+const zodiacClashMap: Record<string, string> = {
+  鼠: '马',
+  牛: '羊',
+  虎: '猴',
+  兔: '鸡',
+  龙: '狗',
+  蛇: '猪',
+  马: '鼠',
+  羊: '牛',
+  猴: '虎',
+  鸡: '兔',
+  狗: '龙',
+  猪: '蛇'
+}
+
+// 🎯 生肖拼音映射
+const zodiacPinyinMap: Record<string, string> = {
+  鼠: 'shu',
+  牛: 'niu',
+  虎: 'hu',
+  兔: 'tu',
+  龙: 'long',
+  蛇: 'she',
+  马: 'ma',
+  羊: 'yang',
+  猴: 'hou',
+  鸡: 'ji',
+  狗: 'gou',
+  猪: 'zhu'
+}
+
+// 🔄 基于mockData动态生成生肖配置 - 按照参考图片的顺序
+const zodiacOrder = ['蛇', '龙', '兔', '虎', '牛', '鼠', '猪', '狗', '鸡', '猴', '羊', '马']
+const zodiacConfig = computed(() => {
+  return zodiacOrder.map((zodiacName) => {
+    const clashWith = zodiacClashMap[zodiacName]
+    return {
+      name: zodiacName,
+      pinyin: zodiacPinyinMap[zodiacName],
+      displayName: `${zodiacName}[冲 ${clashWith}]`,
+      numbers: shengXiaoToNumber[zodiacName] || []
+    }
+  })
+})
 
 // 🎨 样式计算
 const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
@@ -70,24 +100,20 @@ const titleHeaderStyle = computed(() => {
 
 const mainTitleStyle = computed(() => ({
   color: styleHeader.value?.titleColor || '#ffffff',
-  fontSize: '24px',
+  fontSize: '20px',
   fontWeight: 'bold',
   textAlign: 'center' as const
 }))
 
 const subTitleStyle = computed(() => ({
   color: styleHeader.value?.subTitleColor || '#ecf0f1',
-  fontSize: '14px',
+  fontSize: '13px',
   textAlign: 'center' as const
 }))
 
-// 🔢 获取生肖对应的数字按钮
-const getZodiacNumbers = (zodiacName: string) => {
-  const numbers = shengXiaoToNumber[zodiacName] || []
-  return numbers.map((num) => ({
-    number: num,
-    color: numberToColorMap.get(num) || '#6c757d'
-  }))
+// 🔢 获取数字对应的颜色
+const getNumberColor = (num: string) => {
+  return numberToColorMap.get(num) || '#6c757d'
 }
 
 // 🖼️ 获取生肖图片路径
@@ -103,11 +129,12 @@ const getZodiacImagePath = (pinyin: string) => {
 // 📱 导出颜色映射供其他组件使用
 defineExpose({
   numberToColorMap,
-  getNumberColor: (num: string) => numberToColorMap.get(num) || '#6c757d'
+  getNumberColor
 })
 
 onMounted(() => {
   console.log('🎨 生肖颜色映射已初始化:', numberToColorMap)
+  console.log('🐲 生肖配置:', zodiacConfig.value)
 })
 </script>
 
@@ -126,12 +153,7 @@ onMounted(() => {
 
       <!-- 生肖网格布局 -->
       <div class="zodiac-grid">
-        <div
-          v-for="(zodiac, index) in zodiacConfig"
-          :key="zodiac.name"
-          class="zodiac-card"
-          :class="`zodiac-${zodiac.pinyin}`"
-        >
+        <div v-for="(zodiac, index) in zodiacConfig" :key="zodiac.name" class="zodiac-card">
           <!-- 生肖图片和名称 -->
           <div class="zodiac-header">
             <img :src="getZodiacImagePath(zodiac.pinyin)" :alt="zodiac.name" class="zodiac-image" draggable="false" />
@@ -141,12 +163,12 @@ onMounted(() => {
           <!-- 数字按钮组 -->
           <div class="number-buttons">
             <button
-              v-for="numberInfo in getZodiacNumbers(zodiac.name)"
-              :key="numberInfo.number"
+              v-for="number in zodiac.numbers"
+              :key="number"
               class="number-button"
-              :style="{ backgroundColor: numberInfo.color }"
+              :style="{ backgroundColor: getNumberColor(number) }"
             >
-              {{ numberInfo.number }}
+              {{ number }}
             </button>
           </div>
         </div>
@@ -169,21 +191,20 @@ onMounted(() => {
   font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   .zodiac12wuxingpage-content {
-    background: #f8f9fa;
-    border-radius: 12px;
+    background: white;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .title-header {
-    padding: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
     text-align: center;
-    position: relative;
 
     .main-title {
-      margin: 0 0 8px 0;
-      font-size: 24px;
+      margin: 0 0 2px 0;
+      font-size: 18px;
       font-weight: bold;
       color: white;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
@@ -191,7 +212,7 @@ onMounted(() => {
 
     .sub-title {
       margin: 0;
-      font-size: 14px;
+      font-size: 12px;
       color: rgba(255, 255, 255, 0.9);
     }
   }
@@ -199,44 +220,50 @@ onMounted(() => {
   .zodiac-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 16px;
-    padding: 20px;
-    background: white;
+    gap: 8px;
+    padding: 12px;
+    background: #f8f9fa;
   }
 
   .zodiac-card {
     background: white;
     border-radius: 12px;
-    border: 2px solid #e9ecef;
-    padding: 16px;
+    border: 1px solid #e9ecef;
+    padding: 8px;
     text-align: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-      border-color: #4dabf7;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
 
     .zodiac-header {
-      margin-bottom: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
       .zodiac-image {
         width: 48px;
         height: 48px;
-        margin-bottom: 8px;
-        border-radius: 50%;
+        margin-bottom: 4px;
+        border-radius: 6px;
         background: #f8f9fa;
-        padding: 4px;
-        border: 2px solid #e9ecef;
+        padding: 2px;
+        border: 1px solid #e9ecef;
+        object-fit: contain;
       }
 
       .zodiac-name {
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
         color: #2c3e50;
+        white-space: nowrap;
         margin-bottom: 4px;
       }
     }
@@ -244,24 +271,28 @@ onMounted(() => {
     .number-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 3px;
       justify-content: center;
+      width: 100%;
 
       .number-button {
-        width: 32px;
-        height: 28px;
+        width: 26px;
+        height: 22px;
         border: none;
-        border-radius: 4px;
+        border-radius: 3px;
         color: white;
         font-weight: bold;
-        font-size: 12px;
+        font-size: 10px;
         cursor: pointer;
-        transition: all 0.2s ease;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        transition: all 0.1s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         &:hover {
-          transform: scale(1.1);
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+          transform: scale(1.05);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         &:active {
@@ -272,74 +303,90 @@ onMounted(() => {
   }
 
   .content-description {
-    padding: 16px 20px;
+    padding: 12px 16px;
     background: #f8f9fa;
     border-top: 1px solid #e9ecef;
-    font-size: 14px;
+    font-size: 13px;
     color: #6c757d;
     text-align: center;
-    line-height: 1.6;
+    line-height: 1.5;
   }
 
   // 响应式布局
   @media (max-width: 768px) {
     .zodiac-grid {
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(6, 1fr);
-      gap: 12px;
-      padding: 16px;
+      gap: 6px;
+      padding: 8px;
     }
 
     .zodiac-card {
-      padding: 12px;
+      padding: 6px;
 
       .zodiac-header {
+        margin-bottom: 6px;
+
         .zodiac-image {
           width: 40px;
           height: 40px;
         }
 
         .zodiac-name {
-          font-size: 12px;
+          font-size: 11px;
         }
       }
 
       .number-buttons {
-        gap: 4px;
+        gap: 2px;
 
         .number-button {
-          width: 28px;
-          height: 24px;
-          font-size: 10px;
+          width: 22px;
+          height: 18px;
+          font-size: 9px;
         }
       }
     }
 
     .title-header {
-      padding: 16px;
+      padding: 10px 12px;
 
       .main-title {
-        font-size: 20px;
+        font-size: 16px;
       }
 
       .sub-title {
-        font-size: 12px;
+        font-size: 11px;
       }
     }
   }
 
   @media (max-width: 480px) {
     .zodiac-grid {
-      grid-template-columns: 1fr;
-      grid-template-rows: repeat(12, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4px;
+      padding: 6px;
     }
 
     .zodiac-card {
+      padding: 4px;
+
+      .zodiac-header {
+        .zodiac-image {
+          width: 32px;
+          height: 32px;
+        }
+
+        .zodiac-name {
+          font-size: 10px;
+        }
+      }
+
       .number-buttons {
+        gap: 1px;
+
         .number-button {
-          width: 24px;
-          height: 20px;
-          font-size: 9px;
+          width: 18px;
+          height: 16px;
+          font-size: 8px;
         }
       }
     }
