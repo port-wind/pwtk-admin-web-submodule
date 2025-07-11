@@ -87,35 +87,41 @@ export interface IWuxingAreaStyle {
 }
 
 export interface IWuxingGridStyle {
-  columns: number
+  columns?: number
   gap: number
-  padding: number
+  padding?: number
 }
 
 export interface IWuxingCardStyle {
   backgroundColor: string
   borderRadius: number
   padding: number
-  shadowColor: string
-  shadowBlur: number
-  hoverShadowBlur: number
+  shadowColor?: string
+  shadowBlur?: number
+  hoverShadowBlur?: number
 }
 
 export interface IWuxingTitleStyle {
   fontSize: number
-  fontWeight: number
+  fontWeight?: number
   color: string
-  marginBottom: number
-  textAlign: 'left' | 'center' | 'right'
+  marginBottom?: number
+  textAlign?: 'left' | 'center' | 'right'
 }
 
 export interface IWuxingElementStyle {
   nameSize: number
-  nameWeight: number
-  descriptionSize: number
-  descriptionColor: string
-  numberSize: number
-  numberWeight: number
+  nameWeight?: number
+  descriptionSize?: number
+  descriptionColor?: string
+  numberSize?: number
+  numberWeight?: number
+  // 数字按钮样式配置
+  numberWidth?: number
+  numberHeight?: number
+  numberFontSize?: number
+  numberBorderRadius?: number
+  numberGap?: number
 }
 
 export interface IResponsiveStyles {
