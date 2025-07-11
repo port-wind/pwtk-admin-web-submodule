@@ -404,8 +404,10 @@ const ZodiacCard = defineComponent({
               style: {
                 marginBottom: `${cardProps.imageStyle.marginBottom + 4}px`,
                 display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center'
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
               }
             },
             [
@@ -413,7 +415,10 @@ const ZodiacCard = defineComponent({
               h('img', {
                 src: getZodiacImagePath(cardProps.zodiac.pinyin),
                 alt: cardProps.zodiac.name,
-                style: imageComputedStyle.value,
+                style: {
+                  ...imageComputedStyle.value,
+                  marginBottom: '0px' // Remove bottom margin since we're using gap
+                },
                 draggable: false
               }),
               // Name
@@ -421,7 +426,12 @@ const ZodiacCard = defineComponent({
                 'div',
                 {
                   class: 'zodiac-name',
-                  style: nameComputedStyle.value
+                  style: {
+                    ...nameComputedStyle.value,
+                    marginBottom: '0px', // Remove bottom margin since we're using gap
+                    textAlign: 'left',
+                    whiteSpace: 'nowrap'
+                  }
                 },
                 cardProps.zodiac.displayName
               )
