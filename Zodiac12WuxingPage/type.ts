@@ -78,6 +78,46 @@ export interface IResponsiveBreakpoints {
   mobile: number
 }
 
+// 五行属性样式接口
+export interface IWuxingAreaStyle {
+  backgroundColor: string
+  borderRadius: number
+  padding: number
+  marginTop: number
+}
+
+export interface IWuxingGridStyle {
+  columns: number
+  gap: number
+  padding: number
+}
+
+export interface IWuxingCardStyle {
+  backgroundColor: string
+  borderRadius: number
+  padding: number
+  shadowColor: string
+  shadowBlur: number
+  hoverShadowBlur: number
+}
+
+export interface IWuxingTitleStyle {
+  fontSize: number
+  fontWeight: number
+  color: string
+  marginBottom: number
+  textAlign: 'left' | 'center' | 'right'
+}
+
+export interface IWuxingElementStyle {
+  nameSize: number
+  nameWeight: number
+  descriptionSize: number
+  descriptionColor: string
+  numberSize: number
+  numberWeight: number
+}
+
 export interface IResponsiveStyles {
   tablet: {
     grid: Partial<IGridLayoutStyle>
@@ -116,6 +156,15 @@ export interface Zodiac12WuxingPageConfig {
   numberButtonStyle: INumberButtonStyle
   gridLayoutStyle: IGridLayoutStyle
   zodiacLayoutStyle: IZodiacLayoutStyle
+
+  // 五行属性配置
+  showWuxing: boolean
+  wuxingTitle: string
+  wuxingAreaStyle: IWuxingAreaStyle
+  wuxingGridStyle: IWuxingGridStyle
+  wuxingCardStyle: IWuxingCardStyle
+  wuxingTitleStyle: IWuxingTitleStyle
+  wuxingElementStyle: IWuxingElementStyle
 
   // Color mappings
   customColorMapping: {

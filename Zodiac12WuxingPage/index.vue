@@ -1,6 +1,7 @@
 <script setup lang="ts" name="Zodiac12WuxingPage">
 import { computed } from 'vue'
 import ZodiacGridArea from './components/ZodiacGridArea.vue'
+import WuxingArea from './components/WuxingArea.vue'
 import type { IDatas } from './type'
 
 interface IProps {
@@ -75,13 +76,15 @@ defineExpose({
       <!-- 生肖网格区域 -->
       <ZodiacGridArea :config="datas.configParamJson" />
 
+      <!-- 五行属性区域 -->
+      <WuxingArea v-if="datas.configParamJson.showWuxing !== false" :config="datas.configParamJson" />
+
       <!-- 底部说明 -->
       <div v-if="datas.configParamJson.content" class="content-description" :style="contentDescriptionStyle">
         {{ datas.configParamJson.content }}
       </div>
 
-      <!-- 未来可扩展区域：五行区域、其他功能区域等 -->
-      <!-- <WuxingArea v-if="datas.configParamJson.showWuxing" :config="datas.configParamJson" /> -->
+      <!-- 未来可扩展区域：其他功能区域等 -->
       <!-- <StatisticsArea v-if="datas.configParamJson.showStats" :config="datas.configParamJson" /> -->
     </div>
 
