@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import ZodiacGridArea from './components/ZodiacGridArea.vue'
 import WuxingArea from './components/WuxingArea.vue'
+import WaveColorArea from './components/WaveColorArea.vue'
 import type { IDatas } from './type'
 
 interface IProps {
@@ -78,6 +79,9 @@ defineExpose({
 
       <!-- 五行属性区域 -->
       <WuxingArea v-if="datas.configParamJson.showWuxing !== false" :config="datas.configParamJson" />
+
+      <!-- 波色区域 -->
+      <WaveColorArea v-if="datas.configParamJson.showWaveColor !== false" :config="datas.configParamJson" />
 
       <!-- 底部说明 -->
       <div v-if="datas.configParamJson.content" class="content-description" :style="contentDescriptionStyle">

@@ -124,6 +124,52 @@ export interface IWuxingElementStyle {
   numberGap?: number
 }
 
+// 波色属性样式接口
+export interface IWaveColorAreaStyle {
+  backgroundColor: string
+  borderRadius: number
+  padding: number
+  marginTop: number
+}
+
+export interface IWaveColorGridStyle {
+  columns?: number
+  gap: number
+  padding?: number
+}
+
+export interface IWaveColorCardStyle {
+  backgroundColor: string
+  borderRadius: number
+  padding: number
+  shadowColor?: string
+  shadowBlur?: number
+  hoverShadowBlur?: number
+}
+
+export interface IWaveColorTitleStyle {
+  fontSize: number
+  fontWeight?: number
+  color: string
+  marginBottom?: number
+  textAlign?: 'left' | 'center' | 'right'
+}
+
+export interface IWaveColorElementStyle {
+  nameSize: number
+  nameWeight?: number
+  descriptionSize?: number
+  descriptionColor?: string
+  numberSize?: number
+  numberWeight?: number
+  // 数字按钮样式配置
+  numberWidth?: number
+  numberHeight?: number
+  numberFontSize?: number
+  numberBorderRadius?: number
+  numberGap?: number
+}
+
 export interface IResponsiveStyles {
   tablet: {
     grid: Partial<IGridLayoutStyle>
@@ -171,6 +217,15 @@ export interface Zodiac12WuxingPageConfig {
   wuxingCardStyle: IWuxingCardStyle
   wuxingTitleStyle: IWuxingTitleStyle
   wuxingElementStyle: IWuxingElementStyle
+
+  // 波色属性配置
+  showWaveColor: boolean
+  waveColorTitle: string
+  waveColorAreaStyle: IWaveColorAreaStyle
+  waveColorGridStyle: IWaveColorGridStyle
+  waveColorCardStyle: IWaveColorCardStyle
+  waveColorTitleStyle: IWaveColorTitleStyle
+  waveColorElementStyle: IWaveColorElementStyle
 
   // Color mappings
   customColorMapping: {
