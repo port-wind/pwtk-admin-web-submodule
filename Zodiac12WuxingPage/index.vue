@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import ZodiacGridArea from './components/ZodiacGridArea.vue'
 import WuxingArea from './components/WuxingArea.vue'
 import WaveColorArea from './components/WaveColorArea.vue'
+import NumberOddEvenArea from './components/NumberOddEvenArea.vue'
 import type { IDatas } from './type'
 
 interface IProps {
@@ -82,6 +83,9 @@ defineExpose({
 
       <!-- 波色区域 -->
       <WaveColorArea v-if="datas.configParamJson.showWaveColor !== false" :config="datas.configParamJson" />
+
+      <!-- 合数单双区域 -->
+      <NumberOddEvenArea v-if="datas.configParamJson.showNumberOddEven !== false" :config="datas.configParamJson" />
 
       <!-- 底部说明 -->
       <div v-if="datas.configParamJson.content" class="content-description" :style="contentDescriptionStyle">

@@ -170,6 +170,52 @@ export interface IWaveColorElementStyle {
   numberGap?: number
 }
 
+// 合数单双属性样式接口
+export interface INumberOddEvenAreaStyle {
+  backgroundColor: string
+  borderRadius: number
+  padding: number
+  marginTop: number
+}
+
+export interface INumberOddEvenGridStyle {
+  columns?: number
+  gap: number
+  padding?: number
+}
+
+export interface INumberOddEvenCardStyle {
+  backgroundColor: string
+  borderRadius: number
+  padding: number
+  shadowColor?: string
+  shadowBlur?: number
+  hoverShadowBlur?: number
+}
+
+export interface INumberOddEvenTitleStyle {
+  fontSize: number
+  fontWeight?: number
+  color: string
+  marginBottom?: number
+  textAlign?: 'left' | 'center' | 'right'
+}
+
+export interface INumberOddEvenElementStyle {
+  nameSize: number
+  nameWeight?: number
+  descriptionSize?: number
+  descriptionColor?: string
+  numberSize?: number
+  numberWeight?: number
+  // 数字按钮样式配置
+  numberWidth?: number
+  numberHeight?: number
+  numberFontSize?: number
+  numberBorderRadius?: number
+  numberGap?: number
+}
+
 export interface IResponsiveStyles {
   tablet: {
     grid: Partial<IGridLayoutStyle>
@@ -226,6 +272,15 @@ export interface Zodiac12WuxingPageConfig {
   waveColorCardStyle: IWaveColorCardStyle
   waveColorTitleStyle: IWaveColorTitleStyle
   waveColorElementStyle: IWaveColorElementStyle
+
+  // 合数单双属性配置
+  showNumberOddEven: boolean
+  numberOddEvenTitle: string
+  numberOddEvenAreaStyle: INumberOddEvenAreaStyle
+  numberOddEvenGridStyle: INumberOddEvenGridStyle
+  numberOddEvenCardStyle: INumberOddEvenCardStyle
+  numberOddEvenTitleStyle: INumberOddEvenTitleStyle
+  numberOddEvenElementStyle: INumberOddEvenElementStyle
 
   // Color mappings
   customColorMapping: {
