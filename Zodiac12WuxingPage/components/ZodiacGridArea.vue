@@ -36,6 +36,12 @@ const initializeColorMapping = () => {
   numberToColorMap.clear()
   const colorMapping = getColorMapping()
 
+  console.log('🎨 初始化颜色映射:', {
+    customColors: props.config?.customColorMapping,
+    colorMapping,
+    waveColorData: Object.keys(waveColorData)
+  })
+
   Object.entries(waveColorData).forEach(([colorKey, numbers]) => {
     const color = colorMapping[colorKey as keyof typeof colorMapping]
     if (color && Array.isArray(numbers)) {
@@ -44,6 +50,8 @@ const initializeColorMapping = () => {
       })
     }
   })
+
+  console.log('🎨 颜色映射初始化完成，映射数量:', numberToColorMap.size)
 }
 
 // 🐲 生肖配置数据
@@ -183,9 +191,90 @@ const gridLayoutStyle = computed(() => ({
   ...props.config.gridLayoutStyle
 }))
 
-// 🔢 获取数字对应的颜色
+// 🔢 获取数字对应的颜色 - 响应式版本，确保总是有有效颜色
 const getNumberColor = (num: string) => {
-  return numberToColorMap.get(num) || '#6c757d'
+  // 确保颜色映射已初始化
+  if (numberToColorMap.size === 0) {
+    initializeColorMapping()
+  }
+
+  const color = numberToColorMap.get(num)
+  if (color) {
+    return color
+  }
+
+  // 如果仍然没有找到颜色，使用默认的波色映射
+  const customColors = props.config?.customColorMapping
+  if (customColors) {
+    // 根据数字范围分配默认颜色
+    const numValue = parseInt(num, 10)
+    if (numValue >= 1 && numValue <= 16) {
+      return customColors.redWave || '#ff4757'
+    }
+    if (numValue >= 17 && numValue <= 32) {
+      return customColors.blueWave || '#3742fa'
+    }
+    return customColors.greenWave || '#2ed573'
+  }
+
+  // 最终回退色
+  return '#6c757d'
+}
+
+// 🎨 响应式颜色映射器 - 确保颜色变化时自动更新
+const reactiveColorMapping = computed(() => {
+  // 当配置变化时，这个计算属性会重新计算
+  const mapping = new Map<string, string>()
+  const customColors = props.config?.customColorMapping
+
+  console.log('🎨 响应式颜色映射重新计算:', {
+    hasCustomColors: !!customColors,
+    customColors,
+    waveDataKeys: Object.keys(waveColorData)
+  })
+
+  if (customColors && Object.keys(waveColorData).length > 0) {
+    const colorMapping = {
+      红波: customColors.redWave || '#ff4757',
+      蓝波: customColors.blueWave || '#3742fa',
+      绿波: customColors.greenWave || '#2ed573'
+    }
+
+    Object.entries(waveColorData).forEach(([colorKey, numbers]) => {
+      const color = colorMapping[colorKey as keyof typeof colorMapping]
+      if (color && Array.isArray(numbers)) {
+        numbers.forEach((num) => {
+          mapping.set(num, color)
+        })
+      }
+    })
+  }
+
+  console.log('🎨 响应式颜色映射完成，映射数量:', mapping.size)
+  return mapping
+})
+
+// 🔢 响应式获取数字颜色
+const getReactiveNumberColor = (num: string) => {
+  const color = reactiveColorMapping.value.get(num)
+  if (color) {
+    return color
+  }
+
+  // 回退到自定义颜色或默认颜色
+  const customColors = props.config?.customColorMapping
+  if (customColors) {
+    const numValue = parseInt(num, 10)
+    if (numValue >= 1 && numValue <= 16) {
+      return customColors.redWave || '#ff4757'
+    }
+    if (numValue >= 17 && numValue <= 32) {
+      return customColors.blueWave || '#3742fa'
+    }
+    return customColors.greenWave || '#2ed573'
+  }
+
+  return '#6c757d'
 }
 
 // 🖼️ 获取生肖图片路径
@@ -258,7 +347,7 @@ const ZodiacCard = defineComponent({
       borderRadius: `${cardProps.buttonStyle.borderRadius}px`,
       fontSize: `${cardProps.buttonStyle.fontSize}px`,
       fontWeight: cardProps.buttonStyle.fontWeight,
-      backgroundColor: getNumberColor(number),
+      backgroundColor: getReactiveNumberColor(number),
       color: 'white',
       border: 'none',
       cursor: 'pointer',
@@ -374,6 +463,8 @@ const responsiveBreakpoints = computed(() => ({
 defineExpose({
   numberToColorMap,
   getNumberColor,
+  getReactiveNumberColor,
+  reactiveColorMapping,
   zodiacConfig,
   initializeColorMapping
 })
@@ -382,9 +473,20 @@ onMounted(() => {
   initializeColorMapping()
 })
 
-// 监听配置变化重新初始化颜色映射
+// 监听配置变化重新初始化颜色映射 - 改进版本
 watch(
-  () => props.config.customColorMapping,
+  () => props.config,
+  (newConfig) => {
+    if (newConfig && newConfig.customColorMapping) {
+      initializeColorMapping()
+    }
+  },
+  { deep: true, immediate: true }
+)
+
+// 额外监听自定义颜色映射的变化
+watch(
+  () => props.config?.customColorMapping,
   () => {
     initializeColorMapping()
   },
