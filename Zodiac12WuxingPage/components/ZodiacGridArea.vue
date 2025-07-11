@@ -7,6 +7,7 @@ import type {
   IZodiacNameStyle,
   INumberButtonStyle,
   IGridLayoutStyle,
+  IZodiacLayoutStyle,
   Zodiac12WuxingPageConfig
 } from '../type'
 
@@ -165,6 +166,10 @@ const getDefaultGridLayoutStyle = (): IGridLayoutStyle => ({
   backgroundColor: '#f8f9fa'
 })
 
+const getDefaultZodiacLayoutStyle = (): IZodiacLayoutStyle => ({
+  imagePosition: 'left'
+})
+
 // 样式合并计算
 const zodiacCardStyle = computed(() => ({
   ...getDefaultZodiacCardStyle(),
@@ -189,6 +194,11 @@ const numberButtonStyle = computed(() => ({
 const gridLayoutStyle = computed(() => ({
   ...getDefaultGridLayoutStyle(),
   ...props.config.gridLayoutStyle
+}))
+
+const zodiacLayoutStyle = computed(() => ({
+  ...getDefaultZodiacLayoutStyle(),
+  ...props.config.zodiacLayoutStyle
 }))
 
 // 🔢 获取数字对应的颜色 - 响应式版本，确保总是有有效颜色
@@ -295,7 +305,8 @@ const ZodiacCard = defineComponent({
     cardStyle: { type: Object, required: true },
     imageStyle: { type: Object, required: true },
     nameStyle: { type: Object, required: true },
-    buttonStyle: { type: Object, required: true }
+    buttonStyle: { type: Object, required: true },
+    layoutStyle: { type: Object as () => IZodiacLayoutStyle, required: true }
   },
   setup(cardProps) {
     const cardComputedStyle = computed(() => ({
@@ -386,6 +397,75 @@ const ZodiacCard = defineComponent({
       target.style.boxShadow = `0 1px ${cardProps.buttonStyle.shadowBlur}px rgba(0, 0, 0, 0.2)`
     }
 
+    // 根据布局配置生成头部元素
+    const getHeaderElements = (cardPropsData: any) => {
+      const imageElement = h('img', {
+        src: getZodiacImagePath(cardPropsData.zodiac.pinyin),
+        alt: cardPropsData.zodiac.name,
+        style: {
+          ...imageComputedStyle.value,
+          marginBottom: '0px'
+        },
+        draggable: false
+      })
+
+      const nameElement = h(
+        'div',
+        {
+          class: 'zodiac-name',
+          style: {
+            ...nameComputedStyle.value,
+            marginBottom: '0px',
+            textAlign: 'left',
+            whiteSpace: 'nowrap'
+          }
+        },
+        cardPropsData.zodiac.displayName
+      )
+
+      // 根据布局配置返回不同的排列
+      const { imagePosition } = cardPropsData.layoutStyle
+
+      if (imagePosition === 'left') {
+        return [imageElement, nameElement]
+      }
+
+      if (imagePosition === 'center') {
+        // 分割名称为生肖名和相冲信息
+        const [zodiacName, clashInfo] = cardPropsData.zodiac.displayName.split('[')
+        const zodiacNameElement = h(
+          'div',
+          {
+            class: 'zodiac-name-part',
+            style: {
+              ...nameComputedStyle.value,
+              marginBottom: '0px',
+              textAlign: 'left',
+              whiteSpace: 'nowrap'
+            }
+          },
+          zodiacName
+        )
+        const clashInfoElement = h(
+          'div',
+          {
+            class: 'zodiac-clash-part',
+            style: {
+              ...nameComputedStyle.value,
+              marginBottom: '0px',
+              textAlign: 'left',
+              whiteSpace: 'nowrap'
+            }
+          },
+          clashInfo ? `[${clashInfo}` : ''
+        )
+        return [zodiacNameElement, imageElement, clashInfoElement]
+      }
+
+      // right
+      return [nameElement, imageElement]
+    }
+
     return () =>
       h(
         'div',
@@ -410,32 +490,7 @@ const ZodiacCard = defineComponent({
                 gap: '8px'
               }
             },
-            [
-              // Image
-              h('img', {
-                src: getZodiacImagePath(cardProps.zodiac.pinyin),
-                alt: cardProps.zodiac.name,
-                style: {
-                  ...imageComputedStyle.value,
-                  marginBottom: '0px' // Remove bottom margin since we're using gap
-                },
-                draggable: false
-              }),
-              // Name
-              h(
-                'div',
-                {
-                  class: 'zodiac-name',
-                  style: {
-                    ...nameComputedStyle.value,
-                    marginBottom: '0px', // Remove bottom margin since we're using gap
-                    textAlign: 'left',
-                    whiteSpace: 'nowrap'
-                  }
-                },
-                cardProps.zodiac.displayName
-              )
-            ]
+            getHeaderElements(cardProps)
           ),
           // Number buttons
           h(
@@ -523,6 +578,7 @@ watch(
       :image-style="zodiacImageStyle"
       :name-style="zodiacNameStyle"
       :button-style="numberButtonStyle"
+      :layout-style="zodiacLayoutStyle"
     />
   </div>
 </template>

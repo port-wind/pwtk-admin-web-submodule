@@ -69,6 +69,10 @@ export interface IGridLayoutStyle {
   backgroundColor: string
 }
 
+export interface IZodiacLayoutStyle {
+  imagePosition: 'left' | 'center' | 'right'
+}
+
 export interface IResponsiveBreakpoints {
   tablet: number
   mobile: number
@@ -111,6 +115,7 @@ export interface Zodiac12WuxingPageConfig {
   zodiacNameStyle: IZodiacNameStyle
   numberButtonStyle: INumberButtonStyle
   gridLayoutStyle: IGridLayoutStyle
+  zodiacLayoutStyle: IZodiacLayoutStyle
 
   // Color mappings
   customColorMapping: {
