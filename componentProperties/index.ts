@@ -84,6 +84,7 @@ import HotRecommendationsProperties from './HotRecommendations'
 import ImageGameTypeCardsProperties from './ImageGameTypeCards'
 import ImageForGameTypeProperties from './ImageForGameType'
 import SixZodiacSixCodeProperties from './SixZodiacSixCode'
+import Zodiac12WuxingPageProperties from './Zodiac12WuxingPage'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -310,6 +311,10 @@ ImageGameTypeCardsProperties.forEach((value, key) => {
 })
 
 ImageForGameTypeProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+Zodiac12WuxingPageProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
