@@ -102,12 +102,12 @@ async function getPlayRules() {
   } catch (error) {
     console.error('Failed to fetch play rules:', error)
     // 如果 API 失败，使用 mockData 作为降级方案
-    import('@/views/WebVision/components/rightslider/Zodiac12WuxingPageStyle/mockData').then(({ mockData }) => {
-      gameStore.set({
-        ...gameStore.get(),
-        playRules: mockData
-      })
-    })
+    // import('@/views/WebVision/components/rightslider/Zodiac12WuxingPageStyle/mockData').then(({ mockData }) => {
+    //   gameStore.set({
+    //     ...gameStore.get(),
+    //     playRules: mockData
+    //   })
+    // })
   }
 }
 
