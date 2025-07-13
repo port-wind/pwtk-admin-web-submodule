@@ -12,7 +12,8 @@ const styleJSON = computed(() => props.datas.configParamJson.styleJSON)
 const imageStyle = computed(() => {
   return {
     backgroundColor: styleJSON.value?.backgroundColor,
-    color: styleJSON.value?.textColor
+    color: styleJSON.value?.textColor,
+    textAlign: styleJSON.value?.textAlign || 'left'
   }
 })
 </script>
@@ -20,9 +21,9 @@ const imageStyle = computed(() => {
 <template>
   <div class="infobox-wrapper">
     <div class="infobox-content" :style="imageStyle">
-      <p class="info-line">{{ datas.configParamJson.line1 }}</p>
-      <p class="info-line">{{ datas.configParamJson.line2 }}</p>
-      <p class="info-line">
+      <p v-if="datas.configParamJson.line1" class="info-line">{{ datas.configParamJson.line1 }}</p>
+      <p v-if="datas.configParamJson.line2" class="info-line">{{ datas.configParamJson.line2 }}</p>
+      <p v-if="datas.configParamJson.line3" class="info-line">
         <span class="highlight">{{ datas.configParamJson.line3 }}</span>
       </p>
     </div>
@@ -33,8 +34,8 @@ const imageStyle = computed(() => {
 <style scoped lang="scss">
 .infobox-wrapper {
   position: relative;
-  padding: 10px 0;
-  background-color: #f7f8fa;
+  padding: 0 10px;
+  //background-color: #f7f8fa;
   border-radius: 0;
 }
 

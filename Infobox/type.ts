@@ -13,6 +13,7 @@ export interface Infobox {
 export interface IStyleJSON {
   backgroundColor: string
   textColor: string
+  textAlign: string
 }
 
 // 组件在 WebVision 中的完整数据结构
