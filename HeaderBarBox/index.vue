@@ -1,9 +1,5 @@
 <template>
   <div class="headerbarbox">
-    <!-- <component
-      :is="datas?.configParamJson?.Attr?.sticky ? 'van-sticky' : 'div'"
-      :offset-top="datas?.configParamJson?.Attr?.offsetTop || 0"
-    > -->
     <van-sticky :offset-top="datas?.configParamJson?.Attr?.offsetTop || 0">
       <div class="header-bar" :style="headerBarStyle">
         <van-image class="responsive-image" :src="PUBLIC_CND_URL + datas?.configParamJson?.logoSrc" />
@@ -33,12 +29,8 @@
 <script setup lang="ts" name="HeaderBarBox">
 import { Icon as VanIcon, Image as VanImage, Sticky as VanSticky } from 'vant'
 import { computed, ref } from 'vue'
-// import { PUBLIC_CND_URL } from '@/consts';
 import { onMounted } from 'vue'
-import constants from '@/constants'
 import type { HeaderBarBox } from './type'
-// import utils from '@/utils';
-// import homeIcon from '../../assets/images/homeIcon.png' // 添加图片导入
 
 interface IProps {
   datas: {
@@ -50,7 +42,6 @@ const { datas } = defineProps<IProps>()
 
 const PUBLIC_CND_URL = 'https://stt.pwtk.cc/'
 const WEBSITE_DOMAIN = 'tk02.pwtk.cc'
-// const WEBSITE_DOMAIN = JSON.parse(utils.getSession(constants.sessionStorageKeys.WEBSITE_DOMAIN) || '{}');
 const websitDomain = ref(WEBSITE_DOMAIN)
 
 const headerBarStyle = computed(() => {
@@ -92,12 +83,9 @@ onMounted(() => {
     )
   }
 })
-// console.log("WEBSITE_DOMAIN",websitDomain.value)
-// console.log("WEBSITE_DOMAIN",PUBLIC_CND_URL + datas.middleSrc ?? websitDomain.value.icon)
 const backToHome = () => {
   window.location.href = '/'
 }
-//datas.themeColor
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
