@@ -1,33 +1,14 @@
+import type { AdBarConfigType } from '../AdBar/type'
 import type { IComponentProperty, ISetStyle } from './index'
 
-// AdBarBox 组件配置参数类型
-export interface AdBarConfigType {
-  model: 's1' | 's2' | 's3'
-  total: number
-  adData: AdBarItemType[]
-  title?: string
-  showTitle?: boolean
-  showText?: boolean
-  layout?: 'horizontal' | 'vertical'
-  adCount?: number
-}
-
-// 广告项类型
-export interface AdBarItemType {
-  index: number
-  img: string
-  link: string
-  name: string
-  imgArr?: any // 用于上传组件的文件数组
-}
 
 const componentProperties = new Map<String, IComponentProperty<ISetStyle<AdBarConfigType>>>()
 
-componentProperties.set('AdBarBox', {
-  component: 'AdBarBox',
+componentProperties.set('AdBar', {
+  component: 'AdBar',
   text: '推广广告',
   active: false,
-  style: 'AdBarBoxStyle',
+  style: 'AdBarStyle',
   setStyle: {
     componentId: '',
     sketchCodeList: '',
@@ -36,7 +17,7 @@ componentProperties.set('AdBarBox', {
     websiteId: '',
     componentRef: '',
     componentName: '推广广告模块',
-    componentType: 'AdBarBox',
+    componentType: 'AdBar',
     componentSort: '',
     status: '',
     isView: '',

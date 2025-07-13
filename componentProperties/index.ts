@@ -29,7 +29,7 @@ export interface ISetStyle<V> {
 }
 
 // 导入分组件属性配置
-import AdBarBoxProperties from './AdBarBox'
+import AdBarProperties from './AdBar'
 import CustomBarAdBoxProperties from './CustomBarAdBox'
 import CaptionTextProperties from './CaptionText'
 import ListswitchingProperties from './Listswitching'
@@ -90,7 +90,7 @@ import Zodiac12WuxingPageProperties from './Zodiac12WuxingPage'
 const allComponentProperties = new Map()
 
 // 合并分组件配置
-AdBarBoxProperties.forEach((value, key) => {
+AdBarProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="AdBarBox">
+  <div class="AdBar">
     <div class="ad-bar-box-container">
       <div
         class="mbox"
@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="AdBarBox">
+<script setup lang="ts" name="AdBar">
 import { computed } from 'vue'
 import { Image as VanImage } from 'vant'
 import { PUBLIC_CDN_URL } from '../utils'
@@ -67,7 +67,7 @@ const props = defineProps({
 </script>
 
 <style scoped lang="less">
-.AdBarBox {
+.AdBar {
   position: relative;
 }
 

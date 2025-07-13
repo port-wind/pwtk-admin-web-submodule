@@ -16,27 +16,16 @@ import { computed } from 'vue'
 import { Image as VanImage } from 'vant'
 import { PUBLIC_CDN_URL } from '../utils'
 import EmptyImage from '@/assets/images/hjwz.gif'
+import type { IDatas } from './type'
 
 // 定义 props 接收父组件传入的数据
 const getFullUrl = (url: string, baseUrl: string): string => {
   return /^https?:\/\//.test(url) ? url : `${baseUrl}${url}`
 }
-interface AdBarType {
-  total: number
-  adData: AdItem[]
+interface IProps {
+  data: IDatas
 }
-interface AdItem {
-  index: number
-  img: string
-  link: string
-  name: string
-}
-const props = defineProps({
-  data: {
-    type: Object as () => AdBarType,
-    required: true
-  }
-})
+const props = defineProps<IProps>()
 
 const sortedAdData = computed(() => {
   // 创建一个新的数组，长度为 total，初始值为 null
