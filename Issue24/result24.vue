@@ -19,7 +19,7 @@ const styleMain = computed(() => props.datas.configParamJson.styleMain)
 const issueParams = reactive({
   gameType: gameType.value,
   size: Number(props.datas.configParamJson.size),
-  forumId: String(props.datas.configParamJson.forumId)
+  forumId: String(props.datas.configParamJson.forumId),
 })
 
 const { getHitNumber, getNumberColorClass, extractIssueNumber, processedIssueList } = useIssueList(issueParams)
@@ -37,7 +37,7 @@ watch(
 const numberStyle = computed(() => {
   return {
     fontSize: `${styleMain.value?.numberSize || 14}px`,
-    margin: `0 ${styleMain.value?.numberSpacing || 0}px`
+    margin: `0 ${styleMain.value?.numberSpacing || 0}px`,
   }
 })
 </script>
