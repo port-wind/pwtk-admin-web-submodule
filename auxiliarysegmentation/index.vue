@@ -4,7 +4,7 @@
       class="auxiliarysegmentation__container"
       :style="{
         height: `${datas.configParamJson.blankHeight}px`,
-        padding: datas.configParamJson.paddType,
+        padding: datas.configParamJson.paddType === 0 ? '0' : '0 10px',
         borderRadius: `${datas.configParamJson.borderRadius}px`,
         backgroundColor: datas.configParamJson.backgroundColor
       }"
