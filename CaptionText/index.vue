@@ -8,7 +8,6 @@
           {{ datas.configParamJson.subtitle }}
         </span>
       </div>
-
       <!-- 主要内容区域 -->
       <div class="main-container">
         <div class="content-wrapper" :style="contentWrapperStyle">
@@ -16,27 +15,24 @@
           <h2 v-if="datas.configParamJson.name" class="caption-title" :style="captionTitleStyle">
             {{ datas.configParamJson.name }}
           </h2>
-
           <!-- 描述文字 -->
           <p v-if="datas.configParamJson.description" class="caption-description" :style="captionDescriptionStyle">
             {{ datas.configParamJson.description }}
           </p>
-
           <!-- 更多按钮 -->
           <div
-            v-show="datas.configParamJson.more.show"
+            v-show="datas.configParamJson.more?.show"
             class="more-button"
             :class="moreButtonClass"
             :style="moreButtonStyle"
             @click="handleMoreClick"
           >
             <span class="more-text">{{ moreText }}</span>
-            <span v-if="datas.configParamJson.more.type !== 0" class="more-icon">></span>
+            <span v-if="datas.configParamJson.more?.type !== 0" class="more-icon">></span>
           </div>
         </div>
       </div>
     </div>
-
     <!-- 删除按钮插槽 -->
     <slot name="deles" />
   </div>
@@ -52,114 +48,102 @@ interface IProps {
 const props = defineProps<IProps>()
 
 // 样式计算属性
-const styleHeader = computed(() => props.datas.configParamJson.styleHeader)
-const styleMain = computed(() => props.datas.configParamJson.styleMain)
+const styleHeader = computed(() => props.datas.configParamJson.styleHeader ?? {})
+const styleMain = computed(() => props.datas.configParamJson.styleMain ?? {})
 
-// 容器样式
+// 容器样式（背景色优先级：styleMain.backgroundColor > backColor > 默认）
 const containerStyle = computed(() => {
+  const bgColor = styleMain.value.backgroundColor || props.datas.configParamJson.backColor || '#ffffff'
   return {
-    backgroundColor: styleMain.value?.backgroundColor || props.datas.configParamJson.backColor || '#ffffff',
-    borderRadius: `${styleMain.value?.borderRadius || 0}px`,
-    padding: `${styleMain.value?.containerPadding || 0}px 14px`,
-    margin: `${styleMain.value?.margin || 0}px auto`,
-    boxShadow: styleMain.value?.boxShadow || 'none',
+    backgroundColor: props.datas.configParamJson.backColor || '#ffffff',
+    borderRadius: `${styleMain.value.borderRadius ?? 0}px`,
+    padding: `${styleMain.value.containerPadding ?? 0}px 14px`,
+    margin: `${styleMain.value.margin ?? 0}px auto`,
+    boxShadow: styleMain.value.boxShadow || 'none',
     minHeight: '20px',
-    position: 'relative'
+    position: 'relative' as const
   }
 })
 
 // 标题头部样式
 const titleHeaderStyle = computed(() => {
-  if (styleHeader.value?.isGradient) {
+  if (styleHeader.value.isGradient && styleHeader.value.headerBg && styleHeader.value.headerBg2) {
     return {
       background: `linear-gradient(to right, ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`
     }
   } else {
     return {
-      backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2'
+      backgroundColor: styleHeader.value.headerBgColor || '#4a90e2'
     }
   }
 })
 
-const mainTitleStyle = computed(() => {
-  return {
-    color: styleHeader.value?.titleColor || '#ffffff'
-  }
-})
+const mainTitleStyle = computed(() => ({
+  color: styleHeader.value.titleColor || '#ffffff'
+}))
 
-const subTitleStyle = computed(() => {
-  return {
-    color: styleHeader.value?.subTitleColor || '#ffffff'
-  }
-})
+const subTitleStyle = computed(() => ({
+  color: styleHeader.value.subTitleColor || '#ffffff'
+}))
 
 // 内容包装器样式
-const contentWrapperStyle = computed(() => {
-  return {
-    padding: '6px 0',
-    borderBottom: props.datas.configParamJson.borderBott ? '1px solid #F9F9F9' : '1px solid transparent'
-  }
-})
+const contentWrapperStyle = computed(() => ({
+  padding: '6px 0',
+  borderBottom: props.datas.configParamJson.borderBott ? '1px solid #F9F9F9' : '1px solid transparent'
+}))
 
 // 标题样式
-const captionTitleStyle = computed(() => {
-  return {
-    fontSize: `${props.datas.configParamJson.wordSize}px`,
-    fontWeight: props.datas.configParamJson.wordWeight,
-    color: props.datas.configParamJson.wordColor,
-    textAlign: props.datas.configParamJson.positions,
-    height: `${props.datas.configParamJson.wordHeight}px`,
-    lineHeight: `${props.datas.configParamJson.wordHeight}px`,
-    paddingRight: !(props.datas.configParamJson.positions !== 'center' && props.datas.configParamJson.more.show)
-      ? '0'
-      : '60px',
-    margin: 0,
-    wordWrap: 'break-word',
-    minHeight: '10px'
-  }
-})
+const captionTitleStyle = computed(() => ({
+  fontSize: `${props.datas.configParamJson.wordSize ?? 16}px`,
+  fontWeight: Number(props.datas.configParamJson.wordWeight ?? 400),
+  color: props.datas.configParamJson.wordColor || '#333',
+  textAlign: props.datas.configParamJson.positions || 'left',
+  height: `${Number(props.datas.configParamJson.wordHeight ?? 24)}px`,
+  lineHeight: `${Number(props.datas.configParamJson.wordHeight ?? 24)}px`,
+  paddingRight: !(
+    String(props.datas.configParamJson.positions) !== 'center' && Boolean(props.datas.configParamJson.more?.show)
+  )
+    ? '0'
+    : '60px',
+  margin: 0,
+  wordWrap: 'break-word' as const,
+  minHeight: '10px'
+}))
 
 // 描述样式
-const captionDescriptionStyle = computed(() => {
-  return {
-    fontSize: `${props.datas.configParamJson.descriptionSize}px`,
-    fontWeight: props.datas.configParamJson.descriptionWeight,
-    color: props.datas.configParamJson.descriptionColor,
-    textAlign: props.datas.configParamJson.positions,
-    marginTop: '8px',
-    margin: '8px 0 0 0',
-    wordWrap: 'break-word',
-    minHeight: '10px'
-  }
-})
+const captionDescriptionStyle = computed(() => ({
+  fontSize: `${props.datas.configParamJson.descriptionSize ?? 14}px`,
+  fontWeight: Number(props.datas.configParamJson.descriptionWeight ?? 400),
+  color: props.datas.configParamJson.descriptionColor || '#666',
+  textAlign: props.datas.configParamJson.positions || 'left',
+  marginTop: '8px',
+  margin: '8px 0 0 0',
+  wordWrap: 'break-word' as const,
+  minHeight: '10px'
+}))
 
 // 更多按钮样式
-const moreButtonStyle = computed(() => {
-  return {
-    color: props.datas.configParamJson.more.type === 0 ? '#38f' : '#969799',
-    top: `${(props.datas.configParamJson.wordHeight - 6) / 2}px`
-  }
-})
+const moreButtonStyle = computed(() => ({
+  color: props.datas.configParamJson.more?.type === 0 ? '#38f' : '#969799',
+  top: `${(Number(props.datas.configParamJson.wordHeight ?? 24) - 6) / 2}px`
+}))
 
 // 更多按钮类名
-const moreButtonClass = computed(() => {
-  return props.datas.configParamJson.positions !== 'center' ? 'positioned' : 'centered'
-})
+const moreButtonClass = computed(() =>
+  String(props.datas.configParamJson.positions) !== 'center' ? 'positioned' : 'centered'
+)
 
 // 更多按钮文本
-const moreText = computed(() => {
-  return props.datas.configParamJson.more.type === 2 ? '' : props.datas.configParamJson.more.text
-})
+const moreText = computed(() =>
+  props.datas.configParamJson.more?.type === 2 ? '' : props.datas.configParamJson.more?.text ?? ''
+)
 
 // 处理更多按钮点击
 const handleMoreClick = () => {
   const moreConfig = props.datas.configParamJson.more
-  if (moreConfig.http && moreConfig.httpType) {
-    // 根据链接类型处理跳转逻辑
-    console.log('更多按钮点击', {
-      type: moreConfig.httpType,
-      url: moreConfig.http
-    })
+  if (moreConfig?.http && moreConfig?.httpType) {
+    const target = String(moreConfig.httpType).toLowerCase() === 'blank' ? '_blank' : '_self'
+    window.open(moreConfig.http, target)
   }
 }
 </script>
