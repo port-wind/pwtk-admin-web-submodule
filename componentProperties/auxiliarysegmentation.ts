@@ -2,7 +2,6 @@ import type { IComponentProperty, ISetStyle } from './index'
 
 // 辅助分割组件配置类型
 export interface AuxiliarysegmentationConfigType {
-  text: string
   blankHeight: number // 空白高度
   segmentationtype: number // 分割类型
   paddType: number // 边距
@@ -32,9 +31,8 @@ componentProperties.set('auxiliarysegmentation', {
     memo: '',
     pageCode: '',
     configParamJson: {
-      text: '辅助分割',
       blankHeight: 30,
-      segmentationtype: 0,
+      segmentationtype: 1,
       paddType: 0,
       auxliarColor: 'rgb(229, 229, 229)',
       bordertp: 'solid'
