@@ -8,7 +8,7 @@
     ]"
     :style="computedStyles"
   >
-    {{ datas.configParamJson.text }}
+    <div :style="computedStyles" v-html="datas.configParamJson.text"></div>
   </div>
 </template>
 
@@ -28,7 +28,7 @@ const computedStyles = computed(() => {
   const { configParamJson } = props.datas
   const styles: Record<string, string> = {
     fontSize: `${configParamJson.fontSize}px`,
-    fontWeight: configParamJson.fontWeight,
+    fontWeight: `${configParamJson.fontWeight}`,
     color: configParamJson.textColor,
     textAlign: configParamJson.textAlign,
     lineHeight: `${configParamJson.lineHeight}`,

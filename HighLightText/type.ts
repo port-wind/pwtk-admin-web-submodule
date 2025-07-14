@@ -9,7 +9,7 @@ export interface HighLightTextConfig {
   // 字体大小
   fontSize: number
   // 字体粗细
-  fontWeight: 'normal' | 'bold' | 'bolder'
+  fontWeight: number
   // 文本颜色
   textColor: string
   // 高亮颜色
