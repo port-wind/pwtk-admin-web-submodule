@@ -44,9 +44,12 @@ export function useGameTypeFields(datas: any) {
   // 🚀 初始化彩种字段的函数
   const initializeGameTypeFields = () => {
     const gameTypeFields = generateGameTypeFields()
+    console.log("🚀 ~ initializeGameTypeFields ~ gameTypeFields:", gameTypeFields)
 
+    
+    
+    // Object.assign(datas.configParamJson, gameTypeFields)
     // 🔄 合并基础配置和动态彩种字段
-    Object.assign(datas.configParamJson, gameTypeFields)
 
     console.log('🎮 Updated ConfigParamJson:', datas.configParamJson)
   }
