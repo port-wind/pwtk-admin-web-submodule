@@ -52,7 +52,7 @@ const getFullUrl = (url: string, baseUrl: string): string => {
           </template>
           <template #right>
             <!-- <Icon name="arrow-up" size="18" /> -->
-            <div class="top-nav-bar-right-image">
+            <div v-if="datas.configParamJson.isTop" class="top-nav-bar-right-image">
               <Image v-if="display" :src="TopImage.src" />
               <img v-else src="@/assets/images/top.png" />
             </div>

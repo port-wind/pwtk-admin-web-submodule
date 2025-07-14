@@ -8,4 +8,5 @@ export interface TopNavBar {
   title?: string
   logo: string
   homeUrl?: string
+  isTop?: boolean
 }
