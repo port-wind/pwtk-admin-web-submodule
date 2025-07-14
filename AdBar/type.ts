@@ -11,5 +11,4 @@ export interface AdBarItemType {
   img: string
   link: string
   name: string
-  imgArr?: any // 用于上传组件的文件数组
 }
