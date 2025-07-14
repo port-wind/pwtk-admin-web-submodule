@@ -55,34 +55,6 @@ onMounted(async () => {
             :tabsData="rawTabsData"
             :datas="props.datas"
           />
-
-          <!-- Model 2 的渲染内容 -->
-          <GameResultModel2
-            v-else-if="props.datas.configParamJson.model === 's2'"
-            :tabsData="rawTabsData"
-            :datas="props.datas"
-          />
-
-          <!-- Model 3 的渲染内容 -->
-          <GameResultModel3
-            v-if="props.datas.configParamJson.model === 's3'"
-            :tabsData="rawTabsData"
-            :datas="props.datas"
-          />
-
-          <!-- Model 3 的渲染内容 -->
-          <GameResultModel4
-            v-if="props.datas.configParamJson.model === 's4'"
-            :tabsData="rawTabsData"
-            :datas="props.datas"
-          />
-
-          <!-- Model 3 的渲染内容 -->
-          <GameResultModel5
-            v-if="props.datas.configParamJson.model === 's5'"
-            :tabsData="rawTabsData"
-            :datas="props.datas"
-          />
         </div>
       </Sticky>
     </div>

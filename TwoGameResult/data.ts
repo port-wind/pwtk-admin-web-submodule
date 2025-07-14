@@ -36,7 +36,8 @@ export const convertDataFormat = (data: string) => {
 }
 
 export const truncateString = (str: string): string => {
-  let newStr = str.toString()
+  if (!str) return ''
+  let newStr = str
   if (newStr.length > 4) {
     return newStr.slice(4)
   }

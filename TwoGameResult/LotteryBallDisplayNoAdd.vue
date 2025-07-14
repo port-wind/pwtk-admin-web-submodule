@@ -37,7 +37,7 @@ const props = defineProps<{
 
 <template>
   <div class="tab-content-middle">
-    <div class="tab-content-middle-left">
+    <div class="tab-content-middle-left" v-if="currentResult">
       <IconText
         v-for="(item, i) in currentResult.sort((a: any, b: any) => {
           if (props.sortType === 'asc') {

@@ -1,222 +1,253 @@
 <script setup lang="ts">
-// ! CSR
-import { ref, computed, watch } from 'vue'
-import dayjs from 'dayjs'
+import { ref, computed } from 'vue'
 import LotteryBallDisplayNoAdd from './LotteryBallDisplayNoAdd.vue'
-import { changeGameType, getGameTypeList } from '../store/index'
-import { Button as VanButton, Image as VanImage } from 'vant'
-import type { GameIconKeys, IDatas } from './type'
-import type { IGameType } from '../store/gameStore'
-import { gameStore } from '../store/index'
-import { useStore } from '@nanostores/vue'
-import { GAME_ICONS, truncateString, convertDataFormat } from './data'
+import type { IDatas } from './type'
 
 interface IProps {
   datas: IDatas
-  tabsData: Record<string, any>
+  tabsData: Record<string, any>[]
 }
 
 const props = defineProps<IProps>()
+const activeTab = ref('macau')
 
-const gameStoreData = useStore(gameStore)
-const gameType = computed(() => gameStoreData.value.gameType)
-const currentGame = computed(() => gameStoreData.value.currentGame)
-const gameTypeList = computed(() => gameStoreData.value.gameTypeList)
-
-const emits = defineEmits(['update-issue'])
-
-const tabIndex = ref(0)
-
-const tabsData = computed(() => {
-  const baseData = props.tabsData
-  if (!props.datas.configParamJson.showArray?.length) {
-    return baseData
-  }
-
-  return baseData.filter((item: any) =>
-    props.datas.configParamJson.showArray?.some((gameType) => gameType === item.gameType)
-  )
+const macauData = computed(() => {
+  return props.tabsData.find((item) => item.gameType === '2032')
 })
 
-function selectGameType(currentGame: IGameType, index) {
-  tabIndex.value = index
-  changeGameType(currentGame)
-}
-
-function getGameOpenTime(tab: IGameType) {
-  const baseData = props.tabsData
-  const dd = baseData.find((item: any) =>
-    props.datas.configParamJson.showArray?.some((gameType) => gameType === item.gameType)
-  )
-  if (dd?.currentOpenTime) {
-    return dayjs(dd.currentOpenTime).format('MM月DD日')
-  } else {
-    return ''
-  }
-}
+const hkData = computed(() => {
+  return props.tabsData.find((item) => item.gameType === '1')
+})
 
 const handleUpdate = () => {
-  getGameTypeList()
+  window.location.reload()
 }
 
-watch(
-  () => gameStoreData.value.gameType,
-  (newVal) => {
-    const index = gameTypeList.value.findIndex((item) => item.gameType === newVal)
-    if (index !== -1) {
-      tabIndex.value = index
-    }
+const getBallColorClass = (item: any) => {
+  return {
+    'ball-red': item.color === 'red',
+    'ball-green': item.color === 'green',
+    'ball-blue': item.color === 'blue'
   }
-)
+}
 </script>
 
 <template>
-  <div class="tabs">
-    <div class="tab-headers">
-      <div
-        v-for="(tab, index) in gameTypeList"
-        :key="index"
-        :class="['tab-header', { active: currentGame?.gameType === tab.gameType }]"
-        @click="selectGameType(tab, index)"
-      >
-        <h4>
-          <van-image
-            width="24"
-            v-if="props.datas.configParamJson.isIcon"
-            :src="GAME_ICONS[tab.gameType as GameIconKeys]"
-          />
-          {{ props.datas.configParamJson.isLongName ? tab.gameTypeLongName : tab.gameTypeShortName }}
-        </h4>
-        <p v-if="props.datas.configParamJson.isOpenTime">
-          {{ getGameOpenTime(tab) }}
-        </p>
-      </div>
+  <div class="lottery-result">
+    <!-- 标签切换 -->
+    <div class="tab-header">
+      <div class="tab-item" :class="{ active: activeTab === 'macau' }" @click="activeTab = 'macau'">新澳门⑥彩资料</div>
+      <div class="tab-item" :class="{ active: activeTab === 'hk' }" @click="activeTab = 'hk'">香港⑥彩资料</div>
     </div>
-    <div class="tab-content" v-if="tabsData[tabIndex]">
-      <div class="tab-content-top">
-        <div class="tab-content-top-p" v-if="props.datas.configParamJson.isIssue">
-          <p>
-            {{ tabsData[tabIndex].gameTypeShortName }}
-            <br />
-            <span>{{ truncateString(tabsData[tabIndex].currentIssue) }}</span>
+
+    <!-- 内容区域 -->
+    <div class="content-area">
+      <!-- 新澳门内容 -->
+      <div v-show="activeTab === 'macau'" class="lottery-content">
+        <div class="header">
+          <div class="title">
+            新澳门⑥彩
+            <span class="issue">{{ macauData?.currentIssue }}</span>
             期
-          </p>
-          <van-button type="danger" size="mini" @click="handleUpdate">刷新</van-button>
+          </div>
+          <div class="action-buttons">
+            <button class="btn btn-outline">搅珠记录</button>
+            <button class="btn btn-primary" @click="handleUpdate">刷新</button>
+            <button class="btn btn-live">直播</button>
+          </div>
         </div>
-        <LotteryBallDisplayNoAdd :currentResult="tabsData[tabIndex].currentResult" />
+        <div class="lottery-display">
+          <div class="lottery-numbers">
+            <LotteryBallDisplayNoAdd :currentResult="macauData?.currentResult" />
+            <!-- <template v-for="(item, index) in macauData?.currentResult" :key="index">
+              <div class="lottery-ball" :class="getBallColorClass(item)">
+                <span class="number">{{ item.number }}</span>
+                <span class="zodiac">{{ item.zodiac }}</span>
+              </div>
+            </template> -->
+          </div>
+        </div>
+        <div class="footer">
+          <span class="next-draw">下期({{ macauData?.nextIssue }})开奖: {{ macauData?.nextDrawTime }}</span>
+        </div>
       </div>
-      <div class="tab-content-bottom">
-        <p v-if="props.datas.configParamJson.isNextIssue">{{ tabsData[tabIndex].nextIssue }}</p>
-        <a v-if="props.datas.configParamJson.isHistory" href="/lottery">历史记录</a>
+
+      <!-- 香港内容 -->
+      <div v-show="activeTab === 'hk'" class="lottery-content">
+        <div class="header">
+          <div class="title">
+            香港⑥彩
+            <span class="issue">{{ hkData?.currentIssue }}</span>
+            期
+          </div>
+          <div class="action-buttons">
+            <button class="btn btn-outline">搅珠记录</button>
+            <button class="btn btn-primary" @click="handleUpdate">刷新</button>
+            <button class="btn btn-live">直播</button>
+          </div>
+        </div>
+        <div class="lottery-display">
+          <div class="lottery-numbers">
+            <LotteryBallDisplayNoAdd :currentResult="macauData?.currentResult" />
+            <!-- <template v-for="(item, index) in hkData?.currentResult" :key="index">
+              <div class="lottery-ball" :class="getBallColorClass(item)">
+                <span class="number">{{ item.number }}</span>
+                <span class="zodiac">{{ item.zodiac }}</span>
+              </div>
+              <span v-if="index < hkData?.currentResult.length - 1" class="separator">+</span>
+            </template> -->
+          </div>
+        </div>
+        <div class="footer">
+          <span class="next-draw">下期({{ hkData?.nextIssue }})开奖: {{ hkData?.nextDrawTime }}</span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
-a {
-  color: var(--theme-color);
-}
-.tabs {
-  margin: 0.1rem 0;
-
-  // background-color: #eee;
-
-  display: flex;
-  flex-direction: column;
-}
-.tab-headers {
-  display: flex;
-  cursor: pointer;
-  justify-content: space-evenly;
+<style scoped lang="scss">
+.lottery-result {
+  background: #f7f7f7;
+  border-radius: 4px;
   overflow: hidden;
-  // background-color: var(--theme-color);
-  border-top-right-radius: 0.5rem;
-  border-top-left-radius: 0.5rem;
 }
+
 .tab-header {
-  padding: 3px 0;
-  text-align: center;
   display: flex;
-  align-items: center;
-  flex-direction: column;
-  /* border-bottom: 2px solid transparent; */
+  background: #f5f5f5;
 
-  background-color: #fff;
-  flex: 1;
+  .tab-item {
+    font-family: 'Microsoft YaHei', Helvetica, sans-serif;
+    flex: 1;
+    text-align: center;
+    padding: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    cursor: pointer;
 
-  h4 {
-    display: flex;
-    align-items: center;
-    font-size: 1rem;
-  }
-  p {
-    font-size: 0.75rem;
-    line-height: normal;
-  }
-}
-.active {
-  /* border-bottom: 2px solid #000; */
-  color: #fff;
-  background: var(--theme-color);
-  h4 {
-    color: #fff;
+    &.active {
+      // color: #;
+      background: #fff;
+    }
   }
 }
 
-.tab-content {
-  padding: 0 0.2rem;
-  background-image: none;
-  border: 0.02rem solid var(--theme-color);
-  background-color: #fff;
-  box-shadow: 0.04rem 0.04rem 0.1rem #eee;
-  border-radius: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  .tab-content-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.content-area {
+  padding: 0;
 
-    // img {
-    //   height: 1.5rem;
-    // }
-    .tab-content-top-p {
-      flex: 1;
-      font-size: 0.8rem;
+  .lottery-content {
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 0;
+
+      .title {
+        font-family: 'Microsoft YaHei';
+        font-size: 14px;
+        color: #333;
+
+        .issue {
+          font-size: 16px;
+          color: red;
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 8px;
+
+        .btn {
+          height: 24px;
+          padding: 0 8px;
+          border-radius: 2px;
+          font-size: 12px;
+          border: none;
+          cursor: pointer;
+
+          &.btn-outline {
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #666;
+          }
+
+          &.btn-primary {
+            background: #ff4d4f;
+            color: #fff;
+          }
+
+          &.btn-live {
+            background: #52c41a;
+            color: #fff;
+          }
+        }
+      }
+    }
+
+    .lottery-display {
+      background: #fbfafb;
+      border-bottom: 1px solid #e5e5e5;
+      border-top: 1px solid #e5e5e5;
+      .lottery-numbers {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 0;
+
+        .lottery-ball {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 28px;
+
+          .number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            font-size: 15px;
+          }
+
+          .zodiac {
+            margin-top: 1px;
+            font-size: 12px;
+            color: #333;
+          }
+
+          &.ball-red .number {
+            background: #f5222d;
+          }
+
+          &.ball-green .number {
+            background: #52c41a;
+          }
+
+          &.ball-blue .number {
+            background: #1890ff;
+          }
+        }
+
+        .separator {
+          color: #999;
+          font-size: 18px;
+          padding: 0 2px;
+          font-weight: normal;
+        }
+      }
+    }
+
+    .footer {
       text-align: center;
-    }
-    p > span {
-      color: var(--theme-color);
-    }
-  }
-  .tab-content-middle {
-    flex: 6;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .tab-content-middle-left {
-      display: flex;
-      column-gap: 5px;
-    }
-    .tab-content-middle-center {
-      display: flex;
-      font-size: 1.3rem;
-    }
-    .tab-content-middle-right {
-      display: flex;
-    }
-  }
-
-  .tab-content-bottom {
-    margin-top: 0.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.8rem;
-    p {
-      color: var(--theme-color);
+      .next-draw {
+        font-size: 12px;
+        color: #666;
+      }
     }
   }
 }
