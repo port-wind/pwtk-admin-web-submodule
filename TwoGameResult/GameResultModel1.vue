@@ -58,7 +58,7 @@ const getBallColorClass = (item: any) => {
         </div>
         <div class="lottery-display">
           <div class="lottery-numbers">
-            <LotteryBallDisplayNoAdd :currentResult="macauData?.currentResult" />
+            <LotteryBallDisplayNoAdd :noFiveElements="true" :currentResult="macauData?.currentResult" />
             <!-- <template v-for="(item, index) in macauData?.currentResult" :key="index">
               <div class="lottery-ball" :class="getBallColorClass(item)">
                 <span class="number">{{ item.number }}</span>
@@ -88,7 +88,7 @@ const getBallColorClass = (item: any) => {
         </div>
         <div class="lottery-display">
           <div class="lottery-numbers">
-            <LotteryBallDisplayNoAdd :currentResult="macauData?.currentResult" />
+            <LotteryBallDisplayNoAdd :noFiveElements="true" :currentResult="macauData?.currentResult" />
             <!-- <template v-for="(item, index) in hkData?.currentResult" :key="index">
               <div class="lottery-ball" :class="getBallColorClass(item)">
                 <span class="number">{{ item.number }}</span>

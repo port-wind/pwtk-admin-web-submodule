@@ -40,6 +40,8 @@ const props = defineProps<{
     <div class="tab-content-middle-left" v-if="currentResult">
       <IconText
         v-for="(item, i) in currentResult.sort((a: any, b: any) => {
+          console.log('item', a)
+
           if (props.sortType === 'asc') {
             return a.num - b.num
           } else if (props.sortType === 'desc') {
@@ -48,6 +50,7 @@ const props = defineProps<{
           return 0
         })"
         :key="i"
+        :data-id="item.color"
         :bgColor="ColorCode[item.color]"
         :number="padZero(item.num)"
         :description="

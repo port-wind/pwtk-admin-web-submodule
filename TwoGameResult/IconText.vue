@@ -12,7 +12,7 @@ defineProps<{
 
 <template>
   <div class="container">
-    <div class="ball">
+    <div class="ball" :style="{ backgroundColor: bgColor }">
       <span class="number">{{ number }}</span>
     </div>
     <div class="description">{{ description }}</div>
