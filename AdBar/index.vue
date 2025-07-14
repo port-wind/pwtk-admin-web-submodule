@@ -1,6 +1,8 @@
 <template>
-  <div class="AdBar">
+  <div class="AdBar-container">
     <div class="ad-bar-container">
+      <!-- 头部标题 -->
+      <div class="_component-title">{{ datas.componentName }}bar -- 并不显示在页面上</div>
       <div
         class="mbox"
         data-component-name="广告大全"
@@ -14,7 +16,7 @@
         </div>
       </div>
     </div>
-    <slot name="deles" />
+    <slot name="deles"></slot>
   </div>
 </template>
 
@@ -28,25 +30,33 @@ const props = defineProps<IProps>()
 </script>
 
 <style scoped lang="less">
-.AdBar {
+.AdBar-container {
   position: relative;
+}
 
-  .ad-bar-container {
+.ad-bar-container {
+  width: 100%;
+}
+
+.ad-bar {
+  margin: 2px 0;
+
+  .ad-bar-link {
+    display: block;
+    text-decoration: none;
+  }
+
+  .ad-bar-image {
     width: 100%;
+    display: block;
   }
+}
 
-  .ad-bar {
-    margin: 2px 0;
-
-    .ad-bar-link {
-      display: block;
-      text-decoration: none;
-    }
-
-    .ad-bar-image {
-      width: 100%;
-      display: block;
-    }
-  }
+._component-title {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  margin-bottom: 10px;
 }
 </style>

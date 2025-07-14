@@ -1,7 +1,6 @@
 import type { AdBarConfigType } from '../AdBar/type'
 import type { IComponentProperty, ISetStyle } from './index'
 
-
 const componentProperties = new Map<String, IComponentProperty<ISetStyle<AdBarConfigType>>>()
 
 componentProperties.set('AdBar', {
@@ -24,33 +23,20 @@ componentProperties.set('AdBar', {
     memo: '',
     pageCode: '',
     configParamJson: {
-      model: 's1',
-      total: 12,
       adData: [
         {
           index: 1,
-          img: '',
+          img: 'https://tp.7217tp.com/960x80.gif',
           link: '',
           name: '广告位1'
         },
         {
           index: 2,
-          img: '',
+          img: 'https://7188tp1.com/960801.gif',
           link: '',
           name: '广告位2'
-        },
-        {
-          index: 3,
-          img: '',
-          link: '',
-          name: '广告位3'
         }
-      ],
-      title: '推广广告',
-      showTitle: true,
-      showText: true,
-      layout: 'horizontal',
-      adCount: 3
+      ]
     }
   }
 })
