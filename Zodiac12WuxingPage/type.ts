@@ -1,70 +1,5 @@
 import type { ISetStyle } from '../componentProperties/index'
-export interface IDatas extends ISetStyle<Zodiac12WuxingPageConfig> {}
-export interface Zodiac12WuxingPageConfig {
-  title: string
-  subtitle: string
-  titlePrefix: string
-  content: string
-  enable: boolean
-  showGameType: boolean
-  gameType: string
-  gameTypeCode: string
-  forumId: string
-  size: number
 
-  // Style configurations
-  styleHeader: IStyleHeader
-  styleMain: IStyleMain
-  zodiacCardStyle: IZodiacCardStyle
-  zodiacImageStyle: IZodiacImageStyle
-  zodiacNameStyle: IZodiacNameStyle
-  numberButtonStyle: INumberButtonStyle
-  gridLayoutStyle: IGridLayoutStyle
-  zodiacLayoutStyle: IZodiacLayoutStyle
-
-  // 五行属性配置
-  showWuxing: boolean
-  wuxingTitle: string
-  wuxingAreaStyle: IWuxingAreaStyle
-  wuxingGridStyle: IWuxingGridStyle
-  wuxingCardStyle: IWuxingCardStyle
-  wuxingTitleStyle: IWuxingTitleStyle
-  wuxingElementStyle: IWuxingElementStyle
-
-  // 波色属性配置
-  showWaveColor: boolean
-  waveColorTitle: string
-  waveColorAreaStyle: IWaveColorAreaStyle
-  waveColorGridStyle: IWaveColorGridStyle
-  waveColorCardStyle: IWaveColorCardStyle
-  waveColorTitleStyle: IWaveColorTitleStyle
-  waveColorElementStyle: IWaveColorElementStyle
-
-  // 合数单双属性配置
-  showNumberOddEven: boolean
-  numberOddEvenTitle: string
-  numberOddEvenAreaStyle: INumberOddEvenAreaStyle
-  numberOddEvenGridStyle: INumberOddEvenGridStyle
-  numberOddEvenCardStyle: INumberOddEvenCardStyle
-  numberOddEvenTitleStyle: INumberOddEvenTitleStyle
-  numberOddEvenElementStyle: INumberOddEvenElementStyle
-
-  // Color mappings
-  customColorMapping: {
-    redWave: string
-    blueWave: string
-    greenWave: string
-  }
-
-  // Responsive settings
-  responsiveBreakpoints: IResponsiveBreakpoints
-  responsiveStyles: IResponsiveStyles
-
-  // Layout options
-  zodiacOrder: string[]
-  showClashNames: boolean
-  animationDuration: number
-}
 export interface IStyleMain {
   padding: number
   borderRadius: number
@@ -283,17 +218,85 @@ export interface INumberOddEvenElementStyle {
 
 export interface IResponsiveStyles {
   tablet: {
-    grid?: Partial<IGridLayoutStyle>
-    card?: Partial<IZodiacCardStyle>
-    image?: Partial<IZodiacImageStyle>
-    name?: Partial<IZodiacNameStyle>
-    button?: Partial<INumberButtonStyle>
+    grid: Partial<IGridLayoutStyle>
+    card: Partial<IZodiacCardStyle>
+    image: Partial<IZodiacImageStyle>
+    name: Partial<IZodiacNameStyle>
+    button: Partial<INumberButtonStyle>
   }
   mobile: {
-    grid?: Partial<IGridLayoutStyle>
-    card?: Partial<IZodiacCardStyle>
-    image?: Partial<IZodiacImageStyle>
-    name?: Partial<IZodiacNameStyle>
-    button?: Partial<INumberButtonStyle>
+    grid: Partial<IGridLayoutStyle>
+    card: Partial<IZodiacCardStyle>
+    image: Partial<IZodiacImageStyle>
+    name: Partial<IZodiacNameStyle>
+    button: Partial<INumberButtonStyle>
   }
 }
+
+export interface Zodiac12WuxingPageConfig {
+  title: string
+  subtitle: string
+  titlePrefix: string
+  content: string
+  enable: boolean
+  showGameType: boolean
+  gameType: string
+  gameTypeCode: string
+  forumId: string
+  size: number
+
+  // Style configurations
+  styleHeader: IStyleHeader
+  styleMain: IStyleMain
+  zodiacCardStyle: IZodiacCardStyle
+  zodiacImageStyle: IZodiacImageStyle
+  zodiacNameStyle: IZodiacNameStyle
+  numberButtonStyle: INumberButtonStyle
+  gridLayoutStyle: IGridLayoutStyle
+  zodiacLayoutStyle: IZodiacLayoutStyle
+
+  // 五行属性配置
+  showWuxing: boolean
+  wuxingTitle: string
+  wuxingAreaStyle: IWuxingAreaStyle
+  wuxingGridStyle: IWuxingGridStyle
+  wuxingCardStyle: IWuxingCardStyle
+  wuxingTitleStyle: IWuxingTitleStyle
+  wuxingElementStyle: IWuxingElementStyle
+
+  // 波色属性配置
+  showWaveColor: boolean
+  waveColorTitle: string
+  waveColorAreaStyle: IWaveColorAreaStyle
+  waveColorGridStyle: IWaveColorGridStyle
+  waveColorCardStyle: IWaveColorCardStyle
+  waveColorTitleStyle: IWaveColorTitleStyle
+  waveColorElementStyle: IWaveColorElementStyle
+
+  // 合数单双属性配置
+  showNumberOddEven: boolean
+  numberOddEvenTitle: string
+  numberOddEvenAreaStyle: INumberOddEvenAreaStyle
+  numberOddEvenGridStyle: INumberOddEvenGridStyle
+  numberOddEvenCardStyle: INumberOddEvenCardStyle
+  numberOddEvenTitleStyle: INumberOddEvenTitleStyle
+  numberOddEvenElementStyle: INumberOddEvenElementStyle
+
+  // Color mappings
+  customColorMapping: {
+    redWave: string
+    blueWave: string
+    greenWave: string
+  }
+
+  // Responsive settings
+  responsiveBreakpoints: IResponsiveBreakpoints
+  responsiveStyles: IResponsiveStyles
+
+  // Layout options
+  zodiacOrder: string[]
+  showClashNames: boolean
+  animationDuration: number
+}
+
+export interface IDatas extends ISetStyle<Zodiac12WuxingPageConfig> {}
