@@ -86,6 +86,7 @@ import ImageForGameTypeProperties from './ImageForGameType'
 import SixZodiacSixCodeProperties from './SixZodiacSixCode'
 import Zodiac12WuxingPageProperties from './Zodiac12WuxingPage'
 import HighLightTextProperties from './HighLightText'
+import TwoGameResultProperties from './TwoGameResult'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -320,6 +321,10 @@ Zodiac12WuxingPageProperties.forEach((value, key) => {
 })
 
 HighLightTextProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+TwoGameResultProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
