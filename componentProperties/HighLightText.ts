@@ -26,7 +26,7 @@ componentProperties.set('HighLightText', {
       text: '这是一段高亮文本',
       highlightType: 'background',
       fontSize: 16,
-      fontWeight: 'normal',
+      fontWeight: 400,
       textColor: '#333333',
       highlightColor: '#FFE58F',
       gradientColors: {

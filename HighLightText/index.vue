@@ -14,12 +14,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { HighLightTextConfig } from './type'
+import type { IDatas } from './type'
 
 interface Props {
-  datas: {
-    configParamJson: HighLightTextConfig
-  }
+  datas: IDatas
 }
 
 const props = defineProps<Props>()
