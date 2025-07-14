@@ -1,14 +1,17 @@
 <!-- HighLightText 组件 -->
 <template>
-  <div
-    class="highlight-text"
-    :class="[
-      `highlight-text--${datas.configParamJson.highlightType}`,
-      datas.configParamJson.animation !== 'none' ? `highlight-text--${datas.configParamJson.animation}` : ''
-    ]"
-    :style="computedStyles"
-  >
-    <div :style="computedStyles" v-html="datas.configParamJson.text"></div>
+  <div class="highlight-text-container">
+    <div
+      class="highlight-text"
+      :class="[
+        `highlight-text--${datas.configParamJson.highlightType}`,
+        datas.configParamJson.animation !== 'none' ? `highlight-text--${datas.configParamJson.animation}` : ''
+      ]"
+      :style="computedStyles"
+    >
+      <div :style="computedStyles" v-html="datas.configParamJson.text"></div>
+    </div>
+    <slot name="deles"></slot>
   </div>
 </template>
 
@@ -57,6 +60,10 @@ const computedStyles = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+.highlight-text-container {
+  position: relative;
+}
+
 .highlight-text {
   display: block;
   word-break: break-word;
