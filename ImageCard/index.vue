@@ -13,7 +13,8 @@ const styleJSON = computed(() => props.datas.configParamJson.imageStyleJSON)
 const imageStyle = computed(() => {
   return {
     height: styleJSON.value?.enableHeight ? `${styleJSON.value.height}px` : 'auto',
-    borderRadius: styleJSON.value?.borderRadius ? `${styleJSON.value.borderRadius}px` : '0px'
+    borderRadius: styleJSON.value?.borderRadius ? `${styleJSON.value.borderRadius}px` : '0px',
+    overflow: 'hidden'
   }
 })
 

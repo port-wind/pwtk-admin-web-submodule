@@ -1,4 +1,4 @@
-<script setup lang="ts" name="GameResultBox">
+<script setup lang="ts" name="TwoGameResult">
 import { ref, onMounted, computed } from 'vue'
 import { defineEmits } from 'vue'
 import { Sticky } from 'vant'
@@ -45,7 +45,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="gameresultbox">
+  <div class="TwoGameResult">
     <div class="gameresultbox-content">
       <Sticky :offset-top="44">
         <div class="game-result" data-id="game-result">
@@ -63,6 +63,10 @@ onMounted(async () => {
 </template>
 
 <style lang="scss" scoped>
+.TwoGameResult {
+  position: relative;
+}
+
 .gameresultbox {
   position: relative;
   --theme-color: #5e9525;
