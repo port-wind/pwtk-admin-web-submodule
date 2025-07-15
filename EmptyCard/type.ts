@@ -6,7 +6,7 @@ export interface EmptyCard {
   title: string
   subtitle: string
   content: string
-  enable: boolean
+  headerEnable: boolean
   styleHeader: IStyleHeader
   styleMain: IStyleMain
 }

@@ -55,14 +55,12 @@ const contentStyle = computed(() => {
   <div class="EmptyCard">
     <div class="EmptyCard-content" :style="containerStyle">
       <!-- 头部标题 -->
-      <div class="title-header" :style="titleHeaderStyle">
+      <div v-if="datas.configParamJson.headerEnable" class="title-header" :style="titleHeaderStyle">
         <h2 class="main-title" :style="mainTitleStyle">{{ datas.configParamJson.title }}</h2>
         <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
       </div>
       <!-- 内容区域 -->
-      <div class="content-area" :style="contentStyle">
-        {{ datas.configParamJson.content }}
-      </div>
+      <div class="content-area" :style="contentStyle" v-html="datas.configParamJson.content" />
     </div>
     <slot name="deles" />
   </div>
@@ -93,11 +91,11 @@ const contentStyle = computed(() => {
 }
 
 .content-area {
-  padding: 16px;
-  min-height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  // padding: 16px;
+  // min-height: 80px;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
   word-wrap: break-word;
   white-space: pre-wrap;
 }

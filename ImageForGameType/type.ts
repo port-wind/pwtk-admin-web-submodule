@@ -32,6 +32,7 @@ export interface GameTypeFieldConfig {
 
 export interface ImageForGameTypeConfig {
   title: string
+  titlePrefix: string
   subtitle: string
   content: string
   enable: boolean
