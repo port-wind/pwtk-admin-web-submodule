@@ -12,10 +12,34 @@ const props = defineProps<IProps>()
 const playTypes = computed(() => getPlayTypes())
 const numberOddEvenData = computed(() => playTypes.value.find((item) => item.code === '8018')?.options || {})
 
+// 🌈 从 gameStore 获取波色数据
+const waveColorData = computed(() => playTypes.value.find((item) => item.code === '8007')?.options || {})
+
+// 🎨 创建数字到波色的映射
+const numberToWaveColorMap = computed(() => {
+  const map = new Map<string, string>()
+  const colorMapping = {
+    红波: props.config.customColorMapping?.redWave || '#ff4757',
+    蓝波: props.config.customColorMapping?.blueWave || '#3742fa',
+    绿波: props.config.customColorMapping?.greenWave || '#2ed573'
+  }
+
+  Object.entries(waveColorData.value).forEach(([colorKey, numbers]) => {
+    const color = colorMapping[colorKey as keyof typeof colorMapping]
+    if (color && Array.isArray(numbers)) {
+      numbers.forEach((num) => {
+        map.set(num, color)
+      })
+    }
+  })
+
+  return map
+})
+
 // 🔢 合数单双数据配置（按照图片中的顺序：合数单、合数双）
 const numberOddEvenElements = computed(() => [
-  { name: '合数单', color: '#ff6b6b', numbers: numberOddEvenData.value['合数单'] || [] },
-  { name: '合数双', color: '#4ecdc4', numbers: numberOddEvenData.value['合数双'] || [] }
+  { name: '合数单', numbers: numberOddEvenData.value['合数单'] || [] },
+  { name: '合数双', numbers: numberOddEvenData.value['合数双'] || [] }
 ])
 
 // 🎨 样式计算
@@ -52,14 +76,13 @@ const numberOddEvenNameStyle = computed(() => ({
   textAlign: 'center' as const
 }))
 
-// 获取数字颜色（使用合数单双自身的颜色）
-const getNumberColor = (numberOddEvenName: string) => {
-  const element = numberOddEvenElements.value.find((el) => el.name === numberOddEvenName)
-  return element?.color || '#6c757d'
+// 获取数字颜色（根据波色映射）
+const getNumberColor = (number: string) => {
+  return numberToWaveColorMap.value.get(number) || '#6c757d'
 }
 
-const getNumberButtonStyle = (number: string, elementName: string) => ({
-  backgroundColor: getNumberColor(elementName),
+const getNumberButtonStyle = (number: string) => ({
+  backgroundColor: getNumberColor(number),
   color: 'white',
   border: 'none',
   borderRadius: `${props.config.numberOddEvenElementStyle?.numberBorderRadius || 3}px`,
@@ -77,11 +100,13 @@ const getNumberButtonStyle = (number: string, elementName: string) => ({
 // 📱 导出接口
 defineExpose({
   numberOddEvenElements,
-  numberOddEvenData
+  numberOddEvenData,
+  numberToWaveColorMap
 })
 
 onMounted(() => {
   console.log('🔢 NumberOddEvenArea 组件已挂载，合数单双数据:', numberOddEvenData.value)
+  console.log('🎨 波色映射数据:', numberToWaveColorMap.value)
 })
 </script>
 
@@ -101,7 +126,7 @@ onMounted(() => {
         :style="numberOddEvenRowStyle"
       >
         <!-- 合数单双名称 -->
-        <div class="number-odd-even-name" :style="{ ...numberOddEvenNameStyle, color: element.color }">
+        <div class="number-odd-even-name" :style="numberOddEvenNameStyle">
           {{ element.name }}
         </div>
 
@@ -119,7 +144,7 @@ onMounted(() => {
             v-for="number in element.numbers"
             :key="number"
             class="number-button"
-            :style="getNumberButtonStyle(number, element.name)"
+            :style="getNumberButtonStyle(number)"
           >
             {{ number }}
           </span>
