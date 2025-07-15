@@ -1,7 +1,7 @@
 <script setup lang="ts">
 //   import { ref } from 'vue'
-import IconText from './IconText.vue'
-import { Icon } from 'vant'
+import IconText from './IconText1.vue'
+// import { Icon } from 'vant';
 const FiveElements = {
   j: '金',
   m: '木',
@@ -37,17 +37,20 @@ const props = defineProps<{
 
 <template>
   <div class="tab-content-middle">
-    <div class="tab-content-middle-left">
+    <div class="tab-content-middle-left" v-if="currentResult">
       <IconText
-        v-for="(item, i) in currentResult.slice(0, -1).sort((a: any, b: any) => {
+        v-for="(item, i) in currentResult.sort((a: any, b: any) => {
+          console.log('item', a)
+
           if (props.sortType === 'asc') {
-            return a.num - b.num;
+            return a.num - b.num
           } else if (props.sortType === 'desc') {
-            return b.num - a.num;
+            return b.num - a.num
           }
-          return 0;
+          return 0
         })"
         :key="i"
+        :data-id="item.color"
         :bgColor="ColorCode[item.color]"
         :number="padZero(item.num)"
         :description="
@@ -55,9 +58,10 @@ const props = defineProps<{
             ? item.shengxiao
             : item.shengxiao + '/' + FiveElements[item.fiveElements as keyof typeof FiveElements]
         "
+        class="game-icon"
       />
     </div>
-    <div class="tab-content-middle-center">
+    <!-- <div class="tab-content-middle-center">
       <Icon name="plus" />
     </div>
     <div class="tab-content-middle-right">
@@ -72,7 +76,7 @@ const props = defineProps<{
               FiveElements[currentResult[6].fiveElements as keyof typeof FiveElements]
         "
       />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -83,6 +87,7 @@ const props = defineProps<{
   align-items: center;
   .tab-content-middle-left {
     display: flex;
+    column-gap: 5px;
   }
   .tab-content-middle-center {
     display: flex;
@@ -91,5 +96,9 @@ const props = defineProps<{
   .tab-content-middle-right {
     display: flex;
   }
+}
+
+.game-icon {
+  width: 40px;
 }
 </style>

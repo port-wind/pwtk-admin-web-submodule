@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import LotteryBallDisplayNoAdd from './LotteryBallDisplayNoAdd.vue'
+import LotteryBallDisplayNoAdd1 from './LotteryBallDisplayNoAdd1.vue'
 import type { IDatas } from './type'
 
 interface IProps {
@@ -58,7 +58,7 @@ const getBallColorClass = (item: any) => {
         </div>
         <div class="lottery-display">
           <div class="lottery-numbers">
-            <LotteryBallDisplayNoAdd :noFiveElements="true" :currentResult="macauData?.currentResult" />
+            <LotteryBallDisplayNoAdd1 :noFiveElements="true" :currentResult="macauData?.currentResult" />
             <!-- <template v-for="(item, index) in macauData?.currentResult" :key="index">
               <div class="lottery-ball" :class="getBallColorClass(item)">
                 <span class="number">{{ item.number }}</span>
@@ -88,7 +88,7 @@ const getBallColorClass = (item: any) => {
         </div>
         <div class="lottery-display">
           <div class="lottery-numbers">
-            <LotteryBallDisplayNoAdd :noFiveElements="true" :currentResult="macauData?.currentResult" />
+            <LotteryBallDisplayNoAdd1 :noFiveElements="true" :currentResult="macauData?.currentResult" />
             <!-- <template v-for="(item, index) in hkData?.currentResult" :key="index">
               <div class="lottery-ball" :class="getBallColorClass(item)">
                 <span class="number">{{ item.number }}</span>

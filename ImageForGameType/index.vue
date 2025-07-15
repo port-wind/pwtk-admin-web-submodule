@@ -12,10 +12,10 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 const datas = computed(() => props.datas)
-const { currentGameTypeImageUrl, turnToUrl, show } = useGameTypeFields(datas.value)
-watch(show, (newVal) => {
-  console.log(newVal)
-})
+// const { currentGameTypeImageUrl, turnToUrl, show } = useGameTypeFields(datas.value)
+// watch(show, (newVal) => {
+//   console.log(newVal)
+// })
 // 🎮 gameType Store 集成 - 动态组件必需
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)

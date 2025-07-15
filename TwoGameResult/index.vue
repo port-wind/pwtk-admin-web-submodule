@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { defineEmits } from 'vue'
 import { Sticky } from 'vant'
-import GameResultModel1 from './GameResultModel1.vue'
+import GameResultModel1 from './GameResultModel.vue'
 import type { IDatas } from './type'
 import service from '../service/index'
 import { gameStore } from '../store/index'
@@ -50,7 +50,7 @@ onMounted(async () => {
       <Sticky :offset-top="44">
         <div class="game-result" data-id="game-result">
           <!-- Model 1 的渲染内容 -->
-          <GameResultModel1
+          <GameResultModel
             v-if="props.datas.configParamJson.model === 's1'"
             :tabsData="rawTabsData"
             :datas="props.datas"
