@@ -1,5 +1,5 @@
 <script setup lang="ts" name="Zodiac12WuxingPage">
-import { computed, onMounted } from 'vue'
+import { computed, reactive } from 'vue'
 import type { IDatas } from './type'
 
 interface IProps {
@@ -38,43 +38,114 @@ interface AttributeItem {
   animals: string
 }
 
-// 生肖数据映射
-const zodiacList: ZodiacItem[] = [
-  { name: '蛇', image: 'she.gif', clash: '猪', numbers: [] },
-  { name: '龙', image: 'long.gif', clash: '狗', numbers: [] },
-  { name: '兔', image: 'tu.gif', clash: '鸡', numbers: [] },
-  { name: '虎', image: 'hu.gif', clash: '猴', numbers: [] },
-  { name: '牛', image: 'niu.gif', clash: '羊', numbers: [] },
-  { name: '鼠', image: 'shu.gif', clash: '马', numbers: [] },
-  { name: '猪', image: 'zhu.gif', clash: '蛇', numbers: [] },
-  { name: '狗', image: 'gou.gif', clash: '龙', numbers: [] },
-  { name: '鸡', image: 'ji.gif', clash: '兔', numbers: [] },
-  { name: '猴', image: 'hou.gif', clash: '虎', numbers: [] },
-  { name: '羊', image: 'yang.gif', clash: '牛', numbers: [] },
-  { name: '马', image: 'ma.gif', clash: '鼠', numbers: [] }
-]
+// 生肖数据映射 - 直接填充完整数据
+const zodiacList = reactive<ZodiacItem[]>([
+  { name: '蛇', image: 'she.gif', clash: '猪', numbers: ['01', '13', '25', '37', '49'] },
+  { name: '龙', image: 'long.gif', clash: '狗', numbers: ['02', '14', '26', '38'] },
+  { name: '兔', image: 'tu.gif', clash: '鸡', numbers: ['03', '15', '27', '39'] },
+  { name: '虎', image: 'hu.gif', clash: '猴', numbers: ['04', '16', '28', '40'] },
+  { name: '牛', image: 'niu.gif', clash: '羊', numbers: ['05', '17', '29', '41'] },
+  { name: '鼠', image: 'shu.gif', clash: '马', numbers: ['06', '18', '30', '42'] },
+  { name: '猪', image: 'zhu.gif', clash: '蛇', numbers: ['07', '19', '31', '43'] },
+  { name: '狗', image: 'gou.gif', clash: '龙', numbers: ['08', '20', '32', '44'] },
+  { name: '鸡', image: 'ji.gif', clash: '兔', numbers: ['09', '21', '33', '45'] },
+  { name: '猴', image: 'hou.gif', clash: '虎', numbers: ['10', '22', '34', '46'] },
+  { name: '羊', image: 'yang.gif', clash: '牛', numbers: ['11', '23', '35', '47'] },
+  { name: '马', image: 'ma.gif', clash: '鼠', numbers: ['12', '24', '36', '48'] }
+])
 
-// 五行数据
-const wuxingList: WuxingItem[] = [
-  { name: '金', color: '#ffcc00', numbers: [] },
-  { name: '木', color: '#33cc33', numbers: [] },
-  { name: '水', color: '#3399ff', numbers: [] },
-  { name: '火', color: '#ff6600', numbers: [] },
-  { name: '土', color: '#cc9900', numbers: [] }
-]
+// 五行数据 - 直接填充完整数据
+const wuxingList = reactive<WuxingItem[]>([
+  { name: '金', color: '#ffcc00', numbers: ['03', '04', '11', '12', '25', '26', '33', '34', '41', '42'] },
+  { name: '木', color: '#33cc33', numbers: ['07', '08', '15', '16', '23', '24', '37', '38', '45', '46'] },
+  { name: '水', color: '#3399ff', numbers: ['13', '14', '21', '22', '29', '30', '43', '44'] },
+  { name: '火', color: '#ff6600', numbers: ['01', '02', '09', '10', '17', '18', '31', '32', '39', '40', '47', '48'] },
+  { name: '土', color: '#cc9900', numbers: ['05', '06', '19', '20', '27', '28', '35', '36', '49'] }
+])
 
-// 波色数据
-const waveColorList: WaveColorItem[] = [
-  { name: '红波', color: '#ff0000', numbers: [] },
-  { name: '蓝波', color: '#3366ff', numbers: [] },
-  { name: '绿波', color: '#009933', numbers: [] }
-]
+// 波色数据 - 直接填充完整数据
+const waveColorList = reactive<WaveColorItem[]>([
+  {
+    name: '红波',
+    color: '#ff0000',
+    numbers: ['01', '02', '07', '08', '12', '13', '18', '19', '23', '24', '29', '30', '34', '35', '40', '45', '46']
+  },
+  {
+    name: '蓝波',
+    color: '#3366ff',
+    numbers: ['03', '04', '09', '10', '14', '15', '20', '25', '26', '31', '36', '37', '41', '42', '47', '48']
+  },
+  {
+    name: '绿波',
+    color: '#009933',
+    numbers: ['05', '06', '11', '16', '17', '21', '22', '27', '28', '32', '33', '38', '39', '43', '44', '49']
+  }
+])
 
-// 合数单双数据
-const oddEvenList: OddEvenItem[] = [
-  { name: '合数单', color: '#3366ff', numbers: [] },
-  { name: '合数双', color: '#3366ff', numbers: [] }
-]
+// 合数单双数据 - 直接填充完整数据
+const oddEvenList = reactive<OddEvenItem[]>([
+  {
+    name: '合数单',
+    color: '#3366ff',
+    numbers: [
+      '01',
+      '03',
+      '05',
+      '07',
+      '09',
+      '10',
+      '12',
+      '14',
+      '16',
+      '18',
+      '21',
+      '23',
+      '25',
+      '27',
+      '29',
+      '30',
+      '32',
+      '34',
+      '36',
+      '38',
+      '41',
+      '43',
+      '45',
+      '47',
+      '49'
+    ]
+  },
+  {
+    name: '合数双',
+    color: '#3366ff',
+    numbers: [
+      '02',
+      '04',
+      '06',
+      '08',
+      '11',
+      '13',
+      '15',
+      '17',
+      '19',
+      '20',
+      '22',
+      '24',
+      '26',
+      '28',
+      '31',
+      '33',
+      '35',
+      '37',
+      '39',
+      '40',
+      '42',
+      '44',
+      '46',
+      '48'
+    ]
+  }
+])
 
 // 生肖属性数据
 const zodiacAttributesList: AttributeItem[] = [
@@ -135,115 +206,6 @@ const handleImageError = (event: Event) => {
   }
 }
 
-// 初始化数据
-const initializeData = () => {
-  // 这里应该从API获取数据，现在用模拟数据
-  const mockShengXiaoData = {
-    蛇: ['01', '13', '25', '37', '49'],
-    龙: ['02', '14', '26', '38'],
-    兔: ['03', '15', '27', '39'],
-    虎: ['04', '16', '28', '40'],
-    牛: ['05', '17', '29', '41'],
-    鼠: ['06', '18', '30', '42'],
-    猪: ['07', '19', '31', '43'],
-    狗: ['08', '20', '32', '44'],
-    鸡: ['09', '21', '33', '45'],
-    猴: ['10', '22', '34', '46'],
-    羊: ['11', '23', '35', '47'],
-    马: ['12', '24', '36', '48']
-  }
-
-  const mockWuxingData = {
-    金: ['03', '04', '11', '12', '25', '26', '33', '34', '41', '42'],
-    木: ['07', '08', '15', '16', '23', '24', '37', '38', '45', '46'],
-    水: ['13', '14', '21', '22', '29', '30', '43', '44'],
-    火: ['01', '02', '09', '10', '17', '18', '31', '32', '39', '40', '47', '48'],
-    土: ['05', '06', '19', '20', '27', '28', '35', '36', '49']
-  }
-
-  const mockWaveData = {
-    红波: ['01', '02', '07', '08', '12', '13', '18', '19', '23', '24', '29', '30', '34', '35', '40', '45', '46'],
-    蓝波: ['03', '04', '09', '10', '14', '15', '20', '25', '26', '31', '36', '37', '41', '42', '47', '48'],
-    绿波: ['05', '06', '11', '16', '17', '21', '22', '27', '28', '32', '33', '38', '39', '43', '44', '49']
-  }
-
-  const mockOddEvenData = {
-    合数单: [
-      '01',
-      '03',
-      '05',
-      '07',
-      '09',
-      '10',
-      '12',
-      '14',
-      '16',
-      '18',
-      '21',
-      '23',
-      '25',
-      '27',
-      '29',
-      '30',
-      '32',
-      '34',
-      '36',
-      '38',
-      '41',
-      '43',
-      '45',
-      '47',
-      '49'
-    ],
-    合数双: [
-      '02',
-      '04',
-      '06',
-      '08',
-      '11',
-      '13',
-      '15',
-      '17',
-      '19',
-      '20',
-      '22',
-      '24',
-      '26',
-      '28',
-      '31',
-      '33',
-      '35',
-      '37',
-      '39',
-      '40',
-      '42',
-      '44',
-      '46',
-      '48'
-    ]
-  }
-
-  // 填充生肖数据
-  zodiacList.forEach((zodiac) => {
-    zodiac.numbers = mockShengXiaoData[zodiac.name as keyof typeof mockShengXiaoData] || []
-  })
-
-  // 填充五行数据
-  wuxingList.forEach((wuxing) => {
-    wuxing.numbers = mockWuxingData[wuxing.name as keyof typeof mockWuxingData] || []
-  })
-
-  // 填充波色数据
-  waveColorList.forEach((wave) => {
-    wave.numbers = mockWaveData[wave.name as keyof typeof mockWaveData] || []
-  })
-
-  // 填充合数单双数据
-  oddEvenList.forEach((item) => {
-    item.numbers = mockOddEvenData[item.name as keyof typeof mockOddEvenData] || []
-  })
-}
-
 // 计算样式
 const containerStyle = computed(() => ({
   backgroundColor: props.datas.configParamJson.styleMain?.backgroundColor || '#edeff0',
@@ -260,10 +222,6 @@ const headerStyle = computed(() => {
   return {
     backgroundColor: header?.headerBgColor || '#d11717'
   }
-})
-
-onMounted(() => {
-  initializeData()
 })
 </script>
 
