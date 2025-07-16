@@ -247,7 +247,7 @@ const initializeData = () => {
 // 计算样式
 const containerStyle = computed(() => ({
   backgroundColor: props.datas.configParamJson.styleMain?.backgroundColor || '#edeff0',
-  padding: `${props.datas.configParamJson.styleMain?.padding || 8}px`
+  padding: `0px`
 }))
 
 const headerStyle = computed(() => {
