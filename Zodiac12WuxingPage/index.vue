@@ -236,10 +236,10 @@ const headerStyle = computed(() => {
       <div class="sxsx-content br-12">
         <div class="sx">
           <!-- 生肖号码对照表 -->
-          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <table class="data-table">
             <tbody>
               <tr>
-                <th style="text-align: center">2025蛇年（十二生肖号码对照）</th>
+                <th class="text-center">2025蛇年（十二生肖号码对照）</th>
               </tr>
               <tr>
                 <td>
@@ -254,6 +254,7 @@ const headerStyle = computed(() => {
                             height="40"
                             draggable="false"
                             @error="handleImageError"
+                            alt="zodiac.name"
                           />
                           [冲 {{ zodiac.clash }}]
                         </dt>
@@ -271,18 +272,18 @@ const headerStyle = computed(() => {
           </table>
 
           <!-- 五行对照表 -->
-          <table width="100%" cellspacing="0" cellpadding="0" border="0">
+          <table class="data-table two-column">
             <colgroup>
-              <col width="50" />
-              <col width="" />
+              <col class="narrow-col" />
+              <col class="wide-col" />
             </colgroup>
             <tbody>
               <tr>
-                <th colspan="2" style="text-align: center">五行对照</th>
+                <th colspan="2" class="text-center">五行对照</th>
               </tr>
               <tr v-for="wuxing in wuxingList" :key="wuxing.name">
-                <td align="center">
-                  <font :color="wuxing.color">{{ wuxing.name }}</font>
+                <td class="text-center">
+                  <span class="wuxing-label" :style="{ color: wuxing.color }">{{ wuxing.name }}</span>
                 </td>
                 <td class="a-left">
                   <span v-for="number in wuxing.numbers" :key="number" :class="getNumberColorClass(number)">
@@ -294,18 +295,18 @@ const headerStyle = computed(() => {
           </table>
 
           <!-- 波色表 -->
-          <table width="100%" cellspacing="0" cellpadding="0" border="0">
+          <table class="data-table two-column">
             <colgroup>
-              <col width="50" />
-              <col width="" />
+              <col class="narrow-col" />
+              <col class="wide-col" />
             </colgroup>
             <tbody>
               <tr>
-                <th colspan="2" style="text-align: center">波色</th>
+                <th colspan="2" class="text-center">波色</th>
               </tr>
               <tr v-for="wave in waveColorList" :key="wave.name">
-                <td align="center">
-                  <font :color="wave.color">{{ wave.name }}</font>
+                <td class="text-center">
+                  <span class="wave-label" :style="{ color: wave.color }">{{ wave.name }}</span>
                 </td>
                 <td class="a-left">
                   <span v-for="number in wave.numbers" :key="number" :class="getNumberColorClass(number)">
@@ -317,18 +318,18 @@ const headerStyle = computed(() => {
           </table>
 
           <!-- 合数单双表 -->
-          <table width="100%" cellspacing="0" cellpadding="0" border="0">
+          <table class="data-table two-column">
             <colgroup>
-              <col width="50" />
-              <col width="" />
+              <col class="narrow-col" />
+              <col class="wide-col" />
             </colgroup>
             <tbody>
               <tr>
-                <th colspan="2" style="text-align: center">合数单双</th>
+                <th colspan="2" class="text-center">合数单双</th>
               </tr>
               <tr v-for="item in oddEvenList" :key="item.name">
-                <td align="center">
-                  <font :color="item.color">{{ item.name }}</font>
+                <td class="text-center">
+                  <span class="odd-even-label" :style="{ color: `${item.color} !important` }">{{ item.name }}</span>
                 </td>
                 <td class="a-left">
                   <span v-for="number in item.numbers" :key="number" :class="getNumberColorClass(number)">
@@ -340,29 +341,28 @@ const headerStyle = computed(() => {
           </table>
 
           <!-- 生肖属性表 -->
-          <table style="text-align: center" width="100%" cellspacing="0" cellpadding="0" border="0">
+          <table class="data-table attributes-table">
             <colgroup>
-              <col width="100%" />
-              <col width="" />
+              <col class="full-width" />
             </colgroup>
             <tbody>
               <tr>
-                <th style="text-align: center">生肖属性</th>
+                <th class="text-center">生肖属性</th>
               </tr>
               <tr v-for="attribute in zodiacAttributesList" :key="attribute.label">
-                <td>
+                <td class="text-center">
                   <template v-if="attribute.label === '琴棋书画'">
-                    <font color="#3366ff">琴</font>
+                    <span class="attribute-label" :style="{ color: '#3366ff' }">琴</span>
                     ：兔蛇鸡
-                    <font color="#3366ff">棋</font>
+                    <span class="attribute-label" :style="{ color: '#3366ff' }">棋</span>
                     ：鼠牛狗
-                    <font color="#3366ff">书</font>
+                    <span class="attribute-label" :style="{ color: '#3366ff' }">书</span>
                     ：虎龙马
-                    <font color="#3366ff">画</font>
+                    <span class="attribute-label" :style="{ color: '#3366ff' }">画</span>
                     ：羊猴猪
                   </template>
                   <template v-else>
-                    <font color="#3366ff">{{ attribute.label }}：</font>
+                    <span class="attribute-label" :style="{ color: '#3366ff' }">{{ attribute.label }}：</span>
                     {{ attribute.animals }}
                   </template>
                 </td>
@@ -414,66 +414,91 @@ const headerStyle = computed(() => {
   background: #fff;
 }
 
-.sx {
-  table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    text-align: center;
-    color: rgb(229 35 5);
-    word-break: break-word;
-    margin-bottom: 16px;
+// 现代化表格样式
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: center;
+  color: rgb(229 35 5);
+  word-break: break-word;
+  margin-bottom: 16px;
+  border: 0;
 
-    th {
-      background: #f5f5f5;
-      padding: 12px 8px;
-      font-size: 18px;
-      font-weight: bold;
-      border: 1px solid #e5e5e5;
+  // 列宽定义
+  &.two-column {
+    .narrow-col {
+      width: 50px;
     }
 
-    td {
-      padding: 6px 4px;
-      line-height: 22px;
-      border: 1px solid #e5e5e5;
-
-      &.a-left {
-        text-align: left;
-        padding: 8px;
-      }
-
-      font {
-        font-weight: bold;
-      }
-    }
-
-    span {
-      height: 18px;
-      line-height: 18px;
-      margin: 0 2px;
-      padding: 0 3px;
-      font-size: 12px;
-      color: #000;
-      display: inline-block;
-      background-color: #f0f0f0;
-      border-radius: 2px;
-
-      &.red {
-        background-color: #f00;
-        color: #fff;
-      }
-
-      &.blue {
-        background-color: #3366ff;
-        color: #fff;
-      }
-
-      &.green {
-        background-color: #009933;
-        color: #fff;
-      }
+    .wide-col {
+      width: auto;
     }
   }
+
+  &.attributes-table {
+    .full-width {
+      width: 100%;
+    }
+  }
+
+  th {
+    background: #f5f5f5;
+    padding: 12px 8px;
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid #e5e5e5;
+  }
+
+  td {
+    padding: 6px 4px;
+    line-height: 22px;
+    border: 1px solid #e5e5e5;
+
+    &.a-left {
+      text-align: left;
+      padding: 8px;
+    }
+  }
+
+  span {
+    height: 18px;
+    line-height: 18px;
+    margin: 0 2px;
+    padding: 0 3px;
+    font-size: 16px;
+    color: #000;
+    display: inline-block;
+    border-radius: 2px;
+
+    &.red {
+      background-color: #f00;
+      color: #fff;
+    }
+
+    &.blue {
+      background-color: #3366ff;
+      color: #fff;
+    }
+
+    &.green {
+      background-color: #009933;
+      color: #fff;
+    }
+  }
+}
+
+// 文本对齐工具类
+.text-center {
+  text-align: center;
+}
+
+// 专用标签样式
+.wuxing-label,
+.wave-label,
+.odd-even-label,
+.attribute-label {
+  font-weight: bold;
 }
 
 .sx1 {
