@@ -7,7 +7,7 @@ componentProperties.set('TwoGameResult', {
   component: 'TwoGameResult',
   text: '双彩票结果',
   active: false,
-  style: 'GameResultBoxStyle',
+  style: 'TwoGameResultStyle',
   setStyle: {
     componentId: '',
     sketchCodeList: '',
