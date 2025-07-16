@@ -429,7 +429,6 @@ onMounted(() => {
 }
 
 .bg {
-  background: linear-gradient(to right, #d11717, #d12525);
   &.br-12 {
     border-radius: 12px;
     overflow: hidden;
@@ -438,8 +437,7 @@ onMounted(() => {
 
 .pb-head {
   &.sxsx-head {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding: 8px 16px 8px 16px;
   }
 }
 
@@ -447,9 +445,8 @@ onMounted(() => {
   &.sxsx-tit {
     font-size: 22px;
     color: #fff;
-    padding-top: 8px;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin: 0;
     text-align: center;
   }
 }
@@ -457,9 +454,6 @@ onMounted(() => {
 .sxsx-content {
   font-size: 20px;
   background: #fff;
-  &.br-12 {
-    border-radius: 0 0 12px 12px;
-  }
 }
 
 .sx {
