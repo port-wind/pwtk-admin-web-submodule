@@ -2,7 +2,7 @@
   <div class="AdBar-container">
     <div class="ad-bar-container">
       <!-- 头部标题 -->
-      <div v-if="!display" class="_component-title">{{ datas.componentName }}bar -- 并不显示在页面上</div>
+      <div class="_component-title">{{ datas.componentName }}bar -- 并不显示在页面上</div>
       <div
         class="mbox"
         data-component-name="广告大全"
@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts" name="AdBar">
-const display = import.meta.env.PUBLIC_DISPLAY
+// const display = import.meta.env.PUBLIC_DISPLAY
 
 import type { IDatas } from './type'
 interface IProps {
