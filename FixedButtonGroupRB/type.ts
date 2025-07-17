@@ -1,21 +1,5 @@
 import type { ISetStyle } from '../componentProperties/index'
 
-export interface IDatas extends ISetStyle<FixedButtonGroupRBConfig> {}
-
-export interface FixedButtonGroupRBConfig {
-  title: string
-  subtitle: string
-  content: string
-  enable: boolean
-  showGameType: boolean
-  gameType: string
-  gameTypeCode: string
-  forumId: string
-  size: number
-  styleHeader: IStyleHeader
-  styleMain: IStyleMain
-}
-
 export interface IStyleMain {
   padding: number
   borderRadius: number
@@ -35,3 +19,19 @@ export interface IStyleHeader {
   subTitleColor: string
   titleColor: string
 }
+
+export interface FixedButtonGroupRBConfig {
+  title: string
+  subtitle: string
+  content: string
+  enable: boolean
+  showGameType: boolean
+  gameType: string
+  gameTypeCode: string
+  forumId: string
+  size: number
+  styleHeader: IStyleHeader
+  styleMain: IStyleMain
+  alignPosition: 'left' | 'center' | 'right'
+}
+export interface IDatas extends ISetStyle<FixedButtonGroupRBConfig> {}
