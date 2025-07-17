@@ -87,6 +87,7 @@ import SixZodiacSixCodeProperties from './SixZodiacSixCode'
 import Zodiac12WuxingPageProperties from './Zodiac12WuxingPage'
 import HighLightTextProperties from './HighLightText'
 import TwoGameResultProperties from './TwoGameResult'
+import FixedButtonGroupRBProperties from './FixedButtonGroupRB'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -325,6 +326,10 @@ HighLightTextProperties.forEach((value, key) => {
 })
 
 TwoGameResultProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+FixedButtonGroupRBProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
