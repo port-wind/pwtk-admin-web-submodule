@@ -31,7 +31,7 @@ componentProperties.set('videoss', {
     pageCode: '',
     configParamJson: {
       text: '视频',
-      src: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
+      src: '',
       coverUrl: null,
       autoplay: false
     }
