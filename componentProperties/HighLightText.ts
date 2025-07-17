@@ -23,7 +23,7 @@ componentProperties.set('HighLightText', {
     memo: '支持多种高亮样式的文本组件',
     pageCode: '',
     configParamJson: {
-      text: '这是一段高亮文本',
+      text: '<p>记住域名 <span style="color: rgb(255, 0, 0);">71</span><span style="color: rgb(0, 0, 255);">75</span><span style="color: rgb(0, 255, 0);">.com</span> 永不失联！</p>',
       highlightType: 'background',
       fontSize: 16,
       fontWeight: 400,
@@ -46,4 +46,4 @@ componentProperties.set('HighLightText', {
   }
 })
 
-export default componentProperties 
+export default componentProperties
