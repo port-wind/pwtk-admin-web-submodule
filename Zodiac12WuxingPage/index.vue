@@ -366,7 +366,7 @@ const loadWuxingData = () => {
       console.warn('playRules.wuXingToNumber not found, using default data')
       // 如果playRules不存在，使用默认数据作为fallback
       const defaultWuxingData = [
-        { name: '金1', color: '#ffcc00', numbers: ['03', '04', '11', '12', '25', '26', '33', '34', '41', '42'] },
+        { name: '金', color: '#ffcc00', numbers: ['03', '04', '11', '12', '25', '26', '33', '34', '41', '42'] },
         { name: '木', color: '#33cc33', numbers: ['07', '08', '15', '16', '23', '24', '37', '38', '45', '46'] },
         { name: '水', color: '#3399ff', numbers: ['13', '14', '21', '22', '29', '30', '43', '44'] },
         {
