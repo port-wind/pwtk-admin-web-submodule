@@ -1,5 +1,5 @@
 <script setup lang="ts" name="FixedButtonGroupRB">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { IDatas } from './type'
 
@@ -7,7 +7,7 @@ interface IProps {
   datas: IDatas
 }
 const props = defineProps<IProps>()
-
+const isAdmin = ref(false)
 // 响应式数据
 const isShareModalVisible = ref(false)
 const countdown = ref(0)
@@ -145,20 +145,30 @@ const refreshPage = () => {
 }
 
 const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  })
+  const comContainer = document.getElementById('com-container')
+  if (comContainer) {
+    comContainer.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
 }
 
-onMounted(() => {
-  rightFixValue.value = '460px'
+onMounted(async () => {
+  try {
+    const imported = await import('@/views/WebVision/components/rightslider/FixedButtonGroupRBStyle/index.vue')
+    isAdmin.value = true
+    rightFixValue.value = '460px'
+    console.log(imported)
+  } catch (error) {
+    console.log(error)
+  }
 })
 </script>
 
 <template>
   <div class="FixedButtonGroupRB">
-    <div style="display: flex; align-items: center; justify-content: center">这是固定按钮组</div>
+    <div v-if="isAdmin" style="display: flex; align-items: center; justify-content: center">这是固定按钮组</div>
     <!-- 分享按钮 -->
     <div class="fixed-btn share-btn" :style="shareButtonStyle" @click="showShareModal">
       {{ shareText }}
