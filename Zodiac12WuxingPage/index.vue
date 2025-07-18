@@ -40,6 +40,12 @@ interface AttributeItem {
   label: string
   animals: string
 }
+
+interface ZodiacAttributeConfig {
+  code: string
+  key?: string
+  special?: string
+}
 const killMap = {
   蛇: '猪',
   龙: '狗',
@@ -105,30 +111,152 @@ const oddEvenColorMap = {
 // 合数单双数据 - 初始化为空数组，在onMounted中从gameStore加载
 const oddEvenList = reactive<OddEvenItem[]>([])
 
-// 生肖属性数据
-const zodiacAttributesList: AttributeItem[] = [
-  { label: '家禽', animals: '牛、马、羊、鸡、狗、猪' },
-  { label: '野兽', animals: '鼠、虎、兔、龙、蛇、猴' },
-  { label: '吉美', animals: '兔、龙、蛇、马、羊、鸡' },
-  { label: '凶丑', animals: '鼠、牛、虎、猴、狗、猪' },
-  { label: '阴性', animals: '鼠、龙、蛇、马、狗、猪' },
-  { label: '阳性', animals: '牛、虎、兔、羊、猴、鸡' },
-  { label: '单笔', animals: '鼠、龙、马、蛇、鸡、猪' },
-  { label: '双笔', animals: '虎、猴、狗、兔、羊、牛' },
-  { label: '天肖', animals: '兔、马、猴、猪、牛、龙' },
-  { label: '地肖', animals: '蛇、羊、鸡、狗、鼠、虎' },
-  { label: '白边', animals: '鼠、牛、虎、鸡、狗、猪' },
-  { label: '黑中', animals: '兔、龙、蛇、马、羊、猴' },
-  { label: '女肖', animals: '兔、蛇、羊、鸡、猪（五宫肖）' },
-  { label: '男肖', animals: '鼠、牛、虎、龙、马、猴、狗' },
-  { label: '三合', animals: '鼠龙猴、牛蛇鸡、虎马狗、兔羊猪' },
-  { label: '六合', animals: '鼠牛、龙鸡、虎猪、蛇猴、兔狗、马羊' },
-  { label: '琴棋书画', animals: '琴：兔蛇鸡　棋：鼠牛狗　书：虎龙马　画：羊猴猪' },
-  { label: '五福肖', animals: '鼠、虎、兔、蛇、猴[龙]' },
-  { label: '红肖', animals: '马、兔、鼠、鸡' },
-  { label: '蓝肖', animals: '蛇、虎、猪、猴' },
-  { label: '绿肖', animals: '羊、龙、牛、狗' }
-]
+// 生肖属性标签到playTypes代码的映射
+const zodiacAttributeCodeMap: Record<string, ZodiacAttributeConfig> = {
+  家禽: { code: '8061', key: '家禽' },
+  野兽: { code: '8061', key: '野兽' },
+  吉美: { code: '8075', key: '吉美' },
+  凶丑: { code: '8075', key: '凶丑' },
+  阴性: { code: '8067', key: '阴肖' },
+  阳性: { code: '8067', key: '阳肖' },
+  单笔: { code: '8093', key: '单笔肖' },
+  双笔: { code: '8093', key: '双笔肖' },
+  天肖: { code: '8089', key: '天肖' },
+  地肖: { code: '8089', key: '地肖' },
+  白边: { code: '8079', key: '白肖' },
+  黑中: { code: '8079', key: '黑肖' },
+  女肖: { code: '8069', key: '女肖', special: 'female' },
+  男肖: { code: '8069', key: '男肖' },
+  三合: { code: 'custom', special: 'sanhe' },
+  六合: { code: 'custom', special: 'liuhe' },
+  琴棋书画: { code: '8131', special: 'qinqishuhua' },
+  五福肖: { code: 'custom', special: 'wufu' },
+  红肖: { code: '8114', key: '红肖' },
+  蓝肖: { code: '8114', key: '蓝肖' },
+  绿肖: { code: '8114', key: '绿肖' }
+}
+
+// 获取自定义生肖属性
+const getCustomZodiacAttributes = (type?: string): string => {
+  if (!type) return ''
+  switch (type) {
+    case 'sanhe':
+      return '鼠龙猴、牛蛇鸡、虎马狗、兔羊猪'
+    case 'liuhe':
+      return '鼠牛、龙鸡、虎猪、蛇猴、兔狗、马羊'
+    case 'wufu':
+      return '鼠、虎、兔、蛇、猴[龙]'
+    default:
+      return ''
+  }
+}
+
+// 格式化生肖数据的辅助函数
+const formatZodiacData = (data: any): string => {
+  if (Array.isArray(data)) {
+    return data.join('')
+  }
+  return String(data || '')
+}
+
+// 构建琴棋书画字符串
+const buildQinqishuhuaString = (playTypes: any[]): string => {
+  const playType = playTypes.find((item) => item.code === '8131')
+  if (playType?.options) {
+    const parts: string[] = []
+    if (playType.options['琴']) {
+      parts.push(`琴：${formatZodiacData(playType.options['琴'])}`)
+    }
+    if (playType.options['棋']) {
+      parts.push(`棋：${formatZodiacData(playType.options['棋'])}`)
+    }
+    if (playType.options['书']) {
+      parts.push(`书：${formatZodiacData(playType.options['书'])}`)
+    }
+    if (playType.options['画']) {
+      parts.push(`画：${formatZodiacData(playType.options['画'])}`)
+    }
+    return parts.join('　')
+  }
+  return ''
+}
+
+// 构建女肖字符串（特殊处理五宫肖）
+const buildFemaleZodiacString = (playTypes: any[]): string => {
+  const playType = playTypes.find((item) => item.code === '8069')
+  if (playType?.options && playType.options['女肖']) {
+    const femaleZodiacs = Array.isArray(playType.options['女肖'])
+      ? playType.options['女肖'].join('、')
+      : playType.options['女肖']
+    return `${femaleZodiacs}（五宫肖）`
+  }
+  return ''
+}
+
+// 获取默认生肖属性（fallback）
+const getDefaultZodiacAttributes = (label: string): string => {
+  const defaultMap: Record<string, string> = {
+    家禽: '牛、马、羊、鸡、狗、猪',
+    野兽: '鼠、虎、兔、龙、蛇、猴',
+    吉美: '兔、龙、蛇、马、羊、鸡',
+    凶丑: '鼠、牛、虎、猴、狗、猪',
+    阴性: '鼠、龙、蛇、马、狗、猪',
+    阳性: '牛、虎、兔、羊、猴、鸡',
+    单笔: '鼠、龙、马、蛇、鸡、猪',
+    双笔: '虎、猴、狗、兔、羊、牛',
+    天肖: '兔、马、猴、猪、牛、龙',
+    地肖: '蛇、羊、鸡、狗、鼠、虎',
+    白边: '鼠、牛、虎、鸡、狗、猪',
+    黑中: '兔、龙、蛇、马、羊、猴',
+    女肖: '兔、蛇、羊、鸡、猪（五宫肖）',
+    男肖: '鼠、牛、虎、龙、马、猴、狗',
+    三合: '鼠龙猴、牛蛇鸡、虎马狗、兔羊猪',
+    六合: '鼠牛、龙鸡、虎猪、蛇猴、兔狗、马羊',
+    琴棋书画: '琴：兔蛇鸡　棋：鼠牛狗　书：虎龙马　画：羊猴猪',
+    五福肖: '鼠、虎、兔、蛇、猴[龙]',
+    红肖: '马、兔、鼠、鸡',
+    蓝肖: '蛇、虎、猪、猴',
+    绿肖: '羊、龙、牛、狗'
+  }
+  return defaultMap[label] || ''
+}
+
+// Vue 3最佳实践：动态生成生肖属性数据
+const zodiacAttributesList = computed<AttributeItem[]>(() => {
+  const playTypes = getPlayTypes()
+  const result: AttributeItem[] = []
+
+  Object.entries(zodiacAttributeCodeMap).forEach(([label, config]) => {
+    let animals = ''
+
+    if (config.code === 'custom') {
+      // 处理自定义数据
+      animals = getCustomZodiacAttributes(config.special)
+    } else if (config.special === 'qinqishuhua') {
+      // 特殊处理琴棋书画
+      animals = buildQinqishuhuaString(playTypes)
+    } else if (config.special === 'female') {
+      // 特殊处理女肖
+      animals = buildFemaleZodiacString(playTypes)
+    } else {
+      // 常规处理
+      const playType = playTypes.find((item) => item.code === config.code)
+      if (playType?.options && config.key && playType.options[config.key]) {
+        const zodiacArray = playType.options[config.key]
+        animals = Array.isArray(zodiacArray) ? zodiacArray.join('、') : zodiacArray
+      }
+    }
+
+    // 如果没有从playTypes获取到数据，使用默认值
+    if (!animals) {
+      animals = getDefaultZodiacAttributes(label)
+    }
+
+    result.push({ label, animals })
+  })
+
+  return result
+})
 
 // 波色名称到CSS类名的映射
 const waveColorToCssClassMap = {
