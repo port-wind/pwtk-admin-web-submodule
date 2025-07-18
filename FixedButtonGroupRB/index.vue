@@ -1,5 +1,5 @@
 <script setup lang="ts" name="FixedButtonGroupRB">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { IDatas } from './type'
 
