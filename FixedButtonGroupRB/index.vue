@@ -163,7 +163,7 @@ onMounted(async () => {
 
 <template>
   <div class="FixedButtonGroupRB">
-    <div v-if="isAstro" style="display: flex; align-items: center; justify-content: center">这是固定按钮组</div>
+    <div v-if="!isAstro" style="display: flex; align-items: center; justify-content: center">这是固定按钮组</div>
     <!-- 分享按钮 -->
     <div class="fixed-btn share-btn" :style="shareButtonStyle" @click="showShareModal">
       {{ shareText }}
