@@ -3,7 +3,7 @@ import { useStore } from '@nanostores/vue'
 
 import { computed, reactive, onMounted } from 'vue'
 import type { IDatas } from './type'
-import { gameStore } from '../store'
+import { gameStore, getShengXiaoToNumber, getWuXingToNumber, getPlayTypes } from '../store/gameStore'
 
 interface IProps {
   datas: IDatas
@@ -54,114 +54,56 @@ const killMap = {
   羊: '牛',
   马: '鼠'
 }
-// 生肖数据映射 - 直接填充完整数据
-const zodiacList = reactive<ZodiacItem[]>([
-  { name: '蛇', image: 'she.gif', clash: killMap['蛇'], numbers: ['01', '13', '25', '37', '49'] },
-  { name: '龙', image: 'long.gif', clash: killMap['龙'], numbers: ['02', '14', '26', '38'] },
-  { name: '兔', image: 'tu.gif', clash: killMap['兔'], numbers: ['03', '15', '27', '39'] },
-  { name: '虎', image: 'hu.gif', clash: killMap['虎'], numbers: ['04', '16', '28', '40'] },
-  { name: '牛', image: 'niu.gif', clash: killMap['牛'], numbers: ['05', '17', '29', '41'] },
-  { name: '鼠', image: 'shu.gif', clash: killMap['鼠'], numbers: ['06', '18', '30', '42'] },
-  { name: '猪', image: 'zhu.gif', clash: killMap['猪'], numbers: ['07', '19', '31', '43'] },
-  { name: '狗', image: 'gou.gif', clash: killMap['狗'], numbers: ['08', '20', '32', '44'] },
-  { name: '鸡', image: 'ji.gif', clash: killMap['鸡'], numbers: ['09', '21', '33', '45'] },
-  { name: '猴', image: 'hou.gif', clash: killMap['猴'], numbers: ['10', '22', '34', '46'] },
-  { name: '羊', image: 'yang.gif', clash: killMap['羊'], numbers: ['11', '23', '35', '47'] },
-  { name: '马', image: 'ma.gif', clash: killMap['马'], numbers: ['12', '24', '36', '48'] }
-])
 
-// 五行数据 - 直接填充完整数据
-const wuxingList = reactive<WuxingItem[]>([
-  { name: '金', color: '#ffcc00', numbers: ['03', '04', '11', '12', '25', '26', '33', '34', '41', '42'] },
-  { name: '木', color: '#33cc33', numbers: ['07', '08', '15', '16', '23', '24', '37', '38', '45', '46'] },
-  { name: '水', color: '#3399ff', numbers: ['13', '14', '21', '22', '29', '30', '43', '44'] },
-  { name: '火', color: '#ff6600', numbers: ['01', '02', '09', '10', '17', '18', '31', '32', '39', '40', '47', '48'] },
-  { name: '土', color: '#cc9900', numbers: ['05', '06', '19', '20', '27', '28', '35', '36', '49'] }
-])
+// 生肖图片映射
+const zodiacImageMap = {
+  蛇: 'she.gif',
+  龙: 'long.gif',
+  兔: 'tu.gif',
+  虎: 'hu.gif',
+  牛: 'niu.gif',
+  鼠: 'shu.gif',
+  猪: 'zhu.gif',
+  狗: 'gou.gif',
+  鸡: 'ji.gif',
+  猴: 'hou.gif',
+  羊: 'yang.gif',
+  马: 'ma.gif'
+}
 
-// 波色数据 - 直接填充完整数据
-const waveColorList = reactive<WaveColorItem[]>([
-  {
-    name: '红波',
-    color: '#ff0000',
-    numbers: ['01', '02', '07', '08', '12', '13', '18', '19', '23', '24', '29', '30', '34', '35', '40', '45', '46']
-  },
-  {
-    name: '蓝波',
-    color: '#3366ff',
-    numbers: ['03', '04', '09', '10', '14', '15', '20', '25', '26', '31', '36', '37', '41', '42', '47', '48']
-  },
-  {
-    name: '绿波',
-    color: '#009933',
-    numbers: ['05', '06', '11', '16', '17', '21', '22', '27', '28', '32', '33', '38', '39', '43', '44', '49']
-  }
-])
+// 生肖数据映射 - 初始化为空数组，在onMounted中从mockData加载
+const zodiacList = reactive<ZodiacItem[]>([])
 
-// 合数单双数据 - 直接填充完整数据
-const oddEvenList = reactive<OddEvenItem[]>([
-  {
-    name: '合数单',
-    color: '#3366ff',
-    numbers: [
-      '01',
-      '03',
-      '05',
-      '07',
-      '09',
-      '10',
-      '12',
-      '14',
-      '16',
-      '18',
-      '21',
-      '23',
-      '25',
-      '27',
-      '29',
-      '30',
-      '32',
-      '34',
-      '36',
-      '38',
-      '41',
-      '43',
-      '45',
-      '47',
-      '49'
-    ]
-  },
-  {
-    name: '合数双',
-    color: '#3366ff',
-    numbers: [
-      '02',
-      '04',
-      '06',
-      '08',
-      '11',
-      '13',
-      '15',
-      '17',
-      '19',
-      '20',
-      '22',
-      '24',
-      '26',
-      '28',
-      '31',
-      '33',
-      '35',
-      '37',
-      '39',
-      '40',
-      '42',
-      '44',
-      '46',
-      '48'
-    ]
-  }
-])
+// 五行颜色映射
+const wuxingColorMap = {
+  金: '#ffcc00',
+  木: '#33cc33',
+  水: '#3399ff',
+  火: '#ff6600',
+  土: '#cc9900'
+}
+
+// 五行数据 - 初始化为空数组，在onMounted中从gameStore加载
+const wuxingList = reactive<WuxingItem[]>([])
+
+// 波色颜色映射
+const waveColorMap = {
+  红波: '#ff0000',
+  蓝波: '#3366ff',
+  绿波: '#009933'
+}
+
+// 波色数据 - 初始化为空数组，在onMounted中从gameStore加载
+const waveColorList = reactive<WaveColorItem[]>([])
+
+// 合数单双颜色映射
+const oddEvenColorMap = {
+  合数单: '#3366ff',
+  合数双: '#3366ff'
+}
+
+// 合数单双数据 - 初始化为空数组，在onMounted中从gameStore加载
+const oddEvenList = reactive<OddEvenItem[]>([])
 
 // 生肖属性数据
 const zodiacAttributesList: AttributeItem[] = [
@@ -239,11 +181,266 @@ const headerStyle = computed(() => {
     backgroundColor: header?.headerBgColor || '#d11717'
   }
 })
+
+// 加载生肖数据的函数
+const loadZodiacData = () => {
+  try {
+    // 从gameStore的playRules加载生肖数据
+    const shengXiaoToNumber = getShengXiaoToNumber()
+
+    if (shengXiaoToNumber && Object.keys(shengXiaoToNumber).length > 0) {
+      // 按照playRules中shengXiaoToNumber的键顺序构建zodiacList - Vue 3最佳实践
+      const newZodiacData = Object.keys(shengXiaoToNumber).map((zodiacName) => ({
+        name: zodiacName,
+        image: zodiacImageMap[zodiacName as keyof typeof zodiacImageMap] || `${zodiacName}.gif`,
+        clash: killMap[zodiacName as keyof typeof killMap] || '',
+        numbers: shengXiaoToNumber[zodiacName]
+      }))
+
+      // Vue 3 最佳实践：直接替换数组内容
+      Object.assign(zodiacList, newZodiacData)
+
+      console.log('Zodiac data loaded from gameStore playRules:', zodiacList)
+    } else {
+      console.warn('playRules.shengXiaoToNumber not found, using default data')
+      // 如果playRules不存在，使用默认数据作为fallback
+      const defaultZodiacData = [
+        { name: '蛇', image: 'she.gif', clash: killMap['蛇'], numbers: ['01', '13', '25', '37', '49'] },
+        { name: '龙', image: 'long.gif', clash: killMap['龙'], numbers: ['02', '14', '26', '38'] },
+        { name: '兔', image: 'tu.gif', clash: killMap['兔'], numbers: ['03', '15', '27', '39'] },
+        { name: '虎', image: 'hu.gif', clash: killMap['虎'], numbers: ['04', '16', '28', '40'] },
+        { name: '牛', image: 'niu.gif', clash: killMap['牛'], numbers: ['05', '17', '29', '41'] },
+        { name: '鼠', image: 'shu.gif', clash: killMap['鼠'], numbers: ['06', '18', '30', '42'] },
+        { name: '猪', image: 'zhu.gif', clash: killMap['猪'], numbers: ['07', '19', '31', '43'] },
+        { name: '狗', image: 'gou.gif', clash: killMap['狗'], numbers: ['08', '20', '32', '44'] },
+        { name: '鸡', image: 'ji.gif', clash: killMap['鸡'], numbers: ['09', '21', '33', '45'] },
+        { name: '猴', image: 'hou.gif', clash: killMap['猴'], numbers: ['10', '22', '34', '46'] },
+        { name: '羊', image: 'yang.gif', clash: killMap['羊'], numbers: ['11', '23', '35', '47'] },
+        { name: '马', image: 'ma.gif', clash: killMap['马'], numbers: ['12', '24', '36', '48'] }
+      ]
+
+      Object.assign(zodiacList, defaultZodiacData)
+    }
+  } catch (error) {
+    console.error('Error loading zodiac data:', error)
+  }
+}
+
+// 加载五行数据的函数
+const loadWuxingData = () => {
+  try {
+    // 从gameStore的playRules加载五行数据
+    const wuXingToNumber = getWuXingToNumber()
+
+    if (wuXingToNumber && Object.keys(wuXingToNumber).length > 0) {
+      // 按照playRules中wuXingToNumber的键顺序构建wuxingList - Vue 3最佳实践
+      const newWuxingData = Object.keys(wuXingToNumber).map((wuxingName) => ({
+        name: wuxingName,
+        color: wuxingColorMap[wuxingName as keyof typeof wuxingColorMap] || '#333333',
+        numbers: wuXingToNumber[wuxingName]
+      }))
+
+      // Vue 3 最佳实践：直接替换数组内容
+      Object.assign(wuxingList, newWuxingData)
+
+      console.log('Wuxing data loaded from gameStore playRules:', wuxingList)
+    } else {
+      console.warn('playRules.wuXingToNumber not found, using default data')
+      // 如果playRules不存在，使用默认数据作为fallback
+      const defaultWuxingData = [
+        { name: '金1', color: '#ffcc00', numbers: ['03', '04', '11', '12', '25', '26', '33', '34', '41', '42'] },
+        { name: '木', color: '#33cc33', numbers: ['07', '08', '15', '16', '23', '24', '37', '38', '45', '46'] },
+        { name: '水', color: '#3399ff', numbers: ['13', '14', '21', '22', '29', '30', '43', '44'] },
+        {
+          name: '火',
+          color: '#ff6600',
+          numbers: ['01', '02', '09', '10', '17', '18', '31', '32', '39', '40', '47', '48']
+        },
+        { name: '土', color: '#cc9900', numbers: ['05', '06', '19', '20', '27', '28', '35', '36', '49'] }
+      ]
+
+      Object.assign(wuxingList, defaultWuxingData)
+    }
+  } catch (error) {
+    console.error('Error loading wuxing data:', error)
+  }
+}
+
+// 加载波色数据的函数
+const loadWaveColorData = () => {
+  try {
+    // 从gameStore的playTypes加载波色数据 (code: '8007')
+    const playTypes = getPlayTypes()
+    const waveColorData = playTypes.find((item) => item.code === '8007')?.options || {}
+
+    if (waveColorData && Object.keys(waveColorData).length > 0) {
+      // 按照playTypes中波色数据的键顺序构建waveColorList - Vue 3最佳实践
+      const newWaveColorData = Object.keys(waveColorData).map((waveColorName) => ({
+        name: waveColorName,
+        color: waveColorMap[waveColorName as keyof typeof waveColorMap] || '#333333',
+        numbers: waveColorData[waveColorName]
+      }))
+
+      // Vue 3 最佳实践：直接替换数组内容
+      Object.assign(waveColorList, newWaveColorData)
+
+      console.log('Wave color data loaded from gameStore playTypes:', waveColorList)
+    } else {
+      console.warn('playTypes code 8007 not found, using default data')
+      // 如果playTypes不存在，使用默认数据作为fallback
+      const defaultWaveColorData = [
+        {
+          name: '红波',
+          color: '#ff0000',
+          numbers: [
+            '01',
+            '02',
+            '07',
+            '08',
+            '12',
+            '13',
+            '18',
+            '19',
+            '23',
+            '24',
+            '29',
+            '30',
+            '34',
+            '35',
+            '40',
+            '45',
+            '46'
+          ]
+        },
+        {
+          name: '蓝波',
+          color: '#3366ff',
+          numbers: ['03', '04', '09', '10', '14', '15', '20', '25', '26', '31', '36', '37', '41', '42', '47', '48']
+        },
+        {
+          name: '绿波',
+          color: '#009933',
+          numbers: ['05', '06', '11', '16', '17', '21', '22', '27', '28', '32', '33', '38', '39', '43', '44', '49']
+        }
+      ]
+
+      Object.assign(waveColorList, defaultWaveColorData)
+    }
+  } catch (error) {
+    console.error('Error loading wave color data:', error)
+  }
+}
+
+// 加载合数单双数据的函数
+const loadOddEvenData = () => {
+  try {
+    // 从gameStore的playTypes加载合数单双数据 (code: '8018')
+    const playTypes = getPlayTypes()
+    const oddEvenData = playTypes.find((item) => item.code === '8018')?.options || {}
+
+    if (oddEvenData && Object.keys(oddEvenData).length > 0) {
+      // 按照playTypes中合数单双数据的键顺序构建oddEvenList - Vue 3最佳实践
+      const newOddEvenData = Object.keys(oddEvenData).map((oddEvenName) => ({
+        name: oddEvenName,
+        color: oddEvenColorMap[oddEvenName as keyof typeof oddEvenColorMap] || '#3366ff',
+        numbers: oddEvenData[oddEvenName]
+      }))
+
+      // Vue 3 最佳实践：直接替换数组内容
+      Object.assign(oddEvenList, newOddEvenData)
+
+      console.log('Odd even data loaded from gameStore playTypes:', oddEvenList)
+    } else {
+      console.warn('playTypes code 8018 not found, using default data')
+      // 如果playTypes不存在，使用默认数据作为fallback
+      const defaultOddEvenData = [
+        {
+          name: '合数单',
+          color: '#3366ff',
+          numbers: [
+            '01',
+            '03',
+            '05',
+            '07',
+            '09',
+            '10',
+            '12',
+            '14',
+            '16',
+            '18',
+            '21',
+            '23',
+            '25',
+            '27',
+            '29',
+            '30',
+            '32',
+            '34',
+            '36',
+            '38',
+            '41',
+            '43',
+            '45',
+            '47',
+            '49'
+          ]
+        },
+        {
+          name: '合数双',
+          color: '#3366ff',
+          numbers: [
+            '02',
+            '04',
+            '06',
+            '08',
+            '11',
+            '13',
+            '15',
+            '17',
+            '19',
+            '20',
+            '22',
+            '24',
+            '26',
+            '28',
+            '31',
+            '33',
+            '35',
+            '37',
+            '39',
+            '40',
+            '42',
+            '44',
+            '46',
+            '48'
+          ]
+        }
+      ]
+
+      Object.assign(oddEvenList, defaultOddEvenData)
+    }
+  } catch (error) {
+    console.error('Error loading odd even data:', error)
+  }
+}
+
 onMounted(async () => {
   try {
-    console.log(gameStoreData.value)
+    console.log('gameStoreData:', gameStoreData.value)
+
+    // 加载生肖数据
+    loadZodiacData()
+
+    // 加载五行数据
+    loadWuxingData()
+
+    // 加载波色数据
+    loadWaveColorData()
+
+    // 加载合数单双数据
+    loadOddEvenData()
   } catch (error) {
-    console.error('Error parsing data:', error)
+    console.error('Error in onMounted:', error)
   }
 })
 </script>
