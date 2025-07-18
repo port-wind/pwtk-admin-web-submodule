@@ -42,10 +42,61 @@ interface AttributeItem {
 }
 
 interface ZodiacAttributeConfig {
-  code: string
-  key?: string
-  special?: string
+  getData: (_: any[]) => string
 }
+
+// 格式化生肖数据的辅助函数
+const formatZodiacData = (data: any): string => {
+  if (Array.isArray(data)) {
+    return data.join('')
+  }
+  return String(data || '')
+}
+
+// 构建琴棋书画字符串
+const buildQinqishuhuaString = (playTypes: any[]): string => {
+  const playType = playTypes.find((item) => item.code === '8131')
+  if (playType?.options) {
+    const parts: string[] = []
+    if (playType.options['琴']) {
+      parts.push(`琴：${formatZodiacData(playType.options['琴'])}`)
+    }
+    if (playType.options['棋']) {
+      parts.push(`棋：${formatZodiacData(playType.options['棋'])}`)
+    }
+    if (playType.options['书']) {
+      parts.push(`书：${formatZodiacData(playType.options['书'])}`)
+    }
+    if (playType.options['画']) {
+      parts.push(`画：${formatZodiacData(playType.options['画'])}`)
+    }
+    return parts.join('　')
+  }
+  return ''
+}
+
+// 构建女肖字符串（特殊处理五宫肖）
+const buildFemaleZodiacString = (playTypes: any[]): string => {
+  const playType = playTypes.find((item) => item.code === '8069')
+  if (playType?.options && playType.options['女肖']) {
+    const femaleZodiacs = Array.isArray(playType.options['女肖'])
+      ? playType.options['女肖'].join('、')
+      : playType.options['女肖']
+    return `${femaleZodiacs}（五宫肖）`
+  }
+  return ''
+}
+
+// 通用数据获取函数
+const getRegularData = (playTypes: any[], code: string, key: string): string => {
+  const playType = playTypes.find((item) => item.code === code)
+  if (playType?.options && playType.options[key]) {
+    const zodiacArray = playType.options[key]
+    return Array.isArray(zodiacArray) ? zodiacArray.join('、') : zodiacArray
+  }
+  return ''
+}
+
 const killMap = {
   蛇: '猪',
   龙: '狗',
@@ -111,86 +162,29 @@ const oddEvenColorMap = {
 // 合数单双数据 - 初始化为空数组，在onMounted中从gameStore加载
 const oddEvenList = reactive<OddEvenItem[]>([])
 
-// 生肖属性标签到playTypes代码的映射
+// Strategy Pattern: 生肖属性标签到数据获取策略的映射
 const zodiacAttributeCodeMap: Record<string, ZodiacAttributeConfig> = {
-  家禽: { code: '8061', key: '家禽' },
-  野兽: { code: '8061', key: '野兽' },
-  吉美: { code: '8075', key: '吉美' },
-  凶丑: { code: '8075', key: '凶丑' },
-  阴性: { code: '8067', key: '阴肖' },
-  阳性: { code: '8067', key: '阳肖' },
-  单笔: { code: '8093', key: '单笔肖' },
-  双笔: { code: '8093', key: '双笔肖' },
-  天肖: { code: '8089', key: '天肖' },
-  地肖: { code: '8089', key: '地肖' },
-  白边: { code: '8079', key: '白肖' },
-  黑中: { code: '8079', key: '黑肖' },
-  女肖: { code: '8069', key: '女肖', special: 'female' },
-  男肖: { code: '8069', key: '男肖' },
-  三合: { code: 'custom', special: 'sanhe' },
-  六合: { code: 'custom', special: 'liuhe' },
-  琴棋书画: { code: '8131', special: 'qinqishuhua' },
-  五福肖: { code: 'custom', special: 'wufu' },
-  红肖: { code: '8114', key: '红肖' },
-  蓝肖: { code: '8114', key: '蓝肖' },
-  绿肖: { code: '8114', key: '绿肖' }
-}
-
-// 获取自定义生肖属性
-const getCustomZodiacAttributes = (type?: string): string => {
-  if (!type) return ''
-  switch (type) {
-    case 'sanhe':
-      return '鼠龙猴、牛蛇鸡、虎马狗、兔羊猪'
-    case 'liuhe':
-      return '鼠牛、龙鸡、虎猪、蛇猴、兔狗、马羊'
-    case 'wufu':
-      return '鼠、虎、兔、蛇、猴[龙]'
-    default:
-      return ''
-  }
-}
-
-// 格式化生肖数据的辅助函数
-const formatZodiacData = (data: any): string => {
-  if (Array.isArray(data)) {
-    return data.join('')
-  }
-  return String(data || '')
-}
-
-// 构建琴棋书画字符串
-const buildQinqishuhuaString = (playTypes: any[]): string => {
-  const playType = playTypes.find((item) => item.code === '8131')
-  if (playType?.options) {
-    const parts: string[] = []
-    if (playType.options['琴']) {
-      parts.push(`琴：${formatZodiacData(playType.options['琴'])}`)
-    }
-    if (playType.options['棋']) {
-      parts.push(`棋：${formatZodiacData(playType.options['棋'])}`)
-    }
-    if (playType.options['书']) {
-      parts.push(`书：${formatZodiacData(playType.options['书'])}`)
-    }
-    if (playType.options['画']) {
-      parts.push(`画：${formatZodiacData(playType.options['画'])}`)
-    }
-    return parts.join('　')
-  }
-  return ''
-}
-
-// 构建女肖字符串（特殊处理五宫肖）
-const buildFemaleZodiacString = (playTypes: any[]): string => {
-  const playType = playTypes.find((item) => item.code === '8069')
-  if (playType?.options && playType.options['女肖']) {
-    const femaleZodiacs = Array.isArray(playType.options['女肖'])
-      ? playType.options['女肖'].join('、')
-      : playType.options['女肖']
-    return `${femaleZodiacs}（五宫肖）`
-  }
-  return ''
+  家禽: { getData: (playTypes) => getRegularData(playTypes, '8061', '家禽') },
+  野兽: { getData: (playTypes) => getRegularData(playTypes, '8061', '野兽') },
+  吉美: { getData: (playTypes) => getRegularData(playTypes, '8075', '吉美') },
+  凶丑: { getData: (playTypes) => getRegularData(playTypes, '8075', '凶丑') },
+  阴性: { getData: (playTypes) => getRegularData(playTypes, '8067', '阴肖') },
+  阳性: { getData: (playTypes) => getRegularData(playTypes, '8067', '阳肖') },
+  单笔: { getData: (playTypes) => getRegularData(playTypes, '8093', '单笔肖') },
+  双笔: { getData: (playTypes) => getRegularData(playTypes, '8093', '双笔肖') },
+  天肖: { getData: (playTypes) => getRegularData(playTypes, '8089', '天肖') },
+  地肖: { getData: (playTypes) => getRegularData(playTypes, '8089', '地肖') },
+  白边: { getData: (playTypes) => getRegularData(playTypes, '8079', '白肖') },
+  黑中: { getData: (playTypes) => getRegularData(playTypes, '8079', '黑肖') },
+  女肖: { getData: (playTypes) => buildFemaleZodiacString(playTypes) },
+  男肖: { getData: (playTypes) => getRegularData(playTypes, '8069', '男肖') },
+  三合: { getData: () => '鼠龙猴、牛蛇鸡、虎马狗、兔羊猪' },
+  六合: { getData: () => '鼠牛、龙鸡、虎猪、蛇猴、兔狗、马羊' },
+  琴棋书画: { getData: (playTypes) => buildQinqishuhuaString(playTypes) },
+  五福肖: { getData: () => '鼠、虎、兔、蛇、猴[龙]' },
+  红肖: { getData: (playTypes) => getRegularData(playTypes, '8114', '红肖') },
+  蓝肖: { getData: (playTypes) => getRegularData(playTypes, '8114', '蓝肖') },
+  绿肖: { getData: (playTypes) => getRegularData(playTypes, '8114', '绿肖') }
 }
 
 // 获取默认生肖属性（fallback）
@@ -221,33 +215,16 @@ const getDefaultZodiacAttributes = (label: string): string => {
   return defaultMap[label] || ''
 }
 
-// Vue 3最佳实践：动态生成生肖属性数据
+// Vue 3最佳实践：使用Strategy Pattern动态生成生肖属性数据
 const zodiacAttributesList = computed<AttributeItem[]>(() => {
   const playTypes = getPlayTypes()
   const result: AttributeItem[] = []
 
   Object.entries(zodiacAttributeCodeMap).forEach(([label, config]) => {
-    let animals = ''
+    // 使用Strategy Pattern：每个配置项都有自己的getData方法
+    let animals = config.getData(playTypes)
 
-    if (config.code === 'custom') {
-      // 处理自定义数据
-      animals = getCustomZodiacAttributes(config.special)
-    } else if (config.special === 'qinqishuhua') {
-      // 特殊处理琴棋书画
-      animals = buildQinqishuhuaString(playTypes)
-    } else if (config.special === 'female') {
-      // 特殊处理女肖
-      animals = buildFemaleZodiacString(playTypes)
-    } else {
-      // 常规处理
-      const playType = playTypes.find((item) => item.code === config.code)
-      if (playType?.options && config.key && playType.options[config.key]) {
-        const zodiacArray = playType.options[config.key]
-        animals = Array.isArray(zodiacArray) ? zodiacArray.join('、') : zodiacArray
-      }
-    }
-
-    // 如果没有从playTypes获取到数据，使用默认值
+    // 如果Strategy没有返回数据，使用默认值作为fallback
     if (!animals) {
       animals = getDefaultZodiacAttributes(label)
     }
