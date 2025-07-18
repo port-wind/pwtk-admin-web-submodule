@@ -45,7 +45,7 @@ export const gameStore = atom<IGameStore>({
     gameTypeShortName: '澳彩',
     sortNum: 0,
     updateTime: 0,
-    status: 'y'
+    status: 'y',
   },
   gameNameMap: new Map<string, string>(),
   numInfo: [],
@@ -53,7 +53,7 @@ export const gameStore = atom<IGameStore>({
   issueList: [], //https://ocs.ai4funs.com/pwtk/gr/a6/history/2025
   forum: null,
   activeTabIndex: 0,
-  playRules: null
+  playRules: null,
 })
 
 export function changeGameType(game: IGameType) {
@@ -62,21 +62,21 @@ export function changeGameType(game: IGameType) {
     gameType: game.gameType,
     gameTypeCode: game.gameTypeCode,
     currentGame: game,
-    activeTabIndex: 0 // 重置tab索引
+    activeTabIndex: 0, // 重置tab索引
   })
 }
 
 export function changeYear(year: number) {
   gameStore.set({
     ...gameStore.get(),
-    year
+    year,
   })
 }
 
 export function setActiveTabIndex(index: number) {
   gameStore.set({
     ...gameStore.get(),
-    activeTabIndex: index
+    activeTabIndex: index,
   })
 }
 
@@ -85,7 +85,7 @@ async function getNumInfo() {
   if (res && res.length > 0) {
     gameStore.set({
       ...gameStore.get(),
-      numInfo: res[0]
+      numInfo: res[0],
     })
   }
 }
@@ -96,18 +96,11 @@ async function getPlayRules() {
     if (res && res.length > 0) {
       gameStore.set({
         ...gameStore.get(),
-        playRules: res[0]
+        playRules: res[0],
       })
     }
   } catch (error) {
     console.error('Failed to fetch play rules:', error)
-    // 如果 API 失败，使用 mockData 作为降级方案
-    // import('@/views/WebVision/components/rightslider/Zodiac12WuxingPageStyle/mockData').then(({ mockData }) => {
-    //   gameStore.set({
-    //     ...gameStore.get(),
-    //     playRules: mockData
-    //   })
-    // })
   }
 }
 
@@ -117,7 +110,7 @@ async function getIssueList() {
   if (res && res.length > 0) {
     gameStore.set({
       ...gameStore.get(),
-      issueList: res[0].data
+      issueList: res[0].data,
     })
   }
 }
@@ -127,9 +120,9 @@ export async function getGameTypeList() {
   if (res && res.length > 0) {
     gameStore.set({
       ...gameStore.get(),
-      gameTypeList: res[0].data
+      gameTypeList: res[0].data,
     })
-    gameStore.get().gameTypeList.forEach((item) => {
+    gameStore.get().gameTypeList.forEach(item => {
       gameStore.get().gameNameMap.set(item.gameType, item.gameTypeLongName.replace('六合彩', ''))
     })
   }
@@ -138,7 +131,7 @@ export async function getGameTypeList() {
 export async function updateForum(forum: IGetBBsForumIdByIdData) {
   gameStore.set({
     ...gameStore.get(),
-    forum
+    forum,
   })
   console.log(gameStore.get().forum)
 }
@@ -176,7 +169,7 @@ export function getPlayTypeByCode(code: string) {
   return playTypes.find((playType: any) => playType.code === code)
 }
 
-getNumInfo()
-getGameTypeList()
-getIssueList()
-getPlayRules() // 初始化玩法规则数据
+await getNumInfo()
+await getGameTypeList()
+await getIssueList()
+await getPlayRules() // 初始化玩法规则数据
