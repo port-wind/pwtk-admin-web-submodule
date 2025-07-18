@@ -130,20 +130,33 @@ const zodiacAttributesList: AttributeItem[] = [
   { label: '绿肖', animals: '羊、龙、牛、狗' }
 ]
 
-// 获取数字颜色类名
-const getNumberColorClass = (number: string): string => {
-  const num = parseInt(number, 10)
-  // 红波
-  const redNumbers = [1, 2, 7, 8, 12, 13, 18, 19, 23, 24, 29, 30, 34, 35, 40, 45, 46]
-  // 蓝波
-  const blueNumbers = [3, 4, 9, 10, 14, 15, 20, 25, 26, 31, 36, 37, 41, 42, 47, 48]
-  // 绿波
-  const greenNumbers = [5, 6, 11, 16, 17, 21, 22, 27, 28, 32, 33, 38, 39, 43, 44, 49]
+// 波色名称到CSS类名的映射
+const waveColorToCssClassMap = {
+  红波: 'red',
+  蓝波: 'blue',
+  绿波: 'green'
+}
 
-  if (redNumbers.includes(num)) return 'red'
-  if (blueNumbers.includes(num)) return 'blue'
-  if (greenNumbers.includes(num)) return 'green'
-  return ''
+// Vue 3最佳实践：基于动态数据的响应式计算属性
+const numberToColorClassMap = computed(() => {
+  const map = new Map<string, string>()
+
+  // 基于动态加载的waveColorList构建映射
+  waveColorList.forEach((waveColor) => {
+    const cssClass = waveColorToCssClassMap[waveColor.name as keyof typeof waveColorToCssClassMap]
+    if (cssClass && waveColor.numbers) {
+      waveColor.numbers.forEach((number) => {
+        map.set(number, cssClass)
+      })
+    }
+  })
+
+  return map
+})
+
+// 获取数字颜色类名 - 现在基于动态数据
+const getNumberColorClass = (number: string): string => {
+  return numberToColorClassMap.value.get(number) || ''
 }
 
 // 获取图片路径
