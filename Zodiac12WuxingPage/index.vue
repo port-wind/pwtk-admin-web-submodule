@@ -3,7 +3,7 @@ import { useStore } from '@nanostores/vue'
 
 import { computed, reactive, onMounted } from 'vue'
 import type { IDatas } from './type'
-import { gameStore, getShengXiaoToNumber, getWuXingToNumber, getPlayTypes } from '../store/gameStore'
+import { gameStore, getShengXiaoToNumber, getWuXingToNumber, getPlayTypes, getChongOfRule } from '../store/gameStore'
 
 interface IProps {
   datas: IDatas
@@ -97,20 +97,8 @@ const getRegularData = (playTypes: any[], code: string, key: string): string => 
   return ''
 }
 
-const killMap = {
-  蛇: '猪',
-  龙: '狗',
-  兔: '鸡',
-  虎: '猴',
-  牛: '羊',
-  鼠: '马',
-  猪: '蛇',
-  狗: '龙',
-  鸡: '兔',
-  猴: '虎',
-  羊: '牛',
-  马: '鼠'
-}
+// 生肖冲突映射 - 初始化为空对象，在onMounted中从gameStore加载
+const killMap = reactive<Record<string, string>>({})
 
 // 生肖图片映射
 const zodiacImageMap = {
@@ -449,6 +437,42 @@ const loadWaveColorData = () => {
   }
 }
 
+// 加载生肖冲突数据的函数
+const loadKillMapData = () => {
+  try {
+    // 从gameStore的playRules加载生肖冲突数据
+    const chongOfRule = getChongOfRule()
+
+    if (chongOfRule && Object.keys(chongOfRule).length > 0) {
+      // Vue 3 最佳实践：直接替换对象内容
+      Object.assign(killMap, chongOfRule)
+
+      console.log('Kill map data loaded from gameStore playRules:', killMap)
+    } else {
+      console.warn('playRules.chong not found, using default data')
+      // 如果playRules不存在，使用默认数据作为fallback
+      const defaultKillMapData = {
+        蛇: '猪',
+        龙: '狗',
+        兔: '鸡',
+        虎: '猴',
+        牛: '羊',
+        鼠: '马',
+        猪: '蛇',
+        狗: '龙',
+        鸡: '兔',
+        猴: '虎',
+        羊: '牛',
+        马: '鼠'
+      }
+
+      Object.assign(killMap, defaultKillMapData)
+    }
+  } catch (error) {
+    console.error('Error loading kill map data:', error)
+  }
+}
+
 // 加载合数单双数据的函数
 const loadOddEvenData = () => {
   try {
@@ -545,6 +569,9 @@ const loadOddEvenData = () => {
 onMounted(async () => {
   try {
     console.log('gameStoreData:', gameStoreData.value)
+
+    // 加载生肖冲突数据 (需要在loadZodiacData之前加载)
+    loadKillMapData()
 
     // 加载生肖数据
     loadZodiacData()
