@@ -174,10 +174,11 @@ export function getPlayTypeByCode(code: string) {
   return playTypes.find((playType: any) => playType.code === code)
 }
 
+getNumInfo()
+getGameTypeList()
+getIssueList()
+
 async function initGameStore() {
-  await getNumInfo()
-  await getGameTypeList()
-  await getIssueList()
   await getPlayRules() // 初始化玩法规则数据
 }
 
