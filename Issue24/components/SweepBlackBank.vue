@@ -4,6 +4,7 @@ import { useStore } from '@nanostores/vue'
 import type { IDatas } from '../type'
 import { useIssueList, type IProcessedIssueItem } from '../../hooks/issueList'
 import { gameStore } from '../../store'
+import type { IForumPost } from '../../types/forum'
 
 interface IProps {
   datas: IDatas
@@ -34,7 +35,7 @@ const styleConfig = computed(() => ({
   showResult: props.datas.configParamJson.styleMain?.showResult !== false
 }))
 
-const { extractIssueNumber, processedIssueList } = useIssueList(issueParams)
+const { extractIssueNumber, issueListItem, processedIssueList } = useIssueList(issueParams)
 
 // 🎯 Monitor Game Type Changes
 watch(
@@ -217,7 +218,8 @@ onMounted(() => {
   }
 })
 
-const parseTemplate = (issue: IProcessedIssueItem) => {
+// 解析模板并替换变量
+const parseTemplate = (issue: IForumPost) => {
   console.log('🚀 ~ parseTemplate ~ issues:', issue)
 
   // 定义CSS变量
@@ -229,41 +231,43 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
     </style>
   `
   const issueNumber = extractIssueNumber(issue.postIssue)
-
-  const issues = getAnimalsWithHitStatus(issue)
   const result = getLotteryResult(issue)
   const flag = isHit(issue)
-
   const template = props.datas.configParamJson.dynamicTemplate || ''
 
-  // // 创建渲染函数
-  const renderIssueList = () => {
-    const elements = issues.map((animal: any, index: number) => {
-      console.log('🚀 ~ elements ~ animal:', animal)
-      // const animals = getAnimalsWithHitStatus(issue)
-      // return animals.map((animal: any, idx: number) => {
-      return {
-        tag: 'span',
-        key: `animal-${index}`,
-        class: ['animal', animal.isHit ? 'hit-highlight' : ''],
-        text: animal.animal
-      }
-      // })
-    })
-
-    return elements.map((el) => `<span class="${el.class.join(' ')}">${el.text}</span>`).join('')
-  }
-  // console.log('🚀 ~ renderIssueList ~ renderIssueList:', renderIssueList())
-
-  // 解析模板并替换变量
-  const parsedTemplate = template
+  // 解析模板并替换基础变量
+  let parsedTemplate = template
     .replace(/{{issueNumber}}/g, issueNumber)
-    .replace(/{{issues01}}/g)
-    .replace(/{{issues}}/g, () => renderIssueList())
-    .replace(/{{result}}/g, () => result)
-    .replace(/{{flag}}/g, () => (flag ? '准' : ''))
+    .replace(/{{result}}/g, result)
+    .replace(/{{flag}}/g, flag ? '准' : '')
 
-  // console.log('🚀 ~ parseTemplate ~ parsedTemplate:', parsedTemplate)
+  // 动态替换竞猜预测数据
+  if (issue?.lotteryPredictions?.length) {
+    // 遍历所有竞猜预测组
+    issue.lotteryPredictions.forEach((prediction, lpIndex) => {
+      let index = -1
+      if (prediction.isHit && prediction.hitDetail) {
+        const hitDetail = prediction.hitDetail
+        index = hitDetail.split('').findIndex((item) => item === '1')
+      }
+
+      // 遍历每个预测组中的预测项
+      if (prediction.predict?.length) {
+        prediction.predict.forEach((predictItem, pIndex) => {
+          if (index !== -1) {
+            if (index === pIndex) {
+              console.log('🚀 ~ prediction.predict.forEach ~ predictItem:', index, pIndex)
+              predictItem = `<span style="color: var(--active);">${predictItem}</span>`
+            }
+          }
+
+          const placeholder = `{{issue_lp${String(lpIndex).padStart(2, '0')}_p${String(pIndex).padStart(2, '0')}}}`
+          parsedTemplate = parsedTemplate.replace(new RegExp(placeholder, 'g'), predictItem || '')
+        })
+      }
+    })
+  }
+
   return cssVars + parsedTemplate
 }
 </script>
@@ -280,7 +284,7 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
     <!-- Issue list -->
     <div class="issue-list">
       <div
-        v-for="(issue, issueIndex) in processedIssueList"
+        v-for="(issue, issueIndex) in issueListItem"
         :key="issue.postId"
         class="issue-item"
         :style="{
