@@ -224,7 +224,7 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
   const cssVars = `
     <style>
       :root {
-        --active: ${props.datas.configParamJson.active || '#ff1b3b'};
+        --active: ${props.datas.configParamJson.active || '#000'};
       }
     </style>
   `
