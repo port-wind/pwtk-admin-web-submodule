@@ -224,6 +224,7 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
 
   const issues = getAnimalsWithHitStatus(issue)
   const result = getLotteryResult(issue)
+  const flag = isHit(issue)
 
   const template = props.datas.configParamJson.dynamicTemplate || ''
 
@@ -235,7 +236,7 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
         // return animals.map((animal: any, idx: number) => {
         return {
           tag: 'span',
-          key: `animal-${index}-${index}`,
+          key: `animal-${index}`,
           class: ['animal', { 'hit-highlight': animal.isHit }],
           text: animal.animal
         }
@@ -251,6 +252,7 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
     .replace(/{{issueNumber}}/g, issueNumber)
     .replace(/{{issues}}/g, () => renderIssueList())
     .replace(/{{result}}/g, () => getLotteryResult(issue))
+    .replace(/{{flag}}/g, () => (flag ? '准' : ''))
 
   // console.log('🚀 ~ parseTemplate ~ parsedTemplate:', parsedTemplate)
   return parsedTemplate
@@ -281,7 +283,7 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
           <div>
             <div v-html="parseTemplate(issue)"></div>
           </div>
-          <br />
+          <!-- <br />
           <span v-if="styleConfig.showPeriod" class="period" :style="{ fontSize: styleConfig.numberSize + 'px' }">
             {{ extractIssueNumber(issue.postIssue) }}期:
           </span>
@@ -311,7 +313,7 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
             :style="{ fontSize: styleConfig.numberSize + 'px' }"
           >
             准
-          </span>
+          </span> -->
         </div>
       </div>
     </div>
