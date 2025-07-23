@@ -251,7 +251,7 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
   const parsedTemplate = template
     .replace(/{{issueNumber}}/g, issueNumber)
     .replace(/{{issues}}/g, () => renderIssueList())
-    .replace(/{{result}}/g, () => getLotteryResult(issue))
+    .replace(/{{result}}/g, () => result)
     .replace(/{{flag}}/g, () => (flag ? '准' : ''))
 
   // console.log('🚀 ~ parseTemplate ~ parsedTemplate:', parsedTemplate)
