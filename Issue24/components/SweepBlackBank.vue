@@ -262,7 +262,7 @@ const parseTemplate = (issue: IForumPost) => {
           }
 
           const placeholder = `{{issue_lp${String(lpIndex).padStart(2, '0')}_p${String(pIndex).padStart(2, '0')}}}`
-          parsedTemplate = parsedTemplate.replace(new RegExp(placeholder, 'g'), predictItem || '')
+          parsedTemplate = parsedTemplate.replace(new RegExp(placeholder, 'g'), `<span>${predictItem}</span>` || '')
         })
       }
     })
