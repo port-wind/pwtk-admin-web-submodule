@@ -2,7 +2,7 @@
 import { defineProps, watch, computed, reactive, onMounted } from 'vue'
 import { useStore } from '@nanostores/vue'
 import type { IDatas } from '../type'
-import { useIssueList } from '../../hooks/issueList'
+import { useIssueList, type IProcessedIssueItem } from '../../hooks/issueList'
 import { gameStore } from '../../store'
 
 interface IProps {
@@ -216,6 +216,45 @@ onMounted(() => {
     console.log(`🎮 SweepBlackBank initialized with game type: ${gameType.value}`)
   }
 })
+
+const parseTemplate = (issue: IProcessedIssueItem) => {
+  console.log('🚀 ~ parseTemplate ~ issues:', issue)
+
+  const issueNumber = extractIssueNumber(issue.postIssue)
+
+  const issues = getAnimalsWithHitStatus(issue)
+  const result = getLotteryResult(issue)
+
+  const template = props.datas.configParamJson.dynamicTemplate || ''
+
+  // // 创建渲染函数
+  const renderIssueList = () => {
+    const elements = issues
+      .map((animal: any, index: number) => {
+        // const animals = getAnimalsWithHitStatus(issue)
+        // return animals.map((animal: any, idx: number) => {
+        return {
+          tag: 'span',
+          key: `animal-${index}-${index}`,
+          class: ['animal', { 'hit-highlight': animal.isHit }],
+          text: animal.animal
+        }
+        // })
+      })
+      .flat()
+    return elements.map((el) => `<span class="${el.class.join(' ')}">${el.text}</span>`).join('')
+  }
+  // console.log('🚀 ~ renderIssueList ~ renderIssueList:', renderIssueList())
+
+  // 解析模板并替换变量
+  const parsedTemplate = template
+    .replace(/{{issueNumber}}/g, issueNumber)
+    .replace(/{{issues}}/g, () => renderIssueList())
+    .replace(/{{result}}/g, () => getLotteryResult(issue))
+
+  // console.log('🚀 ~ parseTemplate ~ parsedTemplate:', parsedTemplate)
+  return parsedTemplate
+}
 </script>
 
 <template>
@@ -239,6 +278,10 @@ onMounted(() => {
         }"
       >
         <div class="issue-display" :style="{ gap: styleConfig.numberSpacing + 'px' }">
+          <div>
+            <div v-html="parseTemplate(issue)"></div>
+          </div>
+          <br />
           <span v-if="styleConfig.showPeriod" class="period" :style="{ fontSize: styleConfig.numberSize + 'px' }">
             {{ extractIssueNumber(issue.postIssue) }}期:
           </span>
