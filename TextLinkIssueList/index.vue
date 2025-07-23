@@ -1,10 +1,11 @@
 <script setup lang="ts" name="TextLinkIssueList">
 import { computed, reactive, watch, ref } from 'vue'
 import type { IDatas, ILinkItem } from './type'
-import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
+import { getWebSitePost } from '../api'
 import { gameStore } from '../store'
 import { useStore } from '@nanostores/vue'
 import { useIssueList, type IProcessedIssueItem } from '../hooks/issueList'
+import type { IForumPost } from '../types/forum'
 interface IProps {
   datas: IDatas
 }
@@ -71,7 +72,7 @@ const enabledItems = computed(() => {
   return props.datas.configParamJson.links?.filter((item) => item.enabled) || []
 })
 
-const issueListItem = ref<IGetWebSitePostResponse[]>([])
+const issueListItem = ref<IForumPost[]>([])
 
 // 处理项目点击
 const handleItemClick = (item: ILinkItem) => {

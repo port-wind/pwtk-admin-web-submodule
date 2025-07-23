@@ -1,6 +1,7 @@
 import axios from 'axios'
 import http from './http'
 import type { IBaseResponse, IResponse } from './type'
+import type { IForumPost } from '../types/forum'
 
 interface IGetLatestIssueParams {
   newspaperCode: string
@@ -56,8 +57,7 @@ interface IGetLatestIssueResponse {
   issueLastNum: string
   seriesCount: number
 }
-// https://biz-client.pwtk.cc/biz-client/biz
-// /newspaper/latestIssue
+
 export const getLatestIssue = (data: IGetLatestIssueParams): Promise<IBaseResponse<IGetLatestIssueResponse>> => {
   return http.post('/newspaper/latestIssue', data)
 }
@@ -67,69 +67,21 @@ export const getLatestIssues = (data: IGetLatestIssuesParams): Promise<IBaseResp
 }
 
 export interface IGetWebSitePostParams {
-  page: number // Page number for pagination
-  size: number // Number of items per page
-  forumId: string // Forum ID
-  gameType: string // Lottery or game type
-  sortName?: string // Sorting field (optional)
-  sortOrder?: 'ASC' | 'DESC' // Sorting order, either ascending or descending (optional)
+  /** 页码 */
+  page: number
+  /** 每页条数 */
+  size: number
+  /** 论坛ID */
+  forumId: string
+  /** 游戏类型 */
+  gameType: string
+  /** 排序字段 */
+  sortName?: string
+  /** 排序方式 */
+  sortOrder?: 'ASC' | 'DESC'
 }
 
-export interface ILotteryPredictions {
-  name: string // Prediction type name
-  code: string // Prediction code
-  predict: Array<string> // Prediction details
-  hitDetail: string // Hit details ('1' for hit, '0' for not hit)
-  isHit: string // Indicates if the prediction was a hit ('i' for pending, 'y' for hit, 'n' for not hit)
-  predictTitle: string // Prediction title
-}
-
-export interface INumInfo {
-  fiveElements: string // Five elements
-  shengxiao: string // Chinese zodiac
-  size: string // Size (s for small, b for big)
-  color: string // Color (R for red, B for blue, G for green)
-  num: number // Number
-  index: number // Index
-  oddEven: string // Odd or even (o for odd, e for even)
-}
-
-export interface IGetWebSitePostResponse {
-  postId: string // Post or comment ID
-  bbsId: string // BBS ID
-  title: string // Post title
-  postContent: string // Post or comment content
-  likeCount: string // Number of likes
-  threadCount: string // Number of replies
-  postYear: string // Year of posting
-  postIssue: string // Issue number of posting
-  shortIssue: string // Short-term issue number
-  postGameRef: string // Game reference for the post
-  postGametypeRef: string // Game type reference for the post
-  gameTypeName: string // Lottery/game type name
-  gameTypeCode: string // Lottery/game type code
-  isHot: string // Indicates if the post is hot (popular)
-  isSelected: string // Indicates if the post is selected
-  isTop: string // Indicates if the post is pinned/topped
-  isRecommended: string // Indicates if the post is recommended
-  isBloom: string // Indicates if the post is a blockbuster
-  vipLevel: number // User level (0 or higher)
-  avatar: string // User avatar
-  nickname: string // User nickname
-  attachments: object // Attachments associated with the post
-  isLike: string // Indicates if the user has liked the post
-  isDislike: string // Indicates if the user has disliked the post
-  postUserId: string // ID of the user who posted
-  predictFlag: string // Indicates if the post is a prediction post ('y' for yes, 'n' for no)
-  postTime: string // Post time in format 'yyyy-MM-dd HH:mm:ss'
-  forumId: string // Forum ID
-  lotteryPredictions: ILotteryPredictions[]
-  numInfo: INumInfo[] // Number information array
-  num?: string // Special number (optional)
-  result?: string // Result (optional)
-}
-
-export const getWebSitePost = (data: IGetWebSitePostParams): Promise<IResponse<IGetWebSitePostResponse>> => {
+export const getWebSitePost = (data: IGetWebSitePostParams): Promise<IResponse<IForumPost>> => {
   return http.post('/bbsForumPost/webSitePost', data)
 }
 // // 查询个人信息接口

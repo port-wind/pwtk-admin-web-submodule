@@ -1,5 +1,6 @@
 import { ref, computed, watch } from 'vue'
-import { getWebSitePost, type IGetWebSitePostResponse } from '../api'
+import { getWebSitePost } from '../api'
+import type { IForumPost } from '../types/forum'
 
 /**
  * 期数列表 hooks 参数接口
@@ -34,7 +35,7 @@ export interface IResultInfo {
 /**
  * 处理后的期数数据接口
  */
-export interface IProcessedIssueItem extends IGetWebSitePostResponse {
+export interface IProcessedIssueItem extends IForumPost {
   processedPredictions: IProcessedPrediction[]
   resultInfo: IResultInfo
 }
@@ -46,7 +47,7 @@ export interface IProcessedIssueItem extends IGetWebSitePostResponse {
  */
 export function useIssueList(params: IUseIssueListParams) {
   // 响应式状态
-  const issueListItem = ref<IGetWebSitePostResponse[]>([])
+  const issueListItem = ref<IForumPost[]>([])
   const isLoading = ref(false)
   const hasError = ref(false)
   const errorMessage = ref('')
@@ -217,11 +218,7 @@ export function useIssueList(params: IUseIssueListParams) {
    * @param newForumId 新的论坛ID，如果不传则使用原有参数
    */
   const refreshData = (newGameType?: string, newSize?: number, newForumId?: string) => {
-    fetchIssueList(
-      newGameType || params.gameType, 
-      newSize || params.size, 
-      newForumId || params.forumId
-    )
+    fetchIssueList(newGameType || params.gameType, newSize || params.size, newForumId || params.forumId)
   }
 
   /**

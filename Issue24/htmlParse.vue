@@ -1,9 +1,9 @@
-<script setup lang="ts" name="SweepBlackBank">
-import { defineProps, watch, computed, reactive, onMounted } from 'vue'
+<script lang="ts" setup>
+import { computed } from 'vue'
+import type { IDatas } from './type'
 import { useStore } from '@nanostores/vue'
-import type { IDatas } from '../type'
-import { useIssueList, type IProcessedIssueItem } from '../../hooks/issueList'
-import { gameStore } from '../../store'
+import { useIssueList, type IProcessedIssueItem } from '../hooks/issueList'
+import { gameStore } from '../store'
 
 interface IProps {
   datas: IDatas
@@ -16,12 +16,13 @@ const gameType = computed(() => gameStoreData.value.gameType)
 const currentGame = computed(() => gameStoreData.value.currentGame)
 const currentGameName = computed(() => currentGame.value?.gameTypeLongName || '未知游戏')
 
-// 🔄 Dynamic Parameters Based on Game Type
 const issueParams = reactive({
   gameType: gameType.value,
   size: Number(props.datas.configParamJson.size) || 10,
   forumId: String(props.datas.configParamJson.forumId) || '10'
 })
+
+const { extractIssueNumber, processedIssueList } = useIssueList(issueParams)
 
 // 🎨 Style Configuration from Right Panel
 const styleConfig = computed(() => ({
@@ -34,42 +35,6 @@ const styleConfig = computed(() => ({
   showResult: props.datas.configParamJson.styleMain?.showResult !== false
 }))
 
-const { extractIssueNumber, processedIssueList } = useIssueList(issueParams)
-
-// 🎯 Monitor Game Type Changes
-watch(
-  gameType,
-  (newGameType) => {
-    if (newGameType) {
-      issueParams.gameType = newGameType
-      console.log(`🎮 Game Type Changed: ${newGameType}`)
-    }
-  },
-  { immediate: true }
-)
-
-// 📊 Monitor Configuration Changes
-watch(
-  () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
-  ([newSize, newForumId, newGameType]) => {
-    issueParams.size = Number(newSize) || 10
-    issueParams.forumId = String(newForumId) || '10'
-    issueParams.gameType = String(newGameType)
-  }
-)
-
-// 🎨 Monitor Style Configuration Changes
-watch(
-  () => props.datas.configParamJson.styleMain,
-  (newStyleMain) => {
-    if (newStyleMain) {
-      console.log('🎨 Style configuration updated:', newStyleMain)
-    }
-  },
-  { deep: true }
-)
-
-// 🔍 Zodiac animals mapping
 const zodiacAnimals = ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪']
 
 // 🔍 STEP 1: Intelligent Pattern Detection for Animal Predictions
@@ -206,19 +171,8 @@ const getAnimalsWithHitStatus = (issue: any) => {
   }))
 }
 
-// 🎨 Get style for highlighting individual animals
-const getAnimalHighlightClass = (animal: any) => {
-  return animal.isHit ? 'hit-highlight' : ''
-}
-
-onMounted(() => {
-  if (gameType.value) {
-    console.log(`🎮 SweepBlackBank initialized with game type: ${gameType.value}`)
-  }
-})
-
 const parseTemplate = (issue: IProcessedIssueItem) => {
-  console.log('🚀 ~ parseTemplate ~ issues:', issue)
+  console.log('🚀 ~ parseTemplate ~111 issues:', issue)
 
   // 定义CSS变量
   const cssVars = `
@@ -233,6 +187,8 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
   const issues = getAnimalsWithHitStatus(issue)
   const result = getLotteryResult(issue)
   const flag = isHit(issue)
+
+  const issues01 = issues[0]?.animal
 
   const template = props.datas.configParamJson.dynamicTemplate || ''
 
@@ -258,7 +214,7 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
   // 解析模板并替换变量
   const parsedTemplate = template
     .replace(/{{issueNumber}}/g, issueNumber)
-    .replace(/{{issues01}}/g)
+    .replace(/{{issues01}}/g, issues01)
     .replace(/{{issues}}/g, () => renderIssueList())
     .replace(/{{result}}/g, () => result)
     .replace(/{{flag}}/g, () => (flag ? '准' : ''))
@@ -299,9 +255,6 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
       <span>暂无{{ currentGameName }}数据</span>
     </div>
   </div>
-
-  <!-- Required slot for delete button -->
-  <slot name="deles" />
 </template>
 
 <style lang="scss" scoped>

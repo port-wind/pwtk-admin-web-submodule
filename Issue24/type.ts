@@ -73,6 +73,8 @@ export interface Issue24 {
   itemBackgroundColor?: string
   // 🎮 动态彩种字段 - 支持基于 gameType 的动态配置
   [gameTypeId: string]: any
+  dynamicTemplate: string
+  dynamicActive: string
 }
 
 export enum EModel {
