@@ -220,6 +220,14 @@ onMounted(() => {
 const parseTemplate = (issue: IProcessedIssueItem) => {
   console.log('🚀 ~ parseTemplate ~ issues:', issue)
 
+  // 定义CSS变量
+  const cssVars = `
+    <style>
+      :root {
+        --active: ${props.datas.configParamJson.active || '#ff1b3b'};
+      }
+    </style>
+  `
   const issueNumber = extractIssueNumber(issue.postIssue)
 
   const issues = getAnimalsWithHitStatus(issue)
@@ -255,7 +263,7 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
     .replace(/{{flag}}/g, () => (flag ? '准' : ''))
 
   // console.log('🚀 ~ parseTemplate ~ parsedTemplate:', parsedTemplate)
-  return parsedTemplate
+  return cssVars + parsedTemplate
 }
 </script>
 
