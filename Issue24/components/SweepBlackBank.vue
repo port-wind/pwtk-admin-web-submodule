@@ -237,7 +237,7 @@ const parseTemplate = (issue: IProcessedIssueItem) => {
         return {
           tag: 'span',
           key: `animal-${index}`,
-          class: ['animal', { 'hit-highlight': animal.isHit }],
+          class: ['animal', animal.isHit ? 'hit-highlight' : ''],
           text: animal.animal
         }
         // })
