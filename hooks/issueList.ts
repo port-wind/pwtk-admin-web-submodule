@@ -129,6 +129,25 @@ export function useIssueList(params: IUseIssueListParams) {
     return postIssue
   }
 
+  const getIssueNumber = (issue: IForumPost) => {
+    const postIssue = issue.postIssue
+    if (!postIssue) return ''
+    // 从postIssue字符串中提取后面的数字部分作为期数
+    // 例如: "2025141" -> "141"
+    const match = postIssue.match(/(\d+)$/)
+    if (match) {
+      const fullNumber = match[1]
+      // 如果是7位数，取后3位；如果是其他位数，取后3位或全部
+      return fullNumber.length >= 3 ? fullNumber.slice(-3) : fullNumber
+    }
+    return postIssue
+  }
+
+  const getIssueResult = (issue: IForumPost) => {
+    const result = issue?.numInfo?.[issue.numInfo.length - 1]
+    return result || {}
+  }
+
   /**
    * 获取中奖号码
    * @param issue 期数数据
@@ -259,6 +278,8 @@ export function useIssueList(params: IUseIssueListParams) {
     refreshData,
     clearData,
     extractIssueNumber,
+    getIssueResult,
+    getIssueNumber,
     getHitNumber,
     getNumberColorClass,
     processLotteryData,

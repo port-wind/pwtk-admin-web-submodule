@@ -8,10 +8,13 @@ export interface IssueCatalog {
   subtitle: string
   enable: boolean
   size: number
-  forumId: string
   forumName: string
   mainboardName: string
+  // 主版块ID
   mainboardId: string
+  // 论坛ID
+  forumId: string
+  
   forumIcon?: string
   forumStatus?: string
   styleHeader: IStyleHeader

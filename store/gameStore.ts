@@ -51,7 +51,13 @@ export const gameStore = atom<IGameStore>({
   numInfo: [],
   gameTypeList: [],
   issueList: [], //https://ocs.ai4funs.com/pwtk/gr/a6/history/2025
-  forum: null,
+  forum: {
+    forumId: '',
+    mainboardId: '',
+    forumName: '',
+    forumCategory: '',
+    forumIcon: ''
+  },
   activeTabIndex: 0,
   playRules: null
 })
@@ -128,12 +134,24 @@ export async function getGameTypeList() {
   }
 }
 
-export async function updateForum(forum: IGetBBsForumIdByIdData) {
+export async function updateForum(forumData) {
+  let forum = gameStore.get().forum || {} as IGetBBsForumIdByIdData
+
+  if (forum) {
+    forum.mainboardId = forumData.mainboardId
+    forum.forumId = forumData.forumId
+  }
+
+  if (forumData.forumStatus) {
+    Object.assign(forum, forumData)
+  }
+
+  console.log(gameStore.get().forum)
+
   gameStore.set({
     ...gameStore.get(),
     forum
   })
-  console.log(gameStore.get().forum)
 }
 
 export function getGameName(gameType: string) {

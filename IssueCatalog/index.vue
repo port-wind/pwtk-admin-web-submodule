@@ -29,7 +29,8 @@ const issueParams = reactive({
   forumId: String(props.datas.configParamJson.forumId) || '10'
 })
 
-const { extractIssueNumber, issueListItem } = useIssueList(issueParams)
+const { getIssueNumber, getIssueResult, issueListItem } = useIssueList(issueParams)
+
 // style 样式
 const containerStyle = computed(() => {
   return {
@@ -74,8 +75,7 @@ const styleConfig = computed(() => ({
 
 // 解析模板并替换变量
 const parseTemplate = (issue: IForumPost) => {
-  console.log('🚀 ~ parseTemplate ~ issues:', issue)
-
+  let template = props.datas.configParamJson.dynamicTemplate || ''
   // 定义CSS变量
   const cssVars = `
     <style>
@@ -84,15 +84,23 @@ const parseTemplate = (issue: IForumPost) => {
       }
     </style>
   `
-  const issueNumber = extractIssueNumber(issue.postIssue)
-  // const result = getLotteryResult(issue)
-  // const flag = isHit(issue)
-  const template = props.datas.configParamJson.dynamicTemplate || ''
 
-  // 解析模板并替换基础变量
-  let parsedTemplate = template.replace(/{{issueNumber}}/g, issueNumber)
-  // .replace(/{{result}}/g, result)
-  // .replace(/{{flag}}/g, flag ? '准' : '')
+  // 获取当前期数
+  const issueNumber = getIssueNumber(issue)
+  template = template.replace(/{{issueNumber}}/g, issueNumber)
+
+  // 获取当前期数的结果
+  const result = getIssueResult(issue)
+
+  if (result.shengxiao) {
+    template = template.replace(/{{shengxiao}}/g, result.shengxiao ? result.shengxiao : '00')
+  }
+  if (result.num) {
+    template = template.replace(/{{num}}/g, result.num.toString() ? result.num.toString() : '')
+  }
+  if (result.size) {
+    template = template.replace(/{{size}}/g, result.size ?? '')
+  }
 
   // 动态替换竞猜预测数据
   if (issue?.lotteryPredictions?.length) {
@@ -115,14 +123,23 @@ const parseTemplate = (issue: IForumPost) => {
           }
 
           const placeholder = `{{issue_lp${String(lpIndex).padStart(2, '0')}_p${String(pIndex).padStart(2, '0')}}}`
-          parsedTemplate = parsedTemplate.replace(new RegExp(placeholder, 'g'), `<span>${predictItem}</span>` || '')
+          template = template.replace(new RegExp(placeholder, 'g'), `<span>${predictItem}</span>` || '')
         })
       }
     })
   }
 
-  return cssVars + parsedTemplate
+  return cssVars + template
 }
+
+watch(
+  () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
+  ([newSize, newForumId, newGameType]) => {
+    issueParams.size = Number(newSize) || 10
+    issueParams.forumId = String(newForumId) || '10'
+    issueParams.gameType = String(newGameType)
+  }
+)
 </script>
 
 <template>
@@ -137,7 +154,6 @@ const parseTemplate = (issue: IForumPost) => {
         </h2>
         <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
       </div>
-
       <!-- 期数列表 -->
       <div
         class="issue-list"
