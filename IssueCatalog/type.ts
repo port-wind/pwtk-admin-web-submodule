@@ -18,7 +18,7 @@ export interface IssueCatalog {
   styleMain: IStyleMain
   // 🎮 动态彩种字段 - 支持基于 gameType 的动态配置
   [gameTypeId: string]: any
-  playGameCode: EPlayGameCode // 根据游戏玩法配置模版
+  playGameCode: number // 根据游戏玩法配置模版
   dynamicTemplate: string
   dynamicActive: string
 }

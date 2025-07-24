@@ -131,8 +131,9 @@ const parseTemplate = (issue: IForumPost) => {
       <!-- 头部标题 -->
       <div class="title-header" :style="titleHeaderStyle">
         <h2 class="main-title" :style="mainTitleStyle">
-          {{ datas.configParamJson.titlePrefix }}{{ getGameName(gameStoreData.gameType)
-          }}{{ datas.configParamJson.title }}
+          {{ datas.configParamJson.titlePrefix }}
+          {{ getGameName(gameStoreData.gameType) }}
+          {{ datas.configParamJson.title }}
         </h2>
         <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
       </div>

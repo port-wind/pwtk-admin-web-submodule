@@ -1,4 +1,4 @@
-import { EModel, type IssueCatalog } from '../IssueCatalog/type'
+import { EPlayGameCode, type IssueCatalog } from '../IssueCatalog/type'
 import type { IComponentProperty, ISetStyle } from './index'
 
 const componentProperties = new Map<string, IComponentProperty<ISetStyle<IssueCatalog>>>()
@@ -23,11 +23,10 @@ componentProperties.set('IssueCatalog', {
     memo: '',
     pageCode: '',
     configParamJson: {
-      title: '好彩【精选24码】',
+      title: '期数目录 title',
       titlePrefix: '',
       subtitle: '',
       enable: true,
-      model: EModel['24码'],
       size: 2,
       mainboardId: 'tiantianhaocai',
       forumId: 'tiantianhaocai1',
@@ -54,6 +53,7 @@ componentProperties.set('IssueCatalog', {
         showResult: true,
         headerTextColor: '#ffffff'
       },
+      playGameCode: 8001,
       dynamicTemplate:
         '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issues}} &nbsp;】</span> &nbsp; 开 {{result}} &nbsp;<span style="color: rgb(56, 158, 13);">{{flag}}</span></p>',
       dynamicActive: '#ff0'
