@@ -14,7 +14,7 @@ export interface IssueCatalog {
   mainboardId: string
   // 论坛ID
   forumId: string
-  
+
   forumIcon?: string
   forumStatus?: string
   styleHeader: IStyleHeader
@@ -23,7 +23,8 @@ export interface IssueCatalog {
   [gameTypeId: string]: any
   playGameCode: number // 根据游戏玩法配置模版
   dynamicTemplate: string
-  dynamicActive: string
+  dynamicActiveBg: string
+  dynamicActiveText: string
 }
 
 export enum EPlayGameCode {

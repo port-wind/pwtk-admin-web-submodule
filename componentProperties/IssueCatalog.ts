@@ -56,7 +56,8 @@ componentProperties.set('IssueCatalog', {
       playGameCode: 8001,
       dynamicTemplate:
         '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issues}} &nbsp;】</span> &nbsp; 开 {{result}} &nbsp;<span style="color: rgb(56, 158, 13);">{{flag}}</span></p>',
-      dynamicActive: '#ff0'
+      dynamicActiveBg: '#ffeb3b',
+      dynamicActiveText: '#000'
     }
   }
 })

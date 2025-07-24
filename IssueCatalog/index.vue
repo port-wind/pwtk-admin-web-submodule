@@ -80,7 +80,8 @@ const parseTemplate = (issue: IForumPost) => {
   const cssVars = `
     <style>
       :root {
-        --active: ${props.datas.configParamJson.dynamicActive || '#ff0'};
+        --active-bg: ${props.datas.configParamJson.dynamicActiveBg || '#ffeb3b'};
+        --active-text:${props.datas.configParamJson.dynamicActiveText || '#000'};
       }
     </style>
   `
@@ -92,12 +93,8 @@ const parseTemplate = (issue: IForumPost) => {
   // 获取当前期数的结果
   const result = getIssueResult(issue)
 
-  if (result.shengxiao) {
-    template = template.replace(/{{shengxiao}}/g, result.shengxiao ? result.shengxiao : '00')
-  }
-  if (result.num) {
-    template = template.replace(/{{num}}/g, result.num.toString() ? result.num.toString() : '')
-  }
+  template = template.replace(/{{shengxiao}}/g, result.shengxiao ? result.shengxiao : '?00')
+  template = template.replace(/{{num}}/g, result?.num?.toString() ? result?.num?.toString() : '')
   if (result.size) {
     template = template.replace(/{{size}}/g, result.size ?? '')
   }
@@ -118,7 +115,7 @@ const parseTemplate = (issue: IForumPost) => {
           if (index !== -1) {
             if (index === pIndex) {
               console.log('🚀 ~ prediction.predict.forEach ~ predictItem:', index, pIndex)
-              predictItem = `<span style="color: var(--active);">${predictItem}</span>`
+              predictItem = `<span style="background-color: var(--active-bg); color: var(--active-text);">${predictItem}</span>`
             }
           }
 
