@@ -44,7 +44,7 @@ componentProperties.set('IssueCatalog', {
         titleColor: '#FFFFFF'
       },
       styleMain: {
-        numberSpacing: 4,
+        itemSpacing: 4,
         numberSize: 14,
         padding: 0,
         borderRadius: 8,

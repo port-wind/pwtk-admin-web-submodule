@@ -56,17 +56,21 @@ export enum EPlayGameCode {
   '六肖六码'
 }
 
+// 期数目录样式
 export interface IStyleMain {
-  numberSize: number
-  numberSpacing: number
-  padding: number
-  showPeriod: boolean
   borderRadius: number
-  showStatus: boolean
-  showResult: boolean
-  headerTextColor: string
+  padding: number
+  itemSpacing: number
+  listSpacing: number
+  backgroundColor: string
+  itemBackgroundColor: string
+  layout: 'left' | 'center' | 'right' | 'space-around' | 'space-between' | 'space-evenly'
 }
+
+// 期数目录标题样式
 export interface IStyleHeader {
+  borderRadius: number
+  padding: number
   backgroundColor: string
   isGradient: boolean
   headerBgColor: string

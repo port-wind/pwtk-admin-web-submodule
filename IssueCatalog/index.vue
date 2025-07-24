@@ -34,12 +34,13 @@ const { getIssueNumber, getIssueResult, issueListItem } = useIssueList(issuePara
 // style 样式
 const containerStyle = computed(() => {
   return {
-    borderRadius: `${styleMain.value?.borderRadius || 0}px`,
-    padding: `${styleMain.value?.padding || 0}px`
+    borderRadius: `${styleHeader.value?.borderRadius || 0}px`,
+    padding: `${styleHeader.value?.padding || 0}px`,
+    backgroundColor: styleMain.value?.backgroundColor || '#f1f1f1'
   }
 })
 
-const titleHeaderStyle = computed(() => {
+const headerTitleBgStyle = computed(() => {
   if (styleHeader.value.isGradient) {
     return {
       background: `linear-gradient(to right,  ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`
@@ -50,7 +51,7 @@ const titleHeaderStyle = computed(() => {
   }
 })
 
-const mainTitleStyle = computed(() => {
+const headerTitleTextStyle = computed(() => {
   return {
     color: styleHeader.value?.titleColor || '#333333'
   }
@@ -64,13 +65,13 @@ const subTitleStyle = computed(() => {
 
 // 🎨 Style Configuration from Right Panel
 const styleConfig = computed(() => ({
-  numberSize: props.datas.configParamJson.styleMain?.numberSize || 14,
-  numberSpacing: props.datas.configParamJson.styleMain?.numberSpacing || 4,
-  borderRadius: props.datas.configParamJson.styleMain?.borderRadius || 8,
+  listSpacing: props.datas.configParamJson.styleMain?.listSpacing || 0,
+  numberSpacing: props.datas.configParamJson.styleMain?.itemSpacing || 0,
+  borderRadius: props.datas.configParamJson.styleMain?.borderRadius || 0,
   padding: props.datas.configParamJson.styleMain?.padding || 0,
-  showPeriod: props.datas.configParamJson.styleMain?.showPeriod !== false,
-  showStatus: props.datas.configParamJson.styleMain?.showStatus !== false,
-  showResult: props.datas.configParamJson.styleMain?.showResult !== false
+  backgroundColor: props.datas.configParamJson.styleMain?.backgroundColor || '#f1f1f1',
+  itemBackgroundColor: props.datas.configParamJson.styleMain?.itemBackgroundColor || '#f1f1f1',
+  layout: props.datas.configParamJson.styleMain?.layout || 'start'
 }))
 
 // 解析模板并替换变量
@@ -130,6 +131,9 @@ const parseTemplate = (issue: IForumPost) => {
     })
   }
 
+  // template 去掉前后p标签 中间的p标签保留
+  template = template.replace(/<p>(.*?)<\/p>/g, '$1')
+
   return cssVars + template
 }
 
@@ -147,8 +151,8 @@ watch(
   <div class="IssueCatalog">
     <div class="IssueCatalog-content" :style="containerStyle">
       <!-- 头部标题 -->
-      <div class="title-header" :style="titleHeaderStyle">
-        <h2 class="main-title" :style="mainTitleStyle">
+      <div class="title-header" :style="headerTitleBgStyle">
+        <h2 class="main-title" :style="headerTitleTextStyle">
           {{ datas.configParamJson.titlePrefix }}
           {{ getGameName(gameStoreData.gameType) }}
           {{ datas.configParamJson.title }}
@@ -164,23 +168,36 @@ watch(
         class="issue-list"
         v-if="datas.configParamJson.enable"
         :style="{
-          borderRadius: styleConfig.borderRadius + 'px',
-          padding: styleConfig.padding + 'px'
+          padding: styleConfig.padding + 'px',
+          backgroundColor: styleConfig.backgroundColor || '#f1f1f1'
         }"
       >
         <!-- Issue list -->
-        <div class="issue-item">
+        <div class="issue-item-content" :style="{ gap: styleConfig.listSpacing + 'px' }">
           <div
             v-for="(issue, issueIndex) in issueListItem"
             :key="issue.postId"
             class="issue-item"
             :style="{
-              borderRadius: Math.max(0, styleConfig.borderRadius - 2) + 'px',
-              padding: Math.max(0, styleConfig.padding + 8) + 'px'
+              borderRadius: Math.max(0, styleConfig.borderRadius) + 'px',
+              padding: Math.max(0, styleConfig.padding) + 'px',
+              backgroundColor: styleConfig.itemBackgroundColor || '#f1f1f1'
             }"
           >
-            <div class="issue-display" :style="{ gap: styleConfig.numberSpacing + 'px' }">
-              <div class="issue-display-content" v-html="parseTemplate(issue)"></div>
+            <div class="issue-display">
+              <div
+                class="issue-display-content"
+                :style="{
+                  gap: styleConfig.numberSpacing + 'px',
+                  justifyContent:
+                    styleConfig.layout === 'left'
+                      ? 'flex-start'
+                      : styleConfig.layout === 'center'
+                      ? 'center'
+                      : 'flex-end'
+                }"
+                v-html="parseTemplate(issue)"
+              ></div>
             </div>
           </div>
         </div>
@@ -220,6 +237,101 @@ watch(
   .sub-title {
     font-size: 14px;
     opacity: 0.9;
+  }
+}
+
+.issue-list {
+  .issue-item-content {
+    display: flex;
+    flex-direction: column;
+    // gap: 8px;
+  }
+
+  .issue-item {
+    padding: 8px 16px;
+    border-bottom: 1px solid #e9ecef;
+    background-color: white;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .issue-display {
+      display: flex;
+      align-items: center;
+      line-height: 1.5;
+      color: #333;
+      min-height: 1.5em;
+
+      .issue-display-content {
+        width: 100%;
+        display: flex;
+      }
+
+      .period {
+        color: #333;
+        font-weight: 500;
+        flex-shrink: 0;
+      }
+
+      .prediction-content {
+        color: #1976d2;
+        font-weight: 600;
+        flex-shrink: 0;
+
+        .animal {
+          color: inherit;
+
+          &.hit-highlight {
+            background-color: #ffeb3b !important;
+            color: #333 !important;
+            border-radius: 3px !important;
+            padding: 1px 2px !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+          }
+        }
+      }
+
+      .result {
+        color: #333;
+        font-weight: 500;
+        margin-left: auto;
+        flex-shrink: 0;
+      }
+
+      .status {
+        color: #4caf50;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  background-color: #f8f9fa;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .sweep-black-bank {
+    .issue-list .issue-item {
+      // Reduce padding on mobile
+      padding: 6px 12px !important;
+
+      .issue-display {
+        // Reduce spacing on mobile
+        gap: 2px !important;
+
+        // Note: font-size is controlled by inline styles from styleConfig
+        // Mobile responsive sizing should be handled by the configuration
+        min-height: 1.2em;
+      }
+    }
   }
 }
 </style>
