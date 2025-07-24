@@ -65,6 +65,7 @@ export interface IStyleMain {
   backgroundColor: string
   itemBackgroundColor: string
   layout: 'left' | 'center' | 'right' | 'space-around' | 'space-between' | 'space-evenly'
+  columnCount: number // 列数
 }
 
 // 期数目录标题样式

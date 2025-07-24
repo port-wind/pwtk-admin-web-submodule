@@ -71,7 +71,8 @@ const styleConfig = computed(() => ({
   padding: props.datas.configParamJson.styleMain?.padding || 0,
   backgroundColor: props.datas.configParamJson.styleMain?.backgroundColor || '#f1f1f1',
   itemBackgroundColor: props.datas.configParamJson.styleMain?.itemBackgroundColor || '#f1f1f1',
-  layout: props.datas.configParamJson.styleMain?.layout || 'start'
+  layout: props.datas.configParamJson.styleMain?.layout || 'start',
+  columnCount: props.datas.configParamJson.styleMain?.columnCount || 1
 }))
 
 // 解析模板并替换变量
@@ -173,7 +174,13 @@ watch(
         }"
       >
         <!-- Issue list -->
-        <div class="issue-item-content" :style="{ gap: styleConfig.listSpacing + 'px' }">
+        <div
+          class="issue-item-content"
+          :style="{
+            gap: styleConfig.listSpacing + 'px',
+            gridTemplateColumns: `repeat(${styleConfig.columnCount}, 1fr)`
+          }"
+        >
           <div
             v-for="(issue, issueIndex) in issueListItem"
             :key="issue.postId"
@@ -242,15 +249,24 @@ watch(
 
 .issue-list {
   .issue-item-content {
-    display: flex;
-    flex-direction: column;
-    // gap: 8px;
+    display: grid;
+    width: 100%;
   }
 
   .issue-item {
-    padding: 8px 16px;
+    // padding: 8px 16px;
     border-bottom: 1px solid #e9ecef;
     background-color: white;
+
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+    align-items: center;
 
     &:last-child {
       border-bottom: none;
