@@ -88,6 +88,7 @@ import Zodiac12WuxingPageProperties from './Zodiac12WuxingPage'
 import HighLightTextProperties from './HighLightText'
 import TwoGameResultProperties from './TwoGameResult'
 import FixedButtonGroupRBProperties from './FixedButtonGroupRB'
+import IssueCatalogProperties from './IssueCatalog'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -330,6 +331,10 @@ TwoGameResultProperties.forEach((value, key) => {
 })
 
 FixedButtonGroupRBProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+IssueCatalogProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
