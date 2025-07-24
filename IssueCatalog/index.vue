@@ -82,6 +82,7 @@ const parseTemplate = (issue: IForumPost) => {
       :root {
         --active-bg: ${props.datas.configParamJson.dynamicActiveBg || '#ffeb3b'};
         --active-text:${props.datas.configParamJson.dynamicActiveText || '#000'};
+        --noresult: ${props.datas.configParamJson.dynamicNoResult || '#00F'};
       }
     </style>
   `
@@ -93,7 +94,10 @@ const parseTemplate = (issue: IForumPost) => {
   // 获取当前期数的结果
   const result = getIssueResult(issue)
 
-  template = template.replace(/{{shengxiao}}/g, result.shengxiao ? result.shengxiao : '?00')
+  template = template.replace(
+    /{{shengxiao}}/g,
+    result.shengxiao ? result.shengxiao : '<span style="color: var(--noresult);">?00</span>'
+  )
   template = template.replace(/{{num}}/g, result?.num?.toString() ? result?.num?.toString() : '')
   if (result.size) {
     template = template.replace(/{{size}}/g, result.size ?? '')
@@ -151,6 +155,10 @@ watch(
         </h2>
         <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
       </div>
+      <!-- 前置扩展 -->
+      <div class="issue-list-extend" v-if="datas.configParamJson.frontExtend_Enable">
+        <div v-html="datas.configParamJson.frontExtend_Content"></div>
+      </div>
       <!-- 期数列表 -->
       <div
         class="issue-list"
@@ -181,6 +189,10 @@ watch(
         <div v-if="!issueListItem?.length" class="empty-state">
           <span>暂无{{ currentGameName }}数据</span>
         </div>
+      </div>
+      <!-- 后置扩展 -->
+      <div class="issue-list-extend" v-if="datas.configParamJson.backendextend_Enable">
+        <div v-html="datas.configParamJson.backendextend_Content"></div>
       </div>
     </div>
     <slot name="deles" />

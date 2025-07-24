@@ -23,8 +23,14 @@ export interface IssueCatalog {
   [gameTypeId: string]: any
   playGameCode: number // 根据游戏玩法配置模版
   dynamicTemplate: string
-  dynamicActiveBg: string
-  dynamicActiveText: string
+  dynamicActiveBg: string // 竞猜预测命中时背景色
+  dynamicActiveText: string // 竞猜预测命中时文字色
+  dynamicNoResult: string // 未开奖时显示的文字
+
+  frontExtend_Enable: boolean // 是否启用扩展期数列表
+  frontExtend_Content: string // 扩展期数列表
+  backendextend_Enable: boolean // 是否启用扩展期数列表
+  backendextend_Content: string // 扩展期数列表
 }
 
 export enum EPlayGameCode {

@@ -57,7 +57,12 @@ componentProperties.set('IssueCatalog', {
       dynamicTemplate:
         '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issues}} &nbsp;】</span> &nbsp; 开 {{result}} &nbsp;<span style="color: rgb(56, 158, 13);">{{flag}}</span></p>',
       dynamicActiveBg: '#ffeb3b',
-      dynamicActiveText: '#000'
+      dynamicActiveText: '#000',
+      dynamicNoResult: '未开奖',
+      frontExtend_Enable: true,
+      frontExtend_Content: '<p> 前置数据</p>',
+      backendextend_Enable: true,
+      backendextend_Content: '<p> 后置数据 </p>'
     }
   }
 })
