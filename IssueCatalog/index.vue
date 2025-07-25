@@ -1,5 +1,5 @@
 <script setup lang="ts" name="IssueCatalog">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, reactive, watch } from 'vue'
 import type { IDatas } from './type'
 import { useStore } from '@nanostores/vue'
 import { useIssueList } from '../hooks/issueList'
@@ -26,7 +26,7 @@ const currentGameName = computed(() => currentGame.value?.gameTypeLongName || '�
 const issueParams = reactive({
   gameType: gameType.value,
   size: Number(props.datas.configParamJson.size) || 10,
-  forumId: String(props.datas.configParamJson.forumId) || '10'
+  forumId: String(props.datas.configParamJson.forumId) || '10',
 })
 
 const { getIssueNumber, getIssueResult, issueListItem } = useIssueList(issueParams)
@@ -36,30 +36,30 @@ const containerStyle = computed(() => {
   return {
     borderRadius: `${styleHeader.value?.borderRadius || 0}px`,
     padding: `${styleHeader.value?.padding || 0}px`,
-    backgroundColor: styleMain.value?.backgroundColor || '#f1f1f1'
+    backgroundColor: styleMain.value?.backgroundColor || '#f1f1f1',
   }
 })
 
 const headerTitleBgStyle = computed(() => {
   if (styleHeader.value.isGradient) {
     return {
-      background: `linear-gradient(to right,  ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`
+      background: `linear-gradient(to right,  ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`,
     }
   }
   return {
-    backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2'
+    backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2',
   }
 })
 
 const headerTitleTextStyle = computed(() => {
   return {
-    color: styleHeader.value?.titleColor || '#333333'
+    color: styleHeader.value?.titleColor || '#333333',
   }
 })
 
 const subTitleStyle = computed(() => {
   return {
-    color: styleHeader.value?.subTitleColor || '#333333'
+    color: styleHeader.value?.subTitleColor || '#333333',
   }
 })
 
@@ -75,7 +75,7 @@ const styleConfig = computed(() => ({
   backgroundColor: props.datas.configParamJson.styleMain?.backgroundColor || '#f1f1f1',
   itemBackgroundColor: props.datas.configParamJson.styleMain?.itemBackgroundColor || '#f1f1f1',
   layout: props.datas.configParamJson.styleMain?.layout || 'start',
-  columnCount: props.datas.configParamJson.styleMain?.columnCount || 1
+  columnCount: props.datas.configParamJson.styleMain?.columnCount || 1,
 }))
 
 // 解析模板并替换变量
@@ -115,7 +115,7 @@ const parseTemplate = (issue: IForumPost) => {
       let index = -1
       if (prediction.isHit && prediction.hitDetail) {
         const hitDetail = prediction.hitDetail
-        index = hitDetail.split('').findIndex((item) => item === '1')
+        index = hitDetail.split('').findIndex(item => item === '1')
       }
 
       // 遍历每个预测组中的预测项
@@ -173,7 +173,7 @@ watch(
         v-if="datas.configParamJson.enable"
         :style="{
           backgroundColor: styleConfig.backgroundColor || '#f1f1f1',
-          padding: `${styleConfig.contentPaddingTopBottom}px ${styleConfig.contentPaddingLeftRight}px`
+          padding: `${styleConfig.contentPaddingTopBottom}px ${styleConfig.contentPaddingLeftRight}px`,
         }"
       >
         <!-- Issue list -->
@@ -181,7 +181,7 @@ watch(
           class="issue-item-content"
           :style="{
             gap: styleConfig.listSpacing + 'px',
-            gridTemplateColumns: `repeat(${styleConfig.columnCount}, 1fr)`
+            gridTemplateColumns: `repeat(${styleConfig.columnCount}, 1fr)`,
           }"
         >
           <div
@@ -191,7 +191,7 @@ watch(
             :style="{
               borderRadius: Math.max(0, styleConfig.borderRadius) + 'px',
               padding: `${styleConfig.paddingTopBottom}px ${styleConfig.paddingLeftRight}px`,
-              backgroundColor: styleConfig.itemBackgroundColor || '#f1f1f1'
+              backgroundColor: styleConfig.itemBackgroundColor || '#f1f1f1',
             }"
           >
             <div class="issue-display">
@@ -199,7 +199,7 @@ watch(
                 class="issue-display-content"
                 :style="{
                   gap: styleConfig.numberSpacing + 'px',
-                  justifyContent: styleConfig.layout || 'flex-start'
+                  justifyContent: styleConfig.layout || 'flex-start',
                 }"
                 v-html="parseTemplate(issue)"
               ></div>
