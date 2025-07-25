@@ -34,20 +34,20 @@ componentProperties.set('IssueCatalog', {
       forumName: '天地生肖',
       forumStatus: 'y',
       mainboardName: '八仙论坛',
-      templateByIssueNumber: false, // 按照期数配置模版， 如果是true，那就是每一期都要单独配置一个模版
-      templateByIssueNumberList: [
+      enableTemplateByPostIssue: false, // 按照期数配置模版， 如果是true，那就是每一期都要单独配置一个模版
+      issueListTemplate: [
         {
-          postIssue: 206,
+          postIssue: '206',
           dynamicTemplate:
             '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issue_lp00_p00}} &nbsp;{{issue_lp01_p00}} &nbsp;{{issue_lp01_p01}} &nbsp;】</span> &nbsp; 开 {{shengxiao}}{{num}}准</p>'
         },
         {
-          postIssue: 205,
+          postIssue: '205',
           dynamicTemplate:
             '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issue_lp00_p00}} &nbsp;{{issue_lp01_p00}} &nbsp;{{issue_lp01_p01}} &nbsp;】</span> &nbsp; 开 {{shengxiao}}{{num}}准</p>'
         },
         {
-          postIssue: 203,
+          postIssue: '203',
           dynamicTemplate:
             '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issue_lp00_p00}} &nbsp;{{issue_lp01_p00}} &nbsp;{{issue_lp01_p01}} &nbsp;】</span> &nbsp; 开 {{shengxiao}}{{num}}准</p>'
         }

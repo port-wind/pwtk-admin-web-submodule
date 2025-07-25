@@ -141,6 +141,8 @@ const parseTemplate = (issue: IForumPost) => {
   return cssVars + template
 }
 
+const activeIssueListTemplate = ref(props.datas.configParamJson.issueListTemplate[0].postIssue)
+
 watch(
   () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
   ([newSize, newForumId, newGameType]) => {
@@ -162,6 +164,20 @@ watch(
           {{ datas.configParamJson.title }}
         </h2>
         <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
+      </div>
+      {{ activeIssueListTemplate }}
+      <div
+        :style="headerTitleBgStyle"
+        v-if="datas.configParamJson.issueListTemplate?.length && datas.configParamJson.enableTemplateByPostIssue"
+      >
+        <div
+          v-for="item in datas.configParamJson.issueListTemplate"
+          :key="item.postIssue"
+          :class="`issue-list-template ${item.postIssue === activeIssueListTemplate ? 'active' : ''}`"
+          @click="activeIssueListTemplate = item.postIssue"
+        >
+          {{ item.postIssue }}期
+        </div>
       </div>
       <!-- 前置扩展 -->
       <div class="issue-list-extend" v-if="datas.configParamJson.frontExtend_Enable">

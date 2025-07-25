@@ -8,14 +8,13 @@ export interface IssueCatalog {
   subtitle: string
   enable: boolean
   size: number
-  templateByIssueNumber: boolean // 按照期数配置模版
   forumName: string
   mainboardName: string
   // 主版块ID
   mainboardId: string
   // 论坛ID
   forumId: string
-
+  
   forumIcon?: string
   forumStatus?: string
   styleHeader: IStyleHeader
@@ -23,6 +22,8 @@ export interface IssueCatalog {
   // 🎮 动态彩种字段 - 支持基于 gameType 的动态配置
   [gameTypeId: string]: any
   playGameCode: number // 根据游戏玩法配置模版
+  issueListTemplate: { postIssue: string; dynamicTemplate: string }[]
+  enableTemplateByPostIssue: boolean // 按照期数配置模版
   dynamicTemplate: string // 动态全局模版
   dynamicActiveBg: string // 竞猜预测命中时背景色
   dynamicActiveText: string // 竞猜预测命中时文字色
