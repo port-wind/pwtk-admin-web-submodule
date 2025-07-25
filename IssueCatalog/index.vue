@@ -172,7 +172,8 @@ watch(
         class="issue-list"
         v-if="datas.configParamJson.enable"
         :style="{
-          backgroundColor: styleConfig.backgroundColor || '#f1f1f1'
+          backgroundColor: styleConfig.backgroundColor || '#f1f1f1',
+          padding: `${styleConfig.contentPaddingTopBottom}px ${styleConfig.contentPaddingLeftRight}px`
         }"
       >
         <!-- Issue list -->

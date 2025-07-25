@@ -23,17 +23,17 @@ componentProperties.set('IssueCatalog', {
     memo: '',
     pageCode: '',
     configParamJson: {
-      title: '期数目录 title',
+      title: '期数目录',
       titlePrefix: '',
       subtitle: '',
       enable: true,
-      size: 2,
-      mainboardId: 'tiantianhaocai',
-      forumId: 'tiantianhaocai1',
+      size: 3,
+      mainboardId: 'baxianluntan',
+      forumId: 'bx010',
       forumIcon: 'dev/bbs/forum/icon/3187e4e98b574bd8bf8022652ee23576.jpeg',
-      forumName: '澳门好彩【精选24码】',
+      forumName: '天地生肖',
       forumStatus: 'y',
-      mainboardName: '天天好彩',
+      mainboardName: '八仙论坛',
       styleHeader: {
         backgroundColor: '#f8f9fa',
         isGradient: true,
@@ -46,27 +46,28 @@ componentProperties.set('IssueCatalog', {
         padding: 0
       },
       styleMain: {
-        itemSpacing: 4,
-        listSpacing: 4,
-        contentPaddingLeftRight: 0,
-        contentPaddingTopBottom: 0,
-        paddingLeftRight: 0,
-        paddingTopBottom: 10,
         borderRadius: 8,
-        backgroundColor: '#f1f1f1',
-        itemBackgroundColor: '#f1f1f1',
-        layout: 'left',
-        columnCount: 4
+        layout: 'center',
+        contentPaddingLeftRight: 10,
+        contentPaddingTopBottom: 19,
+        paddingLeftRight: 5,
+        paddingTopBottom: 7,
+        columnCount: 1,
+        itemSpacing: 0,
+        listSpacing: 8,
+        itemBackgroundColor: '#0DEEC5',
+        backgroundColor: '#EACBCB'
       },
-      playGameCode: 8001,
-      dynamicTemplate:
-        '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issue_lp00_p00}} &nbsp;{{issue_lp01_p00}} &nbsp;{{issue_lp01_p01}} &nbsp;】</span> &nbsp; 开 {{shengxiao}}{{num}}准</p>',
+      playGameCode: 8008,
       dynamicActiveBg: '#ffeb3b',
       dynamicActiveText: '#000',
       dynamicNoResult: '未开奖',
       frontExtend_Enable: true,
-      frontExtend_Content: '<p> 前置数据</p>',
       backendextend_Enable: true,
+      dynamicActive: '#ff0',
+      dynamicTemplate:
+        '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issue_lp00_p00}} &nbsp;{{issue_lp01_p00}} &nbsp;{{issue_lp01_p01}} &nbsp;】</span> &nbsp; 开 {{shengxiao}}{{num}}准</p>',
+      frontExtend_Content: '<p> 前置数据</p>',
       backendextend_Content: '<p> 后置数据 </p>'
     }
   }
