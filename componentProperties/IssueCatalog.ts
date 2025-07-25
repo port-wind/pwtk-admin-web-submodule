@@ -35,23 +35,7 @@ componentProperties.set('IssueCatalog', {
       forumStatus: 'y',
       mainboardName: '八仙论坛',
       enableTemplateByPostIssue: false, // 按照期数配置模版， 如果是true，那就是每一期都要单独配置一个模版
-      issueListTemplate: [
-        {
-          postIssue: '206',
-          dynamicTemplate:
-            '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issue_lp00_p00}} &nbsp;{{issue_lp01_p00}} &nbsp;{{issue_lp01_p01}} &nbsp;】</span> &nbsp; 开 {{shengxiao}}{{num}}准</p>'
-        },
-        {
-          postIssue: '205',
-          dynamicTemplate:
-            '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issue_lp00_p00}} &nbsp;{{issue_lp01_p00}} &nbsp;{{issue_lp01_p01}} &nbsp;】</span> &nbsp; 开 {{shengxiao}}{{num}}准</p>'
-        },
-        {
-          postIssue: '203',
-          dynamicTemplate:
-            '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issue_lp00_p00}} &nbsp;{{issue_lp01_p00}} &nbsp;{{issue_lp01_p01}} &nbsp;】</span> &nbsp; 开 {{shengxiao}}{{num}}准</p>'
-        }
-      ], // 按照期数配置模版， 如果是true，那就是每一期都要单独配置一个模版, 如果没有找到对应的模版，则使用全局模版
+      issueListTemplate: [], // 按照期数配置模版， 如果是true，那就是每一期都要单独配置一个模版, 如果没有找到对应的模版，则使用全局模版
       styleHeader: {
         backgroundColor: '#f8f9fa',
         isGradient: true,

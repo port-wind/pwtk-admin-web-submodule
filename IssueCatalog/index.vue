@@ -167,7 +167,7 @@ watch(
       </div>
       <div
         :style="headerTitleBgStyle"
-        v-if="datas.configParamJson.issueListTemplate?.length && datas.configParamJson.enableTemplateByPostIssue"
+        v-if="datas.configParamJson.issueListTemplate?.length > 0 && datas.configParamJson.enableTemplateByPostIssue"
         class="issue-tabs"
       >
         <div
