@@ -141,7 +141,7 @@ const parseTemplate = (issue: IForumPost) => {
   return cssVars + template
 }
 
-const activeIssueListTemplate = ref()
+const activeIssueListTemplate = ref<string>('')
 
 watch(
   () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],

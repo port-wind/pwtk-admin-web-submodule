@@ -14,7 +14,7 @@ export interface IssueCatalog {
   mainboardId: string
   // 论坛ID
   forumId: string
-  
+
   forumIcon?: string
   forumStatus?: string
   styleHeader: IStyleHeader
@@ -33,7 +33,6 @@ export interface IssueCatalog {
   frontExtend_Content: string // 扩展期数列表
   backendextend_Enable: boolean // 是否启用扩展期数列表
   backendextend_Content: string // 扩展期数列表
-  
 }
 
 // 期数目录样式
