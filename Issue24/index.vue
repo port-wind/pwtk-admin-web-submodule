@@ -70,33 +70,31 @@ const subTitleStyle = computed(() => {
         <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
       </div>
       <!-- 开奖信息列表 24码风格 -->
-      <!-- <Result24 :datas="datas" v-if="datas.configParamJson.model === EModel['24码']" /> -->
+      <Result24 :datas="datas" v-if="datas.configParamJson.model === EModel['24码']" />
       <!-- 胆大胆小 2码风格 -->
-      <!-- <Result2 :datas="datas" v-if="datas.configParamJson.model === EModel['胆大胆小']" /> -->
+      <Result2 :datas="datas" v-if="datas.configParamJson.model === EModel['胆大胆小']" />
       <!-- 色波 -->
-      <!-- <Result1 :datas="datas" v-if="datas.configParamJson.model === EModel['色波']" /> -->
+      <Result1 :datas="datas" v-if="datas.configParamJson.model === EModel['色波']" />
       <!-- 平特二肖 -->
-      <!-- <PingTe2Xiao :datas="datas" v-if="datas.configParamJson.model === EModel['平特二肖']" /> -->
+      <PingTe2Xiao :datas="datas" v-if="datas.configParamJson.model === EModel['平特二肖']" />
       <!-- 绝杀区 -->
-      <!-- <OverKill :datas="datas" v-if="datas.configParamJson.model === EModel['绝杀区']" /> -->
+      <OverKill :datas="datas" v-if="datas.configParamJson.model === EModel['绝杀区']" />
       <!-- 中间号码范围 -->
-      <!-- <MiddlesNumberRange :datas="datas" v-if="datas.configParamJson.model === EModel['中特码段']" /> -->
+      <MiddlesNumberRange :datas="datas" v-if="datas.configParamJson.model === EModel['中特码段']" />
       <!-- 天地生肖 -->
-      <!-- <HavenEarthZodiac :datas="datas" v-if="datas.configParamJson.model === EModel['天地生肖']" /> -->
+      <HavenEarthZodiac :datas="datas" v-if="datas.configParamJson.model === EModel['天地生肖']" />
       <!-- 合数单双 -->
-      <!-- <SumOddEven :datas="datas" v-if="datas.configParamJson.model === EModel['合数单双']" /> -->
+      <SumOddEven :datas="datas" v-if="datas.configParamJson.model === EModel['合数单双']" />
       <!-- 无敌八尾 -->
-      <!-- <InvincibleEightTail :datas="datas" v-if="datas.configParamJson.model === EModel['无敌八尾']" /> -->
+      <InvincibleEightTail :datas="datas" v-if="datas.configParamJson.model === EModel['无敌八尾']" />
       <!-- 复式平码 -->
-      <!-- <DuplexFlatCode :datas="datas" v-if="datas.configParamJson.model === EModel['复式平码']" /> -->
+      <DuplexFlatCode :datas="datas" v-if="datas.configParamJson.model === EModel['复式平码']" />
       <!-- 一句解特码 -->
-      <!-- <OneSentenceDecipher :datas="datas" v-if="datas.configParamJson.model === EModel['一句解特码']" /> -->
+      <OneSentenceDecipher :datas="datas" v-if="datas.configParamJson.model === EModel['一句解特码']" />
       <!-- 横扫黑庄 -->
-      <SweepBlackBank :datas="datas" />
-
-      <!-- <HtmlParse :datas="datas" /> -->
+      <SweepBlackBank :datas="datas" v-if="datas.configParamJson.model === EModel['横扫黑庄']" />
       <!-- 六肖六码 -->
-      <!-- <SixZodiacSixCode :datas="datas" v-if="datas.configParamJson.model === EModel['六肖六码']" /> -->
+      <SixZodiacSixCode :datas="datas" v-if="datas.configParamJson.model === EModel['六肖六码']" />
     </div>
     <slot name="deles" />
   </div>
