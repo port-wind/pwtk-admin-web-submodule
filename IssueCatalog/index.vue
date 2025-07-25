@@ -141,7 +141,7 @@ const parseTemplate = (issue: IForumPost) => {
   return cssVars + template
 }
 
-const activeIssueListTemplate = ref(props.datas.configParamJson.issueListTemplate[0].postIssue)
+const activeIssueListTemplate = ref()
 
 watch(
   () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
@@ -149,6 +149,30 @@ watch(
     issueParams.size = Number(newSize) || 10
     issueParams.forumId = String(newForumId) || '10'
     issueParams.gameType = String(newGameType)
+  }
+)
+
+watch(
+  () => issueListItem.value,
+  (newIssueListItem) => {
+    if (newIssueListItem.length > 0) {
+      if (props.datas.configParamJson.issueListTemplate.length > newIssueListItem.length) {
+        props.datas.configParamJson.issueListTemplate = props.datas.configParamJson.issueListTemplate.slice(
+          0,
+          newIssueListItem.length
+        )
+      }
+
+      newIssueListItem.forEach((item, index) => {
+        if (!props.datas.configParamJson.issueListTemplate[index]) {
+          // 创建新的
+          props.datas.configParamJson.issueListTemplate[index] = {
+            postIssue: item.postIssue,
+            dynamicTemplate: ''
+          }
+        }
+      })
+    }
   }
 )
 </script>
@@ -174,6 +198,7 @@ watch(
           v-for="item in datas.configParamJson.issueListTemplate"
           :key="item.postIssue"
           :class="`issue-tab ${item.postIssue === activeIssueListTemplate ? 'active' : ''}`"
+          @click="activeIssueListTemplate = item.postIssue"
           @mouseover="activeIssueListTemplate = item.postIssue"
         >
           {{ item.postIssue }}期
