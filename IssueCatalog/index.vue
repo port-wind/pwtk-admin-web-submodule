@@ -165,16 +165,16 @@ watch(
         </h2>
         <span class="sub-title" :style="subTitleStyle">{{ datas.configParamJson.subtitle }}</span>
       </div>
-      {{ activeIssueListTemplate }}
       <div
         :style="headerTitleBgStyle"
         v-if="datas.configParamJson.issueListTemplate?.length && datas.configParamJson.enableTemplateByPostIssue"
+        class="issue-tabs"
       >
         <div
           v-for="item in datas.configParamJson.issueListTemplate"
           :key="item.postIssue"
-          :class="`issue-list-template ${item.postIssue === activeIssueListTemplate ? 'active' : ''}`"
-          @click="activeIssueListTemplate = item.postIssue"
+          :class="`issue-tab ${item.postIssue === activeIssueListTemplate ? 'active' : ''}`"
+          @mouseover="activeIssueListTemplate = item.postIssue"
         >
           {{ item.postIssue }}期
         </div>
@@ -345,6 +345,52 @@ watch(
   color: #999;
   font-size: 14px;
   background-color: #f8f9fa;
+}
+
+.screenshot-container {
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.screenshot-effect {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.screenshot-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.issue-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+}
+
+.issue-tab {
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+
+  &.active {
+    background: #fff;
+    color: rgb(74, 144, 226);
+  }
+
+  &:hover {
+    background: #fff;
+    color: rgb(74, 144, 226);
+  }
 }
 
 // Responsive design
