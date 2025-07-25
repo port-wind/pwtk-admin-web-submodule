@@ -2,9 +2,8 @@
 import { defineProps, watch, computed, reactive, onMounted } from 'vue'
 import { useStore } from '@nanostores/vue'
 import type { IDatas } from '../type'
-import { useIssueList, type IProcessedIssueItem } from '../../hooks/issueList'
+import { useIssueList } from '../../hooks/issueList'
 import { gameStore } from '../../store'
-import type { IForumPost } from '../../types/forum'
 
 interface IProps {
   datas: IDatas
@@ -24,18 +23,7 @@ const issueParams = reactive({
   forumId: String(props.datas.configParamJson.forumId) || '10'
 })
 
-// 🎨 Style Configuration from Right Panel
-const styleConfig = computed(() => ({
-  numberSize: props.datas.configParamJson.styleMain?.numberSize || 14,
-  numberSpacing: props.datas.configParamJson.styleMain?.numberSpacing || 4,
-  borderRadius: props.datas.configParamJson.styleMain?.borderRadius || 8,
-  padding: props.datas.configParamJson.styleMain?.padding || 0,
-  showPeriod: props.datas.configParamJson.styleMain?.showPeriod !== false,
-  showStatus: props.datas.configParamJson.styleMain?.showStatus !== false,
-  showResult: props.datas.configParamJson.styleMain?.showResult !== false
-}))
-
-const { extractIssueNumber, issueListItem, processedIssueList } = useIssueList(issueParams)
+const { extractIssueNumber, processedIssueList } = useIssueList(issueParams)
 
 // 🎯 Monitor Game Type Changes
 watch(
@@ -57,17 +45,6 @@ watch(
     issueParams.forumId = String(newForumId) || '10'
     issueParams.gameType = String(newGameType)
   }
-)
-
-// 🎨 Monitor Style Configuration Changes
-watch(
-  () => props.datas.configParamJson.styleMain,
-  (newStyleMain) => {
-    if (newStyleMain) {
-      console.log('🎨 Style configuration updated:', newStyleMain)
-    }
-  },
-  { deep: true }
 )
 
 // 🔍 Zodiac animals mapping
@@ -211,89 +188,27 @@ const getAnimalsWithHitStatus = (issue: any) => {
 const getAnimalHighlightClass = (animal: any) => {
   return animal.isHit ? 'hit-highlight' : ''
 }
-
-onMounted(() => {
-  if (gameType.value) {
-    console.log(`🎮 SweepBlackBank initialized with game type: ${gameType.value}`)
-  }
-})
-
-// 解析模板并替换变量
-const parseTemplate = (issue: IForumPost) => {
-  console.log('🚀 ~ parseTemplate ~ issues:', issue)
-
-  // 定义CSS变量
-  const cssVars = `
-    <style>
-      :root {
-        --active: ${props.datas.configParamJson.dynamicActive || '#ff0'};
-      }
-    </style>
-  `
-  const issueNumber = extractIssueNumber(issue.postIssue)
-  const result = getLotteryResult(issue)
-  const flag = isHit(issue)
-  const template = props.datas.configParamJson.dynamicTemplate || ''
-
-  // 解析模板并替换基础变量
-  let parsedTemplate = template
-    .replace(/{{issueNumber}}/g, issueNumber)
-    .replace(/{{result}}/g, result)
-    .replace(/{{flag}}/g, flag ? '准' : '')
-
-  // 动态替换竞猜预测数据
-  if (issue?.lotteryPredictions?.length) {
-    // 遍历所有竞猜预测组
-    issue.lotteryPredictions.forEach((prediction, lpIndex) => {
-      let index = -1
-      if (prediction.isHit && prediction.hitDetail) {
-        const hitDetail = prediction.hitDetail
-        index = hitDetail.split('').findIndex((item) => item === '1')
-      }
-
-      // 遍历每个预测组中的预测项
-      if (prediction.predict?.length) {
-        prediction.predict.forEach((predictItem, pIndex) => {
-          if (index !== -1) {
-            if (index === pIndex) {
-              console.log('🚀 ~ prediction.predict.forEach ~ predictItem:', index, pIndex)
-              predictItem = `<span style="color: var(--active);">${predictItem}</span>`
-            }
-          }
-
-          const placeholder = `{{issue_lp${String(lpIndex).padStart(2, '0')}_p${String(pIndex).padStart(2, '0')}}}`
-          parsedTemplate = parsedTemplate.replace(new RegExp(placeholder, 'g'), `<span>${predictItem}</span>` || '')
-        })
-      }
-    })
-  }
-
-  return cssVars + parsedTemplate
-}
 </script>
 
 <template>
-  <div
-    class="sweep-black-bank"
-    v-if="datas.configParamJson.enable"
-    :style="{
-      borderRadius: styleConfig.borderRadius + 'px',
-      padding: styleConfig.padding + 'px'
-    }"
-  >
+  <div class="sweep-black-bank" v-if="datas.configParamJson.enable">
     <!-- Issue list -->
     <div class="issue-list">
-      <div
-        v-for="(issue, issueIndex) in issueListItem"
-        :key="issue.postId"
-        class="issue-item"
-        :style="{
-          borderRadius: Math.max(0, styleConfig.borderRadius - 2) + 'px',
-          padding: Math.max(0, styleConfig.padding + 8) + 'px'
-        }"
-      >
-        <div class="issue-display" :style="{ gap: styleConfig.numberSpacing + 'px' }">
-          <div class="issue-display-content" v-html="parseTemplate(issue)"></div>
+      <div v-for="(issue, issueIndex) in processedIssueList" :key="issue.postId" class="issue-item">
+        <div class="issue-display">
+          <span class="period">{{ extractIssueNumber(issue.postIssue) }}期:</span>
+          <span class="prediction-content">
+            【
+            <template
+              v-for="(animal, animalIndex) in getAnimalsWithHitStatus(issue)"
+              :key="`animal-${issueIndex}-${animalIndex}`"
+            >
+              <span :class="['animal', getAnimalHighlightClass(animal)]">{{ animal.animal }}</span>
+            </template>
+            】
+          </span>
+          <span class="result">开:{{ getLotteryResult(issue) }}</span>
+          <span class="status" v-if="isHit(issue)">准</span>
         </div>
       </div>
     </div>
@@ -331,24 +246,20 @@ const parseTemplate = (issue: IForumPost) => {
     .issue-display {
       display: flex;
       align-items: center;
+      gap: 4px;
+      font-size: 14px;
       line-height: 1.5;
       color: #333;
-      min-height: 1.5em;
-
-      .issue-display-content {
-        width: 100%;
-      }
 
       .period {
         color: #333;
         font-weight: 500;
-        flex-shrink: 0;
       }
 
       .prediction-content {
         color: #1976d2;
         font-weight: 600;
-        flex-shrink: 0;
+        margin: 0 2px;
 
         .animal {
           color: inherit;
@@ -367,13 +278,12 @@ const parseTemplate = (issue: IForumPost) => {
         color: #333;
         font-weight: 500;
         margin-left: auto;
-        flex-shrink: 0;
       }
 
       .status {
         color: #4caf50;
         font-weight: bold;
-        flex-shrink: 0;
+        margin-left: 4px;
       }
     }
   }
@@ -389,19 +299,12 @@ const parseTemplate = (issue: IForumPost) => {
 
 // Responsive design
 @media (max-width: 768px) {
-  .sweep-black-bank {
-    .issue-list .issue-item {
-      // Reduce padding on mobile
-      padding: 6px 12px !important;
+  .issue-list .issue-item {
+    padding: 6px 12px;
 
-      .issue-display {
-        // Reduce spacing on mobile
-        gap: 2px !important;
-
-        // Note: font-size is controlled by inline styles from styleConfig
-        // Mobile responsive sizing should be handled by the configuration
-        min-height: 1.2em;
-      }
+    .issue-display {
+      font-size: 12px;
+      gap: 2px;
     }
   }
 }
