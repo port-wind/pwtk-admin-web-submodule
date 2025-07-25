@@ -1,4 +1,4 @@
-import { EPlayGameCode, type IssueCatalog } from '../IssueCatalog/type'
+import { type IssueCatalog } from '../IssueCatalog/type'
 import type { IComponentProperty, ISetStyle } from './index'
 
 const componentProperties = new Map<string, IComponentProperty<ISetStyle<IssueCatalog>>>()
@@ -27,13 +27,31 @@ componentProperties.set('IssueCatalog', {
       titlePrefix: '',
       subtitle: '',
       enable: true,
-      size: 3,
+      size: 3, // 期数数量
       mainboardId: 'baxianluntan',
       forumId: 'bx010',
       forumIcon: 'dev/bbs/forum/icon/3187e4e98b574bd8bf8022652ee23576.jpeg',
       forumName: '天地生肖',
       forumStatus: 'y',
       mainboardName: '八仙论坛',
+      templateByIssueNumber: false, // 按照期数配置模版， 如果是true，那就是每一期都要单独配置一个模版
+      templateByIssueNumberList: [
+        {
+          postIssue: 206,
+          dynamicTemplate:
+            '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issue_lp00_p00}} &nbsp;{{issue_lp01_p00}} &nbsp;{{issue_lp01_p01}} &nbsp;】</span> &nbsp; 开 {{shengxiao}}{{num}}准</p>'
+        },
+        {
+          postIssue: 205,
+          dynamicTemplate:
+            '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issue_lp00_p00}} &nbsp;{{issue_lp01_p00}} &nbsp;{{issue_lp01_p01}} &nbsp;】</span> &nbsp; 开 {{shengxiao}}{{num}}准</p>'
+        },
+        {
+          postIssue: 203,
+          dynamicTemplate:
+            '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issue_lp00_p00}} &nbsp;{{issue_lp01_p00}} &nbsp;{{issue_lp01_p01}} &nbsp;】</span> &nbsp; 开 {{shengxiao}}{{num}}准</p>'
+        }
+      ], // 按照期数配置模版， 如果是true，那就是每一期都要单独配置一个模版, 如果没有找到对应的模版，则使用全局模版
       styleHeader: {
         backgroundColor: '#f8f9fa',
         isGradient: true,
