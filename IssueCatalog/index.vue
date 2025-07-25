@@ -68,7 +68,10 @@ const styleConfig = computed(() => ({
   listSpacing: props.datas.configParamJson.styleMain?.listSpacing || 0,
   numberSpacing: props.datas.configParamJson.styleMain?.itemSpacing || 0,
   borderRadius: props.datas.configParamJson.styleMain?.borderRadius || 0,
-  padding: props.datas.configParamJson.styleMain?.padding || 0,
+  contentPaddingLeftRight: props.datas.configParamJson.styleMain?.contentPaddingLeftRight || 0,
+  contentPaddingTopBottom: props.datas.configParamJson.styleMain?.contentPaddingTopBottom || 0,
+  paddingLeftRight: props.datas.configParamJson.styleMain?.paddingLeftRight || 0,
+  paddingTopBottom: props.datas.configParamJson.styleMain?.paddingTopBottom || 0,
   backgroundColor: props.datas.configParamJson.styleMain?.backgroundColor || '#f1f1f1',
   itemBackgroundColor: props.datas.configParamJson.styleMain?.itemBackgroundColor || '#f1f1f1',
   layout: props.datas.configParamJson.styleMain?.layout || 'start',
@@ -169,7 +172,6 @@ watch(
         class="issue-list"
         v-if="datas.configParamJson.enable"
         :style="{
-          padding: styleConfig.padding + 'px',
           backgroundColor: styleConfig.backgroundColor || '#f1f1f1'
         }"
       >
@@ -187,7 +189,7 @@ watch(
             class="issue-item"
             :style="{
               borderRadius: Math.max(0, styleConfig.borderRadius) + 'px',
-              padding: Math.max(0, styleConfig.padding) + 'px',
+              padding: `${styleConfig.paddingTopBottom}px ${styleConfig.paddingLeftRight}px`,
               backgroundColor: styleConfig.itemBackgroundColor || '#f1f1f1'
             }"
           >
@@ -196,12 +198,7 @@ watch(
                 class="issue-display-content"
                 :style="{
                   gap: styleConfig.numberSpacing + 'px',
-                  justifyContent:
-                    styleConfig.layout === 'left'
-                      ? 'flex-start'
-                      : styleConfig.layout === 'center'
-                      ? 'center'
-                      : 'flex-end'
+                  justifyContent: styleConfig.layout || 'flex-start'
                 }"
                 v-html="parseTemplate(issue)"
               ></div>
@@ -251,6 +248,7 @@ watch(
   .issue-item-content {
     display: grid;
     width: 100%;
+    font-variant: tabular-nums;
   }
 
   .issue-item {

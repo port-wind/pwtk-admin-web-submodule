@@ -59,7 +59,10 @@ export enum EPlayGameCode {
 // 期数目录样式
 export interface IStyleMain {
   borderRadius: number
-  padding: number
+  contentPaddingLeftRight: number
+  contentPaddingTopBottom: number
+  paddingLeftRight: number
+  paddingTopBottom: number
   itemSpacing: number
   listSpacing: number
   backgroundColor: string

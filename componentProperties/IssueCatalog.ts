@@ -41,21 +41,26 @@ componentProperties.set('IssueCatalog', {
         headerBg: '#09663f',
         headerBg2: '#1d9b3f',
         subTitleColor: '#ffffff',
-        titleColor: '#FFFFFF'
+        titleColor: '#FFFFFF',
+        borderRadius: 0,
+        padding: 0
       },
       styleMain: {
         itemSpacing: 4,
-        numberSize: 14,
-        padding: 0,
+        listSpacing: 4,
+        contentPaddingLeftRight: 0,
+        contentPaddingTopBottom: 0,
+        paddingLeftRight: 0,
+        paddingTopBottom: 10,
         borderRadius: 8,
-        showPeriod: true,
-        showStatus: true,
-        showResult: true,
-        headerTextColor: '#ffffff'
+        backgroundColor: '#f1f1f1',
+        itemBackgroundColor: '#f1f1f1',
+        layout: 'left',
+        columnCount: 4
       },
       playGameCode: 8001,
       dynamicTemplate:
-        '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issues}} &nbsp;】</span> &nbsp; 开 {{result}} &nbsp;<span style="color: rgb(56, 158, 13);">{{flag}}</span></p>',
+        '<p>{{issueNumber}} 期 &nbsp;<span style="color: rgb(9, 109, 217);">【 &nbsp;{{issue_lp00_p00}} &nbsp;{{issue_lp01_p00}} &nbsp;{{issue_lp01_p01}} &nbsp;】</span> &nbsp; 开 {{shengxiao}}{{num}}准</p>',
       dynamicActiveBg: '#ffeb3b',
       dynamicActiveText: '#000',
       dynamicNoResult: '未开奖',
