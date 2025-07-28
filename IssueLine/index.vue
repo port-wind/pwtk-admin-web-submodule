@@ -82,11 +82,34 @@ const styleConfig = computed(() => ({
   columnCount: styleMain.value?.columnCount || 1
 }))
 
+const issueInfo = (issueListItem: IForumPost[]) => {
+  const currentPredictions = getLotteryPredictions(issueListItem[0])
+
+  const currentKeys = currentPredictions[0].predict
+  const currentResult = currentKeys
+    .map((key, index) => {
+      return currentPredictions[0].rule.options[key][0]
+    })
+    .join('')
+
+  const currentHitIndex = currentPredictions[0].hitDetail.split('').findIndex((item) => item === '1')
+  const currentResultKey = currentPredictions[0].predict[currentHitIndex]
+
+  if (!currentResultKey) {
+    return [currentResult, null]
+  } else {
+    const currentHitResult = currentPredictions[0].rule.options[currentResultKey][0]
+    // 开奖生肖信息， 和中了的生肖。
+    return [currentResult, currentHitResult]
+  }
+}
+
 // 获取当前期数和往期期数
 const getCurrentPreviousIssue = (issueListItem: IForumPost[]) => {
   const currentPredictions = getLotteryPredictions(issueListItem[0])
   const currentHitIndex = currentPredictions[0].hitDetail.split('').findIndex((item) => item === '1')
-  const currentHitResult = currentPredictions[0].predict[currentHitIndex]
+  const currentResultKey = currentPredictions[0].predict[currentHitIndex]
+  const currentHitResult = currentPredictions[0].rule.options[currentResultKey][0]
   const currentKeys = currentPredictions[0].predict
   const currentResult = currentKeys
     .map((key, index) => {
@@ -105,7 +128,8 @@ const getCurrentPreviousIssue = (issueListItem: IForumPost[]) => {
 
   const predictions = getLotteryPredictions(issueListItem[1])
   const preHitIndex = predictions[0].hitDetail.split('').findIndex((item) => item === '1')
-  const preHitResult = predictions[0].predict[preHitIndex]
+  const preResultKey = predictions[0].predict[preHitIndex]
+  const preHitResult = predictions[0].rule.options[preResultKey][0]
   const preKeys = predictions[0].predict
 
   const preResult = preKeys
@@ -123,8 +147,17 @@ const getCurrentPreviousIssue = (issueListItem: IForumPost[]) => {
 }
 
 // 解析模板
-const parseTemplate = (issue: IForumPost) => {
-  console.log('🚀 ~ parseTemplate 99999999 ~ issue:', issue)
+const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
+  const [currentIssue, currentHitResult] = issueInfo(issueListItem)
+  const [previousIssues, preHitResult] = issueListItem.length > 1 ? issueInfo(issueListItem.slice(1, 2)) : ['', '']
+  console.log(
+    '🚀 ~ parseTemplate ~  currentIssue, currentHitResult, previousIssues, preHitResult:',
+    currentIssue,
+    currentHitResult,
+    previousIssues,
+    preHitResult
+  )
+
   let template = props.datas.configParamJson.dynamicTemplate || ''
 
   let replaceKeys: string[] = []
@@ -197,6 +230,15 @@ const parseTemplate = (issue: IForumPost) => {
     }
   })
 
+  template = template.replace(/{{currentIssue}}/g, currentIssue ?? '')
+  replaceKeys.push('{{currentIssue}}')
+  template = template.replace(/{{currentHitResult}}/g, currentHitResult ?? '')
+  replaceKeys.push('{{currentHitResult}}')
+  template = template.replace(/{{previousIssues}}/g, previousIssues ?? '')
+  replaceKeys.push('{{previousIssues}}')
+  template = template.replace(/{{preHitResult}}/g, preHitResult ?? '')
+  replaceKeys.push('{{preHitResult}}')
+
   // 去掉前后p标签
   template = template.replace(/<p>(.*?)<\/p>/g, '$1')
   console.info('可以替换的字段有哪些', replaceKeys)
@@ -205,8 +247,8 @@ const parseTemplate = (issue: IForumPost) => {
 
 watch(issueListItem, (newIssueListItem) => {
   // console.log('🚀 ~ newIssueListItem:', newIssueListItem)
-  const res = getCurrentPreviousIssue(newIssueListItem)
-  console.log('🚀 ~ res:', res)
+  // const res = getCurrentPreviousIssue(newIssueListItem)
+  // console.log('🚀 ~ res:', res)
 })
 
 // 监听参数变化
@@ -274,7 +316,7 @@ watch(
                   gap: styleConfig.numberSpacing + 'px',
                   justifyContent: styleConfig.layout || 'flex-start'
                 }"
-                v-html="parseTemplate(issue)"
+                v-html="parseTemplate(issue, issueListItem)"
               ></div>
             </div>
           </div>
