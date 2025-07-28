@@ -81,6 +81,27 @@ const styleConfig = computed(() => ({
   columnCount: styleMain.value?.columnCount || 1
 }))
 
+// 获取当前期数和往期期数
+const getCurrentPreviousIssue = (issueListItem: IForumPost[]) => {
+  const currentIssue = issueListItem[0]
+  const previousIssues = issueListItem.slice(1)
+
+  const predictions = getLotteryPredictions(currentIssue)
+  console.log('🚀 ~ getCurrentPreviousIssue ~ predictions:', predictions)
+
+  return {
+    currentIssue,
+    previousIssues
+  }
+
+  // const currentIssue = getIssueNumber(issue)
+  // const previousIssues = getPreviousIssues(issue)
+  // return {
+  //   currentIssue,
+  //   previousIssues
+  // }
+}
+
 // 解析模板
 const parseTemplate = (issue: IForumPost) => {
   console.log('🚀 ~ parseTemplate 99999999 ~ issue:', issue)
@@ -163,6 +184,11 @@ const parseTemplate = (issue: IForumPost) => {
 
   return cssVars + template
 }
+
+watch(issueListItem, (newIssueListItem) => {
+  console.log('🚀 ~ newIssueListItem:', newIssueListItem)
+  // getCurrentPreviousIssue(newIssueListItem)
+})
 
 // 监听参数变化
 watch(

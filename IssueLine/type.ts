@@ -8,6 +8,7 @@ export interface IssueLine {
   titlePrefix: string
   subtitle: string
   size: number
+  onlyShowCurrentIssue: boolean
   forumId: string
   frontExtend_Enable: boolean
   frontExtend_Content: string

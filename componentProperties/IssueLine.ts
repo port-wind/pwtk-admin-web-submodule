@@ -28,6 +28,7 @@ componentProperties.set('IssueLine', {
       titlePrefix: '',
       subtitle: '最新数据',
       size: 10,
+      onlyShowCurrentIssue: false,
       forumId: '10',
       frontExtend_Enable: false,
       frontExtend_Content: '',
