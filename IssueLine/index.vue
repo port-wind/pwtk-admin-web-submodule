@@ -83,23 +83,34 @@ const styleConfig = computed(() => ({
 
 // 获取当前期数和往期期数
 const getCurrentPreviousIssue = (issueListItem: IForumPost[]) => {
-  const currentIssue = issueListItem[0]
-  const previousIssues = issueListItem.slice(1)
+  const currentPredictions = getLotteryPredictions(issueListItem[0])
+  const currentKeys = currentPredictions[0].predict
+  const currentResult = currentKeys
+    .map((key, index) => {
+      return currentPredictions[0].rule.options[key][0]
+    })
+    .join('')
 
-  const predictions = getLotteryPredictions(currentIssue)
-  console.log('🚀 ~ getCurrentPreviousIssue ~ predictions:', predictions)
-
-  return {
-    currentIssue,
-    previousIssues
+  if (issueListItem?.length < 2) {
+    return {
+      currentIssue: currentResult,
+      previousIssues: ''
+    }
   }
 
-  // const currentIssue = getIssueNumber(issue)
-  // const previousIssues = getPreviousIssues(issue)
-  // return {
-  //   currentIssue,
-  //   previousIssues
-  // }
+  const predictions = getLotteryPredictions(issueListItem[1])
+  const preKeys = predictions[0].predict
+
+  const preResult = preKeys
+    .map((key, index) => {
+      return predictions[0].rule.options[key][0]
+    })
+    .join('')
+
+  return {
+    currentIssue: currentResult,
+    previousIssues: preResult
+  }
 }
 
 // 解析模板
@@ -179,15 +190,14 @@ const parseTemplate = (issue: IForumPost) => {
 
   // 去掉前后p标签
   template = template.replace(/<p>(.*?)<\/p>/g, '$1')
-
   console.info('可以替换的字段有哪些', replaceKeys)
-
   return cssVars + template
 }
 
 watch(issueListItem, (newIssueListItem) => {
-  console.log('🚀 ~ newIssueListItem:', newIssueListItem)
-  // getCurrentPreviousIssue(newIssueListItem)
+  // console.log('🚀 ~ newIssueListItem:', newIssueListItem)
+  const res = getCurrentPreviousIssue(newIssueListItem)
+  console.log('🚀 ~ res:', res)
 })
 
 // 监听参数变化
