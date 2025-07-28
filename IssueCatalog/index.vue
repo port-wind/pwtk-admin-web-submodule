@@ -79,8 +79,8 @@ const styleConfig = computed(() => ({
 }))
 
 // 解析模板并替换变量
-const parseTemplate = (issue: IForumPost) => {
-  let template = props.datas.configParamJson.dynamicTemplate || ''
+const parseTemplate = (issue: IForumPost, _template?: string) => {
+  let template = _template || props.datas.configParamJson.dynamicTemplate || ''
   // 定义CSS变量
   const cssVars = `
     <style>
@@ -204,6 +204,7 @@ watch(
           {{ item.postIssue }}期
         </div>
       </div>
+
       <!-- 前置扩展 -->
       <div class="issue-list-extend" v-if="datas.configParamJson.frontExtend_Enable">
         <div v-html="datas.configParamJson.frontExtend_Content"></div>
@@ -211,9 +212,9 @@ watch(
       <!-- 期数列表 -->
       <div
         class="issue-list"
-        v-if="datas.configParamJson.enable"
+        v-if="datas.configParamJson.enable && !datas.configParamJson.enableTemplateByPostIssue"
         :style="{
-          backgroundColor: styleConfig.backgroundColor || '#f1f1f1',
+          backgroundColor: styleConfig.backgroundColor || 'currentColor',
           padding: `${styleConfig.contentPaddingTopBottom}px ${styleConfig.contentPaddingLeftRight}px`
         }"
       >
@@ -253,6 +254,17 @@ watch(
           <span>暂无{{ currentGameName }}数据</span>
         </div>
       </div>
+
+      <!-- 多期数列表 -->
+      <div class="issue-list-multi" v-if="datas.configParamJson.enableTemplateByPostIssue">
+        <div v-for="(item, index) in datas.configParamJson.issueListTemplate" :key="item.postIssue">
+          <div
+            v-if="item.postIssue === activeIssueListTemplate"
+            v-html="parseTemplate(issueListItem[index], item.dynamicTemplate)"
+          ></div>
+        </div>
+      </div>
+
       <!-- 后置扩展 -->
       <div class="issue-list-extend" v-if="datas.configParamJson.backendextend_Enable">
         <div v-html="datas.configParamJson.backendextend_Content"></div>
