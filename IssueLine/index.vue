@@ -6,6 +6,7 @@ import { useIssueList } from '../hooks/issueList'
 import { gameStore } from '../store'
 import { getGameName } from '../store/gameStore'
 import type { IForumPost } from '../types/forum'
+import { previousDay } from 'date-fns'
 
 interface IProps {
   datas: IDatas
@@ -84,6 +85,8 @@ const styleConfig = computed(() => ({
 // 获取当前期数和往期期数
 const getCurrentPreviousIssue = (issueListItem: IForumPost[]) => {
   const currentPredictions = getLotteryPredictions(issueListItem[0])
+  const currentHitIndex = currentPredictions[0].hitDetail.split('').findIndex((item) => item === '1')
+  const currentHitResult = currentPredictions[0].predict[currentHitIndex]
   const currentKeys = currentPredictions[0].predict
   const currentResult = currentKeys
     .map((key, index) => {
@@ -94,11 +97,15 @@ const getCurrentPreviousIssue = (issueListItem: IForumPost[]) => {
   if (issueListItem?.length < 2) {
     return {
       currentIssue: currentResult,
-      previousIssues: ''
+      currentHitResult: currentHitResult,
+      previousIssues: '',
+      preHitResult: ''
     }
   }
 
   const predictions = getLotteryPredictions(issueListItem[1])
+  const preHitIndex = predictions[0].hitDetail.split('').findIndex((item) => item === '1')
+  const preHitResult = predictions[0].predict[preHitIndex]
   const preKeys = predictions[0].predict
 
   const preResult = preKeys
@@ -109,7 +116,9 @@ const getCurrentPreviousIssue = (issueListItem: IForumPost[]) => {
 
   return {
     currentIssue: currentResult,
-    previousIssues: preResult
+    currentHitResult: currentHitResult,
+    previousIssues: preResult,
+    preHitResult: preHitResult
   }
 }
 
