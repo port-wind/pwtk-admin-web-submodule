@@ -89,6 +89,7 @@ import HighLightTextProperties from './HighLightText'
 import TwoGameResultProperties from './TwoGameResult'
 import FixedButtonGroupRBProperties from './FixedButtonGroupRB'
 import IssueCatalogProperties from './IssueCatalog'
+import IssueLineProperties from './IssueLine'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -335,6 +336,10 @@ FixedButtonGroupRBProperties.forEach((value, key) => {
 })
 
 IssueCatalogProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+IssueLineProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
