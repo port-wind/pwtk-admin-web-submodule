@@ -237,7 +237,9 @@ watch(
           }"
         >
           <div
-            v-for="(issue, issueIndex) in issueListItem"
+            v-for="(issue, issueIndex) in datas.configParamJson.onlyShowCurrentIssue
+              ? [issueListItem[0]]
+              : issueListItem"
             :key="issue.postId"
             class="issue-item"
             :style="{
