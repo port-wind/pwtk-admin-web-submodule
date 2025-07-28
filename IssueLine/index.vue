@@ -29,7 +29,7 @@ const issueParams = reactive({
   forumId: String(props.datas.configParamJson.forumId) || '10'
 })
 
-const { getIssueNumber, getIssueResult, issueListItem } = useIssueList(issueParams)
+const { getIssueNumber, getIssueResult, getLotteryPredictions, issueListItem } = useIssueList(issueParams)
 
 // 容器样式
 const containerStyle = computed(() => {
@@ -83,7 +83,10 @@ const styleConfig = computed(() => ({
 
 // 解析模板
 const parseTemplate = (issue: IForumPost) => {
+  console.log('🚀 ~ parseTemplate 99999999 ~ issue:', issue)
   let template = props.datas.configParamJson.dynamicTemplate || ''
+
+  const predictions = getLotteryPredictions(issue)
 
   // CSS变量
   const cssVars = `
@@ -113,6 +116,19 @@ const parseTemplate = (issue: IForumPost) => {
   if (result.size) {
     template = template.replace(/{{size}}/g, result.size ?? '?00')
   }
+
+  // predicton 是一个对象， 我门要存key 和 vlaue
+  predictions.forEach((prediction) => {
+    Object.keys(prediction).forEach((key) => {
+      if (key === 'predict') {
+        prediction[key].forEach((predict, index) => {
+          template = template.replace(`{{predict${index + 1}}}`, predict)
+        })
+      } else {
+        template = template.replace(`{{${key}}}`, prediction[key])
+      }
+    })
+  })
 
   // 去掉前后p标签
   template = template.replace(/<p>(.*?)<\/p>/g, '$1')

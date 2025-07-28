@@ -94,6 +94,23 @@ export function useIssueList(params: IUseIssueListParams) {
     return { shengxiao: '', teNum: '', result: '' }
   }
 
+  const getLotteryPredictions = (issue: IForumPost) => {
+    //  code : "8152"
+    // hitDetail : "0"
+    // isHit : "n"
+    // name : "七字"
+    // predict : ['欲除豺虎论三略']
+    // predictTitle : ""
+    // return issue.lotteryPredictions || []
+    const predictions = issue.lotteryPredictions || []
+    return predictions.map((prediction) => {
+      return {
+        ...prediction,
+        predict: prediction.predict.map((num: string) => num.padStart(2, '0'))
+      }
+    })
+  }
+
   /**
    * 计算处理后的期数数据
    */
@@ -283,6 +300,7 @@ export function useIssueList(params: IUseIssueListParams) {
     getHitNumber,
     getNumberColorClass,
     processLotteryData,
-    getIssueResultInfo
+    getIssueResultInfo,
+    getLotteryPredictions
   }
 }
