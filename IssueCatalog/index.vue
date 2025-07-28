@@ -259,6 +259,7 @@ watch(
       <div class="issue-list-multi" v-if="datas.configParamJson.enableTemplateByPostIssue">
         <div v-for="(item, index) in datas.configParamJson.issueListTemplate" :key="item.postIssue">
           <div
+            class="issue-list-multi-item"
             v-if="item.postIssue === activeIssueListTemplate"
             v-html="parseTemplate(issueListItem[index], item.dynamicTemplate)"
           ></div>
@@ -445,6 +446,15 @@ watch(
         // Mobile responsive sizing should be handled by the configuration
         min-height: 1.2em;
       }
+    }
+  }
+}
+
+.issue-list-multi-item {
+  table {
+    td:nth-child(2) {
+      background-color: black;
+      color: white;
     }
   }
 }
