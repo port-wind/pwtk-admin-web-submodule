@@ -86,6 +86,8 @@ const parseTemplate = (issue: IForumPost) => {
   console.log('🚀 ~ parseTemplate 99999999 ~ issue:', issue)
   let template = props.datas.configParamJson.dynamicTemplate || ''
 
+  let replaceKeys: string[] = []
+
   const predictions = getLotteryPredictions(issue)
 
   // CSS变量
@@ -105,33 +107,59 @@ const parseTemplate = (issue: IForumPost) => {
   // 获取期数
   const issueNumber = getIssueNumber(issue)
   template = template.replace(/{{issueNumber}}/g, issueNumber)
-
+  replaceKeys.push('{{issueNumber}}')
   // 获取结果
   const result = getIssueResult(issue)
   template = template.replace(
     /{{shengxiao}}/g,
     result.shengxiao ? result.shengxiao : '<span style="color: var(--noresult);">?00</span>'
   )
+  replaceKeys.push('{{shengxiao}}')
   template = template.replace(/{{num}}/g, result?.num?.toString() ? result?.num?.toString() : '?00')
+  replaceKeys.push('{{num}}')
   if (result.size) {
     template = template.replace(/{{size}}/g, result.size ?? '?00')
+    replaceKeys.push('{{size}}')
   }
 
   // predicton 是一个对象， 我门要存key 和 vlaue
-  predictions.forEach((prediction) => {
-    Object.keys(prediction).forEach((key) => {
-      if (key === 'predict') {
-        prediction[key].forEach((predict, index) => {
-          template = template.replace(`{{predict${index + 1}}}`, predict)
-        })
-      } else {
-        template = template.replace(`{{${key}}}`, prediction[key])
-      }
-    })
+  predictions.forEach((prediction, mainIndex) => {
+    if (prediction.isHit === 'y') {
+      const hitIndex = prediction.hitDetail.split('').findIndex((item) => item === '1')
+      prediction.predict.forEach((predict, index) => {
+        if (hitIndex === index) {
+          template = template.replace(
+            `{{${mainIndex}_predict${index}}}`,
+            `<span style="color: var(--active-text);">${predict}</span>`
+          )
+          replaceKeys.push(`{{${mainIndex}_predict${index}}}`)
+        } else {
+          template = template.replace(`{{${mainIndex}_predict${index}}}`, predict)
+          replaceKeys.push(`{{${mainIndex}_predict${index}}}`)
+        }
+      })
+    } else {
+      Object.keys(prediction).forEach((key) => {
+        if (key === 'rule') {
+          return
+        }
+        if (key === 'predict') {
+          prediction[key].forEach((predict, index) => {
+            template = template.replace(`{{${mainIndex}_predict${index}}}`, predict)
+            replaceKeys.push(`{{${mainIndex}_predict${index}}}`)
+          })
+        } else {
+          template = template.replace(`{{${mainIndex}_${key}}}`, prediction[key])
+          replaceKeys.push(`{{${mainIndex}_${key}}}`)
+        }
+      })
+    }
   })
 
   // 去掉前后p标签
   template = template.replace(/<p>(.*?)<\/p>/g, '$1')
+
+  console.info('可以替换的字段有哪些', replaceKeys)
 
   return cssVars + template
 }
