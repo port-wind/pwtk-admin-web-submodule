@@ -25,25 +25,27 @@ export interface IssueLine {
 }
 
 export interface IStyleMain {
-  backgroundColor: string
+  borderRadius: number
   contentPaddingLeftRight: number
   contentPaddingTopBottom: number
   paddingLeftRight: number
   paddingTopBottom: number
-  itemBackgroundColor: string
-  borderRadius: number
   listSpacing: number
   itemSpacing: number
+  backgroundColor: string
+  itemBackgroundColor: string
   layout: 'start' | 'center' | 'end' | 'space-between' | 'space-around'
   columnCount: number
 }
+// 期数目录标题样式
 export interface IStyleHeader {
   borderRadius: number
   padding: number
+  backgroundColor: string
+  isGradient: boolean
   headerBgColor: string
   headerBg: string
   headerBg2: string
-  isGradient: boolean
-  titleColor: string
   subTitleColor: string
+  titleColor: string
 }
