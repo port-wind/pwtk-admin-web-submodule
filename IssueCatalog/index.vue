@@ -88,7 +88,7 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
         --active-bg: ${props.datas.configParamJson.dynamicActiveBg || '#ffeb3b'};
         --active-text:${props.datas.configParamJson.dynamicActiveText || '#000'};
         --active-text-align: ${props.datas.configParamJson.dynamicActiveTextAlign || 'center'};
-        --active-font-size: ${props.datas.configParamJson.dynamicActiveFontSize || '1.4rem'};
+        --active-font-size: ${props.datas.configParamJson.dynamicActiveFontSize || '1rem'};
         --active-font-weight: ${props.datas.configParamJson.dynamicActiveFontWeight || '600'};
         --noresult: ${props.datas.configParamJson.dynamicNoResult || '#00F'};
       }
@@ -106,9 +106,9 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
     /{{shengxiao}}/g,
     result.shengxiao ? result.shengxiao : '<span style="color: var(--noresult);">?00</span>'
   )
-  template = template.replace(/{{num}}/g, result?.num?.toString() ? result?.num?.toString() : '')
+  template = template.replace(/{{num}}/g, result?.num?.toString() ? result?.num?.toString() : '?00')
   if (result.size) {
-    template = template.replace(/{{size}}/g, result.size ?? '')
+    template = template.replace(/{{size}}/g, result.size ?? '?00')
   }
 
   // 动态替换竞猜预测数据
