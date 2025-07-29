@@ -6,7 +6,6 @@ import { useIssueList } from '../hooks/issueList'
 import { gameStore, setGameType } from '../store'
 import { getGameName } from '../store/gameStore'
 import type { IForumPost } from '../types/forum'
-import { previousDay } from 'date-fns'
 
 interface IProps {
   datas: IDatas
@@ -35,9 +34,11 @@ const { getIssueNumber, getIssueResult, getLotteryPredictions, issueListItem } =
 // 容器样式
 const containerStyle = computed(() => {
   return {
-    borderRadius: `${styleHeader.value?.borderRadius || 0}px`,
+    borderTopLeftRadius: `${styleHeader.value?.borderRadius || 0}px`,
+    borderTopRightRadius: `${styleHeader.value?.borderRadius || 0}px`,
     padding: `${styleHeader.value?.padding || 0}px`,
-    backgroundColor: styleMain.value?.backgroundColor || '#f1f1f1'
+    backgroundColor: styleMain.value?.backgroundColor || '#f1f1f1',
+    overflow: 'hidden'
   }
 })
 
@@ -149,18 +150,18 @@ const getCurrentPreviousIssue = (issueListItem: IForumPost[]) => {
   }
 }
 
+const handleIssueClick = (issue: IForumPost) => {
+  if (issue.url) {
+    window.open(issue.url, '_blank')
+  } else {
+    window.open(`/postDetail/${issue.postId}`, '_blank')
+  }
+}
+
 // 解析模板
 const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
-  console.log('🚀 ~ parseTemplate ~ issueListItem:', issueListItem)
   const [currentIssue, currentHitResult] = issueInfo(issueListItem)
   const [previousIssues, preHitResult] = issueListItem.length > 1 ? issueInfo(issueListItem.slice(1, 2)) : ['', '']
-  // console.log(
-  //   '🚀 ~ parseTemplate ~  currentIssue, currentHitResult, previousIssues, preHitResult:',
-  //   currentIssue,
-  //   currentHitResult,
-  //   previousIssues,
-  //   preHitResult
-  // )
 
   let template = props.datas.configParamJson.dynamicTemplate || ''
 
@@ -184,7 +185,6 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
 
   // 获取期数
   const issueNumber = getIssueNumber(issue)
-  console.log('🚀 ~ parseTemplate ~ issueNumber:', issue)
   template = template.replace(/{{issueNumber}}/g, issueNumber)
 
   Object.keys(issue).forEach((key) => {
@@ -255,6 +255,7 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
   // 去掉前后p标签
   template = template.replace(/<p>(.*?)<\/p>/g, '$1')
   console.info('可以替换的字段有哪些', replaceKeys)
+
   return cssVars + template
 }
 
@@ -327,6 +328,7 @@ watch(
               padding: `${styleConfig.paddingTopBottom}px ${styleConfig.paddingLeftRight}px`,
               backgroundColor: styleConfig.itemBackgroundColor || '#f1f1f1'
             }"
+            @click="handleIssueClick(issue)"
           >
             <div class="issue-display">
               <div
@@ -389,6 +391,7 @@ watch(
     .issue-item {
       border-bottom: 1px solid #e9ecef;
       background-color: white;
+      cursor: pointer;
 
       &:last-child {
         border-bottom: none;
