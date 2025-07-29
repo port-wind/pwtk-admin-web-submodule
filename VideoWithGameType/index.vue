@@ -11,7 +11,9 @@
 
       <!-- 视频播放区域 -->
       <div class="video-player-container" :style="videoContainerStyle">
+        <!-- 有视频URL时显示视频播放器 -->
         <video
+          v-if="showVideo"
           ref="videoPlayer"
           :src="currentVideoUrl"
           controls
@@ -22,6 +24,13 @@
         >
           您的浏览器不支持视频播放
         </video>
+
+        <!-- 无视频URL时显示占位符 -->
+        <div v-else class="video-placeholder" :style="videoStyle">
+          <div class="placeholder-content" :style="contentStyle">
+            <span>暂无视频</span>
+          </div>
+        </div>
 
         <!-- 当前视频标题 -->
         <!-- <div v-if="currentVideoTitle" class="current-video-title" :style="contentStyle">
@@ -83,6 +92,7 @@ const gameType = computed(() => gameStoreData.value.gameType)
 const videoPlayer = ref<HTMLVideoElement>()
 const currentVideoId = ref<string>('')
 const currentVideoUrl = ref<string>('')
+const showVideo = computed(() => !!currentVideoUrl.value && currentVideoUrl.value !== '')
 const currentVideoTitle = ref<string>('')
 const windowWidth = ref(window.innerWidth)
 
@@ -232,12 +242,22 @@ const thumbnailTitleStyle = computed(() => {
 // 选择视频
 const selectVideo = (video: IVideoItem) => {
   currentVideoId.value = video.id
-  currentVideoUrl.value = video.videoUrl
   currentVideoTitle.value = video.title
-
-  // 重新加载视频
-  if (videoPlayer.value) {
-    videoPlayer.value.load()
+  console.log('selectVideo', video.videoUrl)
+  // 如果没有视频URL，清空所有视频相关状态
+  if (!video.videoUrl) {
+    currentVideoUrl.value = ''
+    if (videoPlayer.value) {
+      videoPlayer.value.pause()
+      videoPlayer.value.removeAttribute('src')
+      videoPlayer.value.load()
+    }
+  } else {
+    // 有视频URL时设置URL并重新加载视频
+    currentVideoUrl.value = video.videoUrl
+    if (videoPlayer.value) {
+      videoPlayer.value.load()
+    }
   }
 }
 
@@ -280,15 +300,6 @@ watch(
     }
   },
   { immediate: true }
-)
-
-// 监听视频配置变化
-watch(
-  () => props.datas.configParamJson.videos,
-  () => {
-    initializeDefaultVideo()
-  },
-  { deep: true, immediate: true }
 )
 
 // Window resize handler
@@ -346,6 +357,20 @@ onUnmounted(() => {
     .video-player {
       display: block;
       background-color: #000;
+    }
+
+    .video-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f5f5f5;
+      border: 2px dashed #ccc;
+
+      .placeholder-content {
+        text-align: center;
+        color: #999;
+        font-size: 14px;
+      }
     }
 
     .current-video-title {
