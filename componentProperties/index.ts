@@ -90,6 +90,7 @@ import TwoGameResultProperties from './TwoGameResult'
 import FixedButtonGroupRBProperties from './FixedButtonGroupRB'
 import IssueCatalogProperties from './IssueCatalog'
 import IssueLineProperties from './IssueLine'
+import VideoWithGameTypeProperties from './VideoWithGameType'
 
 // 合并所有组件配置
 const allComponentProperties = new Map()
@@ -340,6 +341,10 @@ IssueCatalogProperties.forEach((value, key) => {
 })
 
 IssueLineProperties.forEach((value, key) => {
+  allComponentProperties.set(key, value)
+})
+
+VideoWithGameTypeProperties.forEach((value, key) => {
   allComponentProperties.set(key, value)
 })
 
