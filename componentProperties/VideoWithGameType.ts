@@ -84,7 +84,7 @@ componentProperties.set('VideoWithGameType', {
         borderRadius: 8,
         margin: 5,
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-        textColor: '#333333',
+        textColor: '#ffffff',
         fontSize: 14,
         fontWeight: 400,
         textAlign: 'center' as 'left' | 'center' | 'right',

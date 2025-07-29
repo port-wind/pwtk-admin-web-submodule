@@ -116,7 +116,6 @@ const containerStyle = computed(() => ({
 }))
 
 const contentStyle = computed(() => ({
-  color: styleMain.value.textColor,
   fontSize: `${styleMain.value.fontSize}px`,
   fontWeight: styleMain.value.fontWeight,
   textAlign: styleMain.value.textAlign,
@@ -226,7 +225,7 @@ const thumbnailTitleStyle = computed(() => {
     fontSize,
     padding: '0 4px',
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    color: 'white',
+    color: styleMain.value.textColor,
     textAlign: 'center' as 'center',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
