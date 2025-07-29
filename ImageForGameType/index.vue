@@ -12,7 +12,7 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 const datas = computed(() => props.datas)
-// const { currentGameTypeImageUrl, turnToUrl, show } = useGameTypeFields(datas.value)
+const { currentGameTypeImageUrl, turnToUrl, show } = useGameTypeFields(datas.value)
 // watch(show, (newVal) => {
 //   console.log(newVal)
 // })
