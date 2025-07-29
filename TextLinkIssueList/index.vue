@@ -1,7 +1,6 @@
 <script setup lang="ts" name="TextLinkIssueList">
 import { computed, reactive, watch, ref } from 'vue'
 import type { IDatas, ILinkItem } from './type'
-import { getWebSitePost } from '../api'
 import { gameStore } from '../store'
 import { useStore } from '@nanostores/vue'
 import { useIssueList, type IProcessedIssueItem } from '../hooks/issueList'

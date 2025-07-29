@@ -72,6 +72,9 @@ const styleConfig = computed(() => ({
   listSpacing: styleMain.value?.listSpacing || 0,
   numberSpacing: styleMain.value?.itemSpacing || 0,
   borderRadius: styleMain.value?.borderRadius || 0,
+  borderWidth: styleMain.value?.borderWidth || 0,
+  borderStyle: styleMain.value?.borderStyle || 'solid',
+  borderColor: styleMain.value?.borderColor || '#e9ecef',
   contentPaddingLeftRight: styleMain.value?.contentPaddingLeftRight || 0,
   contentPaddingTopBottom: styleMain.value?.contentPaddingTopBottom || 0,
   paddingLeftRight: styleMain.value?.paddingLeftRight || 0,
@@ -85,10 +88,10 @@ const styleConfig = computed(() => ({
 const issueInfo = (issueListItem: IForumPost[]) => {
   const currentPredictions = getLotteryPredictions(issueListItem[0])
 
-  const currentKeys = currentPredictions[0].predict
+  const currentKeys = currentPredictions?.[0]?.predict
   const currentResult = currentKeys
     .map((key, index) => {
-      return currentPredictions[0].rule.options[key][0]
+      return currentPredictions?.[0]?.rule?.options?.[key]?.[0]
     })
     .join('')
 
@@ -148,15 +151,16 @@ const getCurrentPreviousIssue = (issueListItem: IForumPost[]) => {
 
 // 解析模板
 const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
+  console.log('🚀 ~ parseTemplate ~ issueListItem:', issueListItem)
   const [currentIssue, currentHitResult] = issueInfo(issueListItem)
   const [previousIssues, preHitResult] = issueListItem.length > 1 ? issueInfo(issueListItem.slice(1, 2)) : ['', '']
-  console.log(
-    '🚀 ~ parseTemplate ~  currentIssue, currentHitResult, previousIssues, preHitResult:',
-    currentIssue,
-    currentHitResult,
-    previousIssues,
-    preHitResult
-  )
+  // console.log(
+  //   '🚀 ~ parseTemplate ~  currentIssue, currentHitResult, previousIssues, preHitResult:',
+  //   currentIssue,
+  //   currentHitResult,
+  //   previousIssues,
+  //   preHitResult
+  // )
 
   let template = props.datas.configParamJson.dynamicTemplate || ''
 
@@ -180,7 +184,16 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
 
   // 获取期数
   const issueNumber = getIssueNumber(issue)
+  console.log('🚀 ~ parseTemplate ~ issueNumber:', issue)
   template = template.replace(/{{issueNumber}}/g, issueNumber)
+
+  Object.keys(issue).forEach((key) => {
+    if (typeof issue[key] !== 'object') {
+      template = template.replace(`{{${key}}}`, issue[key])
+      replaceKeys.push(`{{${key}}}`)
+    }
+  })
+
   replaceKeys.push('{{issueNumber}}')
   // 获取结果
   const result = getIssueResult(issue)
@@ -304,6 +317,9 @@ watch(
             :key="issue.postId"
             class="issue-item"
             :style="{
+              borderWidth: styleConfig.borderWidth + 'px',
+              borderStyle: styleConfig.borderStyle,
+              borderColor: styleConfig.borderColor,
               borderRadius: Math.max(0, styleConfig.borderRadius) + 'px',
               padding: `${styleConfig.paddingTopBottom}px ${styleConfig.paddingLeftRight}px`,
               backgroundColor: styleConfig.itemBackgroundColor || '#f1f1f1'

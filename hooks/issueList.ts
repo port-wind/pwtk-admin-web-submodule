@@ -230,7 +230,8 @@ export function useIssueList(params: IUseIssueListParams) {
         gameType: gameType,
         page: 1,
         size: size || 10,
-        forumId: forumId
+        forumId: forumId,
+        isAll: 'y'
       })
 
       if (res.success && res.data) {

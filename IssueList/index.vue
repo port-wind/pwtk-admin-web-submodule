@@ -26,9 +26,9 @@ const getWebSitePostData = async () => {
     page: 1,
     size: 100,
     forumId: 'haocai001',
-    gameType: '2032'
+    gameType: '2032',
+    isAll: 'y'
   })
-  console.log('🚀 ~ getWebSitePostData ~ res:', res)
 }
 
 // 处理项目点击

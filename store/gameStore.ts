@@ -56,7 +56,9 @@ export const gameStore = atom<IGameStore>({
     mainboardId: '',
     forumName: '',
     forumCategory: '',
-    forumIcon: ''
+    forumIcon: '',
+    createTime: '',
+    mainboardName: '' 
   },
   activeTabIndex: 0,
   playRules: null

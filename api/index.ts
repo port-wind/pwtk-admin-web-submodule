@@ -79,6 +79,8 @@ export interface IGetWebSitePostParams {
   sortName?: string
   /** 排序方式 */
   sortOrder?: 'ASC' | 'DESC'
+  /** 是否获取所有数据 */
+  isAll?: 'y' | 'n'
 }
 
 export const getWebSitePost = (data: IGetWebSitePostParams): Promise<IResponse<IForumPost>> => {
