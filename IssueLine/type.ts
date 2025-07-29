@@ -9,6 +9,7 @@ export interface IssueLine {
   gameType: string
   subtitle: string
   size: number
+  page: number
   onlyShowCurrentIssue: boolean
   /** 是否查询全部帖子 ， false 只查询不同期的 帖子（是否中奖），目前没有确定*/
   isAll: 'y' | 'n'
@@ -17,6 +18,7 @@ export interface IssueLine {
   frontExtend_Content: string
   backendextend_Enable: boolean
   backendextend_Content: string
+  customJumpUrl: ICustomJumpUrl[]
   dynamicTemplate: string
   dynamicActiveBg: string
   dynamicActiveText: string
@@ -26,6 +28,21 @@ export interface IssueLine {
   dynamicNoResult: string
   styleHeader: IStyleHeader
   styleMain: IStyleMain
+}
+
+export interface ICustomJumpUrl {
+  /**
+   * 自定义跳转链接的索引
+   */
+  index: number
+  /**
+   * 自定义跳转链接的名称
+   */
+  name: string
+  /**
+   * 自定义跳转链接的链接
+   */
+  url: string
 }
 
 export interface IStyleMain {

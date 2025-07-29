@@ -81,6 +81,9 @@ const styleConfig = computed(() => ({
 // 解析模板并替换变量
 const parseTemplate = (issue: IForumPost, _template?: string) => {
   let template = _template || props.datas.configParamJson.dynamicTemplate || ''
+
+  let replaceKeys: string[] = []
+
   // 定义CSS变量
   const cssVars = `
     <style>
@@ -139,7 +142,8 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
   }
 
   // template 去掉前后p标签 中间的p标签保留
-  template = template.replace(/<p>(.*?)<\/p>/g, '$1')
+  template = template.replace(/<p[^>]*>(.*?)<\/p>/g, '$1')
+  console.info('可以替换的字段有哪些', replaceKeys)
 
   return cssVars + template
 }

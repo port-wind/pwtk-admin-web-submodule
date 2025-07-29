@@ -28,6 +28,7 @@ componentProperties.set('IssueLine', {
       titlePrefix: '',
       gameType: '1',
       subtitle: '最新数据',
+      page: 1,
       size: 10,
       onlyShowCurrentIssue: false,
       forumId: '10',
@@ -44,6 +45,7 @@ componentProperties.set('IssueLine', {
       dynamicActiveFontSize: '1.4rem',
       dynamicActiveFontWeight: '600',
       dynamicNoResult: '#00F',
+      customJumpUrl: [],
       styleHeader: {
         backgroundColor: '#f8f9fa',
         isGradient: true,
@@ -69,7 +71,8 @@ componentProperties.set('IssueLine', {
         itemSpacing: 0,
         listSpacing: 8,
         itemBackgroundColor: '#0DEEC5',
-        backgroundColor: '#EACBCB'
+        backgroundColor: '#EACBCB',
+        flexDirection: 'row'
       }
     }
   }

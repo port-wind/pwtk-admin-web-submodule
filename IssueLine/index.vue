@@ -152,10 +152,12 @@ const getCurrentPreviousIssue = (issueListItem: IForumPost[]) => {
 }
 
 const handleIssueClick = (issue: IForumPost) => {
+  const codes = issue?.lotteryPredictions.map((item) => item.code).join(',')
+
   if (issue.url) {
     window.open(issue.url, '_blank')
   } else {
-    window.open(`/postDetail/${issue.postId}`, '_blank')
+    window.open(`/postDetail/${issue.postId}?playTypeCode=${codes}`, '_blank')
   }
 }
 
@@ -253,8 +255,8 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
   template = template.replace(/{{preHitResult}}/g, preHitResult ?? '')
   replaceKeys.push('{{preHitResult}}')
 
-  // 去掉前后p标签
-  template = template.replace(/<p>(.*?)<\/p>/g, '$1')
+  // 去掉前后p标签，包括带属性的p标签
+  template = template.replace(/<p[^>]*>(.*?)<\/p>/g, '$1')
   console.info('可以替换的字段有哪些', replaceKeys)
 
   return cssVars + template
