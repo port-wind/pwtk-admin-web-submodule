@@ -1,6 +1,6 @@
 <script setup lang="ts" name="IssueLine">
 import { ref, computed, onMounted, reactive, watch } from 'vue'
-import type { IDatas } from './type'
+import type { ICustomJumpUrl, IDatas } from './type'
 import { useStore } from '@nanostores/vue'
 import { useIssueList } from '../hooks/issueList'
 import { gameStore, setGameType } from '../store'
@@ -152,11 +152,11 @@ const getCurrentPreviousIssue = (issueListItem: IForumPost[]) => {
   }
 }
 
-const handleIssueClick = (issue: IForumPost) => {
+const handleIssueClick = (issue: IForumPost, customJumpUrl?: ICustomJumpUrl) => {
   const codes = issue?.lotteryPredictions.map((item) => item.code).join(',')
 
-  if (issue.url) {
-    window.open(issue.url, '_blank')
+  if (issue.url || customJumpUrl?.url) {
+    window.open(issue.url || customJumpUrl?.url, '_blank')
   } else {
     window.open(`/postDetail/${issue.postId}?playTypeCode=${codes}`, '_blank')
   }
@@ -334,7 +334,7 @@ watch(
               backgroundColor: styleConfig.itemBackgroundColor || '#f1f1f1',
               boxShadow: `${styleConfig.boxShadow}` || '0 0 10px 0 rgba(0, 0, 0, 0.1)'
             }"
-            @click="handleIssueClick(issue)"
+            @click="handleIssueClick(issue, datas.configParamJson.customJumpUrl[issueIndex])"
           >
             <div class="issue-display">
               <div
@@ -342,7 +342,7 @@ watch(
                 v-if="
                   datas.configParamJson.customJumpUrl.length > 0 &&
                   datas.configParamJson.customJumpUrl[issueIndex] &&
-                  datas.configParamJson.customJumpUrl[issueIndex].name &&
+                  datas.configParamJson.customJumpUrl[issueIndex].url &&
                   datas.configParamJson.customJumpUrl[issueIndex].index === issueIndex + 1
                 "
                 :style="{
@@ -353,15 +353,14 @@ watch(
                 }"
               >
                 <a
-                  v-if="
-                    datas.configParamJson.customJumpUrl &&
-                    datas.configParamJson.customJumpUrl[issueIndex] &&
-                    datas.configParamJson.customJumpUrl[issueIndex].url
-                  "
+                  v-if="datas.configParamJson.customJumpUrl[issueIndex].name"
                   :href="datas.configParamJson.customJumpUrl[issueIndex].url"
                   target="_blank"
                 >
                   <div v-html="datas.configParamJson.customJumpUrl[issueIndex].name"></div>
+                </a>
+                <a v-else :href="datas.configParamJson.customJumpUrl[issueIndex].url" target="_blank">
+                  <div v-html="parseTemplate(issue, issueListItem)"></div>
                 </a>
               </div>
               <div
