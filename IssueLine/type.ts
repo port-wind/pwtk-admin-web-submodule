@@ -58,6 +58,7 @@ export interface IStyleMain {
   itemSpacing: number
   backgroundColor: string
   itemBackgroundColor: string
+  boxShadow: string
   layout: 'start' | 'center' | 'end' | 'space-between' | 'space-around'
   columnCount: number
   flexDirection: 'row' | 'column',

@@ -83,6 +83,7 @@ const styleConfig = computed(() => ({
   paddingTopBottom: styleMain.value?.paddingTopBottom || 0,
   backgroundColor: styleMain.value?.backgroundColor || '#f1f1f1',
   itemBackgroundColor: styleMain.value?.itemBackgroundColor || '#f1f1f1',
+  boxShadow: styleMain.value?.boxShadow || '0 0 10px 0 rgba(0, 0, 0, 0.1)',
   layout: styleMain.value?.layout || 'start',
   columnCount: styleMain.value?.columnCount || 1
 }))
@@ -330,12 +331,41 @@ watch(
               borderColor: styleConfig.borderColor,
               borderRadius: Math.max(0, styleConfig.borderRadius) + 'px',
               padding: `${styleConfig.paddingTopBottom}px ${styleConfig.paddingLeftRight}px`,
-              backgroundColor: styleConfig.itemBackgroundColor || '#f1f1f1'
+              backgroundColor: styleConfig.itemBackgroundColor || '#f1f1f1',
+              boxShadow: `${styleConfig.boxShadow}` || '0 0 10px 0 rgba(0, 0, 0, 0.1)'
             }"
             @click="handleIssueClick(issue)"
           >
             <div class="issue-display">
               <div
+                class="issue-display-content"
+                v-if="
+                  datas.configParamJson.customJumpUrl.length > 0 &&
+                  datas.configParamJson.customJumpUrl[issueIndex] &&
+                  datas.configParamJson.customJumpUrl[issueIndex].name &&
+                  datas.configParamJson.customJumpUrl[issueIndex].index === issueIndex + 1
+                "
+                :style="{
+                  gap: styleConfig.numberSpacing + 'px',
+                  justifyContent: styleConfig.layout || 'flex-start',
+                  display: 'flex',
+                  flexDirection: styleConfig.flexDirection || 'row'
+                }"
+              >
+                <a
+                  v-if="
+                    datas.configParamJson.customJumpUrl &&
+                    datas.configParamJson.customJumpUrl[issueIndex] &&
+                    datas.configParamJson.customJumpUrl[issueIndex].url
+                  "
+                  :href="datas.configParamJson.customJumpUrl[issueIndex].url"
+                  target="_blank"
+                >
+                  <div v-html="datas.configParamJson.customJumpUrl[issueIndex].name"></div>
+                </a>
+              </div>
+              <div
+                v-else
                 class="issue-display-content"
                 :style="{
                   gap: styleConfig.numberSpacing + 'px',
