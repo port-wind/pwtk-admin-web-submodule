@@ -72,7 +72,8 @@ componentProperties.set('IssueLine', {
         listSpacing: 8,
         itemBackgroundColor: '#0DEEC5',
         backgroundColor: '#EACBCB',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)'
       }
     }
   }
