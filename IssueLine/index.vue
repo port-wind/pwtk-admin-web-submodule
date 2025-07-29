@@ -72,6 +72,7 @@ const subTitleStyle = computed(() => {
 const styleConfig = computed(() => ({
   listSpacing: styleMain.value?.listSpacing || 0,
   numberSpacing: styleMain.value?.itemSpacing || 0,
+  flexDirection: styleMain.value?.flexDirection || 'row',
   borderRadius: styleMain.value?.borderRadius || 0,
   borderWidth: styleMain.value?.borderWidth || 0,
   borderStyle: styleMain.value?.borderStyle || 'solid',
@@ -275,7 +276,8 @@ watch(
     if (newGameType) {
       setGameType(newGameType)
     }
-  }
+  },
+  { immediate: true }
 )
 </script>
 
@@ -335,7 +337,9 @@ watch(
                 class="issue-display-content"
                 :style="{
                   gap: styleConfig.numberSpacing + 'px',
-                  justifyContent: styleConfig.layout || 'flex-start'
+                  justifyContent: styleConfig.layout || 'flex-start',
+                  display: 'flex',
+                  flexDirection: styleConfig.flexDirection || 'row'
                 }"
                 v-html="parseTemplate(issue, issueListItem)"
               ></div>

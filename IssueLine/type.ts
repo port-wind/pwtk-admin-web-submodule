@@ -43,6 +43,7 @@ export interface IStyleMain {
   itemBackgroundColor: string
   layout: 'start' | 'center' | 'end' | 'space-between' | 'space-around'
   columnCount: number
+  flexDirection: 'row' | 'column',
 }
 // 期数目录标题样式
 export interface IStyleHeader {
