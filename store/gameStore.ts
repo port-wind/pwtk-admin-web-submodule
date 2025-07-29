@@ -58,11 +58,25 @@ export const gameStore = atom<IGameStore>({
     forumCategory: '',
     forumIcon: '',
     createTime: '',
-    mainboardName: '' 
+    mainboardName: ''
   },
   activeTabIndex: 0,
   playRules: null
 })
+
+export function setGameType(gameType: string) {
+  // 查询所有彩种信息。并找出 current game
+  const gameTypeList = gameStore.get().gameTypeList
+  const currentGame = gameTypeList.find((item) => item.gameType === gameType)
+  if (currentGame) {
+    gameStore.set({
+      ...gameStore.get(),
+      gameType: currentGame.gameType,
+      currentGame: currentGame
+    })
+    console.log('🚀 ~ setGameType ~ currentGame:', currentGame)
+  }
+}
 
 export function changeGameType(game: IGameType) {
   gameStore.set({
@@ -137,7 +151,7 @@ export async function getGameTypeList() {
 }
 
 export async function updateForum(forumData) {
-  let forum = gameStore.get().forum || {} as IGetBBsForumIdByIdData
+  let forum = gameStore.get().forum || ({} as IGetBBsForumIdByIdData)
 
   if (forum) {
     forum.mainboardId = forumData.mainboardId

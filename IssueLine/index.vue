@@ -3,7 +3,7 @@ import { ref, computed, onMounted, reactive, watch } from 'vue'
 import type { IDatas } from './type'
 import { useStore } from '@nanostores/vue'
 import { useIssueList } from '../hooks/issueList'
-import { gameStore } from '../store'
+import { gameStore, setGameType } from '../store'
 import { getGameName } from '../store/gameStore'
 import type { IForumPost } from '../types/forum'
 import { previousDay } from 'date-fns'
@@ -258,12 +258,6 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
   return cssVars + template
 }
 
-watch(issueListItem, (newIssueListItem) => {
-  // console.log('🚀 ~ newIssueListItem:', newIssueListItem)
-  // const res = getCurrentPreviousIssue(newIssueListItem)
-  // console.log('🚀 ~ res:', res)
-})
-
 // 监听参数变化
 watch(
   () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
@@ -271,6 +265,15 @@ watch(
     issueParams.size = Number(newSize) || 10
     issueParams.forumId = String(newForumId) || '10'
     issueParams.gameType = String(newGameType)
+  }
+)
+
+watch(
+  () => props.datas.configParamJson.gameType,
+  (newGameType) => {
+    if (newGameType) {
+      setGameType(newGameType)
+    }
   }
 )
 </script>
