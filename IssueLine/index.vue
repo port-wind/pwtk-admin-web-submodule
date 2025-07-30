@@ -375,7 +375,6 @@ watch(
                 v-if="
                   datas.configParamJson.customJumpUrl.length > 0 &&
                   datas.configParamJson.customJumpUrl[issueIndex] &&
-                  datas.configParamJson.customJumpUrl[issueIndex].url &&
                   datas.configParamJson.customJumpUrl[issueIndex].index === issueIndex + 1
                 "
                 :style="{
@@ -386,15 +385,36 @@ watch(
                 }"
               >
                 <a
-                  v-if="datas.configParamJson.customJumpUrl[issueIndex].name"
+                  v-if="
+                    datas.configParamJson.customJumpUrl[issueIndex].name &&
+                    datas.configParamJson.customJumpUrl[issueIndex].url
+                  "
                   :href="datas.configParamJson.customJumpUrl[issueIndex].url"
                   target="_blank"
                 >
                   <div v-html="datas.configParamJson.customJumpUrl[issueIndex].name"></div>
                 </a>
-                <a v-else :href="datas.configParamJson.customJumpUrl[issueIndex].url" target="_blank">
+                <div
+                  v-else-if="
+                    datas.configParamJson.customJumpUrl[issueIndex].name &&
+                    !datas.configParamJson.customJumpUrl[issueIndex].url
+                  "
+                >
+                  <div v-html="datas.configParamJson.customJumpUrl[issueIndex].name"></div>
+                </div>
+                <a
+                  v-else-if="
+                    !datas.configParamJson.customJumpUrl[issueIndex].name &&
+                    datas.configParamJson.customJumpUrl[issueIndex].url
+                  "
+                  :href="datas.configParamJson.customJumpUrl[issueIndex].url"
+                  target="_blank"
+                >
                   <div v-html="parseTemplate(issue, issueListItem)"></div>
                 </a>
+                <div v-else>
+                  <div v-html="parseTemplate(issue, issueListItem)"></div>
+                </div>
               </div>
               <div
                 v-else
