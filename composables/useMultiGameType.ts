@@ -48,6 +48,8 @@ export function useMultiGameType(datas: any) {
   )
   return {
     activeGameType,
+    activeTab,
+    selectedGameTypes,
     handleActiveGameType,
     handleTabClick
   }
