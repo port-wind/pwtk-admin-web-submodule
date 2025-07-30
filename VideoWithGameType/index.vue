@@ -1,5 +1,6 @@
 <template>
   <div class="VideoWithGameType">
+    {{ datas.configParamJson.selectedGameTypes.map((item) => item.active) }}
     <div class="video-with-gametype-content" :style="containerStyle" v-if="datas.configParamJson.enable">
       <!-- 标题区域 -->
       <!-- <div v-if="datas.configParamJson.title" class="title-header" :style="titleHeaderStyle">
@@ -78,6 +79,7 @@ import { useStore } from '@nanostores/vue'
 import { gameStore } from '../store/index'
 import type { IDatas, IVideoItem } from './type'
 import xam from './xam.jpg'
+import { useMultiGameType } from '../composables/useMultiGameType'
 
 interface IProps {
   datas: IDatas
@@ -87,7 +89,7 @@ const props = defineProps<IProps>()
 // gameType Store 集成
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
-
+const { handleActiveGameType } = useMultiGameType(props.datas)
 // 组件状态
 const videoPlayer = ref<HTMLVideoElement>()
 const currentVideoId = ref<string>('')
@@ -296,6 +298,7 @@ watch(
       console.log(`🎮 Game Type Changed: ${newGameType}`)
       // 重新初始化默认视频
       initializeDefaultVideo()
+      handleActiveGameType(newGameType)
     }
   },
   { immediate: true }

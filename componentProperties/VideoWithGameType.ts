@@ -117,7 +117,8 @@ componentProperties.set('VideoWithGameType', {
         fontWeight: 400,
         textAlign: 'center' as 'left' | 'center' | 'right',
         lineHeight: '1.5'
-      }
+      },
+      selectedGameTypes: []
     }
   }
 })
