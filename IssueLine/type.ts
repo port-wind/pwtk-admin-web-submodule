@@ -15,8 +15,10 @@ export interface IssueLine {
   isAll: 'y' | 'n'
   forumId: string
   frontExtend_Enable: boolean
+  frontExtend_StyleEnable: boolean
   frontExtend_Content: string
   backendextend_Enable: boolean
+  backendextend_StyleEnable: boolean
   backendextend_Content: string
   customJumpUrl: ICustomJumpUrl[]
   dynamicTemplate: string

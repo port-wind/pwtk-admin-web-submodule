@@ -299,7 +299,40 @@ watch(
 
       <!-- 前置扩展 -->
       <div class="issue-list-extend" v-if="datas.configParamJson.frontExtend_Enable">
-        <div v-html="datas.configParamJson.frontExtend_Content"></div>
+        <div
+          class="issue-list"
+          v-if="datas.configParamJson.enable"
+          :style="{
+            backgroundColor: styleConfig.backgroundColor || 'currentColor',
+            padding: `${styleConfig.contentPaddingTopBottom}px ${styleConfig.contentPaddingLeftRight}px`
+          }"
+        >
+          <div
+            class="issue-item-content"
+            :style="{
+              gap: styleConfig.listSpacing + 'px',
+              gridTemplateColumns: `repeat(${styleConfig.columnCount}, 1fr)`
+            }"
+          >
+            <div
+              class="issue-item"
+              :style="
+                datas.configParamJson.frontExtend_StyleEnable
+                  ? {
+                      borderWidth: styleConfig.borderWidth + 'px',
+                      borderStyle: styleConfig.borderStyle,
+                      borderColor: styleConfig.borderColor,
+                      borderRadius: Math.max(0, styleConfig.borderRadius) + 'px',
+                      padding: `${styleConfig.paddingTopBottom}px ${styleConfig.paddingLeftRight}px`,
+                      backgroundColor: styleConfig.itemBackgroundColor || '#f1f1f1',
+                      boxShadow: `${styleConfig.boxShadow}` || '0 0 10px 0 rgba(0, 0, 0, 0.1)'
+                    }
+                  : {}
+              "
+              v-html="datas.configParamJson.frontExtend_Content"
+            ></div>
+          </div>
+        </div>
       </div>
 
       <!-- 期数列表 -->
@@ -386,7 +419,40 @@ watch(
 
       <!-- 后置扩展 -->
       <div class="issue-list-extend" v-if="datas.configParamJson.backendextend_Enable">
-        <div v-html="datas.configParamJson.backendextend_Content"></div>
+        <div
+          class="issue-list"
+          v-if="datas.configParamJson.enable"
+          :style="{
+            backgroundColor: styleConfig.backgroundColor || 'currentColor',
+            padding: `${styleConfig.contentPaddingTopBottom}px ${styleConfig.contentPaddingLeftRight}px`
+          }"
+        >
+          <div
+            class="issue-item-content"
+            :style="{
+              gap: styleConfig.listSpacing + 'px',
+              gridTemplateColumns: `repeat(${styleConfig.columnCount}, 1fr)`
+            }"
+          >
+            <div
+              class="issue-item"
+              :style="
+                datas.configParamJson.backendextend_StyleEnable
+                  ? {
+                      borderWidth: styleConfig.borderWidth + 'px',
+                      borderStyle: styleConfig.borderStyle,
+                      borderColor: styleConfig.borderColor,
+                      borderRadius: Math.max(0, styleConfig.borderRadius) + 'px',
+                      padding: `${styleConfig.paddingTopBottom}px ${styleConfig.paddingLeftRight}px`,
+                      backgroundColor: styleConfig.itemBackgroundColor || '#f1f1f1',
+                      boxShadow: `${styleConfig.boxShadow}` || '0 0 10px 0 rgba(0, 0, 0, 0.1)'
+                    }
+                  : {}
+              "
+              v-html="datas.configParamJson.backendextend_Content"
+            ></div>
+          </div>
+        </div>
       </div>
     </div>
     <slot name="deles" />
