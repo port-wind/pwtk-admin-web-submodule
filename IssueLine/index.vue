@@ -247,6 +247,11 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
     }
   })
 
+  issue.title.split(' ').forEach((item, index) => {
+    template = template.replace(`{{title${index}}}`, item)
+    replaceKeys.push(`{{title${index}}}`)
+  })
+
   template = template.replace(/{{currentIssue}}/g, currentIssue ?? '')
   replaceKeys.push('{{currentIssue}}')
   template = template.replace(/{{currentHitResult}}/g, currentHitResult ?? '')
