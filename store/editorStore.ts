@@ -6,7 +6,7 @@ interface IEditorStore {
 }
 
 export const editorStore = atom<IEditorStore>({
-  listKeys: []
+  listKeys: [1, 2, 3, 4]
 })
 
 export function setListKeys(listKeys: any[]) {
