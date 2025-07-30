@@ -55,5 +55,8 @@ export interface VideoWithGameTypeConfig {
   videos: IVideoItem[]
   styleHeader: IStyleHeader
   styleMain: IStyleMain
+  templateObj: {
+    videos: IVideoItem[]
+  }
 }
 export interface IDatas extends ISetStyle<VideoWithGameTypeConfig> {}

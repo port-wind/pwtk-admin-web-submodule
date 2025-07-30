@@ -66,6 +66,34 @@ componentProperties.set('VideoWithGameType', {
           order: 3
         }
       ],
+      templateObj: {
+        videos: [
+          {
+            id: 'video1',
+            title: '视频',
+            imageUrl: '',
+            videoUrl: '',
+            enabled: true,
+            order: 1
+          },
+          {
+            id: 'video2',
+            title: '视频',
+            imageUrl: '',
+            videoUrl: '',
+            enabled: true,
+            order: 2
+          },
+          {
+            id: 'video3',
+            title: '视频',
+            imageUrl: '',
+            videoUrl: '',
+            enabled: true,
+            order: 3
+          }
+        ]
+      },
       styleHeader: {
         backgroundColor: '#4a90e2',
         isGradient: true,
