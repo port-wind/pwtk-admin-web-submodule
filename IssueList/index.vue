@@ -2,12 +2,15 @@
 import { computed, onMounted } from 'vue'
 import type { IDatas } from './type'
 import { getWebSitePost } from '../api'
+import { setListKeys, clearListKeys, editorStore, gameStore } from '../store'
+import { useStore } from '@nanostores/vue'
 
 interface IProps {
   datas: IDatas
 }
 
 const props = defineProps<IProps>()
+const editorStoreData = useStore(editorStore)
 
 // 获取启用且限制数量的列表项
 const displayItems = computed(() => {
