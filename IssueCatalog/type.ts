@@ -27,6 +27,7 @@ export interface IssueCatalog {
   dynamicTemplate: string // 动态全局模版
   dynamicActiveBg: string // 背景色
   dynamicActiveBgText: string // 背景对照文字颜色
+  dynamicFontSize: number // 全局字体大小
 
   dynamicActiveText: string // 竞猜预测命中时文字色
   dynamicNoResult: string // 未开奖时显示的文字

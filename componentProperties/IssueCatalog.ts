@@ -63,6 +63,7 @@ componentProperties.set('IssueCatalog', {
       playGameCode: 8008,
       dynamicActiveBg: '#ffeb3b',
       dynamicActiveBgText: '#000',
+      dynamicFontSize: 1,
       dynamicActiveText: '#00FF00',
       dynamicNoResult: '未开奖',
       frontExtend_Enable: true,
