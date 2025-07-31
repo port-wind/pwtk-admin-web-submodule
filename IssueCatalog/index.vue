@@ -509,10 +509,10 @@ watch(
   :deep(table) {
     td:nth-child(2) {
       background-color: var(--active-bg);
-      color: var(--active-text);
-      text-align: var(--active-text-align);
-      font-size: var(--active-font-size);
-      font-weight: var(--active-font-weight);
+      // color: var(--active-text);
+      // text-align: var(--active-text-align);
+      // font-size: var(--active-font-size);
+      // font-weight: var(--active-font-weight);
     }
   }
 }
