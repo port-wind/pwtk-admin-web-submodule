@@ -1,6 +1,6 @@
 import { useStore } from '@nanostores/vue'
 import { computed, ref, watch } from 'vue'
-import { gameStore } from '@/views/WebVision/components/componentsbiz/store'
+import { gameStore } from '../store/index'
 
 /**
  * 🎮 GameType Fields Composable
