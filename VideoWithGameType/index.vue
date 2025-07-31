@@ -85,10 +85,25 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 const datas = computed(() => props.datas)
+
+// Local reactive state for selectedGameTypes
+const localSelectedGameTypes = ref<any[]>([])
+
+// Initialize localSelectedGameTypes from props
+watch(
+  () => props.datas.configParamJson.selectedGameTypes,
+  (newVal) => {
+    if (newVal) {
+      localSelectedGameTypes.value = [...newVal]
+    }
+  },
+  { immediate: true }
+)
+
 // gameType Store 集成
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
-const { handleActiveGameType, showComponent } = useMultiGameType(datas)
+const { showComponent } = useMultiGameType(datas)
 // 组件状态
 const videoPlayer = ref<HTMLVideoElement>()
 const currentVideoId = ref<string>('')
@@ -102,7 +117,7 @@ const styleMain = computed(() => datas.value.configParamJson.styleMain)
 // 启用的视频列表 - 从当前激活的游戏类型获取视频数据
 const enabledVideos = computed(() => {
   // 获取当前激活的游戏类型数据
-  const activeGameType = datas.value.configParamJson.selectedGameTypes.find((item: any) => item.active)
+  const activeGameType = localSelectedGameTypes.value.find((item: any) => item.active)
   // 如果没有激活的游戏类型或没有视频数据，返回空数组
   if (!activeGameType?.customData?.videos) {
     return []
@@ -296,7 +311,16 @@ const handleImageError = (event: Event) => {
   // @ts-ignore
   img.src = xam.src ?? xam
 }
-
+const handleActiveGameType = (g: string) => {
+  const newSelectedGameTypes = localSelectedGameTypes.value.map((item: any) => {
+    return {
+      ...item,
+      active: item.gameType === g
+    }
+  })
+  localSelectedGameTypes.value = newSelectedGameTypes
+  console.log('list updated', newSelectedGameTypes)
+}
 // 监听游戏类型变化
 watch(
   gameType,

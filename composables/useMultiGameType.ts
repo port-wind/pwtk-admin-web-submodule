@@ -21,12 +21,10 @@ export function useMultiGameType(datas: any) {
   }
   const handleActiveGameType = (g: string) => {
     const newSelectedGameTypes = comSelectedGameTypes.value.map((item: any) => {
-      if (item.gameType === g) {
-        item.active = true
-      } else {
-        item.active = false
+      return {
+        ...item,
+        active: item.gameType === g
       }
-      return item
     })
     setSelectedGameTypes(newSelectedGameTypes)
     console.log('list updated', newSelectedGameTypes)
