@@ -92,6 +92,7 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
     <style>
       :root {
         --active-bg: ${props.datas.configParamJson.dynamicActiveBg || '#ffeb3b'};
+        --active-bg-text:${props.datas.configParamJson.dynamicActiveBgText || '#000'};
         --active-text:${props.datas.configParamJson.dynamicActiveText || '#000'};
         --active-text-align: ${props.datas.configParamJson.dynamicActiveTextAlign || 'center'};
         --active-font-size: ${props.datas.configParamJson.dynamicActiveFontSize || '1rem'};
@@ -507,12 +508,16 @@ watch(
 
 .issue-list-multi-item {
   :deep(table) {
+    border: 1px solid #e9ecef;
     td:nth-child(2) {
       background-color: var(--active-bg);
-      // color: var(--active-text);
+      color: var(--active-bg-text);
       // text-align: var(--active-text-align);
       // font-size: var(--active-font-size);
       // font-weight: var(--active-font-weight);
+    }
+    td {
+      border: 1px solid #e9ecef;
     }
   }
 }

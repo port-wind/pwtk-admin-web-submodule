@@ -102,7 +102,7 @@ export function useIssueList(params: IUseIssueListParams) {
     // predict : ['欲除豺虎论三略']
     // predictTitle : ""
     // return issue.lotteryPredictions || []
-    const predictions = issue.lotteryPredictions || []
+    const predictions = issue?.lotteryPredictions || []
     return predictions.map((prediction) => {
       return {
         ...prediction,
@@ -147,7 +147,7 @@ export function useIssueList(params: IUseIssueListParams) {
   }
 
   const getIssueNumber = (issue: IForumPost) => {
-    const postIssue = issue.postIssue
+    const postIssue = issue?.postIssue || ''
     if (!postIssue) return ''
     // 从postIssue字符串中提取后面的数字部分作为期数
     // 例如: "2025141" -> "141"
