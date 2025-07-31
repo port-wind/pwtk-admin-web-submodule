@@ -10,32 +10,31 @@ export function useMultiGameType(datas: any) {
   const activeTab = ref<string>('')
   const gameStoreData = useStore(gameStore)
   const gameType = computed(() => gameStoreData.value.gameType)
-  const selectedGameTypes = computed(() => datas.value.configParamJson.selectedGameTypes)
+  const selectedGameTypes = ref(datas.value.configParamJson.selectedGameTypes)
   const activeGameType = computed(() => {
-    return selectedGameTypes.value.find((item) => item.active)
+    console.log('activeGameType computed', selectedGameTypes.value)
+    return selectedGameTypes.value.find(item => item.active)
   })
   const showComponent = computed(() => {
     console.log(activeGameType.value, gameType.value)
     return !!activeGameType.value && activeGameType.value.gameType === gameType.value
   })
-  const handleTabClick = (_: any) => {
-    selectedGameTypes.value.forEach((gt) => {
-      if (gt.gameType === activeTab.value) {
-        gt.active = true
-      } else {
-        gt.active = false
-      }
-    })
-    setGameType(activeTab.value)
-  }
+
   const handleActiveGameType = (g: string) => {
-    selectedGameTypes.value.forEach((item) => {
+    const newSelectedGameTypes = selectedGameTypes.value.map((item: any) => {
       if (item.gameType === g) {
         item.active = true
       } else {
         item.active = false
       }
+      return item
     })
+    setSelectedGameTypes(newSelectedGameTypes)
+    console.log('list updated', newSelectedGameTypes)
+  }
+  const handleTabClick = (g: any) => {
+    handleActiveGameType(g)
+    setGameType(activeTab.value)
   }
   const setSelectedGameTypes = (gameTypes: any) => {
     datas.value.configParamJson.selectedGameTypes = gameTypes
@@ -43,19 +42,23 @@ export function useMultiGameType(datas: any) {
   // 当activeTab为空且有selectedGameTypes时，设置第一个为活跃状态
   watch(
     selectedGameTypes,
-    (newGameTypes) => {
+    newGameTypes => {
       if (newGameTypes.length > 0 && !activeTab.value) {
         activeTab.value = newGameTypes[0].gameType
         handleTabClick(activeTab.value)
       }
       // 如果当前activeTab不在新的游戏类型列表中，设置为第一个
-      if (newGameTypes.length > 0 && !newGameTypes.find((gt) => gt.gameType === activeTab.value)) {
+      if (newGameTypes.length > 0 && !newGameTypes.find(gt => gt.gameType === activeTab.value)) {
         activeTab.value = newGameTypes[0].gameType
         handleTabClick(activeTab.value)
       }
     },
     { immediate: true }
   )
+  watch(gameType, newGameType => {
+    console.log('gameType changed', newGameType)
+    handleActiveGameType(newGameType)
+  })
   return {
     activeGameType,
     activeTab,
@@ -63,6 +66,6 @@ export function useMultiGameType(datas: any) {
     showComponent,
     setSelectedGameTypes,
     handleActiveGameType,
-    handleTabClick
+    handleTabClick,
   }
 }
