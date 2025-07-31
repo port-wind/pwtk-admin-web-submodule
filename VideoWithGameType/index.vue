@@ -88,7 +88,7 @@ const datas = computed(() => props.datas)
 // gameType Store 集成
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
-const { handleActiveGameType, showComponent, activeGameType } = useMultiGameType(datas)
+const { handleActiveGameType, showComponent } = useMultiGameType(datas)
 // 组件状态
 const videoPlayer = ref<HTMLVideoElement>()
 const currentVideoId = ref<string>('')
@@ -96,23 +96,20 @@ const currentVideoUrl = ref<string>('')
 const showVideo = computed(() => !!currentVideoUrl.value && currentVideoUrl.value !== '')
 const currentVideoTitle = ref<string>('')
 const windowWidth = ref(window.innerWidth)
-
 // 样式计算属性
 const styleMain = computed(() => datas.value.configParamJson.styleMain)
 
 // 启用的视频列表 - 从当前激活的游戏类型获取视频数据
 const enabledVideos = computed(() => {
   // 获取当前激活的游戏类型数据
-
+  const activeGameType = datas.value.configParamJson.selectedGameTypes.find((item: any) => item.active)
   // 如果没有激活的游戏类型或没有视频数据，返回空数组
-  if (!activeGameType.value?.customData?.videos) {
+  if (!activeGameType?.customData?.videos) {
     return []
   }
 
   // 返回启用的视频，按order排序
-  return activeGameType.value.customData.videos
-    .filter((video: any) => video.enabled)
-    .sort((a: any, b: any) => a.order - b.order)
+  return activeGameType.customData.videos.filter((video: any) => video.enabled)
 })
 
 // 容器样式
@@ -123,14 +120,14 @@ const containerStyle = computed(() => ({
   margin: `${styleMain.value.margin}px auto`,
   boxShadow: styleMain.value.boxShadow,
   height: `${datas.value.configParamJson.heights}vh`,
-  minHeight: `${datas.value.configParamJson.minHeight}px`,
+  minHeight: `${datas.value.configParamJson.minHeight}px`
 }))
 
 const contentStyle = computed(() => ({
   fontSize: `${styleMain.value.fontSize}px`,
   fontWeight: styleMain.value.fontWeight,
   textAlign: styleMain.value.textAlign,
-  lineHeight: styleMain.value.lineHeight,
+  lineHeight: styleMain.value.lineHeight
 }))
 
 const videoContainerStyle = computed(() => ({
@@ -140,14 +137,14 @@ const videoContainerStyle = computed(() => ({
   justifyContent: 'center',
   backgroundColor: '#000000',
   borderRadius: `${styleMain.value.borderRadius}px`,
-  overflow: 'hidden',
+  overflow: 'hidden'
 }))
 
 const videoStyle = computed(() => ({
   width: '100%',
   height: '100%',
   borderRadius: `${styleMain.value.borderRadius}px`,
-  objectFit: 'contain' as 'contain',
+  objectFit: 'contain' as 'contain'
 }))
 
 const thumbnailContainerStyle = computed(() => {
@@ -160,7 +157,7 @@ const thumbnailContainerStyle = computed(() => {
     flexDirection: 'column' as 'column',
     justifyContent: 'center',
     padding: remainingHeight > 25 ? '8px 0' : '4px 0',
-    overflow: 'hidden',
+    overflow: 'hidden'
   }
 })
 
@@ -198,7 +195,7 @@ const thumbnailItemStyle = computed(() => {
     minWidth: `${Math.round(thumbnailWidth)}px`,
     flexShrink: 0,
     display: 'flex',
-    flexDirection: 'column' as 'column',
+    flexDirection: 'column' as 'column'
   }
 })
 
@@ -207,7 +204,7 @@ const thumbnailImageStyle = computed(() => {
     flex: 1, // Take all available space above the fixed title
     width: '100%',
     objectFit: 'cover' as 'cover',
-    minHeight: '30px', // Ensure minimum image height
+    minHeight: '30px' // Ensure minimum image height
   }
 })
 
@@ -245,7 +242,7 @@ const thumbnailTitleStyle = computed(() => {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexShrink: 0, // Don't shrink
+    flexShrink: 0 // Don't shrink
   }
 })
 
@@ -296,13 +293,14 @@ const handleVideoLoaded = () => {
 // 图片错误处理
 const handleImageError = (event: Event) => {
   const img = event.target as HTMLImageElement
+  // @ts-ignore
   img.src = xam.src ?? xam
 }
 
 // 监听游戏类型变化
 watch(
   gameType,
-  newGameType => {
+  (newGameType) => {
     if (newGameType) {
       console.log(`🎮 Game Type Changed: ${newGameType}`)
       // 重新初始化默认视频
