@@ -30,6 +30,9 @@ export function useMultiGameType(datas: any) {
       }
     })
   }
+  const setSelectedGameTypes = (gameTypes: any) => {
+    datas.configParamJson.selectedGameTypes = gameTypes
+  }
   // 当activeTab为空且有selectedGameTypes时，设置第一个为活跃状态
   watch(
     selectedGameTypes,
@@ -50,6 +53,7 @@ export function useMultiGameType(datas: any) {
     activeGameType,
     activeTab,
     selectedGameTypes,
+    setSelectedGameTypes,
     handleActiveGameType,
     handleTabClick
   }
