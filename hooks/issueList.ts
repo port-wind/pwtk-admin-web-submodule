@@ -106,7 +106,7 @@ export function useIssueList(params: IUseIssueListParams) {
     return predictions.map((prediction) => {
       return {
         ...prediction,
-        predict: prediction.predict.map((num: string) => num.padStart(2, '0'))
+        predict: prediction.predict.map((num: string) => num)
       }
     })
   }
