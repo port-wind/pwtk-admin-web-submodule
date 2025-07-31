@@ -1,6 +1,6 @@
 import { useStore } from '@nanostores/vue'
 import { computed, ref, watch } from 'vue'
-import { gameStore } from '../store/index'
+import { gameStore, setGameType } from '@/views/WebVision/components/componentsbiz/store'
 
 /**
  * 🎮 GameType Fields Composable
@@ -26,6 +26,7 @@ export function useMultiGameType(datas: any) {
         gt.active = false
       }
     })
+    setGameType(activeTab.value)
   }
   const handleActiveGameType = (g: string) => {
     selectedGameTypes.value.forEach((item) => {

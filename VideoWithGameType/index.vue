@@ -1,7 +1,5 @@
 <template>
   <div class="VideoWithGameType" v-if="showComponent">
-    {{ selectedGameTypes }}
-
     <div class="video-with-gametype-content" :style="containerStyle" v-if="datas.configParamJson.enable">
       <!-- 标题区域 -->
       <!-- <div v-if="datas.configParamJson.title" class="title-header" :style="titleHeaderStyle">
