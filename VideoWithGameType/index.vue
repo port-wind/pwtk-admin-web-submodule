@@ -297,7 +297,7 @@ const handleVideoLoaded = () => {
 // 图片错误处理
 const handleImageError = (event: Event) => {
   const img = event.target as HTMLImageElement
-  img.src = xam.src
+  img.src = xam.src ?? xam
 }
 
 // 监听游戏类型变化
