@@ -93,7 +93,7 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
       :root {
         --active-bg: ${props.datas.configParamJson.dynamicActiveBg || '#ffeb3b'};
         --active-bg-text:${props.datas.configParamJson.dynamicActiveBgText || '#000'};
-        --dynamic-font-size: ${props.datas.configParamJson.dynamicFontSize || '1rem'};
+        --dynamic-font-size: ${props.datas.configParamJson.dynamicFontSize}rem;
         --active-text:${props.datas.configParamJson.dynamicActiveText || '#000'};
         --active-text-align: ${props.datas.configParamJson.dynamicActiveTextAlign || 'center'};
         --active-font-size: ${props.datas.configParamJson.dynamicActiveFontSize || '1rem'};
@@ -507,14 +507,30 @@ watch(
   :deep(table) {
     border-collapse: collapse;
     font-size: var(--dynamic-font-size);
+    line-height: 1.5;
+    font-variant: tabular-nums;
     td {
-      font-size: var(--dynamic-font-size);
+      // font-size: var(--dynamic-font-size) ;
       border: 1px solid #e9ecef;
+
+      span {
+        font-family: Microsoft YaHei, Helvetica, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+          Ubuntu, Cantarell, 'Fira Sans' !important;
+      }
+
+      strong {
+        font-family: Microsoft YaHei, Helvetica, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+          Ubuntu, Cantarell, 'Fira Sans' !important;
+      }
     }
 
     // 第一列固定宽度
     td:first-child {
-      width: 79px;
+      width: 80px;
+    }
+
+    td:last-child {
+      width: 80px;
     }
 
     // border: 1px solid #e9ecef;
