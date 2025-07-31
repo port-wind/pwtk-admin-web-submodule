@@ -10,7 +10,7 @@ export function useMultiGameType(datas: any) {
   const activeTab = ref<string>('')
   const gameStoreData = useStore(gameStore)
   const gameType = computed(() => gameStoreData.value.gameType)
-  const selectedGameTypes = computed(() => datas.configParamJson.selectedGameTypes)
+  const selectedGameTypes = computed(() => datas.value.configParamJson.selectedGameTypes)
   const activeGameType = computed(() => {
     return selectedGameTypes.value.find((item) => item.active)
   })
@@ -27,9 +27,9 @@ export function useMultiGameType(datas: any) {
       }
     })
   }
-  const handleActiveGameType = (gameType: string) => {
+  const handleActiveGameType = (g: string) => {
     selectedGameTypes.value.forEach((item) => {
-      if (item.gameType === gameType) {
+      if (item.gameType === g) {
         item.active = true
       } else {
         item.active = false
@@ -37,7 +37,7 @@ export function useMultiGameType(datas: any) {
     })
   }
   const setSelectedGameTypes = (gameTypes: any) => {
-    datas.configParamJson.selectedGameTypes = gameTypes
+    datas.value.configParamJson.selectedGameTypes = gameTypes
   }
   // 当activeTab为空且有selectedGameTypes时，设置第一个为活跃状态
   watch(

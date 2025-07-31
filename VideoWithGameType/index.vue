@@ -1,5 +1,7 @@
 <template>
   <div class="VideoWithGameType" v-if="showComponent">
+    {{ selectedGameTypes }}
+
     <div class="video-with-gametype-content" :style="containerStyle" v-if="datas.configParamJson.enable">
       <!-- 标题区域 -->
       <!-- <div v-if="datas.configParamJson.title" class="title-header" :style="titleHeaderStyle">
@@ -84,11 +86,11 @@ interface IProps {
   datas: IDatas
 }
 const props = defineProps<IProps>()
-
+const datas = computed(() => props.datas)
 // gameType Store 集成
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
-const { handleActiveGameType, showComponent } = useMultiGameType(props.datas)
+const { handleActiveGameType, showComponent, selectedGameTypes } = useMultiGameType(datas)
 // 组件状态
 const videoPlayer = ref<HTMLVideoElement>()
 const currentVideoId = ref<string>('')
@@ -98,11 +100,22 @@ const currentVideoTitle = ref<string>('')
 const windowWidth = ref(window.innerWidth)
 
 // 样式计算属性
-const styleMain = computed(() => props.datas.configParamJson.styleMain)
+const styleMain = computed(() => datas.value.configParamJson.styleMain)
 
-// 启用的视频列表
+// 启用的视频列表 - 从当前激活的游戏类型获取视频数据
 const enabledVideos = computed(() => {
-  return props.datas.configParamJson.videos.filter((video) => video.enabled).sort((a, b) => a.order - b.order)
+  // 获取当前激活的游戏类型数据
+  const activeGameType = selectedGameTypes.value?.find((gt) => gt.active)
+
+  // 如果没有激活的游戏类型或没有视频数据，返回空数组
+  if (!activeGameType?.customData?.videos) {
+    return []
+  }
+
+  // 返回启用的视频，按order排序
+  return activeGameType.customData.videos
+    .filter((video: any) => video.enabled)
+    .sort((a: any, b: any) => a.order - b.order)
 })
 
 // 容器样式
@@ -112,8 +125,8 @@ const containerStyle = computed(() => ({
   padding: `${styleMain.value.containerPadding}px`,
   margin: `${styleMain.value.margin}px auto`,
   boxShadow: styleMain.value.boxShadow,
-  height: `${props.datas.configParamJson.heights}vh`,
-  minHeight: `${props.datas.configParamJson.minHeight}px`
+  height: `${datas.value.configParamJson.heights}vh`,
+  minHeight: `${datas.value.configParamJson.minHeight}px`
 }))
 
 const contentStyle = computed(() => ({
@@ -124,7 +137,7 @@ const contentStyle = computed(() => ({
 }))
 
 const videoContainerStyle = computed(() => ({
-  height: `${props.datas.configParamJson.videoHeightPercent}%`,
+  height: `${datas.value.configParamJson.videoHeightPercent}%`,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -141,7 +154,7 @@ const videoStyle = computed(() => ({
 }))
 
 const thumbnailContainerStyle = computed(() => {
-  const remainingHeight = 100 - props.datas.configParamJson.videoHeightPercent
+  const remainingHeight = 100 - datas.value.configParamJson.videoHeightPercent
   const minHeight = Math.max(remainingHeight, 15) // Ensure minimum 15% height
 
   return {
@@ -155,8 +168,8 @@ const thumbnailContainerStyle = computed(() => {
 })
 
 const thumbnailItemStyle = computed(() => {
-  const remainingHeight = 100 - props.datas.configParamJson.videoHeightPercent
-  const componentHeight = props.datas.configParamJson.heights
+  const remainingHeight = 100 - datas.value.configParamJson.videoHeightPercent
+  const componentHeight = datas.value.configParamJson.heights
 
   // Calculate responsive thumbnail width based on available space
   let thumbnailWidth = 120
@@ -202,7 +215,7 @@ const thumbnailImageStyle = computed(() => {
 })
 
 const thumbnailTitleStyle = computed(() => {
-  const remainingHeight = 100 - props.datas.configParamJson.videoHeightPercent
+  const remainingHeight = 100 - datas.value.configParamJson.videoHeightPercent
 
   let fontSize = '12px'
   let fixedHeight = '24px'
