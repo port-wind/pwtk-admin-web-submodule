@@ -194,7 +194,7 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
 
   Object.keys(issue).forEach((key) => {
     if (typeof issue[key] !== 'object') {
-      template = template.replace(`{{${key}}}`, issue[key])
+      template = template.replace(/{{${key}}}/g, issue[key])
       setComponentMapValue(componentKey, `{{${key}}}`, issue[key])
     }
   })
@@ -226,12 +226,12 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
         console.log('🚀 ~ parseTemplate ~ predict:1111', predict)
         if (hitIndex === index) {
           template = template.replace(
-            `{{${mainIndex}_predict${index}}}`,
+            /{{${mainIndex}_predict${index}}}/g,
             `<span style="color: var(--active-text);">${predict}</span>`
           )
           setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
         } else {
-          template = template.replace(`{{${mainIndex}_predict${index}}}`, predict)
+          template = template.replace(/{{${mainIndex}_predict${index}}}/g, predict)
           setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
         }
       })
@@ -244,11 +244,11 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
         if (key === 'predict') {
           prediction[key].forEach((predict, index) => {
             console.log('🚀 ~ parseTemplate ~ predict:1111', predict)
-            template = template.replace(`{{${mainIndex}_predict${index}}}`, predict)
+            template = template.replace(/{{${mainIndex}_predict${index}}}/g, predict)
             setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
           })
         } else {
-          template = template.replace(`{{${mainIndex}_${key}}}`, prediction[key])
+          template = template.replace(/{{${mainIndex}_${key}}}/g, prediction[key])
           setComponentMapValue(componentKey, `{{${mainIndex}_${key}}}`, prediction[key])
         }
       })
@@ -256,7 +256,7 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
   })
 
   issue.title.split(' ').forEach((item, index) => {
-    template = template.replace(`{{title${index}}}`, item)
+    template = template.replace(/{{title${index}}}/g, item)
     setComponentMapValue(componentKey, `{{title${index}}}`, item)
   })
 

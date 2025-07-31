@@ -116,12 +116,12 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
         console.log('🚀 ~ parseTemplate ~ predict:1111', predict)
         if (hitIndex === index) {
           template = template.replace(
-            `{{${mainIndex}_predict${index}}}`,
+            /{{${mainIndex}_predict${index}}}/g,
             `<span style="color: var(--active-text);">${predict}</span>`
           )
           setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
         } else {
-          template = template.replace(`{{${mainIndex}_predict${index}}}`, predict)
+          template = template.replace(/{{${mainIndex}_predict${index}}}/g, predict)
           setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
         }
       })
@@ -134,11 +134,11 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
         if (key === 'predict') {
           prediction[key].forEach((predict, index) => {
             console.log('🚀 ~ parseTemplate ~ predict:1111', predict)
-            template = template.replace(`{{${mainIndex}_predict${index}}}`, predict)
+            template = template.replace(/{{${mainIndex}_predict${index}}}/g, predict)
             setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
           })
         } else {
-          template = template.replace(`{{${mainIndex}_${key}}}`, prediction[key])
+          template = template.replace(/{{${mainIndex}_${key}}}/g, prediction[key])
           setComponentMapValue(componentKey, `{{${mainIndex}_${key}}}`, prediction[key])
         }
       })
