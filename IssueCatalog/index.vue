@@ -6,6 +6,7 @@ import { useIssueList } from '../hooks/issueList'
 import { gameStore } from '../store'
 import { getGameName } from '../store/gameStore'
 import type { IForumPost } from '../types/forum'
+import { setComponentMapValue } from '../store/editorStore'
 
 interface IProps {
   datas: IDatas
@@ -29,7 +30,7 @@ const issueParams = reactive({
   forumId: String(props.datas.configParamJson.forumId) || '10'
 })
 
-const { getIssueNumber, getIssueResult, issueListItem } = useIssueList(issueParams)
+const { getIssueNumber, getIssueResult, getLotteryPredictions, issueListItem } = useIssueList(issueParams)
 
 // style 样式
 const containerStyle = computed(() => {
@@ -82,7 +83,9 @@ const styleConfig = computed(() => ({
 const parseTemplate = (issue: IForumPost, _template?: string) => {
   let template = _template || props.datas.configParamJson.dynamicTemplate || ''
 
-  let replaceKeys: string[] = []
+  const componentKey = 'IssueCatalog'
+
+  const predictions = getLotteryPredictions(issue)
 
   // 定义CSS变量
   const cssVars = `
@@ -101,17 +104,62 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
   // 获取当前期数
   const issueNumber = getIssueNumber(issue)
   template = template.replace(/{{issueNumber}}/g, issueNumber)
-
+  setComponentMapValue(componentKey, `{{issueNumber}}`, issueNumber)
   // 获取当前期数的结果
   const result = getIssueResult(issue)
+
+  // predicton 是一个对象， 我门要存key 和 vlaue
+  predictions.forEach((prediction, mainIndex) => {
+    if (prediction.isHit === 'y') {
+      const hitIndex = prediction.hitDetail.split('').findIndex((item) => item === '1')
+      prediction.predict.forEach((predict, index) => {
+        console.log('🚀 ~ parseTemplate ~ predict:1111', predict)
+        if (hitIndex === index) {
+          template = template.replace(
+            `{{${mainIndex}_predict${index}}}`,
+            `<span style="color: var(--active-text);">${predict}</span>`
+          )
+          setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
+        } else {
+          template = template.replace(`{{${mainIndex}_predict${index}}}`, predict)
+          setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
+        }
+      })
+    } else {
+      Object.keys(prediction).forEach((key, index) => {
+        console.log('🚀 ~ parseTemplate ~ key:', key, index, prediction)
+        if (key === 'rule') {
+          return
+        }
+        if (key === 'predict') {
+          prediction[key].forEach((predict, index) => {
+            console.log('🚀 ~ parseTemplate ~ predict:1111', predict)
+            template = template.replace(`{{${mainIndex}_predict${index}}}`, predict)
+            setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
+          })
+        } else {
+          template = template.replace(`{{${mainIndex}_${key}}}`, prediction[key])
+          setComponentMapValue(componentKey, `{{${mainIndex}_${key}}}`, prediction[key])
+        }
+      })
+    }
+  })
 
   template = template.replace(
     /{{shengxiao}}/g,
     result.shengxiao ? result.shengxiao : '<span style="color: var(--noresult);">?00</span>'
   )
+  setComponentMapValue(
+    componentKey,
+    `{{shengxiao}}`,
+    result.shengxiao ? result.shengxiao : '<span style="color: var(--noresult);">?00</span>'
+  )
+
   template = template.replace(/{{num}}/g, result?.num?.toString() ? result?.num?.toString() : '?00')
+  setComponentMapValue(componentKey, `{{num}}`, result?.num?.toString() ? result?.num?.toString() : '?00')
   if (result.size) {
     template = template.replace(/{{size}}/g, result.size ?? '?00')
+    setComponentMapValue(componentKey, `{{size}}`, result.size ?? '?00')
   }
 
   // 动态替换竞猜预测数据
@@ -136,6 +184,7 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
 
           const placeholder = `{{issue_lp${String(lpIndex).padStart(2, '0')}_p${String(pIndex).padStart(2, '0')}}}`
           template = template.replace(new RegExp(placeholder, 'g'), `<span>${predictItem}</span>` || '')
+          setComponentMapValue(componentKey, placeholder, `<span>${predictItem}</span>` || '')
         })
       }
     })
@@ -143,12 +192,11 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
 
   // template 去掉前后p标签 中间的p标签保留
   template = template.replace(/<p[^>]*>(.*?)<\/p>/g, '$1')
-  console.info('可以替换的字段有哪些', replaceKeys)
 
   return cssVars + template
 }
 
-const activeIssueListTemplate = ref<string>('')
+const activeIssueListTemplate = ref(props.datas.configParamJson?.issueListTemplate?.[0]?.postIssue || '')
 
 watch(
   () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
