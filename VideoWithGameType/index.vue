@@ -1,6 +1,5 @@
 <template>
-  <div class="VideoWithGameType">
-    {{ datas.configParamJson.selectedGameTypes.map((item) => item.active) }}
+  <div class="VideoWithGameType" v-if="showComponent">
     <div class="video-with-gametype-content" :style="containerStyle" v-if="datas.configParamJson.enable">
       <!-- 标题区域 -->
       <!-- <div v-if="datas.configParamJson.title" class="title-header" :style="titleHeaderStyle">
@@ -89,7 +88,7 @@ const props = defineProps<IProps>()
 // gameType Store 集成
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
-const { handleActiveGameType } = useMultiGameType(props.datas)
+const { handleActiveGameType, showComponent } = useMultiGameType(props.datas)
 // 组件状态
 const videoPlayer = ref<HTMLVideoElement>()
 const currentVideoId = ref<string>('')

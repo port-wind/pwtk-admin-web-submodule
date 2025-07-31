@@ -1,4 +1,6 @@
+import { useStore } from '@nanostores/vue'
 import { computed, ref, watch } from 'vue'
+import { gameStore } from '@/views/WebVision/components/componentsbiz/store'
 
 /**
  * 🎮 GameType Fields Composable
@@ -6,12 +8,16 @@ import { computed, ref, watch } from 'vue'
  */
 export function useMultiGameType(datas: any) {
   const activeTab = ref<string>('')
-
+  const gameStoreData = useStore(gameStore)
+  const gameType = computed(() => gameStoreData.value.gameType)
   const selectedGameTypes = computed(() => datas.configParamJson.selectedGameTypes)
   const activeGameType = computed(() => {
     return selectedGameTypes.value.find((item) => item.active)
   })
-
+  const showComponent = computed(() => {
+    console.log(activeGameType.value, gameType.value)
+    return !!activeGameType.value && activeGameType.value.gameType === gameType.value
+  })
   const handleTabClick = (_: any) => {
     selectedGameTypes.value.forEach((gt) => {
       if (gt.gameType === activeTab.value) {
@@ -53,6 +59,7 @@ export function useMultiGameType(datas: any) {
     activeGameType,
     activeTab,
     selectedGameTypes,
+    showComponent,
     setSelectedGameTypes,
     handleActiveGameType,
     handleTabClick
