@@ -189,12 +189,12 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
 
   // 获取期数
   const issueNumber = getIssueNumber(issue)
-  template = template.replace(/{{issueNumber}}/g, issueNumber)
+  template = template.replace(new RegExp(`{{issueNumber}}`, 'g'), issueNumber)
   setComponentMapValue(componentKey, `{{issueNumber}}`, issueNumber)
 
   Object.keys(issue).forEach((key) => {
     if (typeof issue[key] !== 'object') {
-      template = template.replace(/{{${key}}}/g, issue[key])
+      template = template.replace(new RegExp(`{{${key}}}`, 'g'), issue[key])
       setComponentMapValue(componentKey, `{{${key}}}`, issue[key])
     }
   })
@@ -202,7 +202,7 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
   // 获取结果
   const result = getIssueResult(issue)
   template = template.replace(
-    /{{shengxiao}}/g,
+    new RegExp(`{{shengxiao}}`, 'g'),
     result.shengxiao ? result.shengxiao : '<span style="color: var(--noresult);">?00</span>'
   )
   setComponentMapValue(
@@ -211,10 +211,10 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
     result.shengxiao ? result.shengxiao : '<span style="color: var(--noresult);">?00</span>'
   )
 
-  template = template.replace(/{{num}}/g, result?.num?.toString() ? result?.num?.toString() : '?00')
+  template = template.replace(new RegExp(`{{num}}`, 'g'), result?.num?.toString() ? result?.num?.toString() : '?00')
   setComponentMapValue(componentKey, `{{num}}`, result?.num?.toString() ? result?.num?.toString() : '?00')
   if (result.size) {
-    template = template.replace(/{{size}}/g, result.size ?? '?00')
+    template = template.replace(new RegExp(`{{size}}`, 'g'), result.size ?? '?00')
     setComponentMapValue(componentKey, `{{size}}`, result.size ?? '?00')
   }
 
@@ -223,10 +223,9 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
     if (prediction.isHit === 'y') {
       const hitIndex = prediction.hitDetail.split('').findIndex((item) => item === '1')
       prediction.predict.forEach((predict, index) => {
-        console.log('🚀 ~ parseTemplate ~ predict:1111', predict)
         if (hitIndex === index) {
           template = template.replace(
-            /{{${mainIndex}_predict${index}}}/g,
+            new RegExp(`{{${mainIndex}_predict${index}}}`, 'g'),
             `<span style="color: var(--active-text);">${predict}</span>`
           )
           setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
@@ -237,13 +236,11 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
       })
     } else {
       Object.keys(prediction).forEach((key, index) => {
-        console.log('🚀 ~ parseTemplate ~ key:', key, index, prediction)
         if (key === 'rule') {
           return
         }
         if (key === 'predict') {
           prediction[key].forEach((predict, index) => {
-            console.log('🚀 ~ parseTemplate ~ predict:1111', predict)
             template = template.replace(/{{${mainIndex}_predict${index}}}/g, predict)
             setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
           })
@@ -256,22 +253,21 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
   })
 
   issue.title.split(' ').forEach((item, index) => {
-    template = template.replace(/{{title${index}}}/g, item)
+    template = template.replace(new RegExp(`{{title${index}}}`, 'g'), item)
     setComponentMapValue(componentKey, `{{title${index}}}`, item)
   })
 
-  template = template.replace(/{{currentIssue}}/g, currentIssue ?? '')
+  template = template.replace(new RegExp(`{{currentIssue}}`, 'g'), currentIssue ?? '')
   setComponentMapValue(componentKey, `{{currentIssue}}`, currentIssue ?? '')
-  template = template.replace(/{{currentHitResult}}/g, currentHitResult ?? '')
+  template = template.replace(new RegExp(`{{currentHitResult}}`, 'g'), currentHitResult ?? '')
   setComponentMapValue(componentKey, `{{currentHitResult}}`, currentHitResult ?? '')
-  template = template.replace(/{{previousIssues}}/g, previousIssues ?? '')
+  template = template.replace(new RegExp(`{{previousIssues}}`, 'g'), previousIssues ?? '')
   setComponentMapValue(componentKey, `{{previousIssues}}`, previousIssues ?? '')
-  template = template.replace(/{{preHitResult}}/g, preHitResult ?? '')
+  template = template.replace(new RegExp(`{{preHitResult}}`, 'g'), preHitResult ?? '')
   setComponentMapValue(componentKey, `{{preHitResult}}`, preHitResult ?? '')
 
   // 去掉前后p标签，包括带属性的p标签
-  template = template.replace(/<p[^>]*>(.*?)<\/p>/g, '$1')
-
+  template = template.replace(new RegExp(`<p[^>]*>(.*?)<\/p>`, 'g'), '$1')
   return cssVars + template
 }
 
