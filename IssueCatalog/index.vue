@@ -90,7 +90,7 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
   // 定义CSS变量
   const cssVars = `
     <style>
-      :root {
+      .IssueCatalog-content[data-id="${props.datas.componentId}"] {
         --active-bg: ${props.datas.configParamJson.dynamicActiveBg || '#ffeb3b'};
         --active-bg-text:${props.datas.configParamJson.dynamicActiveBgText || '#000'};
         --dynamic-font-size: ${props.datas.configParamJson.dynamicFontSize}rem;
@@ -232,7 +232,7 @@ watch(
 
 <template>
   <div class="IssueCatalog">
-    <div class="IssueCatalog-content" :style="containerStyle">
+    <div :data-id="props.datas.componentId" class="IssueCatalog-content" :style="containerStyle">
       <!-- 头部标题 -->
       <div class="title-header" :style="headerTitleBgStyle">
         <h2 class="main-title" :style="headerTitleTextStyle">

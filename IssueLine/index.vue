@@ -176,7 +176,7 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
   // CSS变量
   const cssVars = `
     <style>
-      :root {
+      .IssueLine-content[data-id="${props.datas.componentId}"] {
         --active-bg: ${props.datas.configParamJson.dynamicActiveBg || '#ffeb3b'};
         --active-text:${props.datas.configParamJson.dynamicActiveText || '#000'};
         --active-text-align: ${props.datas.configParamJson.dynamicActiveTextAlign || 'center'};
@@ -294,7 +294,7 @@ watch(
 
 <template>
   <div class="IssueLine">
-    <div class="IssueLine-content" :style="containerStyle">
+    <div :data-id="datas.componentId" class="IssueLine-content" :style="containerStyle">
       <!-- 头部标题 -->
       <div class="title-header" :style="headerTitleBgStyle">
         <h2 class="main-title" :style="headerTitleTextStyle">
