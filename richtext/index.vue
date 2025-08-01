@@ -1,6 +1,6 @@
 <template>
   <div class="richtext" :style="{ background: datas.backColor }">
-    <img draggable="false" src="@/assets/images/fwb.png" alt="" v-if="!datas.myValue.length" />
+    <img draggable="false" src="@/assets/images/fwb.png" alt="" v-if="!datas?.myValue?.length" />
     <section v-else v-html="datas.myValue" />
 
     <!-- 删除组件 -->
@@ -8,13 +8,15 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'richtext',
-  props: {
-    datas: Object
-  }
-}
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { IDatas } from './type'
+
+const props = defineProps<{
+  datas: IDatas
+}>()
+
+// const  = ref(props.datas.configParamJson.backColor)
 </script>
 
 <style scoped lang="less">

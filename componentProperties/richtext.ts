@@ -1,13 +1,8 @@
 import type { IComponentProperty, ISetStyle } from './index'
+import type { IRichtext } from '../richtext/type'
 
 // 富文本组件配置类型
-export interface RichtextConfigType {
-  text: string
-  myValue: string // 富文本内容
-  backColor: string // 背景颜色
-}
-
-const componentProperties = new Map<String, IComponentProperty<ISetStyle<RichtextConfigType>>>()
+const componentProperties = new Map<String, IComponentProperty<ISetStyle<IRichtext>>>()
 
 componentProperties.set('richtext', {
   component: 'richtext',
@@ -29,9 +24,8 @@ componentProperties.set('richtext', {
     memo: '',
     pageCode: '',
     configParamJson: {
-      text: '富文本',
-      myValue: '',
-      backColor: 'rgb(249, 249, 249)'
+      backColor: 'rgb(249, 249, 249)',
+      myValue: []
     }
   }
 })
