@@ -13,7 +13,7 @@ componentProperties.set('richtext', {
   component: 'richtext',
   text: '富文本',
   active: false,
-  style: 'richtextstyle',
+  style: 'richtextStyle',
   setStyle: {
     componentId: '',
     sketchCodeList: '',
