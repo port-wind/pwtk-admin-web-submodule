@@ -9,7 +9,7 @@
       ]"
       :style="computedStyles"
     >
-      <div :style="computedStyles" v-html="datas.configParamJson.text"></div>
+      <div :style="computedStyles" class="highlight-text-content" v-html="datas.configParamJson.text"></div>
     </div>
     <slot name="deles"></slot>
   </div>
