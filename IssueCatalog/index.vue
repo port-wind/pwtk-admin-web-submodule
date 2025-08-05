@@ -6,7 +6,13 @@ import { useIssueList } from '../hooks/issueList'
 import { gameStore } from '../store'
 import { getGameName } from '../store/gameStore'
 import type { IForumPost } from '../types/forum'
-import { setComponentMapValue } from '../store/editorStore'
+import {
+  setComponentMapValue,
+  setCustomMergeTags,
+  addMergeTagToCategory,
+  getCustomMergeTags,
+  loadMergeTagsTemplate
+} from '../store/editorStore'
 
 interface IProps {
   datas: IDatas
@@ -107,6 +113,10 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
   const issueNumber = getIssueNumber(issue)
   template = template.replace(new RegExp(`{{issueNumber}}`, 'g'), issueNumber)
   setComponentMapValue(componentKey, `{{issueNumber}}`, issueNumber)
+  addMergeTagToCategory('期数', {
+    title: issueNumber,
+    value: 'issueNumber'
+  })
   // 获取当前期数的结果
   const result = getIssueResult(issue)
 
