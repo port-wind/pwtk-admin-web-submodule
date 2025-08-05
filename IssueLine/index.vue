@@ -190,12 +190,12 @@ const parseTemplate = (issue: IForumPost, issueListItem: IForumPost[]) => {
   // 获取期数
   const issueNumber = getIssueNumber(issue)
   template = template.replace(new RegExp(`{{issueNumber}}`, 'g'), issueNumber)
-  setComponentMapValue(componentKey, 'other', `{{issueNumber}}`, issueNumber)
+  setComponentMapValue(componentKey, 'other', `issueNumber`, issueNumber)
 
   Object.keys(issue).forEach((key) => {
     if (typeof issue[key] !== 'object') {
       template = template.replace(new RegExp(`{{${key}}}`, 'g'), issue[key])
-      setComponentMapValue(componentKey, 'other', `{{${key}}}`, issue[key])
+      setComponentMapValue(componentKey, 'other', `${key}`, issue[key])
     }
   })
 
