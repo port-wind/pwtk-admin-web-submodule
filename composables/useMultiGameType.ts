@@ -1,5 +1,5 @@
 import { useStore } from '@nanostores/vue'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, isRef, toValue } from 'vue'
 import { gameStore, setGameType } from '../store'
 
 /**
@@ -10,14 +10,17 @@ export function useMultiGameType(datas: any) {
   const activeTab = ref<string>('')
   const gameStoreData = useStore(gameStore)
   const gameType = computed(() => gameStoreData.value.gameType)
-  const comSelectedGameTypes = computed(() => datas.value.configParamJson.selectedGameTypes)
+
+  // Handle both ref and non-ref inputs to maintain reactivity
+  const datasValue = computed(() => (isRef(datas) ? datas.value : toValue(datas)))
+  const comSelectedGameTypes = computed(() => datasValue.value.configParamJson.selectedGameTypes)
 
   const showComponent = computed(() => {
-    const localActiveGameType = datas.value.configParamJson.selectedGameTypes.find((item: any) => item.active)
+    const localActiveGameType = datasValue.value.configParamJson.selectedGameTypes.find((item: any) => item.active)
     return !!localActiveGameType && localActiveGameType.gameType === gameType.value
   })
   const setSelectedGameTypes = (gameTypes: any) => {
-    datas.value.configParamJson.selectedGameTypes = gameTypes
+    datasValue.value.configParamJson.selectedGameTypes = gameTypes
   }
   const handleActiveGameType = (g: string) => {
     const newSelectedGameTypes = comSelectedGameTypes.value.map((item: any) => {

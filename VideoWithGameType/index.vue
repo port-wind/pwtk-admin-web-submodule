@@ -84,7 +84,6 @@ interface IProps {
   datas: IDatas
 }
 const props = defineProps<IProps>()
-const datas = computed(() => props.datas)
 
 // Local reactive state for selectedGameTypes
 const localSelectedGameTypes = ref<any[]>([])
@@ -103,7 +102,7 @@ watch(
 // gameType Store 集成
 const gameStoreData = useStore(gameStore)
 const gameType = computed(() => gameStoreData.value.gameType)
-const { showComponent } = useMultiGameType(datas)
+const { showComponent } = useMultiGameType(props.datas)
 // 组件状态
 const videoPlayer = ref<HTMLVideoElement>()
 const currentVideoId = ref<string>('')
@@ -112,7 +111,7 @@ const showVideo = computed(() => !!currentVideoUrl.value && currentVideoUrl.valu
 const currentVideoTitle = ref<string>('')
 const windowWidth = ref(window.innerWidth)
 // 样式计算属性
-const styleMain = computed(() => datas.value.configParamJson.styleMain)
+const styleMain = computed(() => props.datas.configParamJson.styleMain)
 
 // 启用的视频列表 - 从当前激活的游戏类型获取视频数据
 const enabledVideos = computed(() => {
@@ -134,8 +133,8 @@ const containerStyle = computed(() => ({
   padding: `${styleMain.value.containerPadding}px`,
   margin: `${styleMain.value.margin}px auto`,
   boxShadow: styleMain.value.boxShadow,
-  height: `${datas.value.configParamJson.heights}vh`,
-  minHeight: `${datas.value.configParamJson.minHeight}px`
+  height: `${props.datas.configParamJson.heights}vh`,
+  minHeight: `${props.datas.configParamJson.minHeight}px`
 }))
 
 const contentStyle = computed(() => ({
@@ -146,7 +145,7 @@ const contentStyle = computed(() => ({
 }))
 
 const videoContainerStyle = computed(() => ({
-  height: `${datas.value.configParamJson.videoHeightPercent}%`,
+  height: `${props.datas.configParamJson.videoHeightPercent}%`,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -163,7 +162,7 @@ const videoStyle = computed(() => ({
 }))
 
 const thumbnailContainerStyle = computed(() => {
-  const remainingHeight = 100 - datas.value.configParamJson.videoHeightPercent
+  const remainingHeight = 100 - props.datas.configParamJson.videoHeightPercent
   const minHeight = Math.max(remainingHeight, 15) // Ensure minimum 15% height
 
   return {
@@ -177,8 +176,8 @@ const thumbnailContainerStyle = computed(() => {
 })
 
 const thumbnailItemStyle = computed(() => {
-  const remainingHeight = 100 - datas.value.configParamJson.videoHeightPercent
-  const componentHeight = datas.value.configParamJson.heights
+  const remainingHeight = 100 - props.datas.configParamJson.videoHeightPercent
+  const componentHeight = props.datas.configParamJson.heights
 
   // Calculate responsive thumbnail width based on available space
   let thumbnailWidth = 120
@@ -224,7 +223,7 @@ const thumbnailImageStyle = computed(() => {
 })
 
 const thumbnailTitleStyle = computed(() => {
-  const remainingHeight = 100 - datas.value.configParamJson.videoHeightPercent
+  const remainingHeight = 100 - props.datas.configParamJson.videoHeightPercent
 
   let fontSize = '12px'
   let fixedHeight = '24px'
