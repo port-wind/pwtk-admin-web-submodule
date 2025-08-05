@@ -3,7 +3,9 @@ import { atom } from 'nanostores'
 
 interface IComponentMap {
   [componentName: string]: {
-    [key: string]: any
+    [subCategory: string]: {
+      [key: string]: any
+    }
   }
 }
 
@@ -43,7 +45,7 @@ export function getListKeys() {
   return editorStore.get().listKeys
 }
 
-export function setComponentMapValue(componentName: string, key: string, value: any) {
+export function setComponentMapValue(componentName: string, subCategory: string, key: string, value: any) {
   const currentStore = editorStore.get()
   const currentComponentMap = currentStore.componentMap || {}
   
@@ -53,15 +55,18 @@ export function setComponentMapValue(componentName: string, key: string, value: 
       ...currentComponentMap,
       [componentName]: {
         ...(currentComponentMap[componentName] || {}),
-        [key]: value
+        [subCategory]: {
+          ...((currentComponentMap[componentName] || {})[subCategory] || {}),
+          [key]: value
+        }
       }
     }
   })
 }
 
-export function getComponentMapValue(componentName: string, key: string) {
+export function getComponentMapValue(componentName: string, subCategory: string, key: string) {
   const store = editorStore.get()
-  return store.componentMap?.[componentName]?.[key]
+  return store.componentMap?.[componentName]?.[subCategory]?.[key]
 }
 
 export function clearComponentMap() {
@@ -70,6 +75,74 @@ export function clearComponentMap() {
     ...currentStore,
     componentMap: {}
   })
+}
+
+// 获取整个组件的数据
+export function getComponentData(componentName: string) {
+  const store = editorStore.get()
+  return store.componentMap?.[componentName] || {}
+}
+
+// 获取组件下某个子分类的所有数据
+export function getComponentSubCategoryData(componentName: string, subCategory: string) {
+  const store = editorStore.get()
+  return store.componentMap?.[componentName]?.[subCategory] || {}
+}
+
+// 设置整个子分类的数据
+export function setComponentSubCategoryData(componentName: string, subCategory: string, data: { [key: string]: any }) {
+  const currentStore = editorStore.get()
+  const currentComponentMap = currentStore.componentMap || {}
+  
+  editorStore.set({
+    ...currentStore,
+    componentMap: {
+      ...currentComponentMap,
+      [componentName]: {
+        ...(currentComponentMap[componentName] || {}),
+        [subCategory]: data
+      }
+    }
+  })
+}
+
+// 删除组件下的某个子分类
+export function removeComponentSubCategory(componentName: string, subCategory: string) {
+  const currentStore = editorStore.get()
+  const currentComponentMap = currentStore.componentMap || {}
+  
+  if (currentComponentMap[componentName]) {
+    const { [subCategory]: removed, ...rest } = currentComponentMap[componentName]
+    
+    editorStore.set({
+      ...currentStore,
+      componentMap: {
+        ...currentComponentMap,
+        [componentName]: rest
+      }
+    })
+  }
+}
+
+// 删除组件下某个子分类的特定键
+export function removeComponentMapValue(componentName: string, subCategory: string, key: string) {
+  const currentStore = editorStore.get()
+  const currentComponentMap = currentStore.componentMap || {}
+  
+  if (currentComponentMap[componentName]?.[subCategory]) {
+    const { [key]: removed, ...rest } = currentComponentMap[componentName][subCategory]
+    
+    editorStore.set({
+      ...currentStore,
+      componentMap: {
+        ...currentComponentMap,
+        [componentName]: {
+          ...currentComponentMap[componentName],
+          [subCategory]: rest
+        }
+      }
+    })
+  }
 }
 
 // ==================== customMergeTags 相关方法 ====================

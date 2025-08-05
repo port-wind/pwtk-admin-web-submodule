@@ -112,7 +112,7 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
   // 获取当前期数
   const issueNumber = getIssueNumber(issue)
   template = template.replace(new RegExp(`{{issueNumber}}`, 'g'), issueNumber)
-  setComponentMapValue(componentKey, `{{issueNumber}}`, issueNumber)
+  setComponentMapValue(componentKey,'other', `{{issueNumber}}`, issueNumber)
   addMergeTagToCategory('期数', {
     title: issueNumber,
     value: 'issueNumber'
@@ -130,10 +130,10 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
             new RegExp(`{{${mainIndex}_predict${index}}}`, 'g'),
             `<span style="color: var(--active-text);">${predict}</span>`
           )
-          setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
+          setComponentMapValue(componentKey, 'predict',`{{${mainIndex}_predict${index}}}`, predict)
         } else {
           template = template.replace(new RegExp(`{{${mainIndex}_predict${index}}}`, 'g'), predict)
-          setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
+          setComponentMapValue(componentKey,'predict', `{{${mainIndex}_predict${index}}}`, predict)
         }
       })
     } else {
@@ -144,11 +144,11 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
         if (key === 'predict') {
           prediction[key].forEach((predict, index) => {
             template = template.replace(new RegExp(`{{${mainIndex}_predict${index}}}`, 'g'), predict)
-            setComponentMapValue(componentKey, `{{${mainIndex}_predict${index}}}`, predict)
+            setComponentMapValue(componentKey, 'predict', `{{${mainIndex}_predict${index}}}`, predict)
           })
         } else {
           template = template.replace(new RegExp(`{{${mainIndex}_${key}}}`, 'g'), prediction[key])
-          setComponentMapValue(componentKey, `{{${mainIndex}_${key}}}`, prediction[key])
+          setComponentMapValue(componentKey, 'other', `{{${mainIndex}_${key}}}`, prediction[key])
         }
       })
     }
@@ -160,15 +160,16 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
   )
   setComponentMapValue(
     componentKey,
+    'other',
     `{{shengxiao}}`,
     result.shengxiao ? result.shengxiao : '<span style="color: var(--noresult);">?00</span>'
   )
 
   template = template.replace(new RegExp(`{{num}}`, 'g'), result?.num?.toString() ? result?.num?.toString() : '?00')
-  setComponentMapValue(componentKey, `{{num}}`, result?.num?.toString() ? result?.num?.toString() : '?00')
+  setComponentMapValue(componentKey, 'other', `{{num}}`, result?.num?.toString() ? result?.num?.toString() : '?00')
   if (result.size) {
     template = template.replace(new RegExp(`{{size}}`, 'g'), result.size ?? '?00')
-    setComponentMapValue(componentKey, `{{size}}`, result.size ?? '?00')
+    setComponentMapValue(componentKey, 'other', `{{size}}`, result.size ?? '?00')
   }
 
   // 动态替换竞猜预测数据
@@ -192,7 +193,7 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
 
           const placeholder = `{{issue_lp${String(lpIndex).padStart(2, '0')}_p${String(pIndex).padStart(2, '0')}}}`
           template = template.replace(new RegExp(placeholder, 'g'), `<span>${predictItem}</span>` || '')
-          setComponentMapValue(componentKey, placeholder, `<span>${predictItem}</span>` || '')
+          setComponentMapValue(componentKey, 'lottery', placeholder, `<span>${predictItem}</span>` || '')
         })
       }
     })
