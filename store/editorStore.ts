@@ -63,7 +63,7 @@ export function setComponentMapValue(componentName: string, subCategory: string,
     }
   })
 
-  console.log('🚀 ~ setComponentMapValue ~ editorStore.get().componentMap:', editorStore.get().componentMap)
+  console.log('🚀 ~ setComponentMapValue 9999999999 ~ editorStore.get().componentMap:', editorStore.get().componentMap)
 }
 
 export function getComponentMapValue(componentName: string, subCategory: string, key: string) {
@@ -159,10 +159,6 @@ export function setCustomMergeTags(tags: MergeTag[]) {
 
 // 获取合并标签列表
 export function getCustomMergeTags(): MergeTag[] {
-  // return editorStore.get().customMergeTags || []
-
-  console.log('🚀 ~ getCustomMergeTags 777777777~ editorStore.get().componentMap:', editorStore.get().customMergeTags)
-
   const componentMap = editorStore.get().componentMap
   const tags = []
   Object.keys(componentMap).forEach((componentName) => {
@@ -195,7 +191,6 @@ export function getCustomMergeTags(): MergeTag[] {
     //   }
     // })
   })
-  console.log('🚀 ~ getCustomMergeTags 777777777 ~ tags:', tags)
   return tags
 }
 
