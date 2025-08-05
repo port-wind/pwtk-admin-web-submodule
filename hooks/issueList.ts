@@ -8,8 +8,11 @@ import type { IForumPost } from '../types/forum'
 export interface IUseIssueListParams {
   gameType: string
   size: number
+  page: number
   forumId: string
   autoFetch?: boolean // 是否自动获取数据，默认为 true
+  isAll?: string // y
+  issueGroup?: number // 7期为一组
 }
 
 /**
@@ -219,7 +222,8 @@ export function useIssueList(params: IUseIssueListParams) {
   const fetchIssueList = async (
     gameType: string = params.gameType,
     size: number = params.size,
-    forumId: string = params.forumId
+    forumId: string = params.forumId,
+    page: number = params.page
   ): Promise<void> => {
     try {
       isLoading.value = true
@@ -228,7 +232,7 @@ export function useIssueList(params: IUseIssueListParams) {
 
       const res = await getWebSitePost({
         gameType: gameType,
-        page: 1,
+        page: page || 1,
         size: size || 10,
         forumId: forumId,
         isAll: 'y'

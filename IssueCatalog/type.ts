@@ -14,7 +14,9 @@ export interface IssueCatalog {
   mainboardId: string
   // 论坛ID
   forumId: string
-
+  isAll: string
+  issueGroup: number
+  page: number
   forumIcon?: string
   forumStatus?: string
   styleHeader: IStyleHeader

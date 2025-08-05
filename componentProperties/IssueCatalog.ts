@@ -28,6 +28,9 @@ componentProperties.set('IssueCatalog', {
       subtitle: '',
       enable: true,
       size: 3, // 期数数量
+      isAll: 'n',
+      issueGroup: 7,
+      page: 1,
       mainboardId: 'baxianluntan',
       forumId: 'bx010',
       forumIcon: 'dev/bbs/forum/icon/3187e4e98b574bd8bf8022652ee23576.jpeg',
@@ -64,6 +67,7 @@ componentProperties.set('IssueCatalog', {
       dynamicActiveBg: '#ffeb3b',
       dynamicActiveBgText: '#000',
       dynamicFontSize: 1,
+
       dynamicActiveText: '#00FF00',
       dynamicNoResult: '未开奖',
       frontExtend_Enable: true,

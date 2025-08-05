@@ -48,7 +48,7 @@ export function getListKeys() {
 export function setComponentMapValue(componentName: string, subCategory: string, key: string, value: any) {
   const currentStore = editorStore.get()
   const currentComponentMap = currentStore.componentMap || {}
-  
+
   editorStore.set({
     ...currentStore,
     componentMap: {
@@ -62,6 +62,8 @@ export function setComponentMapValue(componentName: string, subCategory: string,
       }
     }
   })
+
+  console.log('🚀 ~ setComponentMapValue ~ editorStore.get().componentMap:', editorStore.get().componentMap)
 }
 
 export function getComponentMapValue(componentName: string, subCategory: string, key: string) {
@@ -93,7 +95,7 @@ export function getComponentSubCategoryData(componentName: string, subCategory: 
 export function setComponentSubCategoryData(componentName: string, subCategory: string, data: { [key: string]: any }) {
   const currentStore = editorStore.get()
   const currentComponentMap = currentStore.componentMap || {}
-  
+
   editorStore.set({
     ...currentStore,
     componentMap: {
@@ -110,10 +112,10 @@ export function setComponentSubCategoryData(componentName: string, subCategory: 
 export function removeComponentSubCategory(componentName: string, subCategory: string) {
   const currentStore = editorStore.get()
   const currentComponentMap = currentStore.componentMap || {}
-  
+
   if (currentComponentMap[componentName]) {
     const { [subCategory]: removed, ...rest } = currentComponentMap[componentName]
-    
+
     editorStore.set({
       ...currentStore,
       componentMap: {
@@ -128,10 +130,10 @@ export function removeComponentSubCategory(componentName: string, subCategory: s
 export function removeComponentMapValue(componentName: string, subCategory: string, key: string) {
   const currentStore = editorStore.get()
   const currentComponentMap = currentStore.componentMap || {}
-  
+
   if (currentComponentMap[componentName]?.[subCategory]) {
     const { [key]: removed, ...rest } = currentComponentMap[componentName][subCategory]
-    
+
     editorStore.set({
       ...currentStore,
       componentMap: {
@@ -157,7 +159,44 @@ export function setCustomMergeTags(tags: MergeTag[]) {
 
 // 获取合并标签列表
 export function getCustomMergeTags(): MergeTag[] {
-  return editorStore.get().customMergeTags || []
+  // return editorStore.get().customMergeTags || []
+
+  console.log('🚀 ~ getCustomMergeTags 777777777~ editorStore.get().componentMap:', editorStore.get().customMergeTags)
+
+  const componentMap = editorStore.get().componentMap
+  const tags = []
+  Object.keys(componentMap).forEach((componentName) => {
+    const subCategories = componentMap[componentName]
+
+    for (let subCategory in subCategories) {
+      const kv = subCategories[subCategory]
+      const obj = {
+        title: subCategory,
+        menu: []
+      }
+      for (let key in kv) {
+        if (kv.hasOwnProperty(key)) {
+          //@ts-ignore
+          obj.menu.push({
+            title: kv[key],
+            value: key
+          })
+        }
+      }
+      //@ts-ignore
+      tags.push(obj)
+    }
+
+    // Object.keys(subCategories).forEach((subCategory) => {
+    //   const kv = subCategories[subCategory]
+    //   const obj = {
+    //     title: subCategory,
+    //     menu: []
+    //   }
+    // })
+  })
+  console.log('🚀 ~ getCustomMergeTags 777777777 ~ tags:', tags)
+  return tags
 }
 
 // 添加单个合并标签（到根级别）
@@ -174,10 +213,10 @@ export function addCustomMergeTag(tag: MergeTag) {
 export function addMergeTagToCategory(categoryTitle: string, tag: MergeTag) {
   const currentStore = editorStore.get()
   const tags = [...(currentStore.customMergeTags || [])]
-  
+
   // 查找指定分类
-  const category = tags.find(t => t.title === categoryTitle)
-  
+  const category = tags.find((t) => t.title === categoryTitle)
+
   if (category) {
     // 如果分类存在，添加到其 menu 中
     if (!category.menu) {
@@ -191,7 +230,7 @@ export function addMergeTagToCategory(categoryTitle: string, tag: MergeTag) {
       menu: [tag]
     })
   }
-  
+
   editorStore.set({
     ...currentStore,
     customMergeTags: tags
@@ -202,10 +241,10 @@ export function addMergeTagToCategory(categoryTitle: string, tag: MergeTag) {
 export function removeMergeTag(value: string) {
   const currentStore = editorStore.get()
   const tags = [...(currentStore.customMergeTags || [])]
-  
+
   // 递归删除函数
   const removeFromArray = (arr: MergeTag[]): MergeTag[] => {
-    return arr.filter(tag => {
+    return arr.filter((tag) => {
       if (tag.value === value) {
         return false
       }
@@ -215,9 +254,9 @@ export function removeMergeTag(value: string) {
       return true
     })
   }
-  
+
   const updatedTags = removeFromArray(tags)
-  
+
   editorStore.set({
     ...currentStore,
     customMergeTags: updatedTags
@@ -280,7 +319,7 @@ export function loadMergeTagsTemplate(templateName: string) {
       }
     ]
   }
-  
+
   const template = templates[templateName]
   if (template) {
     setCustomMergeTags(template)
