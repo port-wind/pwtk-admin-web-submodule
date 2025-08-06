@@ -49,11 +49,11 @@ const headerBarStyle = computed(() => {
     return {
       background: getBackgroundStyle(datas.configParamJson),
       backgroundSize: '100% 100%',
-      color: datas?.configParamJson?.textColor
+      color: datas?.configParamJson?.textColor,
     }
   } else {
     return {
-      backgroundSize: '100% 100%'
+      backgroundSize: '100% 100%',
     }
   }
 })
@@ -89,7 +89,7 @@ const backToHome = () => {
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
-    behavior: 'smooth' // 平滑滚动
+    behavior: 'smooth', // 平滑滚动
   })
 }
 </script>

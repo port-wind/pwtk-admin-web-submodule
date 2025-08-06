@@ -165,7 +165,7 @@ a {
 }
 
 .tab-content {
-  padding: 0 0.2rem;
+  padding: 0.5rem 0.2rem;
   background-image: none;
   border: 0.02rem solid var(--theme-color);
   background-color: #fff;
