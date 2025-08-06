@@ -37,7 +37,7 @@ const tabsData = computed(() => {
   }
 
   return baseData.filter((item: any) =>
-    props.datas.configParamJson.showArray?.some((gameType) => gameType === item.gameType)
+    props.datas.configParamJson.showArray?.some(gameType => gameType === item.gameType)
   )
 })
 
@@ -53,7 +53,7 @@ function selectGameType(currentGame: IGameType, index) {
 function getGameOpenTime(tab: IGameType) {
   const baseData = props.tabsData
   const dd = baseData.find((item: any) =>
-    props.datas.configParamJson.showArray?.some((gameType) => gameType === item.gameType)
+    props.datas.configParamJson.showArray?.some(gameType => gameType === item.gameType)
   )
   if (dd?.currentOpenTime) {
     return dayjs(dd.currentOpenTime).format('MM月DD日')
@@ -74,8 +74,8 @@ onMounted(() => {
 
 watch(
   () => gameStoreData.value.gameType,
-  (newVal) => {
-    const index = gameTypeList.value.findIndex((item) => item.gameType === newVal)
+  newVal => {
+    const index = gameTypeList.value.findIndex(item => item.gameType === newVal)
     if (index !== -1) {
       tabIndex.value = index
     }
@@ -207,6 +207,7 @@ watch(
     align-items: center;
     .tab-content-middle-left {
       display: flex;
+      width: 100%;
       justify-content: space-around;
     }
     .tab-content-middle-center {

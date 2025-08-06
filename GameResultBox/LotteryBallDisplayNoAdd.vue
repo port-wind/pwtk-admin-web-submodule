@@ -7,13 +7,13 @@ const FiveElements = {
   m: '木',
   s: '水',
   h: '火',
-  t: '土'
+  t: '土',
 }
 type BackgroundType = '#07c160' | '#349cfc' | '#fc3434'
 const ColorCode: { [key: string]: BackgroundType } = {
   R: '#fc3434',
   G: '#07c160',
-  B: '#349cfc'
+  B: '#349cfc',
 }
 
 /**
@@ -85,6 +85,7 @@ const props = defineProps<{
   .tab-content-middle-left {
     display: flex;
     column-gap: 5px;
+    width: 100%;
     justify-content: space-around;
   }
   .tab-content-middle-center {
