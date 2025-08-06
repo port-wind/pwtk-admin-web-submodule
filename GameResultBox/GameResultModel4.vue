@@ -207,6 +207,7 @@ watch(
     align-items: center;
     .tab-content-middle-left {
       display: flex;
+      justify-content: space-around;
     }
     .tab-content-middle-center {
       display: flex;

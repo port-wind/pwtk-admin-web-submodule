@@ -85,6 +85,7 @@ const props = defineProps<{
   .tab-content-middle-left {
     display: flex;
     column-gap: 5px;
+    justify-content: space-around;
   }
   .tab-content-middle-center {
     display: flex;
