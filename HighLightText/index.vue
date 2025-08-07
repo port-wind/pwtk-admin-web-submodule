@@ -1,7 +1,8 @@
 <!-- HighLightText 组件 -->
 <template>
   <div class="highlight-text-container">
-    <div
+    <div v-html="datas.configParamJson.text"></div>
+    <!-- <div
       class="highlight-text"
       :class="[
         `highlight-text--${datas.configParamJson.highlightType}`,
@@ -10,7 +11,7 @@
       :style="computedStyles"
     >
       <div :style="computedStyles" class="highlight-text-content" v-html="datas.configParamJson.text"></div>
-    </div>
+    </div> -->
     <slot name="deles"></slot>
   </div>
 </template>
