@@ -105,7 +105,8 @@ const issueInfo = (issueListItem: IForumPost[]) => {
   if (!currentResultKey) {
     return [currentResult, null]
   } else {
-    const currentHitResult = currentPredictions[0].rule.options[currentResultKey][0]
+    const currentHitResult =
+      currentPredictions?.[0]?.rule?.options && currentPredictions?.[0]?.rule?.options?.[currentResultKey]?.[0]
     // 开奖生肖信息， 和中了的生肖。
     return [currentResult, currentHitResult]
   }
