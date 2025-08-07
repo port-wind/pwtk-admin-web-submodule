@@ -2,7 +2,6 @@
   <div class="AdBar-container">
     <div class="ad-bar-container">
       <!-- 头部标题 -->
-      <div class="_component-title">{{ datas.componentName }}bar -- 并不显示在页面上</div>
       <div
         class="mbox"
         data-component-name="广告大全"
