@@ -24,24 +24,12 @@ componentProperties.set('HighLightText', {
     pageCode: '',
     configParamJson: {
       text: '<p>记住域名 <span style="color: rgb(255, 0, 0);">71</span><span style="color: rgb(0, 0, 255);">75</span><span style="color: rgb(0, 255, 0);">.com</span> 永不失联！</p>',
-      highlightType: 'background',
-      fontSize: 16,
-      fontWeight: 400,
-      textColor: '#333333',
-      highlightColor: '#FFE58F',
-      gradientColors: {
-        from: '#FF9A9E',
-        to: '#FAD0C4'
-      },
-      animation: 'none',
-      textAlign: 'left',
-      lineHeight: 1.5,
-      padding: {
-        top: 10,
-        right: 15,
-        bottom: 10,
-        left: 15
-      }
+      page: 1,
+      size: 10,
+      gameType: '2032',
+      forumId: '',
+      isAll: 'y',
+      issueGroup: 1
     }
   }
 })

@@ -79,8 +79,10 @@ export interface IGetWebSitePostParams {
   sortName?: string
   /** 排序方式 */
   sortOrder?: 'ASC' | 'DESC'
-  /** 是否获取所有数据 */
+  /**  是否查询全部帖子 ， false 只查询不同期的 帖子（是否中奖），目前没有确定 */
   isAll?: 'y' | 'n'
+  /** 默认是1 。 传2 表示两期中奖结果聚合在一起。 issueGroup  hitDetail: 0001100  */
+  issueGroup?: number
 }
 
 export const getWebSitePost = (data: IGetWebSitePostParams): Promise<IResponse<IForumPost>> => {

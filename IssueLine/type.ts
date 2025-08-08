@@ -1,19 +1,14 @@
 import type { ISetStyle } from '../componentProperties/index'
+import type { IUseIssueListParams } from '../hooks/issueList'
 
 export interface IDatas extends ISetStyle<IssueLine> {}
 
-export interface IssueLine {
+export interface IssueLine extends IUseIssueListParams {
   enable: boolean
   title: string
   titlePrefix: string
-  gameType: string
   subtitle: string
-  size: number
-  page: number
   onlyShowCurrentIssue: boolean
-  /** 是否查询全部帖子 ， false 只查询不同期的 帖子（是否中奖），目前没有确定*/
-  isAll: 'y' | 'n'
-  forumId: string
   frontExtend_Enable: boolean
   frontExtend_StyleEnable: boolean
   frontExtend_Content: string
@@ -63,7 +58,7 @@ export interface IStyleMain {
   boxShadow: string
   layout: 'start' | 'center' | 'end' | 'space-between' | 'space-around'
   columnCount: number
-  flexDirection: 'row' | 'column',
+  flexDirection: 'row' | 'column'
 }
 // 期数目录标题样式
 export interface IStyleHeader {

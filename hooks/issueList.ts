@@ -1,18 +1,19 @@
 import { ref, computed, watch } from 'vue'
-import { getWebSitePost } from '../api'
+import { getWebSitePost, type IGetWebSitePostParams } from '../api'
 import type { IForumPost } from '../types/forum'
 
 /**
  * 期数列表 hooks 参数接口
  */
 export interface IUseIssueListParams {
-  gameType: string
   size: number
   page: number
+  gameType: string
   forumId: string
-  autoFetch?: boolean // 是否自动获取数据，默认为 true
-  isAll?: string // y
-  issueGroup?: number // 7期为一组
+  /** 是否查询全部帖子 ， false 只查询不同期的 帖子（是否中奖），目前没有确定*/
+  isAll: 'y' | 'n' // y
+  /** 默认是1 。 传2 表示两期中奖结果聚合在一起。 issueGroup  hitDetail: 0001100  */
+  issueGroup: number // 7期为一组
 }
 
 /**
@@ -49,11 +50,14 @@ export interface IProcessedIssueItem extends IForumPost {
  * @returns 期数列表相关的响应式数据和方法
  */
 export function useIssueList(params: IUseIssueListParams) {
+  console.log("🚀 ~ useIssueList ~ params:", params)
   // 响应式状态
   const issueListItem = ref<IForumPost[]>([])
   const isLoading = ref(false)
   const hasError = ref(false)
   const errorMessage = ref('')
+
+  const paramsRef = ref<IUseIssueListParams>(params)
 
   /**
    * 处理彩票预测数据
@@ -91,7 +95,7 @@ export function useIssueList(params: IUseIssueListParams) {
       return {
         shengxiao: lastNumInfo.shengxiao || '',
         teNum: lastNumInfo.num?.toString() || '', // 特码号码
-        result: matchedIssue.result || ''
+        result: (matchedIssue as any)?.result || ''
       }
     }
     return { shengxiao: '', teNum: '', result: '' }
@@ -219,24 +223,22 @@ export function useIssueList(params: IUseIssueListParams) {
    * @param forumId 论坛ID
    * @returns Promise<void>
    */
-  const fetchIssueList = async (
-    gameType: string = params.gameType,
-    size: number = params.size,
-    forumId: string = params.forumId,
-    page: number = params.page
-  ): Promise<void> => {
+  const fetchIssueList = async (issueListParams: IUseIssueListParams): Promise<void> => {
     try {
       isLoading.value = true
       hasError.value = false
       errorMessage.value = ''
 
-      const res = await getWebSitePost({
-        gameType: gameType,
-        page: page || 1,
-        size: size || 10,
-        forumId: forumId,
-        isAll: 'y'
-      })
+      const params: IGetWebSitePostParams = {
+        gameType: issueListParams.gameType,
+        page: issueListParams.page || 1,
+        size: issueListParams.size || 10,
+        forumId: issueListParams.forumId,
+        isAll: issueListParams.isAll,
+        issueGroup: issueListParams.issueGroup
+      }
+
+      const res = await getWebSitePost(params)
 
       if (res.success && res.data) {
         issueListItem.value = res.data.list || []
@@ -258,8 +260,8 @@ export function useIssueList(params: IUseIssueListParams) {
    * @param newSize 新的数据条数，如果不传则使用原有参数
    * @param newForumId 新的论坛ID，如果不传则使用原有参数
    */
-  const refreshData = (newGameType?: string, newSize?: number, newForumId?: string) => {
-    fetchIssueList(newGameType || params.gameType, newSize || params.size, newForumId || params.forumId)
+  const refreshData = (issueListParams: IUseIssueListParams) => {
+    fetchIssueList(issueListParams)
   }
 
   /**
@@ -273,19 +275,29 @@ export function useIssueList(params: IUseIssueListParams) {
 
   // 监听参数变化自动刷新数据
   watch(
-    () => [params.gameType, params.size, params.forumId],
-    ([newGameType, newSize, newForumId], [oldGameType, oldSize, oldForumId]) => {
-      if (newGameType !== oldGameType || newSize !== oldSize || newForumId !== oldForumId) {
-        fetchIssueList(String(newGameType), Number(newSize), String(newForumId))
+    ()=>params,
+    (newParams, oldParams) => {
+      console.log("🚀 ~ useIssueList ~ newParams:", newParams)
+      if (
+        newParams.gameType !== oldParams?.gameType ||
+        newParams.size !== oldParams?.size ||
+        newParams.forumId !== oldParams?.forumId ||
+        newParams.page !== oldParams?.page ||
+        newParams.isAll !== oldParams?.isAll ||
+        newParams.issueGroup !== oldParams?.issueGroup
+      ) {
+        fetchIssueList({
+          gameType: newParams.gameType as string,
+          size: newParams.size as number,
+          forumId: newParams.forumId as string,
+          page: newParams.page as number,
+          isAll: newParams.isAll as 'y' | 'n',
+          issueGroup: newParams.issueGroup as number
+        })
       }
     },
-    { deep: true }
+    { deep: true, immediate: true }
   )
-
-  // 如果开启自动获取，则立即获取数据
-  if (params.autoFetch !== false) {
-    fetchIssueList()
-  }
 
   return {
     // 响应式数据

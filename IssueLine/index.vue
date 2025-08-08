@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, reactive, watch } from 'vue'
 import type { ICustomJumpUrl, IDatas } from './type'
 import { useStore } from '@nanostores/vue'
-import { useIssueList } from '../hooks/issueList'
+import { useIssueList, type IUseIssueListParams } from '../hooks/issueList'
 import { gameStore, setGameType } from '../store'
 import { getGameName } from '../store/gameStore'
 import type { IForumPost } from '../types/forum'
@@ -24,10 +24,13 @@ const currentGame = computed(() => gameStoreData.value.currentGame)
 const currentGameName = computed(() => currentGame.value?.gameTypeLongName || '未知游戏')
 
 // 🔄 动态参数
-const issueParams = reactive({
-  gameType: gameType.value,
+const issueParams = reactive<IUseIssueListParams>({
+  page: props.datas.configParamJson.page || 1,
   size: Number(props.datas.configParamJson.size) || 10,
-  forumId: String(props.datas.configParamJson.forumId) || '10'
+  gameType: gameType.value,
+  forumId: String(props.datas.configParamJson.forumId),
+  isAll: props.datas.configParamJson.isAll,
+  issueGroup: props.datas.configParamJson.issueGroup || 1
 })
 
 const { getIssueNumber, getIssueResult, getLotteryPredictions, issueListItem } = useIssueList(issueParams)

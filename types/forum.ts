@@ -88,6 +88,8 @@ export interface IForumPost {
   lotteryPredictions: ILotteryPrediction[]
   /** 开奖信息 */
   numInfo: INumInfo[]
+  /** 开奖结果描述（可选） */
+  result?: string
 
   /** 帖子链接 */
   url: string
