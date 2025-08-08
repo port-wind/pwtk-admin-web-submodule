@@ -36,7 +36,7 @@ onMounted(async () => {
 
     rawTabsData.value = response[0].data.map((item: any, index: number) => ({
       ...item,
-      ...res[index],
+      ...res[index]
     }))
   } catch (error) {
     console.error('请求失败:', error)

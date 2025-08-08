@@ -9,10 +9,10 @@ interface IProps {
 }
 
 const props = defineProps<IProps>()
-const activeTab = ref('macau')
+const activeTab = ref('xa6')
 
 const macauData = computed(() => {
-  return props.tabsData.find((item) => item.gameType === '2032')
+  return props.tabsData.find((item) => item.gameType === '5')
 })
 
 const hkData = computed(() => {
@@ -36,14 +36,14 @@ const getBallColorClass = (item: any) => {
   <div class="lottery-result">
     <!-- 标签切换 -->
     <div class="tab-header">
-      <div class="tab-item" :class="{ active: activeTab === 'macau' }" @click="activeTab = 'macau'">新澳门⑥彩资料</div>
-      <div class="tab-item" :class="{ active: activeTab === 'hk' }" @click="activeTab = 'hk'">香港⑥彩资料</div>
+      <div class="tab-item" :class="{ active: activeTab === 'xa6' }" @click="activeTab = 'xa6'">新澳门⑥彩资料</div>
+      <div class="tab-item" :class="{ active: activeTab === 'hk6' }" @click="activeTab = 'hk6'">香港⑥彩资料</div>
     </div>
 
     <!-- 内容区域 -->
     <div class="content-area">
       <!-- 新澳门内容 -->
-      <div v-show="activeTab === 'macau'" class="lottery-content">
+      <div v-show="activeTab === 'xa6'" class="lottery-content">
         <div class="header">
           <div class="title">
             新澳门⑥彩
@@ -73,7 +73,7 @@ const getBallColorClass = (item: any) => {
       </div>
 
       <!-- 香港内容 -->
-      <div v-show="activeTab === 'hk'" class="lottery-content">
+      <div v-show="activeTab === 'hk6'" class="lottery-content">
         <div class="header">
           <div class="title">
             香港⑥彩
@@ -88,14 +88,7 @@ const getBallColorClass = (item: any) => {
         </div>
         <div class="lottery-display">
           <div class="lottery-numbers">
-            <LotteryBallDisplayNoAdd1 :noFiveElements="true" :currentResult="macauData?.currentResult" />
-            <!-- <template v-for="(item, index) in hkData?.currentResult" :key="index">
-              <div class="lottery-ball" :class="getBallColorClass(item)">
-                <span class="number">{{ item.number }}</span>
-                <span class="zodiac">{{ item.zodiac }}</span>
-              </div>
-              <span v-if="index < hkData?.currentResult.length - 1" class="separator">+</span>
-            </template> -->
+            <LotteryBallDisplayNoAdd1 :noFiveElements="true" :currentResult="hkData?.currentResult" />
           </div>
         </div>
         <div class="footer">
