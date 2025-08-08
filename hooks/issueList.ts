@@ -224,7 +224,6 @@ export function useIssueList(params: IUseIssueListParams) {
    * @returns Promise<void>
    */
   const fetchIssueList = async (issueListParams: IUseIssueListParams): Promise<void> => {
-    console.log("🚀 ~ fetchIssueList ~ issueListParams:", issueListParams)
     try {
       isLoading.value = true
       hasError.value = false

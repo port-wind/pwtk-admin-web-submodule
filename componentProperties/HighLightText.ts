@@ -29,14 +29,7 @@ componentProperties.set('HighLightText', {
       gameType: '2032',
       forumId: '',
       isAll: 'y',
-      issueGroup: 1,
-      dynamicTemplate: '<p>{{currentIssue}}</p>',
-      dynamicActiveBg: '#ffeb3b',
-      dynamicActiveText: '#000',
-      dynamicActiveTextAlign: 'center',
-      dynamicActiveFontSize: '1.4rem',
-      dynamicActiveFontWeight: '600',
-      dynamicNoResult: '#00F'
+      issueGroup: 1
     }
   }
 })
