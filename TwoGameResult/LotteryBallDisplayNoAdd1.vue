@@ -1,19 +1,19 @@
 <script setup lang="ts">
 //   import { ref } from 'vue'
 import IconText from './IconText1.vue'
-// import { Icon } from 'vant';
+import { Icon } from 'vant'
 const FiveElements = {
   j: '金',
   m: '木',
   s: '水',
   h: '火',
-  t: '土',
+  t: '土'
 }
 type BackgroundType = '#07c160' | '#349cfc' | '#fc3434'
 const ColorCode: { [key: string]: BackgroundType } = {
   R: '#fc3434',
   G: '#07c160',
-  B: '#349cfc',
+  B: '#349cfc'
 }
 
 /**
@@ -37,11 +37,9 @@ const props = defineProps<{
 
 <template>
   <div class="tab-content-middle">
-    <div class="tab-content-middle-left" v-if="currentResult">
+    <div class="tab-content-middle-left">
       <IconText
-        v-for="(item, i) in currentResult.sort((a: any, b: any) => {
-          console.log('item', a)
-
+        v-for="(item, i) in currentResult.slice(0, -1).sort((a: any, b: any) => {
           if (props.sortType === 'asc') {
             return a.num - b.num
           } else if (props.sortType === 'desc') {
@@ -50,7 +48,6 @@ const props = defineProps<{
           return 0
         })"
         :key="i"
-        :data-id="item.color"
         :bgColor="ColorCode[item.color]"
         :number="padZero(item.num)"
         :description="
@@ -58,10 +55,9 @@ const props = defineProps<{
             ? item.shengxiao
             : item.shengxiao + '/' + FiveElements[item.fiveElements as keyof typeof FiveElements]
         "
-        class="game-icon"
       />
     </div>
-    <!-- <div class="tab-content-middle-center">
+    <div class="tab-content-middle-center">
       <Icon name="plus" />
     </div>
     <div class="tab-content-middle-right">
@@ -76,7 +72,7 @@ const props = defineProps<{
               FiveElements[currentResult[6].fiveElements as keyof typeof FiveElements]
         "
       />
-    </div> -->
+    </div>
   </div>
 </template>
 

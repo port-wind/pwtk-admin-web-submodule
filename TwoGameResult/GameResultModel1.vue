@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import LotteryBallDisplayNoAdd1 from './LotteryBallDisplayNoAdd1.vue'
+import { changeGameType } from '../store/index'
 import type { IDatas } from './type'
+import type { IGameType } from '../store/gameStore'
+import { gameStore } from '../store/index'
+import { useStore } from '@nanostores/vue'
 
 interface IProps {
   datas: IDatas
@@ -9,45 +13,80 @@ interface IProps {
 }
 
 const props = defineProps<IProps>()
-const activeTab = ref('xa6')
+console.log('🚀 ~ props1111111:', props.tabsData)
 
-const macauData = computed(() => {
-  return props.tabsData.find((item) => item.gameType === '5')
+const newTabsData = computed(() => {
+  return props.tabsData.filter((item) => item.gameType === '5' || item.gameType === '1')
 })
 
-const hkData = computed(() => {
-  return props.tabsData.find((item) => item.gameType === '1')
+const gameStoreData = useStore(gameStore)
+const gameType = computed(() => gameStoreData.value.gameType)
+const currentGame = computed(() => gameStoreData.value.currentGame)
+const gameTypeList = computed<IGameType[]>(() => {
+  return gameStoreData.value.gameTypeList
+    .filter((item) => item.gameType === '5' || item.gameType === '1')
+    .map((item) => {
+      if (item.gameType === '5') {
+        return {
+          ...item,
+          gameTypeLongName: '新澳门⑥彩资料'
+        }
+      } else if (item.gameType === '1') {
+        return {
+          ...item,
+          gameTypeLongName: '香港⑥彩资料'
+        }
+      }
+    }) as IGameType[]
 })
+
+const gameTypes = computed(() => {
+  return gameTypeList.value.map((item) => item.gameType)
+})
+
+const tabIndex = ref(0) // 默认是新澳门彩 ，
 
 const handleUpdate = () => {
   window.location.reload()
 }
 
-const getBallColorClass = (item: any) => {
-  return {
-    'ball-red': item.color === 'red',
-    'ball-green': item.color === 'green',
-    'ball-blue': item.color === 'blue'
-  }
+function selectGameType(currentGame: IGameType, index) {
+  tabIndex.value = index
+  changeGameType(currentGame)
 }
+
+watch(
+  () => gameStoreData.value.gameType,
+  (newVal) => {
+    const index = gameTypeList.value.findIndex((item) => item.gameType === newVal)
+    if (index !== -1) {
+      tabIndex.value = index
+    }
+  }
+)
 </script>
 
 <template>
   <div class="lottery-result">
     <!-- 标签切换 -->
     <div class="tab-header">
-      <div class="tab-item" :class="{ active: activeTab === 'xa6' }" @click="activeTab = 'xa6'">新澳门⑥彩资料</div>
-      <div class="tab-item" :class="{ active: activeTab === 'hk6' }" @click="activeTab = 'hk6'">香港⑥彩资料</div>
+      <div
+        v-for="(tab, index) in gameTypeList"
+        :key="index"
+        :class="['tab-item', { active: currentGame?.gameType === tab?.gameType }]"
+        @click="selectGameType(tab, index)"
+      >
+        {{ tab.gameTypeLongName }}
+      </div>
     </div>
 
     <!-- 内容区域 -->
     <div class="content-area">
-      <!-- 新澳门内容 -->
-      <div v-show="activeTab === 'xa6'" class="lottery-content">
+      <div class="lottery-content" v-if="newTabsData[tabIndex]">
         <div class="header">
           <div class="title">
-            新澳门⑥彩
-            <span class="issue">{{ macauData?.currentIssue }}</span>
+            {{ newTabsData[tabIndex].gameTypeShortName }}
+            <span class="issue">{{ newTabsData[tabIndex]?.currentIssue }}</span>
             期
           </div>
           <div class="action-buttons">
@@ -58,41 +97,15 @@ const getBallColorClass = (item: any) => {
         </div>
         <div class="lottery-display">
           <div class="lottery-numbers">
-            <LotteryBallDisplayNoAdd1 :noFiveElements="true" :currentResult="macauData?.currentResult" />
-            <!-- <template v-for="(item, index) in macauData?.currentResult" :key="index">
-              <div class="lottery-ball" :class="getBallColorClass(item)">
-                <span class="number">{{ item.number }}</span>
-                <span class="zodiac">{{ item.zodiac }}</span>
-              </div>
-            </template> -->
+            <LotteryBallDisplayNoAdd1 :noFiveElements="true" :currentResult="newTabsData[tabIndex]?.currentResult" />
           </div>
         </div>
         <div class="footer">
-          <span class="next-draw">下期({{ macauData?.nextIssue }})开奖: {{ macauData?.nextDrawTime }}</span>
-        </div>
-      </div>
-
-      <!-- 香港内容 -->
-      <div v-show="activeTab === 'hk6'" class="lottery-content">
-        <div class="header">
-          <div class="title">
-            香港⑥彩
-            <span class="issue">{{ hkData?.currentIssue }}</span>
-            期
-          </div>
-          <div class="action-buttons">
-            <button class="btn btn-outline">搅珠记录</button>
-            <button class="btn btn-primary" @click="handleUpdate">刷新</button>
-            <button class="btn btn-live">直播</button>
-          </div>
-        </div>
-        <div class="lottery-display">
-          <div class="lottery-numbers">
-            <LotteryBallDisplayNoAdd1 :noFiveElements="true" :currentResult="hkData?.currentResult" />
-          </div>
-        </div>
-        <div class="footer">
-          <span class="next-draw">下期({{ hkData?.nextIssue }})开奖: {{ hkData?.nextDrawTime }}</span>
+          <span class="next-draw">
+            下期(
+            <span style="color: red">{{ newTabsData[tabIndex]?.nextIssue }}</span>
+            )开奖: {{ newTabsData[tabIndex]?.nextDrawTime }}
+          </span>
         </div>
       </div>
     </div>
