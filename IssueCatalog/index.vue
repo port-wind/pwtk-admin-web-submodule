@@ -11,7 +11,7 @@ import {
   setCustomMergeTags,
   addMergeTagToCategory,
   getCustomMergeTags,
-  loadMergeTagsTemplate
+  loadMergeTagsTemplate,
 } from '../store/editorStore'
 
 interface IProps {
@@ -36,7 +36,7 @@ const issueParams = reactive({
   forumId: String(props.datas.configParamJson.forumId) || '10',
   page: Number(props.datas.configParamJson.page) || 1,
   isAll: props.datas.configParamJson.isAll || 'n',
-  issueGroup: Number(props.datas.configParamJson.issueGroup) || 1
+  issueGroup: Number(props.datas.configParamJson.issueGroup) || 1,
 })
 
 const { getIssueNumber, getIssueResult, getLotteryPredictions, issueListItem } = useIssueList(issueParams)
@@ -46,30 +46,30 @@ const containerStyle = computed(() => {
   return {
     borderRadius: `${styleHeader.value?.borderRadius || 0}px`,
     padding: `${styleHeader.value?.padding || 0}px`,
-    backgroundColor: styleMain.value?.backgroundColor || '#f1f1f1'
+    backgroundColor: styleMain.value?.backgroundColor || '#f1f1f1',
   }
 })
 
 const headerTitleBgStyle = computed(() => {
   if (styleHeader.value.isGradient) {
     return {
-      background: `linear-gradient(to right,  ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`
+      background: `linear-gradient(to right,  ${styleHeader.value.headerBg}, ${styleHeader.value.headerBg2})`,
     }
   }
   return {
-    backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2'
+    backgroundColor: styleHeader.value?.headerBgColor || '#4a90e2',
   }
 })
 
 const headerTitleTextStyle = computed(() => {
   return {
-    color: styleHeader.value?.titleColor || '#333333'
+    color: styleHeader.value?.titleColor || '#333333',
   }
 })
 
 const subTitleStyle = computed(() => {
   return {
-    color: styleHeader.value?.subTitleColor || '#333333'
+    color: styleHeader.value?.subTitleColor || '#333333',
   }
 })
 
@@ -85,7 +85,7 @@ const styleConfig = computed(() => ({
   backgroundColor: props.datas.configParamJson.styleMain?.backgroundColor || '#f1f1f1',
   itemBackgroundColor: props.datas.configParamJson.styleMain?.itemBackgroundColor || '#f1f1f1',
   layout: props.datas.configParamJson.styleMain?.layout || 'start',
-  columnCount: props.datas.configParamJson.styleMain?.columnCount || 1
+  columnCount: props.datas.configParamJson.styleMain?.columnCount || 1,
 }))
 
 // 解析模板并替换变量
@@ -122,7 +122,7 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
   // predicton 是一个对象， 我门要存key 和 vlaue
   predictions.forEach((prediction, mainIndex) => {
     if (prediction.isHit === 'y') {
-      const hitIndex = prediction.hitDetail.split('').findIndex((item) => item === '1')
+      const hitIndex = prediction.hitDetail.split('').findIndex(item => item === '1')
       prediction.predict.forEach((predict, index) => {
         if (hitIndex === index) {
           template = template.replace(
@@ -178,7 +178,7 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
       let index = -1
       if (prediction.isHit && prediction.hitDetail) {
         const hitDetail = prediction.hitDetail
-        index = hitDetail.split('').findIndex((item) => item === '1')
+        index = hitDetail.split('').findIndex(item => item === '1')
       }
 
       // 遍历每个预测组中的预测项
@@ -211,10 +211,11 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
 
 const activeIssueListTemplate = ref(props.datas.configParamJson?.issueListTemplate?.[0]?.postIssue || '')
 watch(
-  () => props.datas.configParamJson?.issueListTemplate,
-  (newTemplates) => {
+  () => issueListItem.value,
+  newTemplates => {
     if (newTemplates && newTemplates.length > 0) {
-      const postIssueList = newTemplates.map((item) => item.postIssue)
+      console.log('🚀 ~ watch ~ newTemplates:', newTemplates)
+      const postIssueList = newTemplates.map(item => item.postIssue)
       if (!postIssueList.includes(activeIssueListTemplate.value)) {
         // eslint-disable-next-line prefer-destructuring
         activeIssueListTemplate.value = postIssueList[0]
@@ -230,7 +231,7 @@ watch(
     gameType.value,
     props.datas.configParamJson.page,
     props.datas.configParamJson.isAll,
-    props.datas.configParamJson.issueGroup
+    props.datas.configParamJson.issueGroup,
   ],
   ([newSize, newForumId, newGameType, newPage, newIsAll, newIssueGroup]) => {
     issueParams.size = Number(newSize) || 10
@@ -244,14 +245,14 @@ watch(
 
 watch(
   () => issueListItem.value,
-  (newIssueListItem) => {
+  newIssueListItem => {
     console.log('🚀 ~ watch ~ newIssueListItem:', newIssueListItem)
 
     // Always recreate issueListTemplate from newIssueListItem
     // eslint-disable-next-line vue/no-mutating-props
-    props.datas.configParamJson.issueListTemplate = newIssueListItem.map((item) => ({
+    props.datas.configParamJson.issueListTemplate = newIssueListItem.map(item => ({
       postIssue: item.postIssue,
-      dynamicTemplate: ''
+      dynamicTemplate: '',
     }))
   }
 )
@@ -295,7 +296,7 @@ watch(
         v-if="datas.configParamJson.enable && !datas.configParamJson.enableTemplateByPostIssue"
         :style="{
           backgroundColor: styleConfig.backgroundColor || 'currentColor',
-          padding: `${styleConfig.contentPaddingTopBottom}px ${styleConfig.contentPaddingLeftRight}px`
+          padding: `${styleConfig.contentPaddingTopBottom}px ${styleConfig.contentPaddingLeftRight}px`,
         }"
       >
         <!-- Issue list -->
@@ -303,7 +304,7 @@ watch(
           class="issue-item-content"
           :style="{
             gap: styleConfig.listSpacing + 'px',
-            gridTemplateColumns: `repeat(${styleConfig.columnCount}, 1fr)`
+            gridTemplateColumns: `repeat(${styleConfig.columnCount}, 1fr)`,
           }"
         >
           <div
@@ -313,7 +314,7 @@ watch(
             :style="{
               borderRadius: Math.max(0, styleConfig.borderRadius) + 'px',
               padding: `${styleConfig.paddingTopBottom}px ${styleConfig.paddingLeftRight}px`,
-              backgroundColor: styleConfig.itemBackgroundColor || '#f1f1f1'
+              backgroundColor: styleConfig.itemBackgroundColor || '#f1f1f1',
             }"
           >
             <div class="issue-display">
@@ -321,7 +322,7 @@ watch(
                 class="issue-display-content"
                 :style="{
                   gap: styleConfig.numberSpacing + 'px',
-                  justifyContent: styleConfig.layout || 'flex-start'
+                  justifyContent: styleConfig.layout || 'flex-start',
                 }"
                 v-html="parseTemplate(issue)"
               ></div>
@@ -541,13 +542,33 @@ watch(
       border: 1px solid #e9ecef;
 
       span {
-        font-family: Microsoft YaHei, Helvetica, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-          Ubuntu, Cantarell, 'Fira Sans' !important;
+        font-family:
+          Microsoft YaHei,
+          Helvetica,
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          Roboto,
+          Oxygen,
+          Ubuntu,
+          Cantarell,
+          'Fira Sans' !important;
       }
 
       strong {
-        font-family: Microsoft YaHei, Helvetica, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-          Ubuntu, Cantarell, 'Fira Sans' !important;
+        font-family:
+          Microsoft YaHei,
+          Helvetica,
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          Roboto,
+          Oxygen,
+          Ubuntu,
+          Cantarell,
+          'Fira Sans' !important;
       }
     }
 
