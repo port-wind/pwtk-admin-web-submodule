@@ -50,7 +50,7 @@ export interface IProcessedIssueItem extends IForumPost {
  * @returns 期数列表相关的响应式数据和方法
  */
 export function useIssueList(params: IUseIssueListParams) {
-  console.log("🚀 ~ useIssueList ~ params:", params)
+  console.log('🚀 ~ useIssueList ~ params:', params)
   // 响应式状态
   const issueListItem = ref<IForumPost[]>([])
   const isLoading = ref(false)
@@ -275,26 +275,18 @@ export function useIssueList(params: IUseIssueListParams) {
 
   // 监听参数变化自动刷新数据
   watch(
-    ()=>params,
+    () => params,
     (newParams, oldParams) => {
-      console.log("🚀 ~ useIssueList ~ newParams:", newParams)
-      if (
-        newParams.gameType !== oldParams?.gameType ||
-        newParams.size !== oldParams?.size ||
-        newParams.forumId !== oldParams?.forumId ||
-        newParams.page !== oldParams?.page ||
-        newParams.isAll !== oldParams?.isAll ||
-        newParams.issueGroup !== oldParams?.issueGroup
-      ) {
-        fetchIssueList({
-          gameType: newParams.gameType as string,
-          size: newParams.size as number,
-          forumId: newParams.forumId as string,
-          page: newParams.page as number,
-          isAll: newParams.isAll as 'y' | 'n',
-          issueGroup: newParams.issueGroup as number
-        })
-      }
+      console.log('🚀 ~ useIssueList ~ oldParams:', oldParams)
+      console.log('🚀 ~ useIssueList ~ newParams:', newParams)
+      fetchIssueList({
+        gameType: newParams.gameType as string,
+        size: newParams.size as number,
+        forumId: newParams.forumId as string,
+        page: newParams.page as number,
+        isAll: newParams.isAll as 'y' | 'n',
+        issueGroup: newParams.issueGroup as number
+      })
     },
     { deep: true, immediate: true }
   )

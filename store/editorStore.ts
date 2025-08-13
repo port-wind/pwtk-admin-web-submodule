@@ -62,8 +62,6 @@ export function setComponentMapValue(componentName: string, subCategory: string,
       }
     }
   })
-
-  console.log('🚀 ~ setComponentMapValue 9999999999 ~ editorStore.get().componentMap:', editorStore.get().componentMap)
 }
 
 export function getComponentMapValue(componentName: string, subCategory: string, key: string) {

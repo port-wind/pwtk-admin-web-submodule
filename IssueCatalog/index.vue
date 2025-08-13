@@ -34,7 +34,9 @@ const issueParams = reactive({
   gameType: gameType.value,
   size: Number(props.datas.configParamJson.size) || 10,
   forumId: String(props.datas.configParamJson.forumId) || '10',
-  page: Number(props.datas.configParamJson.page) || 1
+  page: Number(props.datas.configParamJson.page) || 1,
+  isAll: props.datas.configParamJson.isAll || 'n',
+  issueGroup: Number(props.datas.configParamJson.issueGroup) || 1
 })
 
 const { getIssueNumber, getIssueResult, getLotteryPredictions, issueListItem } = useIssueList(issueParams)
@@ -208,37 +210,49 @@ const parseTemplate = (issue: IForumPost, _template?: string) => {
 }
 
 const activeIssueListTemplate = ref(props.datas.configParamJson?.issueListTemplate?.[0]?.postIssue || '')
-
 watch(
-  () => [props.datas.configParamJson.size, props.datas.configParamJson.forumId, gameType.value],
-  ([newSize, newForumId, newGameType]) => {
+  () => props.datas.configParamJson?.issueListTemplate,
+  (newTemplates) => {
+    if (newTemplates && newTemplates.length > 0) {
+      const postIssueList = newTemplates.map((item) => item.postIssue)
+      if (!postIssueList.includes(activeIssueListTemplate.value)) {
+        // eslint-disable-next-line prefer-destructuring
+        activeIssueListTemplate.value = postIssueList[0]
+      }
+    }
+  },
+  { immediate: true, deep: true }
+)
+watch(
+  () => [
+    props.datas.configParamJson.size,
+    props.datas.configParamJson.forumId,
+    gameType.value,
+    props.datas.configParamJson.page,
+    props.datas.configParamJson.isAll,
+    props.datas.configParamJson.issueGroup
+  ],
+  ([newSize, newForumId, newGameType, newPage, newIsAll, newIssueGroup]) => {
     issueParams.size = Number(newSize) || 10
     issueParams.forumId = String(newForumId) || '10'
     issueParams.gameType = String(newGameType)
+    issueParams.page = Number(newPage) || 1
+    issueParams.isAll = String(newIsAll) || 'n'
+    issueParams.issueGroup = Number(newIssueGroup) || 1
   }
 )
 
 watch(
   () => issueListItem.value,
   (newIssueListItem) => {
-    if (newIssueListItem.length > 0) {
-      if (props.datas.configParamJson.issueListTemplate.length > newIssueListItem.length) {
-        props.datas.configParamJson.issueListTemplate = props.datas.configParamJson.issueListTemplate.slice(
-          0,
-          newIssueListItem.length
-        )
-      }
+    console.log('🚀 ~ watch ~ newIssueListItem:', newIssueListItem)
 
-      newIssueListItem.forEach((item, index) => {
-        if (!props.datas.configParamJson.issueListTemplate[index]) {
-          // 创建新的
-          props.datas.configParamJson.issueListTemplate[index] = {
-            postIssue: item.postIssue,
-            dynamicTemplate: ''
-          }
-        }
-      })
-    }
+    // Always recreate issueListTemplate from newIssueListItem
+    // eslint-disable-next-line vue/no-mutating-props
+    props.datas.configParamJson.issueListTemplate = newIssueListItem.map((item) => ({
+      postIssue: item.postIssue,
+      dynamicTemplate: ''
+    }))
   }
 )
 </script>
